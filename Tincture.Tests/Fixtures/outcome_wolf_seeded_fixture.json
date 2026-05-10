@@ -1,0 +1,42 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 77,
+    "actor_id": "wolf_alpha",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "bite",
+    "domain": "combat",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "disparity_kind": "pack_pressure",
+      "modifier_composition": "modifier_composer.additive.v1",
+      "modifier_ids": "pack_pressure",
+      "outcome": "wolf_bite",
+      "request_id": "wolf-attack-001",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "seeded",
+      "roll_step": "1",
+      "roll_stream_id": "wolf_attack",
+      "roll_stream_seed": "582268642227877207",
+      "roll_total": "54",
+      "roll_value": "46",
+      "root_seed": "1234567",
+      "table_id": "combat.wolf_attack.v1",
+      "total_modifier": "8"
+    },
+    "costs": {},
+    "results": {
+      "damage": "3",
+      "threat_delta": "2"
+    },
+    "tags": [
+      "combat",
+      "damage",
+      "resolved_outcome",
+      "wolf"
+    ]
+  }
+]

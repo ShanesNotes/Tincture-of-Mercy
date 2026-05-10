@@ -1,0 +1,38 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 42,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "administer_tincture",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "modifier_composition": "modifier_composer.additive.v1",
+      "modifier_ids": "steady_hands",
+      "outcome": "tincture_stabilizes",
+      "request_id": "tincture-scripted-001",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "roll_total": "69",
+      "roll_value": "64",
+      "scripted_fixture_id": "act3_tincture_teaching_fixture",
+      "stat_key": "steady",
+      "table_id": "care.tincture.v1",
+      "total_modifier": "5"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1",
+      "pressure_delta": "-1"
+    },
+    "tags": [
+      "care",
+      "resolved_outcome",
+      "tincture"
+    ]
+  }
+]
