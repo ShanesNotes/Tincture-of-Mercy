@@ -6,15 +6,15 @@ public sealed class ModifierComposer
 
     public ModifierComposition Compose(IEnumerable<OutcomeModifier> modifiers)
     {
-        var normalized = modifiers
-            .Select(modifier => modifier.Normalize())
+        // ModifierAssembler owns normalization and ordering; the composer owns only the composition rule.
+        var orderedModifiers = modifiers
             .ToList()
             .AsReadOnly();
 
         return new ModifierComposition(
             CompositionRuleId,
-            normalized.Sum(modifier => modifier.Amount),
-            normalized);
+            orderedModifiers.Sum(modifier => modifier.Amount),
+            orderedModifiers);
     }
 }
 

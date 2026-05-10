@@ -16,7 +16,7 @@ public static class LatentPathExtensions
             LatentPath.Apothecary => "apothecary",
             LatentPath.Hesychasm => "hesychasm",
             LatentPath.Iconographic => "iconographic",
-            _ => path.ToString().ToLowerInvariant()
+            _ => throw new ArgumentOutOfRangeException(nameof(path), path, "Unsupported latent path.")
         };
     }
 }

@@ -170,7 +170,7 @@ public sealed record RegisterMatchModifier
             VoiceRegister.Folk => "folk",
             VoiceRegister.Sanctioned => "sanctioned",
             VoiceRegister.Sacred => "sacred",
-            _ => voiceRegister.ToString().ToLowerInvariant()
+            _ => throw new ArgumentOutOfRangeException(nameof(voiceRegister), voiceRegister, "Unsupported voice register.")
         };
     }
 }
