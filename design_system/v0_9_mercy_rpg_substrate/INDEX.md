@@ -33,6 +33,9 @@ Use this order when a document conflicts:
 | `05-rpg-economy-progression.md` | Risk/reward, loot, progression, itemization, and tuning levers. | Active once authored |
 | `06-canon-surface-registry.md` | Authority labels for major doc surfaces and migration notes. | Active once authored |
 | `07-anti-drift-vocabulary.md` | Scoped vocabulary and drift-gate policy for v0.9 RPG language. | Active once authored |
+| `08-epic-b-substrate-pipeline-plan.md` | Pipeline-shaped Epic B execution graph for B-prep through B0, including B1/B2 anti-fracture seams. | Active implementation handoff |
+| `09-naming-conventions.md` | Godot artifact naming canon: filesystem layout, code identifiers, animation keys, verb/item/encounter IDs, blocked legacy patterns, validation. | Active |
+| `prompts/` | Sprite-sheet authoring prompts (master template + Kalev pass-sliced production plan + Lena/Mother/Boy/Wolf full sheets) and the `06-name-an-artifact.md` template for naming new Godot artifacts. | Active |
 
 ## Product direction
 
@@ -45,7 +48,7 @@ Normal RPG mechanics are allowed at the architecture level when coherent with th
 ## Milestone order
 
 1. **M0 — Active docs and canon routing.** This packet, ADRs, issue slices, acceptance, and anti-drift vocabulary are aligned.
-2. **M1 — Substrate core mechanics.** Implement headless/core mechanics before opening act content: clock, events, resolver, auras, actor state, resources, threat, timers, ability/item data, progression, and notebook truth surfaces.
+2. **M1 — Substrate core mechanics.** Implement headless/core mechanics before opening act content. Use `08-epic-b-substrate-pipeline-plan.md` as the execution graph: B-prep establishes the plain C# substrate/test boundary, then B1/B2 lock deterministic event truth, seeded RNG, append semantics, typed receptivity, modifier assembly, and one resolver family before later slices add actors, costs, timers, encounters, loot, progression, and notebook truth surfaces.
 3. **M2 — Data and presenters.** Add content data, domain presenters, debug surfaces, and UX mappings over the substrate.
 4. **M3 — Opening act graybox.** Build water, bread, tincture, mother death/Witness, and wolves/boy flight/combat after M1 acceptance passes.
 5. **M4 — Vertical-slice verification.** Prove event truth, encounter cost, loot/material consequence, path/receptivity effects, notebook records, and regression gates.

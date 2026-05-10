@@ -3,7 +3,7 @@
 Status: active acceptance contract
 Owner lane: QA + architecture
 Authority level: active gate for docs, issue slices, and later implementation claims
-Dependencies: `PRD.md`, `ISSUE_SLICES.md`, seven slice specs
+Dependencies: `PRD.md`, `ISSUE_SLICES.md`, active slice specs, and Epic B pipeline handoff
 Maximum intended scope: acceptance criteria for v0.9 substrate-first packet and opening-slice proof
 Source references: `docs/source/2026-05-09-tincture-codex-handoff/handoff_pack/docs/03_ACCEPTANCE_CRITERIA.md`, v0.8.1 packet as scoped provenance
 Validation gate: commands at the end of this file
@@ -19,11 +19,11 @@ Validation gate: commands at the end of this file
 
 | ID | Claim | Evidence required | Gate |
 |---|---|---|---|
-| A-01 | Active packet exists and is navigable. | `INDEX.md`, `PRD.md`, `ACCEPTANCE.md`, `ISSUE_SLICES.md`, and `01` through `07` slice docs exist. | Docs |
+| A-01 | Active packet exists and is navigable. | `INDEX.md`, `PRD.md`, `ACCEPTANCE.md`, `ISSUE_SLICES.md`, `01` through `07` slice docs, and the `08` Epic B pipeline handoff exist. | Docs |
 | A-02 | Source hierarchy is explicit. | `INDEX.md` and `06-canon-surface-registry.md` label active, provenance, source, generated-review, archive, stale surfaces. | Docs |
 | A-03 | Substrate precedes opening content. | `PRD.md`, `02-substrate-primitives.md`, and `ISSUE_SLICES.md` define M1/B0 gate before Epic C implementation. | Docs/Substrate |
 | A-04 | One event truth. | `02-substrate-primitives.md` and issues specify care/combat/craft/notebook as event projections. | Substrate |
-| A-05 | One resolver family. | Implementation issues use `OutcomeResolver`/combat table under one resolver architecture; no issue creates separate care/combat resolvers. | Substrate |
+| A-05 | One resolver family. | Implementation issues use `OutcomeResolver` and `OutcomeTable` data rows under one resolver architecture; no issue creates separate care/combat resolvers or combat-only table adapters. | Substrate |
 | A-06 | Combat is first-class. | PRD, act bible, economy spec, and issue backlog include combat encounter data, threat, damage, cost, loot/material consequence, progression hooks, and feel/acceptance. | Docs/Opening |
 | A-07 | Normal RPG risk/reward applies. | Economy spec allows damage, danger, loot, XP/Witness, equipment/material quality, rarity, and progression hooks with tuning levers. | Docs/Opening |
 | A-08 | Care remains embodied. | Opening act bible defines water, bread, tincture, presence, witness, notebook, resources, and consequences. | Opening |
@@ -41,7 +41,7 @@ Validation gate: commands at the end of this file
 |---|---|---|
 | `SimClock` | Deterministic ticks, pause/resume, replay seed capture. | All acts |
 | `SimEvent` | Ring buffer/event stream records actor, target, verb, domain, cost, result, tick, tags. | All acts |
-| `OutcomeResolver` | Scripted fixture roll and seeded roll both produce stable events for care and combat domains. | Tincture, wolves |
+| `OutcomeResolver` | Scripted fixture roll and seeded roll both produce stable events for care and combat domains; B2 records additive modifier composition under a named composer rule. | Tincture, wolves |
 | `AuraSystem` | Add/remove/expire aura events and modifier projection. | Tincture, wolves |
 | `ActorState` / `StatBlock` / `DerivedStats` | Health, Spirit, Steady, Burden, Pressure, Numbness hooks update through events. | Bread, Witness, wolves |
 | `DisparityService` | Computes encounter and care mismatch/risk without owning final outcomes. | Tincture, wolves |
@@ -84,6 +84,7 @@ required = [
     'design_system/v0_9_mercy_rpg_substrate/05-rpg-economy-progression.md',
     'design_system/v0_9_mercy_rpg_substrate/06-canon-surface-registry.md',
     'design_system/v0_9_mercy_rpg_substrate/07-anti-drift-vocabulary.md',
+    'design_system/v0_9_mercy_rpg_substrate/08-epic-b-substrate-pipeline-plan.md',
 ]
 missing = [path for path in required if not Path(path).is_file()]
 if missing:

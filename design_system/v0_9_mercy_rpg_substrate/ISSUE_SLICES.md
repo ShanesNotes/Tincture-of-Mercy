@@ -7,11 +7,12 @@ Dependencies: `PRD.md`, `ACCEPTANCE.md`, seven slice docs
 Maximum intended scope: independently grabbable issue definitions; not a tracker export yet
 Source references: approved RALPLAN `.omx/plans/deepen-7-mercy-rpg-slices-consensus-plan.md`, substrate handoff source intake, accepted ADRs
 Validation gate: every issue has write scope, dependencies, acceptance, and verification
+Execution graph: `08-epic-b-substrate-pipeline-plan.md` is the active implementation handoff for splitting B-prep, B1, B2, and later overloaded Epic B slices.
 
 ## Backlog rules
 
 - Keep issues small enough for one agent lane.
-- Preserve the substrate-first gate: Epic C opening act implementation is blocked by B0 until B1-B6 pass substrate acceptance.
+- Preserve the substrate-first gate: Epic C opening act implementation is blocked by B0 until B1-B6 pass substrate acceptance. B-prep is the first engine step and creates the headless substrate/test boundary before B1.
 - Engine-facing work uses Godot 4.6, C#/.NET, and Forward+ unless a later accepted PRD changes the stack.
 - Use one resolver/event-truth architecture. Domain presenters may differ; outcome truth does not fork.
 - Combat is first-class. Issue scope may defer a specific feature, but issue wording should not imply project-wide combat demotion.
@@ -116,20 +117,48 @@ verification:
   - Documentation review now.
 ```
 
-### B1 — SimClock + SimEvent
+### B-prep — Headless substrate/test boundary
+
+```yaml
+id: B-prep
+lane: executor
+write_scope:
+  - Tincture.Substrate/Tincture.Substrate.csproj
+  - Tincture.Tests/Tincture.Tests.csproj
+  - Tincture-of-Mercy.csproj
+blocked_by: []
+acceptance:
+  - Tincture.Substrate uses plain Microsoft.NET.Sdk and has no Godot dependency.
+  - Tincture.Tests references the substrate library for core tests.
+  - Godot project references the substrate without defining substrate truth in scene scripts.
+verification:
+  - dotnet build Tincture.Substrate/Tincture.Substrate.csproj
+  - dotnet test Tincture.Tests/Tincture.Tests.csproj
+  - dotnet build Tincture-of-Mercy.csproj when Godot SDK restore is available.
+```
+
+### B1 — SimClock + SeededRng + SimEvent
 
 ```yaml
 id: B1
 lane: executor
 write_scope:
-  - future core simulation clock/event modules
-  - design_system/v0_9_mercy_rpg_substrate/02-substrate-primitives.md
-blocked_by: []
+  - Tincture.Substrate/Sim/*
+  - Tincture.Substrate/Events/*
+  - Tincture.Tests/Sim/*
+  - Tincture.Tests/Events/*
+  - Tincture.Tests/Fixtures/*.json
+blocked_by: [B-prep]
 acceptance:
-  - Fixed tick scheduler and event stream/ring buffer are deterministic under seed/fixture.
-  - Events include tick, actor, target, verb, domain, cost, result, tags, and source metadata.
+  - Fixed tick scheduler, seeded RNG/sub-seeds, event stream, and ring buffer are deterministic under seed/fixture.
+  - Events include stable identity, tick, actor, target/location, verb, domain, source, cost, result, tags, and metadata.
+  - AppendBatch appends ordered event groups atomically and stable JSON fixtures use snake_case field names.
 verification:
-  - Future headless test: deterministic event replay.
+  - SimClock_ReplaysFixedTicks
+  - SeededRng_SubSeedsReplayAcrossSystems
+  - SimEventStream_AppendsBatchAtomically
+  - SimEventStream_ReplaysStableJsonFixture
+  - SimEventStream_RingBufferCapacityRolloverIsDeterministic
 ```
 
 ### B2 — Resolver + scripted rolls
@@ -138,13 +167,26 @@ verification:
 id: B2
 lane: executor
 write_scope:
-  - future OutcomeResolver / CombatTable modules
+  - Tincture.Substrate/Rules/*
+  - Tincture.Substrate/Data/ReceptivityProfile.cs
+  - Tincture.Substrate/Data/RegisterMatchModifier.cs
+  - Tincture.Substrate/Data/LatentPath.cs
+  - Tincture.Tests/Rules/*
 blocked_by: [B1]
 acceptance:
   - Care, craft, combat, witness, and path/receptivity checks use one resolver family.
-  - Scripted roll fixtures and seeded rolls are testable.
+  - Exactly one production IOutcomeResolver implementation exists unless a later ADR changes the architecture.
+  - OutcomeTable data rows serve care and combat; no separate combat resolver/table adapter is introduced.
+  - ReceptivityProfile, LatentPath, typed register_match_modifier, ModifierAssembler, and additive ModifierComposer are required B2 deliverables.
+  - Scripted roll fixtures and seeded rolls record resolver metadata.
 verification:
-  - Future tests prove a tincture care check and wolf attack check both record resolver metadata.
+  - OutcomeResolver_CareAndCombatSharePath
+  - OutcomeResolver_ScriptedTinctureFixtureStable
+  - OutcomeResolver_SeededWolfAttackFixtureStable
+  - OutcomeResolver_RecordsTypedReceptivityModifier
+  - ModifierAssembler_ComposesInStableOrder
+  - ModifierComposer_AddsAmountsWithNamedRule
+  - ResolverStructure_ExactlyOneProductionOutcomeResolver
 ```
 
 ### B3 — Auras + actor state + resources

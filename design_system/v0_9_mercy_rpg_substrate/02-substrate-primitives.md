@@ -21,13 +21,13 @@ Care, combat, crafting, witness, notebook, economy, and aftermath are projection
 - The authoritative record is `SimEvent`.
 - Domain presenters translate events into bedside UI, combat UI, notebook prose, debug panels, economy summaries, and later replay/analytics.
 - Presenters may hide or rename fields for player-facing surfaces; they do not own outcome truth.
-- `OutcomeResolver` is shared. Combat can use combat tables and attack outcomes, but it does not fork into a separate engine.
+- `OutcomeResolver` is shared. Combat uses `OutcomeTable` data rows and attack outcomes, but it does not fork into a separate engine.
 
 ## Build order
 
 1. `SimClock` / fixed tick scheduler
 2. `SimEvent` event stream/ring buffer
-3. `OutcomeResolver` / `CombatTable.Resolve()` / scripted rolls
+3. `OutcomeResolver` / `OutcomeTable` data / scripted rolls
 4. `AuraSystem`
 5. `ActorState`, `StatBlock`, `DerivedStats`
 6. `DisparityService`
@@ -49,7 +49,7 @@ Care, combat, crafting, witness, notebook, economy, and aftermath are projection
 |---|---|---|---|---|---|---|---|
 | 1 | `SimClock` | Core simulation | fixed tick rate, pause state, seed, time scale | tick events, elapsed ticks, deterministic scheduling | `tick`, `time_scale`, `seed`, `phase` | deterministic tick progression, pause/resume, replay seed | all acts |
 | 2 | `SimEvent` stream | Core simulation | event payloads from systems | append-only stream, ring buffer, replay fixture | `id`, `tick`, `actor`, `target`, `verb`, `domain`, `source`, `cost`, `result`, `tags` | ordered append, capacity rollover, replay serialization | all acts |
-| 3 | `OutcomeResolver` + `CombatTable.Resolve()` | Rules | actor state, target state, verb, table, seed/scripted fixture, modifiers | `ResolvedOutcome`, event metadata, consequence hooks | `roll_kind`, `roll_value`, `table_id`, `modifiers`, `outcome`, `consequence_tags` | seeded care roll, scripted tincture roll, wolf attack table, shared resolver assertion | tincture, wolves |
+| 3 | `OutcomeResolver` + `OutcomeTable` data | Rules | actor state, target state, verb, table, seed/scripted fixture, modifiers | `ResolvedOutcome`, event metadata, consequence hooks | `roll_kind`, `roll_value`, `table_id`, `modifiers`, `modifier_composition`, `outcome`, `consequence_tags` | seeded care roll, scripted tincture roll, wolf attack table, shared resolver assertion | tincture, wolves |
 | 4 | `AuraSystem` | Rules/state | aura def, target, duration, stack rule, source event | add/remove/expire events, modifiers | `aura_id`, `target`, `source`, `duration_ticks`, `stack_count`, `modifier_ids` | add, refresh, stack, expire, event projection | tincture, wolves, Witness |
 | 5 | `ActorState` / `StatBlock` / `DerivedStats` | Actor model | actor defs, base stats, equipment, auras, burdens | derived stats, current state, state-change events | `stat_key`, `old_value`, `new_value`, `reason`, `source_event` | derived stat recompute, health change, pressure change | bread, tincture, wolves |
 | 6 | `DisparityService` | Encounter math | actor/target state, verb, environment, path/receptivity data | risk/mismatch modifiers for resolver | `disparity_kind`, `source_value`, `target_value`, `modifier` | high/low mismatch examples, modifier clamp | tincture, wolves |
@@ -135,7 +135,8 @@ public readonly record struct ResolvedOutcome(
 
 Rules:
 
-- Combat tables are resolver data, not a second resolver engine.
+- Combat rows are `OutcomeTable` data, not a second resolver engine.
+- B2 uses additive modifier composition (`modifier_composer.additive.v1`) as the named v1 seam; later multiplicative, floor, cap, or domain-specific composition changes require a named composer change and fixture updates.
 - Scripted rolls are valid for authored teaching moments when recorded as fixtures.
 - Resolver output emits events; presenters and progression derive from those events.
 - Care outcomes may use tactile language in UI while keeping debug metadata available.
@@ -157,7 +158,7 @@ Rules:
 
 Example fields:
 
-- `path_id`: `apothecary`, `hesychasm`, `iconographic`
+- `path_id`: serialized from `LatentPath` (`apothecary`, `hesychasm`, `iconographic`)
 - `voice_register`: `folk`, `sanctioned`, `sacred`
 - `target_receptivity`: data row id
 - `register_match_modifier`: signed integer or named modifier

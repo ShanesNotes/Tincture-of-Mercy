@@ -85,6 +85,18 @@
       "file": "preview/v0_8_1_overview.html",
       "why": "overview HTML displays the v0.8 → v0.8.1 migration/errata table by definition.",
       "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_9_mercy_rpg_substrate/09-naming-conventions.md",
+      "why": "naming-conventions canon documents blocked legacy patterns and their replacements as the project naming reference; the validation grep also enumerates them as a regex.",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_9_mercy_rpg_substrate/prompts/06-name-an-artifact.md",
+      "why": "name-an-artifact prompt enumerates blocked legacy patterns in its CONSTRAINTS block so the receiving model rejects them.",
+      "owner": "production"
     }
   ]
 }
