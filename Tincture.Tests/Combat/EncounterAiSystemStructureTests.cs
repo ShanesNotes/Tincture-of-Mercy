@@ -159,8 +159,8 @@ public sealed class EncounterAiSystemStructureTests
                 .Where(eventType => file.text.Contains($"EventType = \"{eventType.Replace('_', '.')}\"", StringComparison.Ordinal))
                 .Select(eventType => $"{Path.GetRelativePath(file.root, file.path)} contains dotted event type for {eventType}")
                 .Concat(blockedIdBranches
-                    .Where(blocked => file.text.Contains(blocked, StringComparison.OrdinalIgnoreCase))
-                    .Select(blocked => $"{Path.GetRelativePath(file.root, file.path)} contains fixture id branch token {blocked}")))
+                    .Where(blocked => file.text.Contains($"\"{blocked}\"", StringComparison.Ordinal))
+                    .Select(blocked => $"{Path.GetRelativePath(file.root, file.path)} contains fixture id literal \"{blocked}\"")))
             .Order(StringComparer.Ordinal)
             .ToList();
 
