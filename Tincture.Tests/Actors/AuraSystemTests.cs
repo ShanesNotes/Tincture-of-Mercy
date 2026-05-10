@@ -93,8 +93,27 @@ public sealed class AuraSystemTests
         var simEvent = auraSystem.ApplyAura(actor, CalmAura(), 1, "care.tincture.administer", SimDomain.Care);
 
         Assert.Equal("aura.tincture_calm.steady", simEvent.Fields["modifier_id"]);
+        Assert.Equal("aura", simEvent.Fields["modifier_kind"]);
         Assert.False(simEvent.Fields.ContainsKey("modifier_ids"));
         Assert.Contains("care", simEvent.Tags);
+    }
+
+    [Fact]
+    public void AuraSystem_RejectsUnknownModifierKindFromEvents()
+    {
+        var actor = ActorState.Create("kalev");
+        var auraSystem = new AuraSystem();
+        var baseEvent = auraSystem.ApplyAura(actor, CalmAura(), 1, "care.tincture.administer", SimDomain.Care);
+        var fields = new SortedDictionary<string, string>(baseEvent.Fields, StringComparer.Ordinal)
+        {
+            ["modifier_kind"] = "future_kind"
+        };
+        var simEvent = baseEvent with
+        {
+            Fields = SimEvent.StableDictionary(fields)
+        };
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => actor.Apply(simEvent));
     }
 
     private static AuraDefinition CalmAura(

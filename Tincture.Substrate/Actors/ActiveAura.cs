@@ -75,7 +75,7 @@ public sealed record ActiveAura
             StackCount = int.Parse(Required(fields, "stack_count"), CultureInfo.InvariantCulture),
             MaxStacks = int.Parse(Required(fields, "max_stacks"), CultureInfo.InvariantCulture),
             ModifierId = Required(fields, "modifier_id"),
-            ModifierKind = Enum.Parse<OutcomeModifierKind>(Required(fields, "modifier_kind")),
+            ModifierKind = OutcomeModifierKindExtensions.FromId(Required(fields, "modifier_kind")),
             ModifierAmount = int.Parse(Required(fields, "modifier_amount"), CultureInfo.InvariantCulture),
             DerivedStatKey = derivedStatKey,
             DerivedStatDelta = fields.TryGetValue("derived_stat_delta", out var delta)

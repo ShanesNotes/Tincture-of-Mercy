@@ -12,6 +12,31 @@ public enum OutcomeModifierKind
     Scripted
 }
 
+public static class OutcomeModifierKindExtensions
+{
+    public static string ToId(this OutcomeModifierKind kind) => kind switch
+    {
+        OutcomeModifierKind.Generic => "generic",
+        OutcomeModifierKind.Aura => "aura",
+        OutcomeModifierKind.Receptivity => "receptivity",
+        OutcomeModifierKind.RegisterMatch => "register_match",
+        OutcomeModifierKind.Disparity => "disparity",
+        OutcomeModifierKind.Scripted => "scripted",
+        _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown outcome modifier kind.")
+    };
+
+    public static OutcomeModifierKind FromId(string id) => id switch
+    {
+        "generic" => OutcomeModifierKind.Generic,
+        "aura" => OutcomeModifierKind.Aura,
+        "receptivity" => OutcomeModifierKind.Receptivity,
+        "register_match" => OutcomeModifierKind.RegisterMatch,
+        "disparity" => OutcomeModifierKind.Disparity,
+        "scripted" => OutcomeModifierKind.Scripted,
+        _ => throw new ArgumentOutOfRangeException(nameof(id), id, "Unknown outcome modifier kind id.")
+    };
+}
+
 public sealed record OutcomeModifier
 {
     public string ModifierId { get; init; } = string.Empty;

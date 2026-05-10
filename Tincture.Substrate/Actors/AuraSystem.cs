@@ -89,7 +89,7 @@ public sealed class AuraSystem
             ["max_stacks"] = definition.MaxStacks.ToString(CultureInfo.InvariantCulture),
             ["modifier_amount"] = definition.ModifierAmount.ToString(CultureInfo.InvariantCulture),
             ["modifier_id"] = definition.ModifierId,
-            ["modifier_kind"] = definition.ModifierKind.ToString(),
+            ["modifier_kind"] = definition.ModifierKind.ToId(),
             ["stack_count"] = stackCount.ToString(CultureInfo.InvariantCulture),
             ["started_tick"] = startedTick.ToString(CultureInfo.InvariantCulture)
         };
