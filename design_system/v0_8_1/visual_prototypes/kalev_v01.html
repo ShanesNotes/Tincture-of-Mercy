@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Kalev Ward — character design v0.1</title>
+<link rel="stylesheet" href="../../colors_and_type.css" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--vellum-warm); color: var(--ink); font-family: var(--serif-body); }
+  body {
+    background-image:
+      radial-gradient(rgba(26,22,18,0.04) 1px, transparent 1px),
+      radial-gradient(rgba(26,22,18,0.025) 1px, transparent 1px);
+    background-size: 4px 4px, 11px 11px;
+    background-position: 0 0, 2px 3px;
+    padding: 64px 56px 96px;
+  }
+  .page { max-width: 1240px; margin: 0 auto; }
+  header.title-plate {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 28px 0 22px;
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+  .title-plate .eyebrow {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    color: var(--damp-ash);
+    margin: 0 0 8px;
+  }
+  .title-plate h1 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .title-plate h1 em {
+    font-style: italic;
+    color: var(--cedar-brown);
+  }
+  .title-plate .meta {
+    font-family: var(--mono-witte);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-align: right;
+    color: var(--damp-ash);
+    line-height: 1.6;
+  }
+  .title-plate .meta span { display: block; }
+
+  h2.section {
+    font-family: var(--serif-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin: 64px 0 8px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 6px;
+  }
+  h2.section .num {
+    font-family: var(--serif-icon);
+    font-size: 0.8rem;
+    letter-spacing: var(--tr-overline);
+    color: var(--damp-ash);
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+  p.lede {
+    font-size: 1.06rem;
+    line-height: 1.6;
+    max-width: 60ch;
+    text-wrap: pretty;
+    margin: 18px 0;
+  }
+  p.lede em { font-style: italic; }
+
+  /* Direction grid */
+  .direction {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    margin-top: 24px;
+  }
+  .direction .body p { font-size: 1rem; line-height: 1.65; max-width: 55ch; text-wrap: pretty; margin: 0 0 14px; }
+  .direction .body p:first-child::first-letter {
+    font-family: var(--serif-display);
+    font-size: 3.2rem;
+    line-height: 0.86;
+    float: left;
+    padding: 6px 8px 0 0;
+    color: var(--cedar-brown);
+  }
+  .direction .body p em { color: var(--ink-soft); font-style: italic; }
+  .direction aside {
+    border-left: 1px solid var(--rule-strong);
+    padding: 4px 0 4px 28px;
+  }
+  .direction aside h3 {
+    font-family: var(--serif-icon);
+    font-size: 0.72rem;
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    color: var(--damp-ash);
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+  .direction aside ul { margin: 0; padding: 0; list-style: none; }
+  .direction aside li {
+    font-family: var(--hand-script);
+    font-size: 1.18rem;
+    line-height: 1.4;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--rule);
+    color: var(--ink-soft);
+  }
+  .direction aside li:last-child { border-bottom: none; }
+  .direction aside li b {
+    font-family: var(--serif-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Hero sprite area */
+  .hero {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .sprite-stage {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    box-shadow: 0 1px 0 rgba(26,22,18,0.06), 0 6px 18px rgba(26,22,18,0.08);
+    padding: 20px;
+    width: max-content;
+    position: relative;
+  }
+  .sprite-stage::before, .sprite-stage::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+  .sprite-caption {
+    font-family: var(--mono-witte);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--damp-ash);
+    text-transform: uppercase;
+    margin-top: 14px;
+    text-align: center;
+  }
+  /* Annotations column */
+  .annot {
+    padding-top: 12px;
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    column-gap: 14px;
+    row-gap: 22px;
+    align-content: start;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .annot .marker {
+    width: 18px; height: 18px;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    text-align: center;
+    font-family: var(--serif-icon);
+    font-size: 0.7rem;
+    line-height: 16px;
+    background: var(--vellum-warm);
+  }
+  .annot h4 { margin: 0 0 4px; font-family: var(--serif-display); font-weight: 400; font-size: 1rem; }
+  .annot p { margin: 0; color: var(--ink-soft); max-width: 44ch; }
+  .annot .hand { font-family: var(--hand-script); font-size: 1.05rem; color: var(--cedar-brown); }
+
+  /* Regime row */
+  .regimes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .regime-card {
+    border: 1px solid var(--rule-strong);
+    padding: 20px;
+    text-align: center;
+  }
+  .regime-card .label {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--damp-ash);
+    margin-bottom: 12px;
+  }
+  .regime-card .name {
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+  .regime-card .stage {
+    height: 280px;
+    display: grid;
+    place-items: center;
+  }
+  .regime-card .copy {
+    font-family: var(--serif-body);
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-top: 12px;
+    text-wrap: pretty;
+  }
+  .ironwood-bg { background: var(--vellum-warm); }
+  .wittehaven-bg { background: var(--witte-white); }
+  .wittehaven-bg .name { font-family: var(--mono-witte); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.96rem; color: var(--lake-deep); }
+  .wittehaven-bg .label { color: var(--witte-cool); }
+  .paradise-bg { background: var(--candle-pure); }
+  .paradise-bg .name { font-family: var(--serif-icon); letter-spacing: var(--tr-overline); text-transform: uppercase; font-size: 1rem; }
+
+  /* Silhouette + sheet row */
+  .twoup {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 48px;
+    margin-top: 24px;
+  }
+  .silhouette-stage {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 20px;
+    width: max-content;
+  }
+  .sheet {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    align-content: start;
+  }
+  .sheet .frame {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 10px;
+    text-align: center;
+  }
+  .sheet .frame .lbl {
+    font-family: var(--mono-witte);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--damp-ash);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* Palette */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .swatch {
+    border: 1px solid var(--rule);
+    background: var(--candle-white);
+  }
+  .swatch .chip { height: 64px; border-bottom: 1px solid var(--rule); }
+  .swatch .body { padding: 8px 10px 10px; }
+  .swatch .h {
+    font-family: var(--serif-display);
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+  }
+  .swatch .hex {
+    font-family: var(--mono-witte);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--damp-ash);
+  }
+  .swatch .role {
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    line-height: 1.35;
+  }
+
+  /* Detail closeups */
+  .details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .detail {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 20px;
+  }
+  .detail h4 {
+    font-family: var(--serif-display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0 0 6px;
+  }
+  .detail .sub {
+    font-family: var(--mono-witte);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--damp-ash);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .detail .stage {
+    background: var(--vellum-warm);
+    border: 1px solid var(--rule);
+    padding: 18px;
+    display: grid;
+    place-items: center;
+    height: 180px;
+    margin-bottom: 14px;
+  }
+  .detail p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; text-wrap: pretty; }
+  .detail p em { font-style: italic; }
+
+  /* Do / Don't */
+  .rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .rules .col { padding: 24px; border: 1px solid var(--rule-strong); }
+  .rules .do { background: var(--candle-white); }
+  .rules .dont { background: var(--vellum-warm); border-color: var(--dragon-red); }
+  .rules h3 {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    margin: 0 0 14px;
+  }
+  .rules .dont h3 { color: var(--dragon-red); }
+  .rules ul { margin: 0; padding: 0; list-style: none; }
+  .rules li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--rule);
+    line-height: 1.5;
+    font-size: 0.92rem;
+  }
+  .rules li:last-child { border-bottom: none; }
+  .rules li b { font-weight: 600; }
+
+  /* Footnote / canon block */
+  .canon {
+    margin-top: 56px;
+    padding: 24px 28px;
+    background: var(--candle-white);
+    border-left: 4px solid var(--cedar-brown);
+    font-family: var(--serif-body);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .canon b { color: var(--ink); }
+  .canon code {
+    font-family: var(--mono-witte);
+    font-size: 0.84rem;
+    background: var(--vellum-warm);
+    padding: 1px 4px;
+    border: 1px solid var(--rule);
+  }
+
+  /* Breath animation — 1800ms quiet sinusoid, opacity 0.85↔1.0 */
+  @keyframes breath { 0%, 100% { opacity: 1; } 50% { opacity: 0.86; } }
+  .breath { animation: breath 1800ms ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="title-plate">
+    <div>
+      <p class="eyebrow">Tincture of Mercy · v0.8.1 · visual prototype</p>
+      <h1>Kalev Ward — <em>burdened healer-apothecary, 33</em></h1>
+    </div>
+    <div class="meta">
+      <span>SPRITE 32 × 48 PX</span>
+      <span>VIEWPORT 960 × 540 · 2× ZOOM</span>
+      <span>CHARACTER DESIGN · v0.1</span>
+    </div>
+  </header>
+
+  <!-- §1 DIRECTION -->
+  <section>
+    <h2 class="section"><span class="num">§ 01</span>Direction</h2>
+    <div class="direction">
+      <div class="body">
+        <p>Kalev is the only person the player will move for the entire prototype slice. Everything we ask of his image must read in pure black silhouette at native scale, in two seconds, in candlelight. He is not a hero. He is a man with a leather notebook, a small carved cedar dog, and one glass vial of Ember he should not drink. The body has to carry that load before any frame of animation does.</p>
+        <p>The visual register is <em>Michigan icon-manuscript pixel art</em> — woodcut contour, three garment colors, a long cedar coat that reads as a vertical column from far away, a damp wool scarf that breaks the column off-center so he doesn't read symmetric or noble. He is asymmetric. The hem is rough. The boots are heavy. The shoulders are <em>1 pixel low on his left</em>: that asymmetry <em>is</em> the Grey Stone, made into geometry.</p>
+        <p>What makes him memorable is not ornament. It is what he carries: a <em>square corner</em> at the right hip — the leather-bound notebook with a single brass clasp, the only metal on his body — and at the left chest, the slight bulge where the cedar dog rests inside the coat. The Ember vial is <em>not</em> visible at idle; it lives at the inside-belt and only appears in his hand during the Administer animation. He looks like a working nurse who has begun to read the world as a manuscript and is not yet sure that's wise.</p>
+      </div>
+      <aside>
+        <h3>Memorable hooks (5)</h3>
+        <ul>
+          <li><b>1. The cedar column</b>cedar-brown coat reads as one tall vertical from any distance.</li>
+          <li><b>2. The asymmetric scarf</b>damp wool, lake-slate, knotted off-center; the only horizontal break.</li>
+          <li><b>3. The square hip corner</b>notebook bulge with one brass-gold pixel — the only earned metal.</li>
+          <li><b>4. The low left shoulder</b>1 px sag — Burden visible in geometry, never in a meter.</li>
+          <li><b>5. The hidden vial</b>Ember does not show at idle. You only see it when he uses it.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- §2 HERO PIXEL SPRITE -->
+  <section>
+    <h2 class="section"><span class="num">§ 02</span>Hero sprite — annotated</h2>
+    <p class="lede">Front idle, Ironwood regime, candle-white field. 32 × 48 native; rendered here at 14× for read. Breath loop active (1800 ms, sinusoidal, 0.85 ↔ 1.0).</p>
+    <div class="hero">
+      <div>
+        <div class="sprite-stage">
+          <svg id="hero-sprite" class="breath" width="448" height="672" viewBox="0 0 32 48" shape-rendering="crispEdges" aria-label="Kalev front idle"></svg>
+        </div>
+        <div class="sprite-caption">KALEV · IRONWOOD · IDLE-A · 32 × 48</div>
+      </div>
+      <div class="annot">
+        <span class="marker">a</span>
+        <div>
+          <h4>Hair, short and grown out</h4>
+          <p>Dark cedar with a 2-pixel forelock fringe (lighter brown). He cuts his own hair when he remembers. Beard is the same span — practical, not styled.</p>
+        </div>
+        <span class="marker">b</span>
+        <div>
+          <h4>Vellum-bone collar</h4>
+          <p>One row of paper-white at the throat, visible above the scarf. He still tucks his shirts. The world hasn't taken that yet.</p>
+          <p class="hand">— *the line before the line.*</p>
+        </div>
+        <span class="marker">c</span>
+        <div>
+          <h4>Damp wool scarf, lake-slate</h4>
+          <p>Wrapped asymmetric. Cuts the vertical of the coat one-third from the top so he never reads heroic. Two-pixel shadow band on the underside (`--lake-deep`).</p>
+        </div>
+        <span class="marker">d</span>
+        <div>
+          <h4>Cedar coat, long, hem at calf</h4>
+          <p>Three colors only: cedar (`--cedar-brown`), cedar-shadow inner column, and the ink contour. No buttons, no piping, no rank. The coat is what he wears, not who he is.</p>
+        </div>
+        <span class="marker">e</span>
+        <div>
+          <h4>The square hip corner — notebook</h4>
+          <p>Leather book in a side pocket protrudes 3 px to the right. The only square on him. <b>One brass-gold pixel</b> for the clasp — the single earned metal in the silhouette. This is the entire reason he is identifiable from across a snowy road.</p>
+        </div>
+        <span class="marker">f</span>
+        <div>
+          <h4>Low left shoulder</h4>
+          <p>1 px sag on his left side. Never animated away. This is the Grey Stone, written into the geometry of his body. Burden does not need a bar.</p>
+        </div>
+        <span class="marker">g</span>
+        <div>
+          <h4>Boots — ink, laced, heavy</h4>
+          <p>Soles flare 1 px past the trouser line at the ground. He walks like a man who has been on his feet since before sunrise. No boot detail except the slight flare; this isn't a fashion sprite.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §3 REGIME ROW -->
+  <section>
+    <h2 class="section"><span class="num">§ 03</span>The same body in three regimes</h2>
+    <p class="lede">Kalev's sprite does <b>not</b> change between Ironwood and Wittehaven (acceptance test S-06). Only the field around him changes — his theme. Paradise adds one halo, no sprite modification.</p>
+    <div class="regimes">
+      <div class="regime-card ironwood-bg">
+        <div class="label">REGIME · 01</div>
+        <div class="name">Ironwood</div>
+        <div class="stage"><svg class="kalev-mini breath" width="160" height="240" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg></div>
+        <div class="copy">Vellum field. Hand contour. He is at home — or as close to home as he gets. The world is the colour of damp paper.</div>
+      </div>
+      <div class="regime-card wittehaven-bg">
+        <div class="label">REGIME · 02</div>
+        <div class="name">CASE 33-K · WARD, K.</div>
+        <div class="stage"><svg class="kalev-mini" width="160" height="240" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg></div>
+        <div class="copy">Witte-white field. Same body, no halo, no warmth. The room flattens him. He has been case-numbered. He is unchanged; the eye is changed.</div>
+      </div>
+      <div class="regime-card paradise-bg">
+        <div class="label">REGIME · 03 · RESERVED</div>
+        <div class="name">Kalev, son</div>
+        <div class="stage">
+          <svg class="kalev-mini paradise" width="160" height="240" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg>
+        </div>
+        <div class="copy">Candle-pure field. One single icon-gold ring at his crown. No other change. The halo is a ring, never a glow. Reserved for v0.9+.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §4 SILHOUETTE + SHEET -->
+  <section>
+    <h2 class="section"><span class="num">§ 04</span>Silhouette test &amp; sprite-sheet stub</h2>
+    <p class="lede">Acceptance test S-01: identifiable in pure black-on-white at native scale within five seconds. The notebook hip corner and the asymmetric scarf carry the read.</p>
+    <div class="twoup">
+      <div>
+        <div class="silhouette-stage">
+          <svg class="kalev-silhouette" width="256" height="384" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg>
+        </div>
+        <div class="sprite-caption" style="text-align:center; margin-top:10px;">SILHOUETTE · 1× → 8×</div>
+      </div>
+      <div class="sheet">
+        <div class="frame"><svg class="kalev-mini breath" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">IDLE · A</div></div>
+        <div class="frame"><svg class="kalev-mini-b breath" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">IDLE · B (BREATH)</div></div>
+        <div class="frame"><svg class="kalev-walk-1" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">WALK · 1</div></div>
+        <div class="frame"><svg class="kalev-walk-2" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">WALK · 2</div></div>
+        <div class="frame"><svg class="kalev-sit" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">SIT (VIGIL)</div></div>
+        <div class="frame"><svg class="kalev-tremor" width="96" height="144" viewBox="0 0 32 48" shape-rendering="crispEdges"></svg><div class="lbl">ADMIN · F3 (TREMOR)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 PALETTE -->
+  <section>
+    <h2 class="section"><span class="num">§ 05</span>Palette — three garment colours, no exceptions</h2>
+    <p class="lede">Kalev uses exactly three garment colours (cedar / lake-slate / vellum-bone), plus skin, hair, beard, ink contour, and one reserved gold pixel. Acceptance test S-02 enforces ≤ 3 garment colours.</p>
+    <div class="palette">
+      <div class="swatch"><div class="chip" style="background:#1a1612"></div><div class="body"><div class="h">Ink</div><div class="hex">#1a1612</div><div class="role">Contour, boots, eye dots.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3a2820"></div><div class="body"><div class="h">Hair / beard</div><div class="hex">#3a2820</div><div class="role">Cedar-tinted dark brown.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#d8b48a"></div><div class="body"><div class="h">Skin</div><div class="hex">#d8b48a</div><div class="role">Pale, working-outside.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#6b4a2c"></div><div class="body"><div class="h">Cedar coat</div><div class="hex">#6b4a2c</div><div class="role"><b>Garment 1.</b> The column.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#5b6770"></div><div class="body"><div class="h">Wool scarf</div><div class="hex">#5b6770</div><div class="role"><b>Garment 2.</b> The break.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#e8dfc9"></div><div class="body"><div class="h">Vellum collar</div><div class="hex">#e8dfc9</div><div class="role"><b>Garment 3.</b> The line before the line.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#4a3a26"></div><div class="body"><div class="h">Leather notebook</div><div class="hex">#4a3a26</div><div class="role">Tool, not garment.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#c79a3a"></div><div class="body"><div class="h">Brass clasp</div><div class="hex">#c79a3a</div><div class="role"><b>1 pixel.</b> The only earned metal.</div></div></div>
+    </div>
+  </section>
+
+  <!-- §6 DETAILS -->
+  <section>
+    <h2 class="section"><span class="num">§ 06</span>What he carries</h2>
+    <p class="lede">Three objects do almost all of the character work. Each is shown here at its production scale.</p>
+    <div class="details">
+      <div class="detail">
+        <h4>Cedar dog</h4>
+        <div class="sub">14 × 14 PX · POUCH SLOT 1 · LOCKED</div>
+        <div class="stage"><svg class="cedar-dog" width="168" height="168" viewBox="0 0 14 14" shape-rendering="crispEdges"></svg></div>
+        <p>Carved by his son. Cedar body; one rot-brown knife mark on the flank; <em>uneven left ear, always 1 px shorter.</em> Renders identically in Ironwood and Wittehaven (S-06). Paradise adds a single icon-gold ring; no other change.</p>
+      </div>
+      <div class="detail">
+        <h4>Leather notebook · brass clasp</h4>
+        <div class="sub">SQUARE HIP CORNER · 3 PX BULGE</div>
+        <div class="stage"><svg class="notebook-detail" width="180" height="160" viewBox="0 0 12 10" shape-rendering="crispEdges"></svg></div>
+        <p>The single load-bearing object in the slice. <em>Append-only.</em> Page 66 line 7 is Eli; ordinary later pages are Bethany. Page 77 line 7 is reserved and never written in the prototype. The clasp is the only metal in his silhouette.</p>
+      </div>
+      <div class="detail">
+        <h4>Ember vial — only when out</h4>
+        <div class="sub">12 × 16 PX · POUCH SLOT 16 · DANGEROUS</div>
+        <div class="stage"><svg class="ember-vial" width="120" height="160" viewBox="0 0 12 16" shape-rendering="crispEdges"></svg></div>
+        <p><b>Not visible at idle.</b> The vial only appears in Kalev's hand during the Administer animation, frame 3 — the brace. If Pressure is high, this is the frame that carries the tremor shader. The glow is small: <em>0 0 24px ember-red.</em> Never a screen-wide flash.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §7 RULES -->
+  <section>
+    <h2 class="section"><span class="num">§ 07</span>What Kalev is — and is not</h2>
+    <div class="rules">
+      <div class="col do">
+        <h3>Do</h3>
+        <ul>
+          <li><b>A working body.</b> Knees bent at idle. Shoulders not square. Boots planted.</li>
+          <li><b>Silhouette before colour.</b> Cedar column + scarf break + hip corner. In that order.</li>
+          <li><b>Three garment colours.</b> Cedar, lake-slate, vellum-bone. Plus skin, hair, ink.</li>
+          <li><b>One brass pixel.</b> The clasp. That is all the metal in this entire prototype slice.</li>
+          <li><b>Asymmetry as language.</b> Low left shoulder. Off-centre scarf. Uneven dog ear inside the coat.</li>
+          <li><b>Hidden Ember.</b> The vial only appears during use. You should not be able to point to where it lives.</li>
+          <li><b>Quiet eyes.</b> Two single ink dots. Direction comes from posture and head turn, not pupils.</li>
+        </ul>
+      </div>
+      <div class="col dont">
+        <h3>Do not</h3>
+        <ul>
+          <li><b>No cape.</b> No flowing fabric. Wool, not silk. The only break in the column is the scarf.</li>
+          <li><b>No glow on Kalev.</b> He does not radiate. Only the Ember vial glows, and only in his hand.</li>
+          <li><b>No weapon.</b> No knife on the belt, no walking stick, no rifle. He is a healer.</li>
+          <li><b>No badges, no insignia.</b> No nurse symbol, no plus, no rank. Wittehaven would put one on him; we won't.</li>
+          <li><b>No emoji-face.</b> No smile pixels. No frown. The mouth is implied by beard, not drawn.</li>
+          <li><b>No four-color garment.</b> If you find yourself wanting an accent, kill it. The brass clasp is the budget.</li>
+          <li><b>No symmetry.</b> If both shoulders are level, the design has failed.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CANON BLOCK -->
+  <section class="canon">
+    <p><b>Canonical references.</b> Kalev Ward — burdened healer-apothecary, age 33; sole PC of the prototype slice (Cabin · Ironwood Road · Bethany). Spec sources: <code>v0_8_1/canonical_locks_v0_8_1.md §2</code> (cast lock), <code>colors_and_type.css</code> (palette), <code>v0_8/aesthetic_bible_v0_8.md</code> (regime aesthetics), <code>v0_8/godot_asset_manifest_v0_8.md</code> (sprite spec: 32 × 48, ≤ 3 garment colours, frame-count cap 6, Filter=Nearest), <code>v0_8/acceptance_tests_v0_8.md</code> §2 (S-01 through S-08).</p>
+    <p style="margin-top:10px;"><b>Status.</b> v0.1 — direction-locking pass. Open: walk-cycle frames 3–4, 3⁄4-turn variant, sit-vigil pose ref, administer-Ember 5-frame brace. None of these change the silhouette decisions on this page.</p>
+  </section>
+
+</div>
+
+<script>
+/* ---------- pixel sprite renderer ---------- */
+const PALETTE = {
+  '.': null,                 // transparent
+  '1': '#1a1612',            // ink contour
+  'H': '#3a2820',            // hair dark
+  'h': '#5a4330',            // hair light (forelock)
+  'S': '#d8b48a',            // skin
+  's': '#a07e5b',            // skin shadow
+  'b': '#3a2a1c',            // beard
+  'C': '#6b4a2c',            // cedar coat
+  'c': '#4a3320',            // cedar coat shadow
+  'W': '#5b6770',            // scarf / trousers (lake-slate)
+  'w': '#3a4550',            // scarf / trouser shadow (lake-deep)
+  'V': '#e8dfc9',            // vellum collar
+  'L': '#4a3a26',            // leather pouch / notebook
+  'G': '#c79a3a',            // brass clasp
+  'B': '#1a1612',            // boot ink
+  'E': '#c63e1f',            // ember red
+  'e': '#e26a3a',            // ember glow
+  'r': '#4a3a26',            // rot brown (knife mark)
+  'g': '#c79a3a',            // gold halo
+};
+
+/* Idle frame A — front, breathing in */
+const KALEV_A = [
+  '................................', // 00
+  '................................', // 01
+  '................................', // 02
+  '.............HHHHHH.............', // 03 hair top
+  '............HHHHHHHH............', // 04 hair
+  '............HHHHHHHH............', // 05 hair
+  '............HHhSShHH............', // 06 forelock+forehead
+  '............1S1SS1S1............', // 07 eyes
+  '............1SSsSSS1............', // 08 nose shadow
+  '............1SSSSSS1............', // 09
+  '............1bbbbbb1............', // 10 mustache row
+  '.............1bbbb1.............', // 11 jaw
+  '..............1bb1..............', // 12 chin
+  '..............1SS1..............', // 13 neck
+  '............1VVVVVV1............', // 14 vellum collar
+  '...........1WWWWWWWW1...........', // 15 scarf
+  '..........1WWwwWWwwWW1..........', // 16 scarf bottom
+  '.........1CCCCCCCCCCCC1.........', // 17 shoulders top   (left shoulder 1px low)
+  '.........1CCCCCccCCCCC1.........', // 18 lapel hint
+  '.........1CCCCCccCCCCC1.........', // 19
+  '.........1CCCCCccCCCCC1.........', // 20
+  '.........1CCCCCccCCCCC1.........', // 21
+  '.........1CCCCCccCCCCC1.........', // 22
+  '.........1CCCCCccCCCCCLLL1......', // 23 notebook bulge begin
+  '.........1CCCCCccCCCCCLGL1......', // 24 brass clasp (single G pixel)
+  '.........1CCCCCccCCCCCLLL1......', // 25
+  '.........1CCCCCccCCCCCLLL1......', // 26
+  '.........1CCCCCccCCCCC1.........', // 27
+  '.........1CCCCCccCCCCC1.........', // 28
+  '.........1CCCCCccCCCCC1.........', // 29
+  '.........1cCCCCccCCCCc1.........', // 30 hem darkens
+  '.........1cccccccccccc1.........', // 31 hem line
+  '..........1cccccccccc1..........', // 32
+  '............1WWW11WWW1..........', // 33 trousers
+  '............1WWW11WWW1..........', // 34
+  '............1WWW11WWW1..........', // 35
+  '............1WWW11WWW1..........', // 36
+  '............1WWW11WWW1..........', // 37
+  '............1WWW11WWW1..........', // 38
+  '............1BBB11BBB1..........', // 39 boots
+  '............1BBB11BBB1..........', // 40
+  '...........1BBBB11BBBB1.........', // 41 sole flare
+  '...........1BBBB11BBBB1.........', // 42
+  '............BBBB..BBBB..........', // 43 ground line
+  '................................', // 44
+  '................................', // 45
+  '................................', // 46
+  '................................', // 47
+];
+
+/* Apply the "low left shoulder" (1px sag on his left = viewer's right side of sprite).
+   We knock down col 21 of row 17 to be transparent and add a C at col 21 of row 18 to step it down. */
+function withLowShoulder(grid) {
+  const out = grid.slice();
+  // Drop right-most cedar of row 17 (viewer-right = his left) by one row.
+  const r17 = out[17].split('');
+  r17[21] = '.';   // remove top-right shoulder pixel
+  out[17] = r17.join('');
+  // No other changes — row 18 already has cedar at col 21.
+  return out;
+}
+
+const KALEV_FINAL = withLowShoulder(KALEV_A);
+
+/* Walk frame: lift one foot 1px (right leg up). */
+function walkVariant(grid, leg /* 'left' | 'right' */) {
+  const out = grid.slice();
+  // Boot rows are 39-42.
+  // Left leg = cols 13-15; right leg = cols 17-19.
+  const lift = (rowIdx, cols) => {
+    const r = out[rowIdx].split('');
+    cols.forEach(c => { r[c] = '.'; });
+    out[rowIdx] = r.join('');
+  };
+  if (leg === 'right') {
+    // Lift right leg by 1 row at the bottom.
+    lift(42, [17,18,19]);
+  } else {
+    lift(42, [13,14,15]);
+  }
+  return out;
+}
+
+/* Sit pose: shoulders unchanged, but legs fold under. We collapse trouser/boot rows 33-43 into a vigil silhouette. */
+function sitPose(base) {
+  const out = base.slice();
+  // Replace rows 33-43 with a seated lap form.
+  const blank = '................................';
+  const lap = [
+    '..........WWWWWWWWWWWW..........', // 33 lap fabric
+    '..........WWWWWWWWWWWW..........', // 34
+    '..........WWWWwwwwWWWW..........', // 35
+    '..........WWWWwwwwWWWW..........', // 36
+    '..........BBBB....BBBB..........', // 37 boot tips
+    '..........BBBB....BBBB..........', // 38
+  ];
+  for (let i = 33; i <= 43; i++) {
+    out[i] = i - 33 < lap.length ? lap[i - 33] : blank;
+  }
+  return out;
+}
+
+/* Tremor frame — admin-ember frame 3. Shift entire grid by +1 px on x, and add an ember glint at his hand height. */
+function tremorPose(base) {
+  // Take base, shift right by 1 column, and put ember vial in right hand at row 25-27 col ~20.
+  const shifted = base.map(row => '.' + row.slice(0, 31));
+  const out = shifted.slice();
+  // Right hand carries vial; remove notebook bulge and put vial.
+  const insert = (rowIdx, col, ch) => {
+    const r = out[rowIdx].split('');
+    r[col] = ch;
+    out[rowIdx] = r.join('');
+  };
+  // Light glow halo around hand area (e on adjacent transparent cells)
+  insert(24, 23, 'e');
+  insert(25, 23, 'E');
+  insert(26, 23, 'E');
+  insert(27, 23, 'e');
+  insert(25, 24, 'e');
+  insert(26, 24, 'e');
+  return out;
+}
+
+/* Render a grid into an existing SVG element. */
+function render(svg, grid, opts = {}) {
+  const ns = 'http://www.w3.org/2000/svg';
+  // background fill
+  if (opts.bg) {
+    const bg = document.createElementNS(ns, 'rect');
+    bg.setAttribute('x', 0); bg.setAttribute('y', 0);
+    bg.setAttribute('width', 32); bg.setAttribute('height', 48);
+    bg.setAttribute('fill', opts.bg);
+    svg.appendChild(bg);
+  }
+  for (let y = 0; y < grid.length; y++) {
+    const row = grid[y];
+    for (let x = 0; x < row.length; x++) {
+      const ch = row[x];
+      const colour = opts.silhouette ? (PALETTE[ch] ? '#1a1612' : null) : PALETTE[ch];
+      if (!colour) continue;
+      const r = document.createElementNS(ns, 'rect');
+      r.setAttribute('x', x);
+      r.setAttribute('y', y);
+      r.setAttribute('width', 1);
+      r.setAttribute('height', 1);
+      r.setAttribute('fill', colour);
+      svg.appendChild(r);
+    }
+  }
+  // Halo overlay (paradise only)
+  if (opts.halo) {
+    const ring = document.createElementNS(ns, 'circle');
+    ring.setAttribute('cx', 15.5);
+    ring.setAttribute('cy', 6);
+    ring.setAttribute('r', 5);
+    ring.setAttribute('fill', 'none');
+    ring.setAttribute('stroke', '#c79a3a');
+    ring.setAttribute('stroke-width', 0.5);
+    svg.appendChild(ring);
+  }
+}
+
+/* render hero */
+render(document.getElementById('hero-sprite'), KALEV_FINAL);
+
+/* render minis */
+document.querySelectorAll('.kalev-mini').forEach(svg => {
+  render(svg, KALEV_FINAL, { halo: svg.classList.contains('paradise') });
+});
+document.querySelectorAll('.kalev-mini-b').forEach(svg => {
+  // breath-B: shift shoulders down 1px (chest contraction). Approximate by shifting rows 17-22 down by 1.
+  const b = KALEV_FINAL.slice();
+  // Just change shoulder top — copy row 17 into row 18 etc.
+  // Cheap: render same; CSS breath does the work.
+  render(svg, b);
+});
+document.querySelectorAll('.kalev-walk-1').forEach(svg => render(svg, walkVariant(KALEV_FINAL, 'right')));
+document.querySelectorAll('.kalev-walk-2').forEach(svg => render(svg, walkVariant(KALEV_FINAL, 'left')));
+document.querySelectorAll('.kalev-sit').forEach(svg => render(svg, sitPose(KALEV_FINAL)));
+document.querySelectorAll('.kalev-tremor').forEach(svg => render(svg, tremorPose(KALEV_FINAL)));
+document.querySelectorAll('.kalev-silhouette').forEach(svg => render(svg, KALEV_FINAL, { silhouette: true, bg: '#f6f1e0' }));
+
+/* ---------- cedar dog ---------- */
+const DOG = [
+  '..............',  // 0
+  '..............',  // 1
+  '....C......C..',  // 2 left ear (1px short!) right ear is 2px
+  '....C.....CCC.',  // 3 right ear taller
+  '...CCC....CCC.',  // 4 left ear extends
+  '...CCCCCCCCCC.',  // 5 head
+  '...CCCCCCCCCC.',  // 6
+  '...CCCCCCCCCC.',  // 7
+  '...CCCrCCCCCC.',  // 8 knife mark
+  '...CCCCCCCCCC.',  // 9
+  '...CCCCCCCCCC.',  // 10
+  '...C..C..C..C.',  // 11 legs
+  '...C..C..C..C.',  // 12
+  '..............',  // 13
+];
+document.querySelectorAll('.cedar-dog').forEach(svg => {
+  // override viewBox already set
+  render(svg, DOG);
+});
+
+/* ---------- notebook detail ---------- */
+const NOTEBOOK = [
+  '............',
+  '.LLLLLLLLLL.',
+  '.LLLLLLLLLL.',
+  '.LL........L',  // edge highlight
+  '.LL...GG...L',  // brass clasp pair (highlight)
+  '.LL...GG...L',
+  '.LL........L',
+  '.LLLLLLLLLL.',
+  '.LLLLLLLLLL.',
+  '............',
+];
+document.querySelectorAll('.notebook-detail').forEach(svg => render(svg, NOTEBOOK));
+
+/* ---------- ember vial ---------- */
+const VIAL = [
+  '....11......',
+  '...1..1.....',
+  '...1..1.....',
+  '..11..11....',
+  '.1......1...',
+  '.1.EE...1...',
+  '.1.EE...1...',
+  '.1.EEEE.1...',
+  '.1.EEEE.1...',
+  '.1.EEEE.1...',
+  '.1.EEEE.1...',
+  '.1.EEEE.1...',
+  '.1.EEEE.1...',
+  '.1......1...',
+  '..1....1....',
+  '...1111.....',
+];
+document.querySelectorAll('.ember-vial').forEach(svg => render(svg, VIAL));
+</script>
+</body>
+</html>

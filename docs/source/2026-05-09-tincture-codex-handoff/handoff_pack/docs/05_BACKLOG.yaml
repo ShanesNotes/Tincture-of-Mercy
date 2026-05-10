@@ -1,0 +1,88 @@
+epics:
+  - id: E0
+    name: Repo discipline
+    tasks:
+      - id: E0-T1
+        name: Add docs and source artifacts
+        status: todo
+      - id: E0-T2
+        name: Add test harness
+        status: todo
+
+  - id: E1
+    name: Pure substrate
+    tasks:
+      - id: E1-T1
+        name: SimClock fixed scheduler
+        status: todo
+      - id: E1-T2
+        name: SimEvent ring buffer
+        status: todo
+      - id: E1-T3
+        name: OutcomeResolver single-roll table
+        status: todo
+      - id: E1-T4
+        name: ScriptedRoll override with Scripted flag
+        status: todo
+      - id: E1-T5
+        name: AuraSystem
+        status: todo
+      - id: E1-T6
+        name: ActorState, StatBlock, DerivedStats
+        status: todo
+      - id: E1-T7
+        name: DisparityService
+        status: todo
+      - id: E1-T8
+        name: AttentionThreatTable
+        status: todo
+      - id: E1-T9
+        name: AggroCallFleeRadius
+        status: todo
+      - id: E1-T10
+        name: GCD, work/cast/channel, swing/rite pulse timers
+        status: todo
+      - id: E1-T11
+        name: Resource profiles for Health, Spirit, Steady
+        status: todo
+      - id: E1-T12
+        name: Vigil/FSR gate
+        status: todo
+
+  - id: E2
+    name: Data and presentation
+    tasks:
+      - id: E2-T1
+        name: AbilityDef / VerbDef rows
+        status: todo
+      - id: E2-T2
+        name: ItemDef and quality tiers
+        status: todo
+      - id: E2-T3
+        name: Care, combat, craft presenters
+        status: todo
+      - id: E2-T4
+        name: NotebookPresenter from event stream
+        status: todo
+
+  - id: E3
+    name: Opening slice graybox
+    tasks:
+      - id: E3-T1
+        name: Act 1 cabin/well/patient attention
+        status: todo
+      - id: E3-T2
+        name: Act 2 cooking/foraging
+        status: todo
+      - id: E3-T3
+        name: Act 3 tincture craft
+        status: todo
+      - id: E3-T4
+        name: Act 4 scripted mother Glance/death
+        status: todo
+      - id: E3-T5
+        name: Act 5 wolf threat/boy escape/self-dose
+        status: todo
+      - id: E3-T6
+        name: Architecture drift review
+        status: todo

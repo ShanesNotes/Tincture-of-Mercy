@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Display</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg1); font-family: var(--serif-body); }
+  .card { padding: 28px 32px; }
+  .row { display: grid; grid-template-columns: 92px 1fr; gap: 18px; align-items: baseline; padding: 6px 0; }
+  .label { font-family: var(--mono-witte); font-size: 10px; letter-spacing: 0.18em; color: var(--fg3); text-transform: uppercase; padding-top: 12px; }
+  .specimen { line-height: 1.05; color: var(--ink); }
+  .specimen.display { font-family: var(--serif-display); font-size: 56px; letter-spacing: -0.012em; }
+  .specimen.h1 { font-family: var(--serif-display); font-size: 36px; letter-spacing: -0.012em; }
+  .specimen.icon { font-family: var(--serif-icon); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--icon-gold); padding: 4px 0; }
+  .meta { font-family: var(--mono-witte); font-size: 10px; color: var(--fg3); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="row">
+    <div class="label">Display</div>
+    <div>
+      <div class="specimen display">Tincture of Mercy</div>
+      <div class="meta">IM Fell English · 56/60 · −0.012em</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">H1</div>
+    <div>
+      <div class="specimen h1">The Garments of Skin</div>
+      <div class="meta">IM Fell English · 36/40 · −0.012em</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Icon</div>
+    <div>
+      <div class="specimen icon">IC̅ XC̅ &nbsp;·&nbsp; NIKA</div>
+      <div class="meta">Cinzel · 22/24 · 0.18em uppercase</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

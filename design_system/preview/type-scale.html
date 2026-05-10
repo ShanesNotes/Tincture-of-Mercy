@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg1); font-family: var(--serif-body); }
+  .card { padding: 18px 32px; }
+  .row { display: grid; grid-template-columns: 86px 64px 1fr; gap: 16px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid var(--rule-soft); }
+  .row:last-child { border-bottom: 0; }
+  .name { font-family: var(--mono-witte); font-size: 10px; letter-spacing: 0.16em; color: var(--fg3); text-transform: uppercase; }
+  .px { font-family: var(--mono-witte); font-size: 10px; color: var(--fg3); letter-spacing: 0.06em; text-align: right; }
+  .specimen { color: var(--ink); line-height: 1.15; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="row"><div class="name">Display</div><div class="px">56 / 60</div><div class="specimen" style="font-family: var(--serif-display); font-size: 48px;">Have mercy.</div></div>
+  <div class="row"><div class="name">H1</div><div class="px">36 / 40</div><div class="specimen" style="font-family: var(--serif-display); font-size: 32px;">The Cabin</div></div>
+  <div class="row"><div class="name">H2</div><div class="px">30 / 36</div><div class="specimen" style="font-family: var(--serif-body); font-size: 26px; font-weight: 600;">Bethany Triage</div></div>
+  <div class="row"><div class="name">H3</div><div class="px">22 / 28</div><div class="specimen" style="font-family: var(--serif-body); font-size: 20px; font-weight: 600;">Pulseleaf Draught</div></div>
+  <div class="row"><div class="name">Body</div><div class="px">16 / 25</div><div class="specimen" style="font-family: var(--serif-body); font-size: 16px; line-height: 1.55; color: var(--ink-soft);">She is fading. Sit with her, or write the name.</div></div>
+  <div class="row"><div class="name">Small</div><div class="px">13 / 19</div><div class="specimen" style="font-family: var(--serif-body); font-size: 13px; color: var(--damp-ash);">Time costs urgency. Attention costs time.</div></div>
+  <div class="row"><div class="name">Overline</div><div class="px">11 / 16</div><div class="specimen" style="font-family: var(--serif-icon); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg2);">Page 66 · Line 7</div></div>
+</div>
+</body>
+</html>

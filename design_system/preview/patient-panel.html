@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Patient panel</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+html,body{margin:0;padding:0;background:var(--bg);font-family:var(--serif-body)}
+.panel{margin:16px 24px;background:var(--bg-elevated);border:1px solid var(--rule-strong);border-radius:4px;box-shadow:var(--shadow-card);padding:18px 22px;max-width:560px}
+.head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:12px}
+.name{font-family:var(--serif-display);font-size:24px;color:var(--ink);line-height:1}
+.case{font-family:var(--mono-witte);font-size:9px;letter-spacing:.18em;color:var(--fg3);text-transform:uppercase}
+.symptoms{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;font-family:var(--serif-body);font-size:14px;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+.symptoms b{font-style:normal;font-family:var(--serif-icon);font-size:9px;letter-spacing:.18em;color:var(--fg3);text-transform:uppercase;font-weight:500;display:block;margin-bottom:1px}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.act{font-family:var(--serif-body);font-size:13px;padding:6px 12px;background:transparent;color:var(--ink);border:1px solid var(--rule-strong);border-radius:3px;cursor:pointer}
+.act.primary{background:var(--ink);color:var(--candle-pure)}
+</style></head><body><div class="panel">
+<div class="head"><div class="name">Miriam Toll</div><div class="case">Bethany · bedside</div></div>
+<div class="symptoms">
+  <div><b>Breath</b>thin</div><div><b>Hands</b>cold</div>
+  <div><b>Fear</b>quiet</div><div><b>Urgency</b>fading</div>
+</div>
+<div class="acts">
+  <button class="act primary">Sit</button>
+  <button class="act">Observe</button>
+  <button class="act">Warm</button>
+  <button class="act">Administer…</button>
+  <button class="act">Write name</button>
+</div>
+</div></body></html>

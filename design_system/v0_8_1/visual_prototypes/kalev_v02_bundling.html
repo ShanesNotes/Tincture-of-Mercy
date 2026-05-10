@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Kalev Ward — character design v0.2 (high-fidelity lock)</title>
+<link rel="stylesheet" href="../../colors_and_type.css" />
+<template id="__bundler_thumbnail" data-bg-color="#e7dbc0">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="1200" height="800" fill="#e7dbc0"/>
+    <g transform="translate(600 400)">
+      <!-- cedar column silhouette -->
+      <rect x="-90" y="-220" width="180" height="440" fill="#6b4a2c"/>
+      <!-- head -->
+      <ellipse cx="0" cy="-260" rx="70" ry="78" fill="#3a2820"/>
+      <!-- scarf break (lake-slate) -->
+      <rect x="-110" y="-180" width="220" height="44" fill="#5b6770"/>
+      <!-- notebook hip corner -->
+      <rect x="78" y="20" width="48" height="64" fill="#4a3a26"/>
+      <!-- single brass clasp -->
+      <rect x="98" y="46" width="10" height="10" fill="#c79a3a"/>
+      <!-- ink contour suggestion -->
+      <rect x="-92" y="-222" width="4" height="444" fill="#1a1612"/>
+      <rect x="88" y="-222" width="4" height="444" fill="#1a1612"/>
+    </g>
+    <text x="600" y="700" font-family="Georgia, serif" font-size="36" fill="#1a1612" text-anchor="middle" font-style="italic">Kalev Ward</text>
+  </svg>
+</template>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #e7dbc0; color: var(--ink); font-family: var(--serif-body); }
+  body {
+    background-image:
+      radial-gradient(rgba(26,22,18,0.04) 1px, transparent 1px),
+      radial-gradient(rgba(26,22,18,0.025) 1px, transparent 1px);
+    background-size: 4px 4px, 11px 11px;
+    background-position: 0 0, 2px 3px;
+    padding: 64px 56px 96px;
+  }
+  .page { max-width: 1280px; margin: 0 auto; }
+
+  /* Title plate */
+  header.title-plate {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 28px 0 22px;
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+  .eyebrow {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    color: var(--damp-ash);
+    margin: 0 0 8px;
+  }
+  .title-plate h1 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+  .title-plate h1 em { font-style: italic; color: #614A34; }
+  .title-plate .meta {
+    font-family: var(--mono-witte);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-align: right;
+    color: var(--damp-ash);
+    line-height: 1.6;
+  }
+  .title-plate .meta span { display: block; }
+
+  /* Deprecation banner */
+  .deprecation {
+    background: var(--candle-white);
+    border-left: 4px solid var(--dragon-red);
+    padding: 18px 22px;
+    margin-bottom: 48px;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .deprecation b { color: var(--dragon-red); }
+  .deprecation code {
+    font-family: var(--mono-witte);
+    font-size: 0.84rem;
+    background: var(--vellum-warm);
+    padding: 1px 5px;
+    border: 1px solid var(--rule);
+  }
+
+  /* Section headings */
+  h2.section {
+    font-family: var(--serif-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin: 64px 0 8px;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 6px;
+  }
+  h2.section .num {
+    font-family: var(--serif-icon);
+    font-size: 0.8rem;
+    letter-spacing: var(--tr-overline);
+    color: var(--damp-ash);
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+  p.lede {
+    font-size: 1.06rem;
+    line-height: 1.6;
+    max-width: 64ch;
+    text-wrap: pretty;
+    margin: 18px 0;
+  }
+  p.lede em { font-style: italic; }
+
+  /* Hero canonical concept */
+  .canon-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+    margin-top: 28px;
+  }
+  .frame-stage {
+    background: #e7dbc0;
+    border: 1px solid var(--rule-strong);
+    box-shadow: 0 1px 0 rgba(26,22,18,0.06), 0 6px 18px rgba(26,22,18,0.08);
+    padding: 12px;
+    position: relative;
+  }
+  .frame-stage::before, .frame-stage::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+  .frame-stage img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  .frame-cap {
+    font-family: var(--mono-witte);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--damp-ash);
+    text-transform: uppercase;
+    margin-top: 14px;
+    text-align: center;
+  }
+  .canon-hero .body p {
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 56ch;
+    text-wrap: pretty;
+    margin: 0 0 14px;
+  }
+  .canon-hero .body p:first-child::first-letter {
+    font-family: var(--serif-display);
+    font-size: 3.2rem;
+    line-height: 0.86;
+    float: left;
+    padding: 6px 8px 0 0;
+    color: #614A34;
+  }
+  .canon-hero .body em { font-style: italic; color: var(--ink-soft); }
+  .canon-hero .body .pullquote {
+    font-family: var(--hand-script);
+    font-size: 1.4rem;
+    color: #614A34;
+    border-left: 2px solid var(--rule-strong);
+    padding: 4px 0 4px 18px;
+    margin: 18px 0;
+    line-height: 1.35;
+  }
+
+  /* Locks two-up */
+  .twoup {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    margin-top: 24px;
+    align-items: start;
+  }
+  .turnaround-frame { padding: 14px; }
+  .silhouette-locks {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 24px 28px;
+  }
+  .silhouette-locks h3 {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    margin: 0 0 14px;
+  }
+  .silhouette-locks ol {
+    margin: 0; padding: 0;
+    counter-reset: lock;
+    list-style: none;
+  }
+  .silhouette-locks li {
+    counter-increment: lock;
+    padding: 12px 0 12px 36px;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 0.96rem;
+    line-height: 1.45;
+    position: relative;
+  }
+  .silhouette-locks li::before {
+    content: counter(lock, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 12px;
+    font-family: var(--mono-witte);
+    font-size: 0.72rem;
+    color: var(--damp-ash);
+    letter-spacing: 0.08em;
+  }
+  .silhouette-locks li:last-child { border-bottom: none; }
+  .silhouette-locks li b { font-family: var(--serif-display); font-weight: 400; font-size: 1.04rem; display: block; margin-bottom: 2px; }
+
+  /* Accessory locks table */
+  .accessory-locks {
+    margin-top: 28px;
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    font-size: 0.92rem;
+  }
+  .accessory-locks th, .accessory-locks td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .accessory-locks th {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--damp-ash);
+    background: var(--vellum-warm);
+    border-bottom: 2px solid var(--rule-strong);
+  }
+  .accessory-locks tr:last-child td { border-bottom: none; }
+  .accessory-locks td.field {
+    font-family: var(--serif-display);
+    font-size: 1.04rem;
+    width: 22%;
+  }
+  .accessory-locks td.place { width: 26%; color: var(--ink-soft); }
+
+  /* Palette */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .swatch {
+    border: 1px solid var(--rule);
+    background: var(--candle-white);
+  }
+  .swatch .chip { height: 64px; border-bottom: 1px solid var(--rule); }
+  .swatch .body { padding: 8px 10px 10px; }
+  .swatch .h { font-family: var(--serif-display); font-size: 0.88rem; margin-bottom: 2px; }
+  .swatch .hex { font-family: var(--mono-witte); font-size: 0.66rem; letter-spacing: 0.06em; color: var(--damp-ash); }
+  .swatch .role { font-size: 0.74rem; color: var(--ink-soft); margin-top: 6px; line-height: 1.35; }
+  .palette-note {
+    margin-top: 18px;
+    padding: 16px 20px;
+    background: var(--candle-white);
+    border-left: 3px solid #8C241C;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .palette-note b { color: #8C241C; }
+
+  /* Sheet layout */
+  .sheet-layout {
+    margin-top: 28px;
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 56px repeat(5, 1fr) 220px;
+    gap: 6px;
+    font-family: var(--mono-witte);
+    font-size: 0.72rem;
+  }
+  .sheet-grid .head {
+    text-align: center;
+    color: var(--damp-ash);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .sheet-grid .row-num {
+    text-align: right;
+    color: var(--damp-ash);
+    padding: 14px 6px 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+  .sheet-grid .cell {
+    height: 70px;
+    background: var(--vellum-warm);
+    border: 1px solid var(--rule);
+    position: relative;
+    border-radius: 0;
+  }
+  .sheet-grid .cell::after {
+    content: '';
+    position: absolute;
+    left: 14%; right: 14%; bottom: 8px;
+    height: 1px;
+    background: rgba(26,22,18,0.18);
+  }
+  .sheet-grid .cell.unused {
+    background: rgba(0,0,0,0.04);
+    border-style: dashed;
+  }
+  .sheet-grid .cell.unused::after { display: none; }
+  .sheet-grid .label {
+    padding: 14px 0 0 12px;
+    color: var(--ink);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .sheet-grid .label .anim {
+    font-family: var(--serif-display);
+    font-size: 0.96rem;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 1px;
+  }
+  .sheet-grid .label .frames { color: var(--damp-ash); }
+  .sheet-grid .label .pri {
+    display: inline-block;
+    font-family: var(--mono-witte);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: #614A34;
+    padding: 1px 5px;
+    margin-top: 4px;
+    border-radius: 0;
+  }
+  .sheet-grid .label .pri.p1 { background: #8A7354; }
+  .sheet-grid .label .pri.p2 { background: var(--damp-ash); }
+
+  /* Acceptance gates */
+  .gates {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .gate-col {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 20px 24px;
+  }
+  .gate-col h3 {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    margin: 0 0 14px;
+    color: var(--damp-ash);
+  }
+  .gate-col ul { margin: 0; padding: 0; list-style: none; }
+  .gate-col li {
+    padding: 9px 0 9px 70px;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    position: relative;
+  }
+  .gate-col li:last-child { border-bottom: none; }
+  .gate-col li .id {
+    position: absolute;
+    left: 0; top: 9px;
+    font-family: var(--mono-witte);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    background: var(--vellum-warm);
+    padding: 1px 6px;
+    border: 1px solid var(--rule);
+  }
+
+  /* Anchor diagram */
+  .anchor-block {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    margin-top: 24px;
+    align-items: center;
+  }
+  .anchor-svg {
+    background: var(--candle-white);
+    border: 1px solid var(--rule-strong);
+    padding: 18px;
+  }
+  .anchor-list {
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+  .anchor-list dl { margin: 0; display: grid; grid-template-columns: auto 1fr; column-gap: 18px; row-gap: 10px; }
+  .anchor-list dt { font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink); letter-spacing: 0.04em; }
+  .anchor-list dd { margin: 0; color: var(--ink-soft); }
+
+  /* Canon block */
+  .canon {
+    margin-top: 56px;
+    padding: 24px 28px;
+    background: var(--candle-white);
+    border-left: 4px solid #614A34;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .canon b { color: var(--ink); }
+  .canon code {
+    font-family: var(--mono-witte);
+    font-size: 0.82rem;
+    background: var(--vellum-warm);
+    padding: 1px 4px;
+    border: 1px solid var(--rule);
+  }
+  .canon ul { margin: 8px 0 0 0; padding: 0; list-style: none; }
+  .canon li { padding: 4px 0; border-bottom: 1px dashed var(--rule); }
+  .canon li:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="title-plate">
+    <div>
+      <p class="eyebrow">Tincture of Mercy · v0.8.1 · v0.3 intake · character design</p>
+      <h1>Kalev Ward — <em>high-fidelity concept lock</em></h1>
+    </div>
+    <div class="meta">
+      <span>RUNTIME 64 × 96 PX</span>
+      <span>ENV TILE 32 × 32 · UNCHANGED</span>
+      <span>CHARACTER DESIGN · v0.2</span>
+    </div>
+  </header>
+
+  <!-- DEPRECATION BANNER -->
+  <div class="deprecation">
+    <b>v0.1 deprecated.</b> The earlier 32 × 48 hand-drawn pixel sprite at <code>v0_8_1/visual_prototypes/kalev_v01.html</code> is replaced. Kalev moves to <b>premium large-pixel 64 × 96</b> per frame — the environment tile grid (32 × 32) is unchanged. The legacy sprites at <code>kalev_legacy_front_idle_32x48</code> and <code>kalev_legacy_4dir_preview</code> remain only as movement-test placeholders and must not be cited as final-quality targets. The concept sheet below is the canonical model — <em>do not downscale it</em> into the runtime sheet; it is a reference, not the ship.
+  </div>
+
+  <!-- §1 CANONICAL CONCEPT -->
+  <section>
+    <h2 class="section"><span class="num">§ 01</span>The man, as drawn</h2>
+    <div class="canon-hero">
+      <div>
+        <div class="frame-stage">
+          <img src="../kalev/design_assets/kalev_concept_foundation_v0_3.png" alt="Kalev Ward concept foundation: hero pose plus three-quarter turnaround" />
+        </div>
+        <div class="frame-cap">CANONICAL · kalev_concept_foundation_v0_3.png · 1122 × 1402</div>
+      </div>
+      <div class="body">
+        <p>This is Kalev. Long weathered cedar coat over a charcoal wool layer; an asymmetric scarf at the throat in cold blue-charcoal; a leather-bound notebook held in his <em>left</em> hand, a medicine pouch at his <em>right</em> hip, the cedar dog charm hanging just below it on a short cord; a small Ember vial tucked against the pouch with a single muted red accent; one fingerless glove on the right hand; a faded clinical armband — a single linen-bandage cross on the upper-right sleeve — the only echo of the hospital on him. Boots heavy and practical. Posture forward, shoulders carrying weight.</p>
+        <p>He does not pose. He <em>stands</em>. The tired eyes and held mouth do all the emotional work; the costume is competent, layered, and entirely non-heroic. Read this concept as the model sheet for face, costume, material language, and accessory placement — and as the single strongest argument for moving Kalev off the 32 × 48 placeholder.</p>
+        <p class="pullquote">"Competent, exhausted, quiet, and dangerous only in the way a person can become dangerous when they try to outwork grief."</p>
+        <p>Below are the locks the runtime sprite must inherit, in priority order. The 64 × 96 redraw will preserve silhouette, accessory placement, palette family, and emotional register; it will <em>not</em> preserve concept-sheet detail-density. Pixel art is a translation, not a downscale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2 LOCKS -->
+  <section>
+    <h2 class="section"><span class="num">§ 02</span>Silhouette &amp; accessory locks</h2>
+    <div class="twoup">
+      <div>
+        <div class="frame-stage turnaround-frame">
+          <img src="../kalev/design_assets/kalev_turnaround_crop_reference_v0_3.png" alt="Kalev three-quarter turnaround: front, side, back" />
+        </div>
+        <div class="frame-cap">TURNAROUND · FRONT · SIDE · BACK</div>
+      </div>
+      <div class="silhouette-locks">
+        <h3>Silhouette locks — must read at 1×</h3>
+        <ol>
+          <li><b>Long weathered coat</b>The cedar column. Hem at calf. Edge wear at shoulders.</li>
+          <li><b>Burdened forward weight</b>Slight forward shoulder tilt; never square, never heroic.</li>
+          <li><b>Dark scarf / cowl mass at neck</b>Asymmetric; breaks the column off-centre.</li>
+          <li><b>Medicine pouch on right hip</b>Readable as a flap+seam silhouette by 2×.</li>
+          <li><b>Notebook on left side / left hand</b>Rectangular held object; this is the name-bearer's tool.</li>
+          <li><b>Practical heavy boots</b>Sole flare 1 px past trouser at ground.</li>
+          <li><b>No weapon silhouette</b>Not in idle, not in walk, not anywhere in P0.</li>
+        </ol>
+      </div>
+    </div>
+
+    <table class="accessory-locks">
+      <thead>
+        <tr><th>Detail</th><th>Placement</th><th>1× readability</th><th>2× readability</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="field">Leather notebook</td><td class="place">Left hand / left side</td><td>Rectangular held object or attached book.</td><td>Cover seams + a single brass clasp pixel.</td></tr>
+        <tr><td class="field">Medicine pouch</td><td class="place">Right hip</td><td>Mass + strap line.</td><td>Flap, seam, buckle.</td></tr>
+        <tr><td class="field">Cedar dog charm</td><td class="place">Below pouch / on strap</td><td>Not required.</td><td>Bone-cedar small carving; not oversized.</td></tr>
+        <tr><td class="field">Ember vial</td><td class="place">Tucked at pouch / inner coat</td><td>Hidden.</td><td>Tiny muted red accent. <b>Flashes only in administer_ember.</b></td></tr>
+        <tr><td class="field">Clinical armband</td><td class="place">Upper-right sleeve</td><td>Pale patch shape.</td><td>Single linen-bandage cross. No modern hospital cosplay.</td></tr>
+        <tr><td class="field">Right-hand glove</td><td class="place">Right hand only</td><td>Glove darker than skin.</td><td>Fingerless. Working hand free for vial / writing.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- §3 PALETTE -->
+  <section>
+    <h2 class="section"><span class="num">§ 03</span>Palette — concept-derived working swatches</h2>
+    <p class="lede">Sixteen swatches harvested from the concept and harmonised against the Ironwood tokens. <em>Guide palette only;</em> the final 64 × 96 sheet must round each value to the nearest design-system token before ship.</p>
+    <div class="palette">
+      <div class="swatch"><div class="chip" style="background:#171411"></div><div class="body"><div class="h">ink_outline</div><div class="hex">#171411</div><div class="role">Outer contour, deepest folds.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#211B15"></div><div class="body"><div class="h">hair_dark</div><div class="hex">#211B15</div><div class="role">Hair, beard, deepest face accents.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#7E5941"></div><div class="body"><div class="h">skin_shadow</div><div class="hex">#7E5941</div><div class="role">Face shadow, tired eyes.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#B98967"></div><div class="body"><div class="h">skin_light</div><div class="hex">#B98967</div><div class="role">Face / hand highlight.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3B2B20"></div><div class="body"><div class="h">coat_dark</div><div class="hex">#3B2B20</div><div class="role">Coat shadow, pouch recesses.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#614A34"></div><div class="body"><div class="h">coat_mid</div><div class="hex">#614A34</div><div class="role">Main coat body.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8A7354"></div><div class="body"><div class="h">coat_worn</div><div class="hex">#8A7354</div><div class="role">Edge wear, shoulder highlights.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8A7A62"></div><div class="body"><div class="h">wool_collar</div><div class="hex">#8A7A62</div><div class="role">Collar / wool trim.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#28313A"></div><div class="body"><div class="h">scarf_charcoal</div><div class="hex">#28313A</div><div class="role">Scarf, cold inner shadow.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#3E4750"></div><div class="body"><div class="h">inner_bluegray</div><div class="hex">#3E4750</div><div class="role">Inner garment, trousers.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#C4B79B"></div><div class="body"><div class="h">linen_bandage</div><div class="hex">#C4B79B</div><div class="role">Armband, book page edge.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#20262D"></div><div class="body"><div class="h">boot_blackblue</div><div class="hex">#20262D</div><div class="role">Boots, gloves.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#D6BE8B"></div><div class="body"><div class="h">cedar_charm</div><div class="hex">#D6BE8B</div><div class="role">Cedar dog carving.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8C241C"></div><div class="body"><div class="h">ember_red</div><div class="hex">#8C241C</div><div class="role">Vial accent only. Restrained.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#A7B0A8"></div><div class="body"><div class="h">vial_glass</div><div class="hex">#A7B0A8</div><div class="role">Muted glass highlight.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#E7DBC0"></div><div class="body"><div class="h">parchment_bg</div><div class="hex">#E7DBC0</div><div class="role">Concept field only. Not a runtime fill.</div></div></div>
+    </div>
+    <div class="palette-note">
+      <b>Runtime palette rule.</b> Do not add saturation to solve readability. Use stronger silhouette, cleaner clusters, and contrast at coat / pouch / notebook boundaries. <b>Ember red is attention punctuation</b> — it must not become a constant idle glow. Gold is not a costume colour; gold is reserved for sacred / false-armour disclosure beats.
+    </div>
+  </section>
+
+  <!-- §4 SHEET LAYOUT -->
+  <section>
+    <h2 class="section"><span class="num">§ 04</span>Runtime sheet — <code style="font-family:var(--mono-witte); font-size:0.86rem;">kalev_full_sheet_64×96.png</code></h2>
+    <p class="lede">14 rows, 5 columns, frame size 64 × 96 px, transparent PNG, nearest-neighbor filter. Feet baseline y = 84 across all frames; sprite offset y ≈ −48 from <code style="font-family:var(--mono-witte);">CharacterBody2D</code> origin. Priority bands are <b>P0</b> (ship gate), <b>P1</b> (care actions), <b>P2</b> (presence).</p>
+    <div class="sheet-layout">
+      <div class="sheet-grid">
+        <div class="head"></div>
+        <div class="head">F0</div>
+        <div class="head">F1</div>
+        <div class="head">F2</div>
+        <div class="head">F3</div>
+        <div class="head">F4</div>
+        <div class="head">Animation</div>
+
+        <!-- IDLE 4-DIR -->
+        <div class="row-num">00</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">idle_down</span><span class="frames">4 frames · breath, no bounce</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">01</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">idle_left</span><span class="frames">4 frames · pouch + dog readable</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">02</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">idle_up</span><span class="frames">4 frames · back strap, coat weight</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">03</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">idle_right</span><span class="frames">4 frames · check vial/dog asymmetry</span><br/><span class="pri">P0</span></div>
+
+        <!-- WALK 4-DIR -->
+        <div class="row-num">04</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">walk_down</span><span class="frames">4 frames · heavy practical</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">05</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">walk_left</span><span class="frames">4 frames · hem motion restrained</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">06</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">walk_up</span><span class="frames">4 frames · no heroic stride</span><br/><span class="pri">P0</span></div>
+
+        <div class="row-num">07</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">walk_right</span><span class="frames">4 frames · asymmetry checked</span><br/><span class="pri">P0</span></div>
+
+        <!-- WRITE NAME -->
+        <div class="row-num">08</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">write_name</span><span class="frames">3 · book opens · pencil · graphite pause</span><br/><span class="pri">P0</span></div>
+
+        <!-- ADMINISTER EMBER -->
+        <div class="row-num">09</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="label"><span class="anim">administer_ember</span><span class="frames">5 · draw · hold · brace · glint · recoil</span><br/><span class="pri">P0</span></div>
+
+        <!-- CARE -->
+        <div class="row-num">10</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">wash</span><span class="frames">4 · cloth + basin dignity</span><br/><span class="pri p1">P1</span></div>
+
+        <div class="row-num">11</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">warm</span><span class="frames">3 · blanket / compress</span><br/><span class="pri p1">P1</span></div>
+
+        <div class="row-num">12</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell unused"></div><div class="cell unused"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">sit</span><span class="frames">2 · presence; low movement</span><br/><span class="pri p2">P2</span></div>
+
+        <div class="row-num">13</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell unused"></div><div class="cell unused"></div>
+        <div class="label"><span class="anim">kneel</span><span class="frames">3 · bedside / name record</span><br/><span class="pri p1">P1</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 ANCHOR + COLLISION -->
+  <section>
+    <h2 class="section"><span class="num">§ 05</span>Anchor &amp; collision</h2>
+    <div class="anchor-block">
+      <div class="anchor-svg">
+        <svg viewBox="0 0 64 96" width="100%" height="280" shape-rendering="crispEdges">
+          <!-- frame -->
+          <rect x="0" y="0" width="64" height="96" fill="#e7dbc0" stroke="#1a1612" stroke-width="0.5" />
+          <!-- baseline y=84 -->
+          <line x1="0" y1="84" x2="64" y2="84" stroke="#8C241C" stroke-width="0.4" stroke-dasharray="2 2"/>
+          <text x="62" y="83" font-family="IBM Plex Mono" font-size="3.4" fill="#8C241C" text-anchor="end">y=84 baseline</text>
+          <!-- silhouette mass -->
+          <g fill="#3B2B20" opacity="0.92">
+            <rect x="26" y="10" width="12" height="10"/>           <!-- head -->
+            <rect x="22" y="20" width="20" height="22"/>            <!-- shoulders/neck -->
+            <rect x="20" y="22" width="24" height="40"/>            <!-- coat top -->
+            <rect x="18" y="40" width="28" height="30"/>            <!-- coat flare -->
+            <rect x="22" y="68" width="20" height="14"/>            <!-- legs -->
+            <rect x="20" y="80" width="10" height="6"/>             <!-- L boot -->
+            <rect x="34" y="80" width="10" height="6"/>             <!-- R boot -->
+          </g>
+          <!-- collision capsule 22x28 -->
+          <rect x="21" y="56" width="22" height="28" fill="none" stroke="#28313A" stroke-width="0.4" stroke-dasharray="1.2 1.2"/>
+          <text x="32" y="92" font-family="IBM Plex Mono" font-size="3.2" fill="#28313A" text-anchor="middle">collision 22×28</text>
+          <!-- foot anchor -->
+          <circle cx="32" cy="84" r="1.2" fill="#8C241C"/>
+          <text x="34" y="86" font-family="IBM Plex Mono" font-size="3" fill="#8C241C">foot anchor</text>
+          <!-- 32x32 tile under -->
+          <rect x="16" y="84" width="32" height="10" fill="none" stroke="#614A34" stroke-width="0.4"/>
+          <text x="32" y="93" font-family="IBM Plex Mono" font-size="3" fill="#614A34" text-anchor="middle">32×32 tile</text>
+        </svg>
+      </div>
+      <div class="anchor-list">
+        <dl>
+          <dt>frame</dt><dd>64 × 96 px, transparent PNG, nearest-neighbor.</dd>
+          <dt>foot anchor</dt><dd>bottom-centre at <code style="font-family:var(--mono-witte);">y = 84</code>; remaining 12 px below is shadow / overhang allowance.</dd>
+          <dt>sprite offset</dt><dd><code style="font-family:var(--mono-witte);">y ≈ −48</code> from <code style="font-family:var(--mono-witte);">CharacterBody2D</code> origin.</dd>
+          <dt>collision</dt><dd>capsule ≈ 22 × 28, around lower body / feet — <b>not</b> the coat silhouette. Doors in Cabin / Bethany must clear this capsule, not the coat.</dd>
+          <dt>interaction ray</dt><dd>emits from chest or hand anchor depending on action (write_name → hand; administer_ember → hand; sit / kneel → chest).</dd>
+          <dt>tile grid</dt><dd>environment remains 32 × 32 — Kalev simply occupies a taller sprite over the same floor.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- §6 ACCEPTANCE GATES -->
+  <section>
+    <h2 class="section"><span class="num">§ 06</span>Acceptance gates — <code style="font-family:var(--mono-witte); font-size:0.86rem;">KALEV-01 → KALEV-20</code></h2>
+    <p class="lede">A build cannot call Kalev art-ready until all twenty pass. Grouped by what they fail when they fail.</p>
+    <div class="gates">
+      <div class="gate-col">
+        <h3>Readability · KALEV-01 → 06</h3>
+        <ul>
+          <li><span class="id">KALEV-01</span>At 1×, silhouette reads as long coat, burdened shoulders, practical boots.</li>
+          <li><span class="id">KALEV-02</span>At 1×, Kalev does not read as warrior, rogue, paladin, or combat class.</li>
+          <li><span class="id">KALEV-03</span>At 1×, at least one of notebook or pouch is clearly readable.</li>
+          <li><span class="id">KALEV-04</span>At 2×, notebook, pouch, cedar dog, and Ember vial are legible.</li>
+          <li><span class="id">KALEV-05</span>Ember restrained: no persistent glow outside Ember frames.</li>
+          <li><span class="id">KALEV-06</span>No weapon silhouette in idle or walk frames.</li>
+        </ul>
+      </div>
+      <div class="gate-col">
+        <h3>Animation · KALEV-07 → 11</h3>
+        <ul>
+          <li><span class="id">KALEV-07</span>Idle has restrained breath / coat weight, not cozy bounce.</li>
+          <li><span class="id">KALEV-08</span>Walk feels practical and heavy, not heroic.</li>
+          <li><span class="id">KALEV-09</span><code style="font-family:var(--mono-witte);">write_name</code> makes the notebook action unmistakable.</li>
+          <li><span class="id">KALEV-10</span><code style="font-family:var(--mono-witte);">administer_ember</code> is tempting and clinical, not flashy magic.</li>
+          <li><span class="id">KALEV-11</span>Care animations exist or are scheduled before any action / combat.</li>
+        </ul>
+      </div>
+      <div class="gate-col">
+        <h3>Godot integration · KALEV-12 → 16</h3>
+        <ul>
+          <li><span class="id">KALEV-12</span>64 × 96 frames import nearest-neighbor, no smoothing.</li>
+          <li><span class="id">KALEV-13</span>Anchors correctly on 32 × 32 tile floors.</li>
+          <li><span class="id">KALEV-14</span>Collision shape covers body / feet, not coat silhouette.</li>
+          <li><span class="id">KALEV-15</span>Fits through Cabin / Bethany doors after collision tuning.</li>
+          <li><span class="id">KALEV-16</span>Remains readable across Cabin, Ironwood Road, Bethany palettes.</li>
+        </ul>
+      </div>
+      <div class="gate-col">
+        <h3>Canon / drift · KALEV-17 → 20</h3>
+        <ul>
+          <li><span class="id">KALEV-17</span>Cedar dog remains present but not oversized.</li>
+          <li><span class="id">KALEV-18</span>Notebook remains present; he is a name-bearer, not a generic traveler.</li>
+          <li><span class="id">KALEV-19</span>No attack / dodge / victory animation added for P0.</li>
+          <li><span class="id">KALEV-20</span>Concept sheet is not used directly as <code style="font-family:var(--mono-witte);">AnimatedSprite2D</code> runtime art.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- §7 CANON BLOCK -->
+  <section class="canon">
+    <p><b>Canonical references &amp; project paths.</b></p>
+    <ul>
+      <li><b>Concept (model sheet):</b> <code>v0_8_1/kalev/design_assets/kalev_concept_foundation_v0_3.png</code></li>
+      <li><b>Visual locks:</b> <code>v0_8_1/kalev/specs/kalev_visual_locks_v0_3.md</code></li>
+      <li><b>Runtime spec:</b> <code>v0_8_1/kalev/specs/kalev_runtime_sprite_spec_64x96_v0_3.md</code></li>
+      <li><b>Animation priority:</b> <code>v0_8_1/kalev/specs/kalev_animation_priority_v0_3.md</code></li>
+      <li><b>Godot scene + import:</b> <code>v0_8_1/kalev/specs/kalev_godot_import_and_scene_spec_v0_3.md</code></li>
+      <li><b>Acceptance gates:</b> <code>v0_8_1/kalev/specs/kalev_acceptance_tests_v0_3.md</code> (KALEV-01 → KALEV-20)</li>
+      <li><b>Sheet layout JSON:</b> <code>v0_8_1/kalev/templates/kalev_full_sheet_64x96_layout.json</code></li>
+      <li><b>Manifest delta:</b> <code>v0_8_1/kalev/manifest_patch/kalev_manifest_delta_v0_3.md</code></li>
+      <li><b>Final-sheet prompt for the art agent:</b> <code>v0_8_1/kalev/prompts/PROMPT_KALEV_FINAL_SPRITE_SHEET_64x96_v0_3.md</code></li>
+    </ul>
+    <p style="margin-top:14px;"><b>Status.</b> v0.2 — high-fidelity concept lock. Open: 64 × 96 sheet redraw (P0 first — idle 4-dir, walk 4-dir, write_name, administer_ember); collision-capsule tuning against Cabin / Bethany doors; manifest patch landed against <code>godot_asset_manifest_v0_8_1</code>. Hand <code>PROMPT_KALEV_FINAL_SPRITE_SHEET_64x96_v0_3.md</code> + this page to the sprite-art agent.</p>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+*.translation
+
+# C# / .NET (generated when first script is added)
+.mono/
+*.csproj.user
+bin/
+obj/
+
+# Local archive of source bundles — keep out of git
+_archive/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+# Python caches
+__pycache__/
+*.py[cod]

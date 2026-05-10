@@ -1,0 +1,96 @@
+{
+  "frame_width": 64,
+  "frame_height": 96,
+  "columns": 5,
+  "rows": [
+    {
+      "index": 0,
+      "animation": "idle_down",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 1,
+      "animation": "idle_left",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 2,
+      "animation": "idle_up",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 3,
+      "animation": "idle_right",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 4,
+      "animation": "walk_down",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 5,
+      "animation": "walk_left",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 6,
+      "animation": "walk_up",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 7,
+      "animation": "walk_right",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 8,
+      "animation": "write_name",
+      "frames": 3,
+      "unused_cells": 2
+    },
+    {
+      "index": 9,
+      "animation": "administer_ember",
+      "frames": 5,
+      "unused_cells": 0
+    },
+    {
+      "index": 10,
+      "animation": "wash",
+      "frames": 4,
+      "unused_cells": 1
+    },
+    {
+      "index": 11,
+      "animation": "warm",
+      "frames": 3,
+      "unused_cells": 2
+    },
+    {
+      "index": 12,
+      "animation": "sit",
+      "frames": 2,
+      "unused_cells": 3
+    },
+    {
+      "index": 13,
+      "animation": "kneel",
+      "frames": 3,
+      "unused_cells": 2
+    }
+  ],
+  "notes": [
+    "Template is for planning; do not ship annotated image as runtime art.",
+    "Runtime final should be transparent PNG authored at 64x96 per frame.",
+    "Feet baseline y=84 is a guide for alignment and collision testing."
+  ]
+}

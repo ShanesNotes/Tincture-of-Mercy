@@ -1,0 +1,8 @@
+# Copy to .codex/config.toml only after reviewing.
+# Project-local Codex config is loaded only when you trust the project.
+
+# model = "gpt-5.5"
+approval_policy = "on-request"
+
+# Keep permissions conservative while the engine substrate is young.
+# Adjust sandbox settings only after you understand your local setup.

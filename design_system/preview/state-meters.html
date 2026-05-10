@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>State meters</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+html,body{margin:0;padding:0;background:var(--bg);font-family:var(--serif-body)}
+.wrap{padding:22px 26px}
+.meter{display:grid;grid-template-columns:120px 1fr 100px;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule-soft)}
+.meter:last-child{border-bottom:0}
+.name{font-family:var(--serif-icon);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg2)}
+.bar{height:6px;background:var(--vellum-bone);border:1px solid var(--rule);position:relative;border-radius:1px}
+.fill{position:absolute;inset:0;border-radius:0}
+.b-burden{background:var(--cedar-brown);width:55%}
+.b-press{background:var(--dragon-red);width:72%}
+.b-numb{background:var(--lake-slate);width:30%}
+.state{font-family:var(--serif-body);font-style:italic;font-size:13px;color:var(--fg2);text-align:right}
+</style></head><body><div class="wrap">
+<div class="meter"><div class="name">Burden</div><div class="bar"><div class="fill b-burden"></div></div><div class="state">heavy</div></div>
+<div class="meter"><div class="name">Pressure</div><div class="bar"><div class="fill b-press"></div></div><div class="state">shaking</div></div>
+<div class="meter"><div class="name">Numbness</div><div class="bar"><div class="fill b-numb"></div></div><div class="state">slight distance</div></div>
+</div></body></html>

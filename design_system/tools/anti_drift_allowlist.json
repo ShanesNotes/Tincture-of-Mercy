@@ -1,0 +1,90 @@
+{
+  "_comment": "Documented exceptions to tools/anti_drift.py. Each entry needs a 'why' and an owner. The gate honors entries that match BOTH file (suffix match) AND rule, optionally narrowed by 'contains'. The rule name 'p0-vocabulary' replaced the legacy 'forbidden-copy' in v0.8.1; both are accepted for backwards compatibility.",
+  "_post_p0_extension_pattern": "When a post-P0 packet sanctions a vocabulary surface (combat, RPG progression, professions, etc.), add an entry here with rule='p0-vocabulary', file=<the post-P0 packet's directory suffix>, and a 'why' that names the sanctioning packet.",
+  "entries": [
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/errata_v0_8_to_v0_8_1.md",
+      "why": "errata documents the rename — listing the old term is required.",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/canonical_locks_v0_8_1.md",
+      "why": "locks file enumerates restricted terms.",
+      "owner": "design"
+    },
+    {
+      "rule": "p0-vocabulary",
+      "file": "v0_8_1/canonical_locks_v0_8_1.md",
+      "why": "the lock spec lists the restricted P0 copy in a fenced block.",
+      "owner": "design"
+    },
+    {
+      "rule": "p0-vocabulary",
+      "file": "v0_8_1/acceptance_tests_v0_8_1.md",
+      "why": "tests reference the restricted P0 vocabulary as anti-pattern strings.",
+      "owner": "qa"
+    },
+    {
+      "rule": "p0-vocabulary",
+      "file": "v0_8_1/aesthetic_bible_v0_8_1.md",
+      "why": "aesthetic bible names the restricted P0 vocabulary in the negative manifesto.",
+      "owner": "design"
+    },
+    {
+      "rule": "forbidden-copy",
+      "file": "v0_8_1/canonical_locks_v0_8_1.md",
+      "why": "legacy rule name; preserved for backwards compatibility.",
+      "owner": "design"
+    },
+    {
+      "rule": "forbidden-copy",
+      "file": "v0_8_1/acceptance_tests_v0_8_1.md",
+      "why": "legacy rule name; preserved for backwards compatibility.",
+      "owner": "qa"
+    },
+    {
+      "rule": "p2-reserved",
+      "file": "v0_8_1/aesthetic_bible_v0_8_1.md",
+      "why": "aesthetic bible documents the Paradise sacred register.",
+      "owner": "design"
+    },
+    {
+      "rule": "p2-reserved",
+      "file": "v0_8_1/canonical_locks_v0_8_1.md",
+      "why": "locks file describes the P2 reservation in prose.",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/godot_design_delta_v0_8_1.md",
+      "why": "design delta documents the renames (QuestLog/Stats/nora_field/dr_bell/bitterleaf) as part of the v0.7→v0.8.1 migration table and the post-P0 expansion clauses.",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/godot_asset_manifest_v0_8_1.md",
+      "why": "asset manifest documents the canonical resource ids and their migration history (nora_finch from nora_field; dr_amos_bell from dr_bell).",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/scene_composition_bible_v0_8_1.md",
+      "why": "scene bible names the migration in line with the v0.8.1 errata (Bitterleaf removal, etc.).",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "v0_8_1/icon_panel_prompt_pack_v0_8_1.md",
+      "why": "prompt pack references the migration vocabulary (Bitterleaf in the prior recipe context).",
+      "owner": "design"
+    },
+    {
+      "rule": "canon-rename",
+      "file": "preview/v0_8_1_overview.html",
+      "why": "overview HTML displays the v0.8 → v0.8.1 migration/errata table by definition.",
+      "owner": "design"
+    }
+  ]
+}

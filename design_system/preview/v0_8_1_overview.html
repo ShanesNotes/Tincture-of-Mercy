@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tincture of Mercy — v0.8.1 Packet</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--vellum-warm); color: var(--fg1); }
+  body {
+    font-family: var(--serif-body);
+    font-size: 17px;
+    line-height: 1.55;
+    padding: 64px max(40px, 8vw) 96px;
+  }
+
+  .marginalia {
+    font-family: var(--hand-script);
+    color: var(--damp-ash);
+    font-size: 22px;
+    letter-spacing: 0.01em;
+  }
+
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg3);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 1.05;
+    margin: 0 0 12px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--cedar-brown);
+  }
+  .subtitle {
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--fg2);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 36px 0 56px;
+    border: 1px solid var(--rule);
+    background: var(--bg-elevated);
+  }
+  .summary-strip > div {
+    padding: 18px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .summary-strip > div:last-child { border-right: 0; }
+  .summary-strip .num {
+    font-family: var(--serif-display);
+    font-size: 36px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .summary-strip .lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg3);
+    margin-top: 6px;
+  }
+
+  h2 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: 30px;
+    margin: 56px 0 8px;
+    color: var(--ink);
+  }
+  h2 .num {
+    color: var(--damp-ash);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    margin-right: 10px;
+    vertical-align: 4px;
+  }
+  h2 + .lede {
+    color: var(--fg2);
+    font-style: italic;
+    margin: 0 0 22px;
+    max-width: 70ch;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .card {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 22px;
+    background: var(--bg-elevated);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    min-height: 132px;
+    transition: background 120ms ease;
+  }
+  .card:hover { background: var(--candle-white); }
+  .card .file {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--damp-ash);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    word-break: break-all;
+  }
+  .card .title {
+    font-family: var(--serif-display);
+    font-size: 19px;
+    color: var(--ink);
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .card .desc {
+    font-size: 14px;
+    color: var(--fg2);
+    line-height: 1.45;
+  }
+
+  .drift-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 8px;
+    font-size: 14.5px;
+  }
+  .drift-table th, .drift-table td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .drift-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg3);
+    font-weight: 400;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .drift-table td.num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--damp-ash);
+    width: 40px;
+  }
+  .drift-table td.from {
+    color: var(--dragon-red);
+    font-style: italic;
+  }
+  .drift-table td.arrow {
+    color: var(--damp-ash);
+    width: 28px;
+    text-align: center;
+  }
+  .drift-table td.to {
+    color: var(--pale-heal-deep);
+    font-weight: 500;
+  }
+
+  .lock-block {
+    background: var(--ink);
+    color: var(--candle-pure);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 24px 28px;
+    border-radius: 0;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre;
+  }
+  .lock-block .k { color: var(--icon-gold-warm); }
+  .lock-block .v { color: var(--candle-pure); }
+  .lock-block .c { color: var(--damp-ash); font-style: italic; }
+
+  .commit-list {
+    counter-reset: commit;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 8px;
+  }
+  .commit-list li {
+    counter-increment: commit;
+    padding: 14px 0 14px 64px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .commit-list li:last-child { border-bottom: 0; }
+  .commit-list li::before {
+    content: counter(commit, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: var(--serif-display);
+    font-size: 28px;
+    color: var(--cedar-brown);
+    width: 50px;
+    text-align: right;
+  }
+  .commit-list .name {
+    font-family: var(--serif-display);
+    font-size: 19px;
+    color: var(--ink);
+  }
+  .commit-list .gate {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--damp-ash);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid var(--rule-strong);
+    color: var(--fg2);
+    background: var(--candle-pure);
+  }
+  .badge.warn { color: var(--ember-red); border-color: var(--ember-red); }
+  .badge.gold { color: var(--icon-gold); border-color: var(--icon-gold); }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    color: var(--fg3);
+    font-size: 13px;
+    font-style: italic;
+    max-width: 70ch;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Tincture of Mercy · The Garments of Skin</p>
+  <h1>v0.8.1 — <em>contract hardening</em></h1>
+  <p class="subtitle">The release between v0.8 and the Godot scaffold. Beautiful documents, made enforceable.</p>
+  <div class="badges">
+    <span class="badge">17 drifts closed</span>
+    <span class="badge">113 acceptance tests</span>
+    <span class="badge gold">7 commits, gated</span>
+    <span class="badge warn">1 hard "no" to canon invention</span>
+  </div>
+</header>
+
+<div class="summary-strip">
+  <div>
+    <div class="num">17</div>
+    <div class="lbl">drifts resolved</div>
+  </div>
+  <div>
+    <div class="num">16</div>
+    <div class="lbl">packet documents</div>
+  </div>
+  <div>
+    <div class="num">113</div>
+    <div class="lbl">acceptance tests</div>
+  </div>
+  <div>
+    <div class="num">7</div>
+    <div class="lbl">gated commits</div>
+  </div>
+</div>
+
+<h2><span class="num">§ 1</span>Drift register</h2>
+<p class="lede">Every v0.8 → v0.8.1 correction has a single resolution. None require a fresh product decision.</p>
+
+<table class="drift-table">
+  <thead>
+    <tr><th>#</th><th>Was</th><th></th><th>Now</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="num">01</td><td class="from">Nora Field</td><td class="arrow">→</td><td class="to">Nora Finch</td></tr>
+    <tr><td class="num">02</td><td class="from">Miriam (young)</td><td class="arrow">→</td><td class="to">Miriam Toll, elder</td></tr>
+    <tr><td class="num">03</td><td class="from">Cabin Ember off</td><td class="arrow">→</td><td class="to">Off-on-Eli; self-use after Beat 4</td></tr>
+    <tr><td class="num">04</td><td class="from">Bitterleaf in P0</td><td class="arrow">→</td><td class="to">Removed; reserved future</td></tr>
+    <tr><td class="num">05</td><td class="from">JetBrains Mono</td><td class="arrow">→</td><td class="to">IBM Plex Mono</td></tr>
+    <tr><td class="num">06</td><td class="from">Page 77 in prototype</td><td class="arrow">→</td><td class="to">Graphite underrule; reserved</td></tr>
+    <tr><td class="num">07</td><td class="from">Ember slot 8</td><td class="arrow">→</td><td class="to">Ember slot 16 (always last)</td></tr>
+    <tr><td class="num">08</td><td class="from">IC XC NIKA in P0</td><td class="arrow">→</td><td class="to">Paradise / P2 reserved</td></tr>
+    <tr><td class="num">09</td><td class="from">Birdie apple optional</td><td class="arrow">→</td><td class="to">Refusal mandatory; follows anyway</td></tr>
+    <tr><td class="num">10</td><td class="from">Intercut count fuzzy</td><td class="arrow">→</td><td class="to">Three required panels</td></tr>
+    <tr><td class="num">11</td><td class="from">Wittehaven new blues</td><td class="arrow">→</td><td class="to">Token-only palette</td></tr>
+    <tr><td class="num">12</td><td class="from">Radius mismatch</td><td class="arrow">→</td><td class="to">4 px / 0 px Wittehaven / 4 px Paradise</td></tr>
+    <tr><td class="num">13</td><td class="from">RegisterTable diffuse</td><td class="arrow">→</td><td class="to">RegisterLookup.tactile(...)</td></tr>
+    <tr><td class="num">14</td><td class="from">Dr. Bell</td><td class="arrow">→</td><td class="to">Dr. Amos Bell · dr_amos_bell.tres</td></tr>
+    <tr><td class="num">15</td><td class="from">480×270 vs 960×540</td><td class="arrow">→</td><td class="to">Logical 960×540 · composition 480×270</td></tr>
+    <tr><td class="num">16</td><td class="from">Numeric annotation ad-hoc</td><td class="arrow">→</td><td class="to">@allow_numeric pragma</td></tr>
+    <tr><td class="num">17</td><td class="from">No-music implicit</td><td class="arrow">→</td><td class="to">Diegetic-only · explicit lock</td></tr>
+  </tbody>
+</table>
+
+<h2><span class="num">§ 2</span>Canonical locks (high-water marks)</h2>
+<p class="lede">If implementation contradicts a lock, implementation is wrong.</p>
+<pre class="lock-block"><span class="k">Slice       </span> <span class="v">Cabin → Ironwood → Birdie apple refusal → Bethany.</span>
+<span class="k">Patients    </span> <span class="v">Eli Keene · Miriam Toll (elder) · Nora Finch · Dr. Amos Bell.</span>
+<span class="k">Pouch       </span> <span class="v">Slot 1 cedar dog (locked) · Slot 16 Ember (locked).</span>
+<span class="k">Ember       </span> <span class="v">Cannot target Eli; self-use after Eli's name; scarce; not craftable.</span>
+<span class="k">Notebook    </span> <span class="v">Page 66 line 7 = Eli; page 77 line 7 = </span><span class="c">RESERVED</span><span class="v">.</span>
+<span class="k">Birdie      </span> <span class="v">Apple refusal mandatory. Follows anyway.</span>
+<span class="k">Mono        </span> <span class="v">IBM Plex Mono.</span>
+<span class="k">Viewport    </span> <span class="v">960×540 logical · 480×270 composition · 32×32 tiles · 2× zoom.</span>
+<span class="k">Audio       </span> <span class="v">Diegetic only.</span>
+<span class="k">Sacred      </span> <span class="v">Paradise / IC XC NIKA / halos = </span><span class="c">P2 reserved</span><span class="v">.</span></pre>
+
+<h2><span class="num">§ 3</span>Packet</h2>
+<p class="lede">Sixteen documents. Read them in the order in <a href="../v0_8_1/INDEX.md" style="color: var(--cedar-brown);">INDEX.md</a>.</p>
+
+<div class="grid">
+  <a class="card" href="../v0_8_1/INDEX.md">
+    <div class="file">v0_8_1/INDEX.md</div>
+    <div class="title">INDEX</div>
+    <div class="desc">Packet table of contents and use-by-role guide.</div>
+  </a>
+  <a class="card" href="../v0_8_1/errata_v0_8_to_v0_8_1.md">
+    <div class="file">v0_8_1/errata_v0_8_to_v0_8_1.md</div>
+    <div class="title">Errata</div>
+    <div class="desc">Every drift, with the exact patch.</div>
+  </a>
+  <a class="card" href="../v0_8_1/canonical_locks_v0_8_1.md">
+    <div class="file">v0_8_1/canonical_locks_v0_8_1.md</div>
+    <div class="title">Canonical locks</div>
+    <div class="desc">Short, strict, implementation-facing. The contract.</div>
+  </a>
+  <a class="card" href="../v0_8_1/acceptance_tests_v0_8_1.md">
+    <div class="file">v0_8_1/acceptance_tests_v0_8_1.md</div>
+    <div class="title">Acceptance tests</div>
+    <div class="desc">113 tests across 11 gates. Order matters.</div>
+  </a>
+  <a class="card" href="../v0_8_1/implementation_start_order_v0_8_1.md">
+    <div class="file">v0_8_1/implementation_start_order_v0_8_1.md</div>
+    <div class="title">Implementation start order</div>
+    <div class="desc">Seven gated commits. Each blocks the next.</div>
+  </a>
+  <a class="card" href="../v0_8_1/godot_scaffold_start_prompt_v0_8_1.md">
+    <div class="file">v0_8_1/godot_scaffold_start_prompt_v0_8_1.md</div>
+    <div class="title">Godot scaffold spec</div>
+    <div class="desc">Engine, project settings, folders, autoloads, resources.</div>
+  </a>
+  <a class="card" href="../v0_8_1/PROMPT_GODOT_SCAFFOLD_AGENT_v0_8_1.md">
+    <div class="file">v0_8_1/PROMPT_GODOT_SCAFFOLD_AGENT_v0_8_1.md</div>
+    <div class="title">Scaffold agent prompt</div>
+    <div class="desc">Copy-paste cover prompt for the implementer.</div>
+  </a>
+  <a class="card" href="../tools/anti_drift.py">
+    <div class="file">tools/anti_drift.py</div>
+    <div class="title">Anti-drift gate</div>
+    <div class="desc">CI script: canon, P2 reservations, forbidden copy, theme tokens, raw numerics.</div>
+  </a>
+</div>
+
+<h2><span class="num">§ 4</span>Commit gate</h2>
+<p class="lede">Each commit's acceptance row must pass before the next begins.</p>
+
+<ol class="commit-list">
+  <li><div class="name">v0.8.1 design hardening</div><div class="gate">Errata · locks · INDEX · §18 decision list empty</div></li>
+  <li><div class="name">Godot project scaffold</div><div class="gate">GODOT-01 · 960×540 · 2× zoom · no art deps to boot</div></li>
+  <li><div class="name">Resources and autoloads</div><div class="gate">GODOT-02..03 · canonical IDs only · no Bitterleaf</div></li>
+  <li><div class="name">Theme resources</div><div class="gate">GODOT-05 · U-01..02 · CANON-08 · IBM Plex Mono</div></li>
+  <li><div class="name">Anti-drift CI</div><div class="gate">AD-10..13 · CANON-01..10 · pre-commit hook live</div></li>
+  <li><div class="name">Placeholder UI scenes</div><div class="gate">GODOT-04..10 · U-03..14 · no ProgressBar · no morality</div></li>
+  <li><div class="name">Placeholder world scenes</div><div class="gate">SC-01..04 · CANON-04..06 · tag v0.8.1-scaffold</div></li>
+</ol>
+
+<h2><span class="num">§ 5</span>What v0.8.1 will not let you do</h2>
+<p class="lede">The contract has been hardened so the implementation does not invent canon.</p>
+
+<pre class="lock-block"><span class="c">— No combat. No farming. No hospital-management sim.</span>
+<span class="c">— No new ingredients in P0 (no Bitterleaf, no Arbor, no Acebark…).</span>
+<span class="c">— No new patients. No renamed patients (Nora Finch; Dr. Amos Bell).</span>
+<span class="c">— No Ember in slot 8. No item but cedar dog in slot 1.</span>
+<span class="c">— No Wittehaven, Mackinac, Paradise, Iron Ledger as playable.</span>
+<span class="c">— No write to page 77 line 7 in any prototype path.</span>
+<span class="c">— No IC XC NIKA, narthex, halos in P0 atlases.</span>
+<span class="c">— No JetBrains Mono. No music. No celebration sounds.</span>
+<span class="c">— No raw Pressure / Burden / Numbness numbers in player-facing UI.</span>
+<span class="c">— No ProgressBar for patient state. No morality meter.</span>
+<span class="c">— No Commit N+1 before Commit N's acceptance row passes.</span></pre>
+
+<footer>
+  <p class="marginalia">— next: scaffold agent reads <code style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--cedar-brown);">PROMPT_GODOT_SCAFFOLD_AGENT_v0_8_1.md</code> and stops at the v0.8.1-scaffold tag.</p>
+</footer>
+
+</body>
+</html>

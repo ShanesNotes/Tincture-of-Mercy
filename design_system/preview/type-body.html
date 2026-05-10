@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Body</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg1); font-family: var(--serif-body); }
+  .card { padding: 24px 32px; }
+  .row { display: grid; grid-template-columns: 92px 1fr; gap: 18px; padding: 4px 0; align-items: baseline; }
+  .label { font-family: var(--mono-witte); font-size: 10px; letter-spacing: 0.18em; color: var(--fg3); text-transform: uppercase; padding-top: 8px; }
+  .meta { font-family: var(--mono-witte); font-size: 10px; color: var(--fg3); letter-spacing: 0.1em; padding-top: 4px; }
+  .lede { font-family: var(--serif-body); font-size: 20px; line-height: 1.55; font-style: italic; color: var(--ink); max-width: 520px; }
+  .body { font-family: var(--serif-body); font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 520px; }
+  .small { font-family: var(--serif-body); font-size: 13px; line-height: 1.5; color: var(--damp-ash); font-style: italic; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="row">
+    <div class="label">Lede</div>
+    <div>
+      <div class="lede">A named person is fading. You have limited time, limited medicine, a shaking hand, and a vial that works.</div>
+      <div class="meta">EB Garamond italic · 20/31</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Body</div>
+    <div>
+      <div class="body">The Turn took the breath but reached past the breath, dimming the lamplight of the eyes toward apathy. Kalev placed his bare hand on the fevered brow and felt the cold visible breath flow backward — a final surrender.</div>
+      <div class="meta">EB Garamond · 16/25</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Caption</div>
+    <div>
+      <div class="small">Page 66, line 7. Eli Keene. The breath left before the name did.</div>
+      <div class="meta">EB Garamond italic · 13/20</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

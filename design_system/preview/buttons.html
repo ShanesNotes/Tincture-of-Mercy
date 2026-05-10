@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+html,body{margin:0;padding:0;background:var(--bg);font-family:var(--serif-body)}
+.wrap{padding:22px 26px;display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{font-family:var(--serif-body);font-size:15px;padding:10px 22px;background:var(--ink);color:var(--candle-pure);border:1px solid var(--ink);border-radius:4px;cursor:pointer;letter-spacing:.01em;box-shadow:var(--shadow-paper)}
+.btn.secondary{background:transparent;color:var(--ink)}
+.btn.ember{background:var(--ember-red);border-color:var(--ember-red);color:var(--candle-pure);box-shadow:var(--shadow-ember)}
+.btn.disabled{opacity:.36;cursor:not-allowed}
+.btn.witte{font-family:var(--mono-witte);text-transform:uppercase;font-size:11px;letter-spacing:.14em;background:#fff;color:var(--lake-deep);border:1px solid var(--witte-cool);border-radius:0;box-shadow:var(--shadow-witte);padding:9px 18px}
+.btn.gold{background:transparent;color:var(--icon-gold);border-color:var(--icon-gold)}
+.lbl{font-family:var(--mono-witte);font-size:9px;letter-spacing:.18em;color:var(--fg3);text-transform:uppercase;width:90px}
+</style></head><body><div class="wrap">
+<div class="row"><span class="lbl">Folk</span>
+<button class="btn">Sit with her</button>
+<button class="btn secondary">Observe</button>
+<button class="btn disabled">Administer</button>
+</div>
+<div class="row"><span class="lbl">Ember</span>
+<button class="btn ember">Use Ember</button>
+<button class="btn gold">Write the name</button>
+</div>
+<div class="row"><span class="lbl">Wittehaven</span>
+<button class="btn witte">ADMINISTER E-7</button>
+<button class="btn witte" style="background:transparent">FILE OUTCOME</button>
+</div>
+</div></body></html>

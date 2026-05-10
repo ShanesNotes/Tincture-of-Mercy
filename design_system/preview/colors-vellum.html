@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colors — Vellum & Ink</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg1); font-family: var(--serif-body); }
+  .card { padding: 18px 22px; }
+  .row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .swatch { border-radius: 4px; overflow: hidden; border: 1px solid var(--rule); height: 100px; display: flex; flex-direction: column; }
+  .chip { flex: 1; }
+  .meta { padding: 8px 10px; background: var(--bg-elevated); border-top: 1px solid var(--rule); }
+  .name { font-family: var(--serif-body); font-size: 12px; color: var(--ink); }
+  .hex { font-family: var(--mono-witte); font-size: 9px; color: var(--fg3); letter-spacing: 0.06em; }
+  h4 { font-family: var(--mono-witte); font-size: 10px; letter-spacing: 0.18em; color: var(--fg3); text-transform: uppercase; margin: 0 0 12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h4>Vellum, ink & cold</h4>
+  <div class="row">
+    <div class="swatch"><div class="chip" style="background: #fbf7eb"></div><div class="meta"><div class="name">Candle pure</div><div class="hex">#fbf7eb</div></div></div>
+    <div class="swatch"><div class="chip" style="background: #f6f1e0"></div><div class="meta"><div class="name">Candle white</div><div class="hex">#f6f1e0</div></div></div>
+    <div class="swatch"><div class="chip" style="background: #efe6d0"></div><div class="meta"><div class="name">Vellum warm</div><div class="hex">#efe6d0</div></div></div>
+    <div class="swatch"><div class="chip" style="background: #e8dfc9"></div><div class="meta"><div class="name">Vellum bone</div><div class="hex">#e8dfc9</div></div></div>
+    <div class="swatch"><div class="chip" style="background: #6b6358"></div><div class="meta"><div class="name">Damp ash</div><div class="hex">#6b6358</div></div></div>
+    <div class="swatch"><div class="chip" style="background: #2b2520"></div><div class="meta"><div class="name">Ink soft</div><div class="hex">#2b2520</div></div></div>
+  </div>
+</div>
+</body>
+</html>

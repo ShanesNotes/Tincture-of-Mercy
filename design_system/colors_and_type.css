@@ -1,0 +1,325 @@
+/* ============================================================
+   TINCTURE OF MERCY — Colors & Type
+   ============================================================
+   A damaged sacred manuscript rendered in cold Michigan light.
+   Three regimes: Ironwood (hand), Wittehaven (clean), Paradise (icon).
+   Most surfaces are muted and cold. Gold and red are EARNED.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  /* ---------- COLOR FOUNDATIONS ---------- */
+
+  /* Ink & paper — the manuscript substrate */
+  --ink:            #1a1612;     /* contour, text, sacred borders, heavy shadow */
+  --ink-soft:       #2b2520;     /* sub-ink for body copy */
+  --damp-ash:       #6b6358;     /* overcast light, paper shadow, old surfaces */
+  --vellum-bone:    #e8dfc9;     /* notebook pages, icon panels, old walls */
+  --vellum-warm:    #efe6d0;     /* warmer page tone */
+  --candle-white:   #f6f1e0;     /* highlights, linens, threshold light */
+  --candle-pure:    #fbf7eb;     /* brightest paper highlight */
+
+  /* Cold Michigan world */
+  --lake-slate:     #5b6770;     /* water, sky, road, cold interiors */
+  --lake-deep:      #2c3540;     /* night water, unseen pressure, bridge shadow */
+  --pine-shadow:    #2a3329;     /* foreground canopy, wet pine */
+  --rot-brown:      #4a3a26;     /* decay, undergrowth, rust, wounds */
+  --cedar-brown:    #6b4a2c;     /* dog, cabins, trunks, leather, beams */
+  --old-ochre:      #b08a4a;     /* earth, worn wood, old interiors */
+
+  /* Healing & relief */
+  --pale-heal:      #7a8c5e;     /* medicinal plants, fragile relief, Lena/Bethany */
+  --pale-heal-deep: #5a6b48;     /* darker herb tone */
+  --verdigris:      #6e8a7c;     /* aged copper, hospital tint, spiritual unease */
+
+  /* Earned colors — gold and red appear sparingly */
+  --icon-gold:      #c79a3a;     /* sacred disclosure, Paradise, halos */
+  --icon-gold-warm: #d9b057;     /* gold highlight */
+  --dragon-red:     #8a2018;     /* danger, accusation, Ember misuse */
+  --ember-red:      #c63e1f;     /* small intense accents only */
+  --ember-glow:     #e26a3a;     /* glow halo on Ember */
+
+  /* Wittehaven — institutional, seductive */
+  --witte-white:    #f4f6f7;     /* hospital walls, clean linen */
+  --witte-blue:     #d5dee4;     /* blue-white grids */
+  --witte-cool:     #8fa3b0;     /* cool steel, fluorescent edge */
+
+  /* ---------- SEMANTIC TOKENS (Ironwood default regime) ---------- */
+  --bg:             var(--vellum-warm);
+  --bg-elevated:    var(--candle-white);
+  --bg-deep:        var(--rot-brown);
+  --fg1:            var(--ink);            /* primary text */
+  --fg2:            var(--ink-soft);       /* secondary text */
+  --fg3:            var(--damp-ash);       /* tertiary, captions */
+  --fg-inverse:     var(--candle-pure);
+  --rule:           rgba(26, 22, 18, 0.18);
+  --rule-strong:    rgba(26, 22, 18, 0.45);
+  --rule-soft:      rgba(26, 22, 18, 0.08);
+
+  /* Roles */
+  --accent-sacred:  var(--icon-gold);      /* halos, sacred type */
+  --accent-medicine:var(--pale-heal);      /* herbal, healing */
+  --accent-warning: var(--ember-red);      /* Ember, Strange Fire */
+  --accent-danger:  var(--dragon-red);     /* accusation, the Iron Ledger */
+  --accent-cold:    var(--lake-deep);      /* unseen pressure */
+  --accent-warmth:  var(--cedar-brown);    /* presence, the cedar dog */
+
+  /* ---------- TYPE FOUNDATIONS ---------- */
+
+  /* Display serif — manuscript title hand */
+  --serif-display:  'IM Fell English', 'EB Garamond', Garamond, serif;
+
+  /* Body serif — humanist, readable, slightly bookish */
+  --serif-body:     'EB Garamond', 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+
+  /* Sacred display — IC XC, NIKA, Paradise plates */
+  --serif-icon:     'Cinzel', 'EB Garamond', serif;
+
+  /* Notebook hand — graphite on damp paper */
+  --hand-script:    'Caveat', 'Bradley Hand', cursive;
+
+  /* Wittehaven institutional — case IDs, dosing, charts */
+  --mono-witte:     'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
+
+  /* Type scale — manuscript proportions, generous leading */
+  --t-display:    clamp(2.75rem, 5.5vw, 4.5rem);   /* chapter / section opener */
+  --t-h1:         clamp(2rem, 3.6vw, 3rem);        /* page title */
+  --t-h2:         1.875rem;                         /* major heading */
+  --t-h3:         1.375rem;                         /* sub heading */
+  --t-h4:         1.125rem;
+  --t-body:       1rem;
+  --t-small:      0.875rem;
+  --t-caption:    0.75rem;
+  --t-overline:   0.6875rem;
+
+  /* Leading */
+  --lh-tight:     1.15;
+  --lh-snug:      1.32;
+  --lh-body:      1.55;
+  --lh-loose:     1.72;
+
+  /* Tracking */
+  --tr-tight:     -0.012em;
+  --tr-normal:    0;
+  --tr-wide:      0.04em;
+  --tr-overline:  0.18em;       /* IC XC, NIKA, sanctioned headers */
+
+  /* ---------- SPACING ---------- */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+
+  /* ---------- RADII ---------- */
+  /* Ironwood: small, irregular feel. Wittehaven: 0 radius, clinical. */
+  --r-none:   0;
+  --r-sm:     2px;
+  --r-md:     4px;
+  --r-lg:     8px;
+  --r-pill:   999px;
+
+  /* ---------- SHADOWS ---------- */
+  /* Damp paper sits on damp paper. Shadows are soft, low, cold. */
+  --shadow-paper:    0 1px 0 rgba(26,22,18,0.08), 0 2px 6px rgba(26,22,18,0.06);
+  --shadow-card:     0 2px 0 rgba(26,22,18,0.06), 0 6px 18px rgba(26,22,18,0.10);
+  --shadow-inset:    inset 0 1px 0 rgba(255,255,255,0.20), inset 0 -1px 0 rgba(26,22,18,0.06);
+  --shadow-witte:    0 1px 2px rgba(44,53,64,0.18);   /* sharp, cold */
+  --shadow-ember:    0 0 24px rgba(226,106,58,0.35), 0 0 4px rgba(198,62,31,0.55);
+  --shadow-halo:     0 0 36px rgba(199,154,58,0.45);
+
+  /* ---------- BORDERS ---------- */
+  --border-hair:     1px solid var(--rule);
+  --border-rule:     1px solid var(--rule-strong);
+  --border-icon:     2px solid var(--ink);              /* heavy contour, like icon panels */
+  --border-witte:    1px solid var(--witte-cool);
+
+  /* ---------- ANIMATION ---------- */
+  /* Movements are slow, like pencil and breath. No bounces. */
+  --ease-quiet:      cubic-bezier(0.32, 0.08, 0.24, 1);     /* soft, settling */
+  --ease-presence:   cubic-bezier(0.4, 0.0, 0.2, 1);        /* default */
+  --ease-witte:      cubic-bezier(0.2, 0.0, 0.2, 1);        /* clinical, snappy */
+  --dur-fast:        160ms;
+  --dur-base:        260ms;
+  --dur-slow:        520ms;
+  --dur-breath:      1800ms;     /* breath loop, candle flicker */
+}
+
+/* ============================================================
+   REGIME OVERRIDES
+   Apply by adding a class to the root container.
+   ============================================================ */
+
+.regime-ironwood {
+  --bg: var(--vellum-warm);
+  --bg-elevated: var(--candle-white);
+  --fg1: var(--ink);
+  --serif: var(--serif-body);
+  --rule: rgba(26,22,18,0.22);
+}
+
+.regime-wittehaven {
+  --bg: var(--witte-white);
+  --bg-elevated: #ffffff;
+  --bg-deep: var(--witte-blue);
+  --fg1: var(--lake-deep);
+  --fg2: var(--lake-slate);
+  --fg3: var(--witte-cool);
+  --rule: rgba(44,53,64,0.18);
+  --rule-strong: rgba(44,53,64,0.42);
+  --shadow-card: var(--shadow-witte);
+  --r-md: 0;
+  --r-lg: 0;
+}
+
+.regime-paradise {
+  --bg: var(--candle-white);
+  --bg-elevated: var(--vellum-bone);
+  --fg1: var(--ink);
+  --accent-sacred: var(--icon-gold-warm);
+  --shadow-card: var(--shadow-halo);
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   ============================================================ */
+
+.tom-page {
+  font-family: var(--serif-body);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--fg1);
+  background: var(--bg);
+  font-feature-settings: "onum", "kern", "liga";
+}
+
+.tom-display,
+.tom-h-display {
+  font-family: var(--serif-display);
+  font-size: var(--t-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  color: var(--fg1);
+  font-weight: 400;
+  font-style: normal;
+  text-wrap: balance;
+}
+
+.tom-h1 {
+  font-family: var(--serif-display);
+  font-size: var(--t-h1);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-tight);
+  color: var(--fg1);
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+.tom-h2 {
+  font-family: var(--serif-body);
+  font-size: var(--t-h2);
+  line-height: var(--lh-snug);
+  color: var(--fg1);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.tom-h3 {
+  font-family: var(--serif-body);
+  font-size: var(--t-h3);
+  line-height: var(--lh-snug);
+  color: var(--fg1);
+  font-weight: 600;
+}
+
+.tom-h4 {
+  font-family: var(--serif-body);
+  font-size: var(--t-h4);
+  font-weight: 600;
+  color: var(--fg1);
+}
+
+.tom-body, p.tom-body {
+  font-family: var(--serif-body);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--fg2);
+  text-wrap: pretty;
+}
+
+.tom-lede {
+  font-family: var(--serif-body);
+  font-size: 1.25rem;
+  line-height: var(--lh-loose);
+  color: var(--fg1);
+  font-style: italic;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+.tom-caption {
+  font-family: var(--serif-body);
+  font-size: var(--t-caption);
+  color: var(--fg3);
+  font-style: italic;
+  letter-spacing: var(--tr-wide);
+}
+
+.tom-overline,
+.tom-icon-label {
+  font-family: var(--serif-icon);
+  font-size: var(--t-overline);
+  letter-spacing: var(--tr-overline);
+  text-transform: uppercase;
+  color: var(--fg2);
+  font-weight: 500;
+}
+
+.tom-hand {
+  font-family: var(--hand-script);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: var(--ink);
+  /* slightly off-baseline, like graphite */
+}
+
+.tom-hand-name {
+  font-family: var(--hand-script);
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--ink);
+  letter-spacing: 0.005em;
+}
+
+.tom-witte {
+  font-family: var(--mono-witte);
+  font-size: 0.8125rem;
+  letter-spacing: var(--tr-wide);
+  color: var(--lake-deep);
+  text-transform: uppercase;
+}
+
+.tom-quote {
+  font-family: var(--serif-body);
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: var(--lh-loose);
+  color: var(--fg2);
+  border-left: 2px solid var(--ink);
+  padding-left: var(--s-5);
+}
+
+/* Drop cap — manuscript opener */
+.tom-dropcap::first-letter {
+  font-family: var(--serif-display);
+  font-size: 3.6em;
+  line-height: 0.92;
+  float: left;
+  padding: 0.04em 0.08em 0 0;
+  color: var(--icon-gold);
+}

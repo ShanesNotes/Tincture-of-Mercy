@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Radii & Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg1);font-family:var(--serif-body)}
+.wrap{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col h4{font-family:var(--mono-witte);font-size:10px;letter-spacing:.18em;color:var(--fg3);text-transform:uppercase;margin:0 0 12px}
+.row{display:flex;gap:14px;align-items:flex-end}
+.tile{width:60px;height:60px;background:var(--bg-elevated);border:1px solid var(--rule-strong);display:flex;align-items:flex-end;justify-content:center;padding:6px}
+.lbl{font-family:var(--mono-witte);font-size:9px;letter-spacing:.08em;color:var(--fg3);text-transform:uppercase}
+.s-paper{box-shadow:var(--shadow-paper)}
+.s-card{box-shadow:var(--shadow-card)}
+.s-witte{box-shadow:var(--shadow-witte);border-color:var(--witte-cool)}
+.s-ember{box-shadow:var(--shadow-ember);border-color:var(--ember-red)}
+.s-halo{box-shadow:var(--shadow-halo);border-color:var(--icon-gold)}
+</style></head><body>
+<div class="wrap">
+<div class="col"><h4>Radii</h4><div class="row">
+<div class="tile" style="border-radius:0"><span class="lbl">0</span></div>
+<div class="tile" style="border-radius:2px"><span class="lbl">2</span></div>
+<div class="tile" style="border-radius:4px"><span class="lbl">4</span></div>
+<div class="tile" style="border-radius:8px"><span class="lbl">8</span></div>
+</div></div>
+<div class="col"><h4>Shadows</h4><div class="row">
+<div class="tile s-paper"><span class="lbl">paper</span></div>
+<div class="tile s-card"><span class="lbl">card</span></div>
+<div class="tile s-witte"><span class="lbl">witte</span></div>
+<div class="tile s-ember"><span class="lbl">ember</span></div>
+<div class="tile s-halo"><span class="lbl">halo</span></div>
+</div></div>
+</div></body></html>

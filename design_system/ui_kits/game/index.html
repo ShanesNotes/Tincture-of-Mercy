@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Tincture of Mercy — In-game UI Kit</title>
+<link rel="stylesheet" href="../../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--rot-brown); color: var(--fg1); font-family: var(--serif-body); min-height: 100vh; }
+
+  /* page chrome */
+  header.kit-head { padding: 36px 48px 18px; background: var(--ink); color: var(--candle-pure); border-bottom: 1px solid var(--icon-gold); }
+  header.kit-head h1 { font-family: var(--serif-display); font-size: 36px; margin: 0 0 6px; letter-spacing: -0.012em; }
+  header.kit-head .sub { font-family: var(--serif-icon); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--icon-gold-warm); }
+  header.kit-head .lede { font-family: var(--serif-body); font-style: italic; font-size: 16px; color: var(--candle-white); margin-top: 14px; max-width: 64ch; line-height: 1.55; }
+
+  .regime-tabs { display: flex; gap: 0; padding: 0 48px; background: var(--ink); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .regime-tabs button { font-family: var(--mono-witte); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; background: transparent; color: var(--damp-ash); border: 0; padding: 14px 22px; cursor: pointer; border-bottom: 2px solid transparent; }
+  .regime-tabs button.on { color: var(--icon-gold-warm); border-bottom-color: var(--icon-gold); }
+  .regime-tabs button:hover:not(.on) { color: var(--candle-white); }
+
+  /* the playing field */
+  .stage-wrap { padding: 36px 48px 80px; }
+  .stage-label { font-family: var(--serif-icon); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--candle-white); margin-bottom: 12px; opacity: 0.75; }
+  .stage { position: relative; width: 100%; aspect-ratio: 16 / 10; border: 1px solid var(--ink); border-radius: 4px; overflow: hidden; background: var(--bg); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+
+  /* a stylized world background — patterned water at the threshold */
+  .world {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(44,53,64,0.18), transparent 70%),
+      linear-gradient(to bottom, var(--bg) 0%, var(--bg) 55%, rgba(91,103,112,0.12) 100%);
+  }
+  .world svg.water { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 22%; opacity: 0.3; }
+  .world .grain { position: absolute; inset: 0; background-image: radial-gradient(rgba(26,22,18,0.08) 1px, transparent 1px); background-size: 4px 4px; opacity: 0.18; mix-blend-mode: multiply; pointer-events: none; }
+
+  /* Wittehaven world — clean grid */
+  .regime-wittehaven .world {
+    background: var(--witte-white);
+    background-image: linear-gradient(rgba(143,163,176,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(143,163,176,0.18) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .regime-wittehaven .world svg.water { display: none; }
+  .regime-wittehaven .world .grain { display: none; }
+
+  /* Paradise world — candle white with faint halo */
+  .regime-paradise .world {
+    background: radial-gradient(circle at 50% 50%, var(--candle-pure) 0%, var(--candle-white) 40%, var(--vellum-bone) 100%);
+  }
+  .regime-paradise .world svg.water { display: none; }
+
+  /* ---------- Kalev state overlay (top-left, ≤ 280×72) ---------- */
+  .kalev {
+    position: absolute; top: 16px; left: 16px;
+    width: 268px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    padding: 10px 12px;
+    box-shadow: var(--shadow-paper);
+    font-family: var(--serif-body);
+  }
+  .kalev .name { font-family: var(--serif-display); font-size: 17px; line-height: 1; color: var(--ink); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; }
+  .kalev .name small { font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.18em; color: var(--fg3); text-transform: uppercase; }
+  .kalev .meters { display: grid; grid-template-columns: 64px 1fr 80px; gap: 4px 10px; align-items: center; }
+  .kalev .mlbl { font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); }
+  .kalev .mbar { height: 4px; background: var(--vellum-bone); border: 1px solid var(--rule); position: relative; }
+  .kalev .mbar > i { position: absolute; inset: 0 auto 0 0; }
+  .kalev .mst { font-family: var(--serif-body); font-style: italic; font-size: 11px; color: var(--fg2); text-align: right; }
+  .b-burden i { background: var(--cedar-brown); width: 55%; }
+  .b-press  i { background: var(--dragon-red); width: 72%; }
+  .b-numb   i { background: var(--lake-slate); width: 30%; }
+  .regime-wittehaven .kalev { border-radius: 0; box-shadow: var(--shadow-witte); }
+  .regime-wittehaven .kalev .name { font-family: var(--mono-witte); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lake-deep); }
+  .regime-wittehaven .kalev .mst { font-family: var(--mono-witte); font-style: normal; text-transform: uppercase; font-size: 10px; letter-spacing: 0.08em; }
+  .regime-paradise .kalev { box-shadow: var(--shadow-halo); }
+
+  /* ---------- Patient panel (centered) ---------- */
+  .patient {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: min(420px, 50%);
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    padding: 22px 26px;
+    box-shadow: var(--shadow-card);
+  }
+  .patient .head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 1px solid var(--rule); margin-bottom: 14px; }
+  .patient .pname { font-family: var(--serif-display); font-size: 28px; line-height: 1; color: var(--ink); }
+  .patient .place { font-family: var(--mono-witte); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg3); }
+  .patient .syms { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin-bottom: 16px; }
+  .patient .syms b { display: block; font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg3); font-weight: 500; margin-bottom: 1px; }
+  .patient .syms span { font-family: var(--serif-body); font-style: italic; font-size: 14px; color: var(--ink-soft); }
+  .patient .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .patient .act { font-family: var(--serif-body); font-size: 13px; padding: 7px 14px; background: transparent; color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 3px; cursor: pointer; }
+  .patient .act.primary { background: var(--ink); color: var(--candle-pure); }
+  .patient .act.ember { color: var(--ember-red); border-color: var(--ember-red); }
+
+  /* Wittehaven: same data, sanctioned register */
+  .regime-wittehaven .patient { border-radius: 0; padding: 18px 22px; }
+  .regime-wittehaven .patient .pname { font-family: var(--mono-witte); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lake-deep); }
+  .regime-wittehaven .patient .syms span { font-family: var(--mono-witte); font-style: normal; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lake-deep); }
+  .regime-wittehaven .patient .act { font-family: var(--mono-witte); text-transform: uppercase; font-size: 10px; letter-spacing: 0.16em; padding: 8px 12px; border-radius: 0; }
+
+  .regime-paradise .patient { box-shadow: var(--shadow-halo); }
+  .regime-paradise .patient .pname { color: var(--ink); }
+
+  /* numbness blur on patient name in Ironwood */
+  .regime-ironwood .patient .pname.numb-blur { filter: blur(0.6px); }
+
+  /* ---------- Pouch (bottom-left) ---------- */
+  .pouch {
+    position: absolute; bottom: 16px; left: 16px;
+    width: 360px;
+    background: var(--cedar-brown);
+    border-radius: 6px;
+    padding: 10px 12px 12px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(0,0,0,0.4);
+  }
+  .pouch .ptitle { font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--candle-white); margin-bottom: 8px; opacity: 0.8; }
+  .pouch .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+  .pouch .slot { aspect-ratio: 1; background: var(--vellum-warm); border: 1px solid var(--ink); border-radius: 2px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .pouch .slot .glyph { font-family: var(--hand-script); font-size: 14px; color: var(--ink); }
+  .pouch .slot .qty { position: absolute; bottom: 1px; right: 3px; font-family: var(--mono-witte); font-size: 8px; color: var(--ink); }
+  .pouch .slot.locked { background: var(--rot-brown); border-color: var(--ink); }
+  .pouch .slot.locked .glyph { color: var(--candle-white); font-size: 11px; }
+  .pouch .slot.ember { background: var(--ember-red); box-shadow: var(--shadow-ember); }
+  .pouch .slot.ember .glyph { color: var(--candle-pure); font-size: 11px; }
+  .pouch .slot.empty { background: rgba(255,255,255,0.04); border-style: dashed; border-color: rgba(255,255,255,0.2); }
+  .regime-wittehaven .pouch { background: var(--lake-deep); border-radius: 0; }
+  .regime-wittehaven .pouch .slot { border-radius: 0; }
+  .regime-wittehaven .pouch .slot .glyph { font-family: var(--mono-witte); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* ---------- Notebook (bottom-right) ---------- */
+  .notebook {
+    position: absolute; bottom: 16px; right: 16px;
+    width: 280px;
+    background: var(--vellum-bone);
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 14px 18px 16px;
+    box-shadow: var(--shadow-card);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 19px, rgba(26,22,18,0.10) 19px 20px);
+  }
+  .notebook .nh { font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--damp-ash); margin-bottom: 6px; }
+  .notebook .nname { font-family: var(--hand-script); font-size: 26px; line-height: 1; color: var(--ink); margin-bottom: 4px; }
+  .notebook .nnote { font-family: var(--hand-script); font-size: 16px; line-height: 1.25; color: var(--ink-soft); font-style: italic; }
+  .notebook .nfoot { margin-top: 10px; font-family: var(--mono-witte); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--damp-ash); display: flex; justify-content: space-between; }
+
+  .regime-wittehaven .notebook { background: #fff; border-radius: 0; background-image: none; padding: 14px 18px; }
+  .regime-wittehaven .notebook .nh { color: var(--witte-cool); font-family: var(--mono-witte); }
+  .regime-wittehaven .notebook .nname { font-family: var(--mono-witte); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lake-deep); }
+  .regime-wittehaven .notebook .nnote { font-family: var(--mono-witte); font-size: 10px; font-style: normal; letter-spacing: 0.04em; color: var(--lake-slate); text-transform: uppercase; }
+
+  /* ---------- Tincture Wheel (mid-craft, replaces patient when active) ---------- */
+  .wheel {
+    position: absolute; top: 50%; right: 18%; transform: translate(0, -50%);
+    width: 200px; height: 200px;
+    display: none;
+  }
+  .wheel.show { display: block; }
+  .wheel-label {
+    font-family: var(--hand-script);
+    font-size: 22px;
+    color: var(--ink);
+    text-align: center;
+    margin-top: 6px;
+  }
+  .regime-wittehaven .wheel-label { font-family: var(--mono-witte); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  /* ---------- Threshold callout ---------- */
+  .ribbon {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    background: rgba(26,22,18,0.85);
+    color: var(--candle-pure);
+    font-family: var(--serif-icon); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+    backdrop-filter: blur(2px);
+  }
+  .regime-wittehaven .ribbon { background: var(--lake-deep); border-radius: 0; }
+  .regime-paradise .ribbon { background: var(--ink); color: var(--icon-gold-warm); }
+
+  /* ---------- IC XC plate (Paradise only) ---------- */
+  .icxc {
+    position: absolute; top: 16px; right: 16px;
+    display: none;
+    text-align: center;
+    background: var(--bg-elevated);
+    border: 2px solid var(--ink);
+    padding: 8px 14px 6px;
+    box-shadow: var(--shadow-halo);
+  }
+  .icxc::after { content: ""; display: block; position: absolute; inset: 4px; border: 1px solid var(--ink); pointer-events: none; }
+  .icxc .top { font-family: var(--serif-icon); font-size: 13px; letter-spacing: 0.32em; color: var(--ink); text-transform: uppercase; }
+  .icxc .nika { font-family: var(--serif-icon); font-size: 9px; letter-spacing: 0.36em; color: var(--icon-gold); text-transform: uppercase; margin-top: 2px; }
+  .regime-paradise .icxc { display: block; }
+
+  /* halo wrapper for sacred disclosure */
+  .halo-active { box-shadow: var(--shadow-halo) !important; }
+
+  /* tremor */
+  @keyframes tremor { 0%,100% { transform: translateX(0); } 25% { transform: translateX(0.5px); } 75% { transform: translateX(-0.5px); } }
+  .tremor { animation: tremor 90ms linear infinite; }
+
+  /* ---------- ANNOTATIONS (around the stage) ---------- */
+  .annotations { position: relative; max-width: 1200px; margin: 24px auto 0; padding: 0 24px; color: var(--candle-white); }
+  .annotations h3 { font-family: var(--serif-icon); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--icon-gold-warm); margin: 32px 0 10px; }
+  .annotations .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 32px; }
+  .annotations .a { font-family: var(--serif-body); font-size: 14px; line-height: 1.55; color: var(--candle-white); opacity: 0.9; }
+  .annotations .a b { display: block; font-family: var(--serif-display); font-size: 17px; color: var(--candle-pure); margin-bottom: 4px; opacity: 1; }
+  .annotations code { font-family: var(--mono-witte); font-size: 12px; background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 2px; color: var(--icon-gold-warm); }
+
+  /* footer */
+  footer.kit-foot { padding: 28px 48px 48px; color: var(--damp-ash); font-family: var(--serif-body); font-style: italic; font-size: 13px; max-width: 64ch; margin: 0 auto; text-align: center; }
+  footer.kit-foot a { color: var(--icon-gold-warm); }
+</style>
+</head>
+<body>
+
+<header class="kit-head">
+  <div class="sub">In-game UI Kit · Cabin / Ironwood Road / Bethany</div>
+  <h1>Tincture of Mercy</h1>
+  <p class="lede">A single set of components, three inversions. The same patient panel, pouch, wheel, and notebook re-theme by switching the regime class on the root container — folk hand to clinical chart to candle-white icon. Switch regimes below to see the same scene under each light.</p>
+</header>
+
+<nav class="regime-tabs" role="tablist" aria-label="Regime">
+  <button class="on" data-regime="ironwood">Ironwood · folk</button>
+  <button data-regime="wittehaven">Wittehaven · sanctioned</button>
+  <button data-regime="paradise">Paradise · sacred</button>
+  <button data-regime="craft" style="margin-left:auto">Mid-craft (wheel)</button>
+</nav>
+
+<div class="stage-wrap">
+  <div class="stage-label">Bethany · bedside · evening</div>
+
+  <main id="stage" class="stage regime-ironwood">
+    <div class="world">
+      <div class="grain"></div>
+      <svg class="water" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="none" stroke="#2c3540" stroke-width="0.6">
+          <path d="M0 12 Q 10 4 20 12 T 40 12 T 60 12 T 80 12 T 100 12 T 120 12 T 140 12 T 160 12 T 180 12 T 200 12" />
+          <path d="M0 22 Q 10 14 20 22 T 40 22 T 60 22 T 80 22 T 100 22 T 120 22 T 140 22 T 160 22 T 180 22 T 200 22" />
+          <path d="M0 32 Q 10 24 20 32 T 40 32 T 60 32 T 80 32 T 100 32 T 120 32 T 140 32 T 160 32 T 180 32 T 200 32" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="ribbon">Sit with her</div>
+
+    <!-- IC XC plate, post-P0 Paradise review only; never active in P0 scenes -->
+    <div class="icxc"><div class="top">IC&middot;XC</div><div class="nika">NIKA</div></div>
+
+    <!-- Kalev state overlay -->
+    <aside class="kalev" aria-label="Kalev's state">
+      <div class="name">Kalev Ward <small>33 · Ironwood</small></div>
+      <div class="meters">
+        <div class="mlbl">Burden</div>
+        <div class="mbar b-burden"><i></i></div>
+        <div class="mst">heavy</div>
+        <div class="mlbl">Pressure</div>
+        <div class="mbar b-press"><i></i></div>
+        <div class="mst">shaking</div>
+        <div class="mlbl">Numbness</div>
+        <div class="mbar b-numb"><i></i></div>
+        <div class="mst">slight distance</div>
+      </div>
+    </aside>
+
+    <!-- Patient panel — folk -->
+    <section class="patient" id="patient" aria-label="Miriam Toll">
+      <div class="head">
+        <div class="pname numb-blur" id="pname">Miriam Toll</div>
+        <div class="place" id="pplace">Bethany · bedside</div>
+      </div>
+      <div class="syms" id="syms">
+        <div><b>Breath</b><span>thin</span></div>
+        <div><b>Hands</b><span>cold</span></div>
+        <div><b>Fear</b><span>quiet</span></div>
+        <div><b>Urgency</b><span>fading</span></div>
+      </div>
+      <div class="actions" id="acts">
+        <button class="act primary">Sit</button>
+        <button class="act">Observe</button>
+        <button class="act">Warm</button>
+        <button class="act">Administer…</button>
+        <button class="act ember">Ember</button>
+        <button class="act">Write the name</button>
+      </div>
+    </section>
+
+    <!-- Tincture Wheel, hidden until craft regime -->
+    <div class="wheel" id="wheel">
+      <svg viewBox="0 0 200 200" width="200" height="200">
+        <circle cx="100" cy="100" r="86" fill="var(--bg-elevated)" stroke="var(--ink)" stroke-width="1.4"/>
+        <circle cx="100" cy="100" r="58" fill="none" stroke="var(--ink)" stroke-width="0.6" opacity=".35"/>
+        <circle cx="100" cy="100" r="30" fill="none" stroke="var(--ink)" stroke-width="0.5" opacity=".25"/>
+        <line x1="100" y1="14" x2="100" y2="186" stroke="var(--ink)" stroke-width="0.6" opacity=".5"/>
+        <line x1="14" y1="100" x2="186" y2="100" stroke="var(--ink)" stroke-width="0.6" opacity=".5"/>
+        <polygon points="100,32 44,100 100,162 146,100" fill="#7a8c5e" fill-opacity=".55" stroke="#5a6b48" stroke-width="1.4"/>
+        <text x="100" y="10"  text-anchor="middle" font-family="Cinzel" font-size="9" letter-spacing="2" fill="#1a1612">RELIEF</text>
+        <text x="100" y="196" text-anchor="middle" font-family="Cinzel" font-size="9" letter-spacing="2" fill="#1a1612">STABILITY</text>
+        <text x="6"   y="104"                       font-family="Cinzel" font-size="9" letter-spacing="2" fill="#1a1612">WARMTH</text>
+        <text x="194" y="104" text-anchor="end"     font-family="Cinzel" font-size="9" letter-spacing="2" fill="#1a1612">RISK</text>
+      </svg>
+      <div class="wheel-label">sound — bitter but clear</div>
+    </div>
+
+    <!-- Pouch -->
+    <aside class="pouch" aria-label="Pouch">
+      <div class="ptitle">Pouch</div>
+      <div class="grid" id="pouchGrid">
+        <div class="slot locked"><div class="glyph">cedar</div></div>
+        <div class="slot"><div class="glyph">pulse</div><div class="qty">3</div></div>
+        <div class="slot"><div class="glyph">cotton</div><div class="qty">2</div></div>
+        <div class="slot"><div class="glyph">wool</div><div class="qty">1</div></div>
+        <div class="slot"><div class="glyph">salt</div><div class="qty">1</div></div>
+        <div class="slot"><div class="glyph">water</div><div class="qty">1</div></div>
+        <div class="slot"><div class="glyph">honey</div><div class="qty">1</div></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot empty"></div>
+        <div class="slot ember"><div class="glyph">ember</div><div class="qty" style="color:#fbf7eb">2</div></div>
+      </div>
+    </aside>
+
+    <!-- Notebook -->
+    <aside class="notebook" id="notebook" aria-label="Notebook">
+      <div class="nh" id="nh">Page 66 · Line 7</div>
+      <div class="nname" id="nname">Eli Keene</div>
+      <div class="nnote" id="nnote">The breath left before the name did.</div>
+      <div class="nfoot"><span>open</span><span>esc to close</span></div>
+    </aside>
+  </main>
+
+  <section class="annotations">
+    <h3>What the regimes change · same DOM, different theme class</h3>
+    <div class="grid">
+      <div class="a"><b>Ironwood</b>Folk register everywhere. Patient name in IM Fell English; symptoms in italic body; actions short verbs. The notebook reads as graphite on lined vellum. Patterned water rims the bottom of the world.</div>
+      <div class="a"><b>Wittehaven</b>Same data, sanctioned register. The patient becomes <code>CASE 0044-B</code>; symptoms become <code>RAD STAGE III</code>; the "Write the name" verb becomes <code>FILE OUTCOME</code>. Radii drop to 0; the world grid replaces water. <em>This is meant to feel relieving.</em></div>
+      <div class="a"><b>Paradise</b>The same panel acquires <code>.halo-active</code>. The IC&middot;XC plate appears top-right only in post-P0 Paradise review mode. Ember verbs are no longer offered; only "Sit" and "Write the name" remain. Sacred disclosure is a class, not a sprite.</div>
+      <div class="a"><b>Mid-craft</b>The patient panel slides aside; the Tincture Wheel appears with the player's crafted polygon overlaid. Quality reads in tactile words — <em>sound — bitter but clear</em>, never <code>+34 healing</code>.</div>
+    </div>
+    <h3>Component contracts</h3>
+    <div class="grid">
+      <div class="a"><b>No numbers leak</b>The review demo keeps sample values in JS, but production UI maps through <code>RegisterLookup.tactile(field_id, value, regime_id)</code>. State meters carry a state word as their right-hand label; raw floats never reach the player.</div>
+      <div class="a"><b>Ember is earned</b>Ember is the only saturated red on the page. It glows in the pouch slot and as a single button tint on the patient panel. Use is a 220ms warm flash → 600ms desaturation; not modeled here, but the slot and button are wired for the trigger.</div>
+      <div class="a"><b>Hand tremor</b>When Pressure is high, add the <code>.tremor</code> class to the cursor and to the Tincture Wheel pointer. 90ms ±0.5px translateX keyframe; never on the wheel itself.</div>
+      <div class="a"><b>Numbness blur</b>When Numbness is high, add <code>.numb-blur</code> to the patient name (<code>filter: blur(0.6px)</code>). Case labels stay crisp. The perceptual debuff is expressed in CSS, not in copy.</div>
+    </div>
+  </section>
+</div>
+
+<footer class="kit-foot">
+  Lucide CDN substitutes for production pixel-art glyphs. IM Fell English / EB Garamond / Cinzel / Caveat / IBM Plex Mono are licensed Google Fonts standing in for bespoke type. See <code>colors_and_type.css</code> for tokens; this kit is HTML for design review, not a runtime.
+</footer>
+
+<script>
+  // -------- Theme switching ------------
+  const stage = document.getElementById('stage');
+  const tabs = document.querySelectorAll('.regime-tabs button');
+
+  // copy register: folk / sanctioned / sacred labels for the same data
+  const COPY = {
+    ironwood: {
+      ribbon: 'Sit with her',
+      pname: 'Miriam Toll',
+      pplace: 'Bethany · bedside',
+      syms: [['Breath','thin'],['Hands','cold'],['Fear','quiet'],['Urgency','fading']],
+      acts: [['Sit','primary'],['Observe',''],['Warm',''],['Administer…',''],['Ember','ember'],['Write the name','']],
+      nh: 'Page 66 · Line 7', nname: 'Eli Keene', nnote: 'The breath left before the name did.',
+      pouchGlyphFamily: 'caveat',
+      showWheel: false, blurName: true, halo: false
+    },
+    wittehaven: {
+      ribbon: 'Active case · bedside',
+      pname: 'CASE 0044-B',
+      pplace: 'STAGE III · RAD',
+      syms: [['Resp.','THIN · 6 BPM'],['Periph.','COLD · 32°C'],['Affect','SUPPRESSED'],['Trend','DECLINING']],
+      acts: [['ADMINISTER E-7','primary'],['CHART OBS',''],['WARM PACK',''],['DOSE PROTOCOL',''],['FILE OUTCOME','']],
+      nh: 'CASE 0044-B · LINE 07', nname: 'TOLL, M.', nnote: 'OUTCOME: PENDING. E-7 NOT ADMINISTERED.',
+      pouchGlyphFamily: 'mono',
+      showWheel: false, blurName: false, halo: false
+    },
+    paradise: {
+      ribbon: 'Sit. Wash. Write her name.',
+      pname: 'Miriam, daughter of Toll',
+      pplace: 'Bethany · received',
+      syms: [['Breath','quieting'],['Hands','warm at last'],['Fear','gone'],['Light','enough']],
+      acts: [['Sit','primary'],['Write the name','']],
+      nh: 'Page 66 · Line 7', nname: 'Miriam Toll', nnote: 'Received.',
+      pouchGlyphFamily: 'caveat',
+      showWheel: false, blurName: false, halo: true
+    },
+    craft: {
+      ribbon: 'Pulseleaf draught — shape the wheel',
+      pname: 'Miriam Toll',
+      pplace: 'Bethany · bedside',
+      syms: [['Breath','thin'],['Hands','cold'],['Fear','quiet'],['Urgency','fading']],
+      acts: [['Add Pulseleaf','primary'],['Add Honey',''],['Add Salt',''],['Pour',''],['Cancel','']],
+      nh: 'Page 66 · Line 7', nname: 'Eli Keene', nnote: 'The breath left before the name did.',
+      pouchGlyphFamily: 'caveat',
+      showWheel: true, blurName: true, halo: false
+    }
+  };
+
+  function applyRegime(name) {
+    const themeMap = { ironwood: 'regime-ironwood', wittehaven: 'regime-wittehaven', paradise: 'regime-paradise', craft: 'regime-ironwood' };
+    stage.className = 'stage ' + themeMap[name];
+    const c = COPY[name];
+
+    document.querySelector('.ribbon').textContent = c.ribbon;
+    const pname = document.getElementById('pname'); pname.textContent = c.pname;
+    pname.classList.toggle('numb-blur', !!c.blurName);
+
+    document.getElementById('pplace').textContent = c.pplace;
+
+    const syms = document.getElementById('syms');
+    syms.innerHTML = c.syms.map(([k,v]) => `<div><b>${k}</b><span>${v}</span></div>`).join('');
+
+    const acts = document.getElementById('acts');
+    acts.innerHTML = c.acts.map(([label, mod]) => `<button class="act ${mod}">${label}</button>`).join('');
+
+    document.getElementById('nh').textContent = c.nh;
+    document.getElementById('nname').textContent = c.nname;
+    document.getElementById('nnote').textContent = c.nnote;
+
+    document.getElementById('wheel').classList.toggle('show', !!c.showWheel);
+    document.getElementById('patient').classList.toggle('halo-active', !!c.halo);
+
+    tabs.forEach(t => t.classList.toggle('on', t.dataset.regime === name));
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => applyRegime(t.dataset.regime)));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Three Hands</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg1); font-family: var(--serif-body); }
+  .card { padding: 22px 32px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .col { padding: 14px 16px; border: 1px solid var(--rule); background: var(--bg-elevated); border-radius: 4px; }
+  .col h4 { font-family: var(--mono-witte); font-size: 9px; letter-spacing: 0.18em; color: var(--fg3); text-transform: uppercase; margin: 0 0 10px; }
+  .specimen { color: var(--ink); }
+  .folk { font-family: var(--serif-body); font-size: 17px; line-height: 1.4; font-style: italic; }
+  .hand { font-family: var(--hand-script); font-size: 26px; line-height: 1.1; }
+  .witte { font-family: var(--mono-witte); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.5; color: var(--lake-deep); }
+  .col.witte-bg { background: var(--witte-white); border-color: var(--witte-cool); border-radius: 0; }
+  .meta { font-family: var(--mono-witte); font-size: 9px; color: var(--fg3); letter-spacing: 0.08em; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="col">
+    <h4>Folk · Kalev</h4>
+    <div class="specimen folk">Pulseleaf, Cedar, Honey, Salt — and Ember.</div>
+    <div class="meta">EB Garamond italic · 17px</div>
+  </div>
+  <div class="col">
+    <h4>Hand · Notebook</h4>
+    <div class="specimen hand">Eli Keene<br/>p. 66 · l. 7</div>
+    <div class="meta">Caveat · 26px</div>
+  </div>
+  <div class="col witte-bg">
+    <h4>Sanctioned</h4>
+    <div class="specimen witte">CASE 0044-B<br/>LOL × 2 · E-7 ¬ADM<br/>OUTCOME: FAILURE</div>
+    <div class="meta">IBM Plex Mono · 11px</div>
+  </div>
+</div>
+</body>
+</html>

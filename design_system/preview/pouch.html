@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Pouch</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+html,body{margin:0;padding:0;background:var(--bg);font-family:var(--serif-body)}
+.pouch{margin:16px 22px;padding:14px 18px;background:var(--cedar-brown);border-radius:6px;box-shadow:var(--shadow-card);max-width:600px}
+.title{font-family:var(--serif-icon);font-size:10px;letter-spacing:.2em;color:var(--candle-white);text-transform:uppercase;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.slot{aspect-ratio:1;background:var(--vellum-warm);border:1px solid var(--ink);border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;position:relative}
+.slot .glyph{font-family:var(--hand-script);font-size:18px;color:var(--ink);line-height:1}
+.slot .qty{position:absolute;bottom:1px;right:3px;font-family:var(--mono-witte);font-size:8px;color:var(--ink)}
+.slot.locked{background:var(--rot-brown);border-color:var(--ink)}
+.slot.locked .glyph{color:var(--candle-white);font-size:14px}
+.slot.ember{background:var(--ember-red);box-shadow:var(--shadow-ember)}
+.slot.ember .glyph{color:var(--candle-pure)}
+</style></head><body><div class="pouch">
+<div class="title">Pouch</div>
+<div class="grid">
+  <div class="slot locked"><div class="glyph">cedar</div></div>
+  <div class="slot"><div class="glyph">pulse</div><div class="qty">3</div></div>
+  <div class="slot"><div class="glyph">cotton</div><div class="qty">2</div></div>
+  <div class="slot"><div class="glyph">wool</div><div class="qty">1</div></div>
+  <div class="slot"><div class="glyph">salt</div><div class="qty">1</div></div>
+  <div class="slot"><div class="glyph">water</div><div class="qty">1</div></div>
+  <div class="slot"><div class="glyph">honey</div><div class="qty">1</div></div>
+  <div class="slot ember"><div class="glyph">ember</div><div class="qty" style="color:#fbf7eb">2</div></div>
+</div>
+</div></body></html>
