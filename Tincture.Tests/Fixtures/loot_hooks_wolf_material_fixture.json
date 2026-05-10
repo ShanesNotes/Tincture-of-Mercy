@@ -1,0 +1,132 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 30,
+    "actor_id": "wolf_alpha",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "combat.protect.strike",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "wolf_alpha",
+      "body_eligibility": "recoverable_body",
+      "body_eligibility_reason": "wolf_killed_in_reachable_zone",
+      "body_eligible": "true",
+      "cause": "combat.protect.strike",
+      "cause_event_id": "evt-outcome-001",
+      "consequence_tags": "body_recoverable,combat,material_consequence,wolf",
+      "death_friction_request_id": "wolf-death-001",
+      "death_kind": "biological_death",
+      "friction_rule_id": "friction.wolf_body.recoverable.v1",
+      "loot_hook": "loot.wolf.material",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": ""
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "true",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "biological_death",
+      "body_recoverable",
+      "combat",
+      "death",
+      "death_friction",
+      "material_consequence",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 40,
+    "actor_id": "kalev",
+    "target_id": "wolf_alpha",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "loot_eligibility_recorded",
+    "fields": {
+      "collector_id": "kalev",
+      "eligibility_reason": "wolf_killed_in_reachable_zone",
+      "eligible": "true",
+      "loot_hook": "loot.wolf.material",
+      "loot_table": "loot.wolf.material",
+      "request_id": "loot-wolf-material-001",
+      "source_actor": "wolf_alpha",
+      "source_domain": "combat",
+      "source_event_id": "evt-00000001",
+      "source_event_type": "actor_died",
+      "source_system": "death_friction.v1",
+      "source_tick": "30"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "combat",
+      "economy",
+      "eligibility",
+      "loot",
+      "wolf_killed_in_reachable_zone"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 40,
+    "actor_id": "kalev",
+    "target_id": "wolf_alpha",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "material_outcome_emitted",
+    "fields": {
+      "collector_id": "kalev",
+      "eligibility_reason": "wolf_killed_in_reachable_zone",
+      "entry_id": "wolf_pelt_fine",
+      "item_id": "wolf_pelt",
+      "loot_hook": "loot.wolf.material",
+      "loot_table": "loot.wolf.material",
+      "material_kind": "pelt",
+      "quality": "fine",
+      "quantity": "2",
+      "rarity": "uncommon",
+      "request_id": "loot-wolf-material-001",
+      "roll_kind": "scripted",
+      "roll_value": "50",
+      "scripted_entry_id": "wolf_pelt_fine",
+      "scripted_fixture_id": "b5c_wolf_material_fixture",
+      "source_actor": "wolf_alpha",
+      "source_domain": "combat",
+      "source_event_id": "evt-00000001",
+      "source_event_type": "actor_died",
+      "source_system": "death_friction.v1",
+      "source_tick": "30"
+    },
+    "costs": {},
+    "results": {
+      "item_id": "wolf_pelt",
+      "quality": "fine",
+      "quantity": "2",
+      "rarity": "uncommon"
+    },
+    "tags": [
+      "combat",
+      "economy",
+      "fine",
+      "loot",
+      "material",
+      "pelt",
+      "uncommon",
+      "wolf"
+    ]
+  }
+]

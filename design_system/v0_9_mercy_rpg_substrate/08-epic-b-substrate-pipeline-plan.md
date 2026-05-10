@@ -377,15 +377,19 @@ Write scope:
 
 Acceptance:
 - Loot eligibility derives from source events: death/down/flee/leash/recoverable body/context.
+- Economy appends `loot_eligibility_recorded` before any `material_outcome_emitted`; both carry `source_event_id`, `source_actor`, `source_event_type`, `source_system`, `source_domain`, and `eligibility_reason`.
 - Item/material events include item id, quality, rarity, quantity, loot table, source actor, and eligibility reason.
 - Wolf death/recoverable body can produce material consequence through events; wolf flee/leash may resolve encounter without material recovery.
 - Loot uses `SeededRng` or scripted fixture metadata for replay.
+- Death/down eligibility reads DeathFriction sideband projection and traces back to the source death/down event; flee/leash withholding reads B4 encounter events without emitting encounter/death/verb/resource events.
 
 Tests:
 - `LootHooks_WolfRecoverableBodyEmitsMaterialOutcome`
 - `LootHooks_FleeOrLeashCanWithholdMaterialOutcome`
+- `LootHooks_DownedWithoutRecoverableBodyWithholdsMaterialOutcome`
 - `LootHooks_QualityRarityReplayFromSeed`
 - `LootHooks_EligibilityTracesToSourceEvent`
+- `LootSystemStructure_*`
 
 ### B6 — Progression and notebook truth surface
 

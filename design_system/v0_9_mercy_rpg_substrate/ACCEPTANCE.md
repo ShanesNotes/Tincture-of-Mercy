@@ -51,7 +51,7 @@ Validation gate: commands at the end of this file
 | Resource profiles | Health/Spirit/Steady/Burden/Pressure/Numbness costs and consequences are event-derived. | All acts |
 | FSR/Vigil | Cooldown and self-administration consequence are tracked. | Witness, wolves |
 | `AbilityDef` / `VerbDef` | Verbs declare costs, domains, resolver table, tags, timer/cooldown ids, item requirements, and presenter text keys; consequential care/combat actions execute through `VerbInvocation`. | All acts |
-| `ItemDef` / loot hooks | Quality budget, loot table hooks, material outcomes, and item events. | Bread, wolves |
+| `ItemDef` / loot hooks | Quality budget, loot table hooks, source-event-traced eligibility, material outcomes, seeded/scripted quality-rarity replay, and later inventory hooks. | Bread, wolves |
 | Leash/route/respawn | Routes and return/reset events are explicit; death/down-driven hooks carry `source_death_event_id` from the DeathFriction projection. | Wolves |
 | Death/friction/moral death | Death, downing, recovery, Witness, and consequence are event-backed. | Witness, wolves |
 | Progression state | Witness, Recollection, Vocation/path points accrue from events. | Witness, wolves |
@@ -65,7 +65,7 @@ Validation gate: commands at the end of this file
 | Bread | Food under constraint, timing, receptivity, ordinary mercy. | Bread use, receptivity shift, cost, embodied response. | Limited food spent poorly, pressure/burden changes, no recipe-victory framing. |
 | Tincture | Shared resolver, scripted roll, resource temptation. | Craft/administer, roll metadata, result, consequence. | Wrong timing/cost can worsen state but does not rewrite Act 4 outcome. |
 | Mother death/Witness | Meaningful care into fixed death, Witness, notebook, burden. | Witness event, death event, recollection hook, notebook entry. | Outcome fixed; actions alter learning, cost, state, and aftermath. |
-| Wolves/boy flight/combat | Threat, aggro, timers, attacks, damage, flee route, loot/material consequence. | Combat events, boy safety state, loot/material event if earned, aftermath. | Kalev can be harmed or die per tuning; child safety is objective. |
+| Wolves/boy flight/combat | Threat, aggro, timers, attacks, damage, flee route, loot/material consequence. | Combat events, boy safety state, `loot_eligibility_recorded` plus `material_outcome_emitted` when earned, withholding when flee/leash prevents recovery, aftermath. | Kalev can be harmed or die per tuning; child safety is objective. |
 
 ## Required documentation checks
 
