@@ -148,6 +148,7 @@ public sealed class DeathFrictionSystem
 
             if (simEvent.EventType == WitnessHookRecordedEventType)
             {
+                // Witness hook events are sideband signals for progression/notebook consumers, not mortality-state transitions.
                 continue;
             }
 

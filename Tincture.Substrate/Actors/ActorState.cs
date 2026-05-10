@@ -103,6 +103,7 @@ public sealed class ActorState
             "aura_expired" => RemoveAura(simEvent),
             "cooldown_started" => UpsertCooldown(simEvent),
             "cooldown_ready" => MarkCooldownReady(simEvent),
+            // Death/friction state is a sideband consequence projection; see ADR 0014 and DeathFrictionSystem.Project.
             _ => this
         };
     }

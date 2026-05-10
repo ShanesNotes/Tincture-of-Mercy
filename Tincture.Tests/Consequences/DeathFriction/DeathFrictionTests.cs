@@ -59,6 +59,7 @@ public sealed class DeathFrictionTests
         Assert.True(projected["mother"].IsDead);
         Assert.Equal(DeathFrictionKind.FixedDeath, projected["mother"].CurrentKind);
         Assert.Equal("witness.kalev", projected["mother"].WitnessHook);
+        Assert.All(replay.Events, simEvent => Assert.Contains(simEvent.Domain.ToId(), simEvent.Tags));
         Assert.Contains(replay.Events, simEvent => simEvent.EventType == DeathFrictionSystem.WitnessHookRecordedEventType
             && simEvent.Fields["source_event_id"] == death.Id
             && simEvent.Fields["recollection_seed"] == "mother_name_witnessed");
@@ -117,6 +118,7 @@ public sealed class DeathFrictionTests
         Assert.False(projected.IsDowned);
         Assert.False(projected.IsDead);
         Assert.Equal("evt-00000002", projected.LastEventId);
+        Assert.All(replay.Events, simEvent => Assert.Contains(simEvent.Domain.ToId(), simEvent.Tags));
         Assert.Contains(replay.Events, simEvent => simEvent.EventType == DeathFrictionSystem.DownedEventType
             && simEvent.Fields["recoverable"] == "true"
             && simEvent.Fields["body_eligible"] == "false"
@@ -165,6 +167,7 @@ public sealed class DeathFrictionTests
         Assert.Equal("recoverable_body", death.Fields["body_eligibility"]);
         Assert.Equal("dead", death.Results["mortality_state"]);
         Assert.Equal("loot.wolf.material", death.Fields["loot_hook"]);
+        Assert.Contains(death.Domain.ToId(), death.Tags);
         Assert.DoesNotContain(replay.Events, simEvent => simEvent.EventType.StartsWith("loot_", StringComparison.Ordinal));
     }
 
