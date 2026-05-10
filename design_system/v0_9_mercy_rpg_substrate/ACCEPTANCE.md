@@ -50,7 +50,7 @@ Validation gate: commands at the end of this file
 | Timers | GCD, work/cast/channel, swing, rite pulse timers emit start/tick/complete/interrupted events. | Bread, tincture, wolves |
 | Resource profiles | Health/Spirit/Steady/Burden/Pressure/Numbness costs and consequences are event-derived. | All acts |
 | FSR/Vigil | Cooldown and self-administration consequence are tracked. | Witness, wolves |
-| `AbilityDef` / `VerbDef` | Verbs declare costs, domains, resolver table, tags, and presenter text keys. | All acts |
+| `AbilityDef` / `VerbDef` | Verbs declare costs, domains, resolver table, tags, timer/cooldown ids, item requirements, and presenter text keys; consequential care/combat actions execute through `VerbInvocation`. | All acts |
 | `ItemDef` / loot hooks | Quality budget, loot table hooks, material outcomes, and item events. | Bread, wolves |
 | Leash/route/respawn | Routes and return/reset events are explicit; later content can tune friction. | Wolves |
 | Death/friction/moral death | Death, downing, recovery, Witness, and consequence are event-backed. | Witness, wolves |
