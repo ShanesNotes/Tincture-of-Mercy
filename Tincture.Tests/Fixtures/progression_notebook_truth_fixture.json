@@ -1,0 +1,218 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 20,
+    "actor_id": "kalev",
+    "target_id": "child",
+    "location": null,
+    "verb_id": "care.bread.offer",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "item_id": "bread_loaf",
+      "path_delta": "2",
+      "path_id": "apothecary",
+      "person_id": "child",
+      "progression_rule_id": "progression.bread_mercy.v1",
+      "recognition_label": "bread received",
+      "recognition_seed": "bread_received",
+      "recollection_delta": "1"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "care",
+      "recollection_seed"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 50,
+    "actor_id": "mother",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "death.mother",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "consequence_tags": "act4,gravity_encounter,mother,witnessed",
+      "death_kind": "fixed_death",
+      "person_id": "mother",
+      "witness_hook": "witness.kalev"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "death",
+      "mother",
+      "witness",
+      "witnessed"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 51,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "witness.kalev",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "witness_hook_recorded",
+    "fields": {
+      "burden_delta": "3",
+      "person_id": "mother",
+      "recollection_seed": "mother_name_witnessed",
+      "source_event_id": "evt-00000002",
+      "witness_hook": "witness.kalev"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "burden",
+      "mother",
+      "recollection_seed",
+      "witness",
+      "witnessed"
+    ]
+  },
+  {
+    "id": "evt-00000004",
+    "sequence": 4,
+    "tick": 60,
+    "actor_id": "kalev",
+    "target_id": "child",
+    "location": null,
+    "verb_id": "care.presence.sit",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "person_id": "child",
+      "presence": "sat_with_child",
+      "recognition_label": "sat with child",
+      "recognition_seed": "presence_at_bedside"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "care",
+      "presence"
+    ]
+  },
+  {
+    "id": "evt-00000005",
+    "sequence": 5,
+    "tick": 70,
+    "actor_id": "kalev",
+    "target_id": "child",
+    "location": null,
+    "verb_id": "combat.protect.boy",
+    "domain": "combat",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "path_delta": "3",
+      "path_id": "hesychasm",
+      "person_id": "child",
+      "progression_rule_id": "progression.protection_cost.v1",
+      "recognition_label": "protected on road",
+      "recognition_seed": "protected_on_road",
+      "vocation_delta": "2",
+      "witness_delta": "1"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "combat",
+      "protected",
+      "protection"
+    ]
+  },
+  {
+    "id": "evt-00000006",
+    "sequence": 6,
+    "tick": 80,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "notebook.write_name",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.write_name.mother",
+      "line": "3",
+      "name": "Mara",
+      "notebook_entry_id": "entry.mother.name",
+      "page": "1",
+      "person_id": "mother",
+      "source_event_id": "evt-00000002"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "name",
+      "notebook",
+      "person_record"
+    ]
+  },
+  {
+    "id": "evt-00000007",
+    "sequence": 7,
+    "tick": 82,
+    "actor_id": "kalev",
+    "target_id": "child",
+    "location": null,
+    "verb_id": "notebook.ordinary_mercy",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.ordinary_mercy.bread",
+      "notebook_entry_id": "entry.child.bread",
+      "person_id": "child",
+      "recognition_seed": "bread_ordinary_mercy",
+      "recognition_seed_kind": "bread",
+      "source_event_id": "evt-00000001"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "notebook",
+      "person_record"
+    ]
+  },
+  {
+    "id": "evt-00000008",
+    "sequence": 8,
+    "tick": 90,
+    "actor_id": "kalev",
+    "target_id": "child",
+    "location": null,
+    "verb_id": "notebook.aftermath",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.aftermath.protection",
+      "notebook_entry_id": "entry.child.protected",
+      "person_id": "child",
+      "source_event_id": "evt-00000005"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "notebook",
+      "person_record",
+      "protection"
+    ]
+  }
+]
