@@ -58,6 +58,14 @@ public sealed record TimerRequest
             throw new InvalidOperationException("TimerRequest.CompletionConsumer must be non-blank.");
         }
 
+        if (!CompletionConsumer.All(character =>
+            character is >= 'a' and <= 'z'
+            || character is >= '0' and <= '9'
+            || character == '_'))
+        {
+            throw new InvalidOperationException("TimerRequest.CompletionConsumer must be snake_case for event tags.");
+        }
+
         return this with { ContextFields = SimEvent.StableDictionary(ContextFields) };
     }
 }

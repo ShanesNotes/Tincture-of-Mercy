@@ -4,6 +4,7 @@ using Tincture.Substrate.Events;
 
 namespace Tincture.Substrate.Sim.Timers;
 
+// ADR 0013: timers and cooldowns are sibling event systems; cooldown_ready stays owned by CooldownSystem.
 public sealed class TimerSystem
 {
     public const string SourceSystemId = "timer_system.v1";

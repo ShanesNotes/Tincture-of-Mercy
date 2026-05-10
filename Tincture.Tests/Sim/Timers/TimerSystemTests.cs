@@ -101,6 +101,7 @@ public sealed class TimerSystemTests
         Assert.Equal("verb_invocation", completion.Fields["completion_consumer"]);
         Assert.Equal("verb_invocation.resolve", completion.Fields["completion_key"]);
         Assert.Equal("verb-invocation-001", completion.Fields["invocation_id"]);
+        Assert.Equal("evt-verb-invocation-001", completion.Fields["source_event_id"]);
         Assert.Equal("combat.attack.resolve", completion.VerbId);
         Assert.Equal(Tincture.Substrate.Events.SimDomain.Combat, completion.Domain);
         Assert.True(projected["verb-invocation-001"].IsComplete);
@@ -148,6 +149,11 @@ public sealed class TimerSystemTests
         Assert.Throws<InvalidOperationException>(() => new TimerDefinition { TimerId = "timer.bad", DurationTicks = 1, TickIntervalTicks = 2 }.Validate());
         Assert.Throws<InvalidOperationException>(() => Request("bad", string.Empty, 1).Validate());
         Assert.Throws<InvalidOperationException>(() => Request("bad", "combat.guard.ready", -1).Validate());
+        Assert.Throws<InvalidOperationException>(() =>
+            (Request("bad", "combat.guard.ready", 1) with
+            {
+                CompletionConsumer = "Verb.Invocation.v2"
+            }).Validate());
         Assert.Throws<ArgumentOutOfRangeException>(() => ((TimerKind)999).ToId());
         Assert.Throws<ArgumentOutOfRangeException>(() => TimerKindExtensions.FromId("cooldown_ready"));
     }
@@ -197,6 +203,7 @@ public sealed class TimerSystemTests
         var request = Request("verb-invocation-001", "combat.attack.resolve", 20) with
         {
             CompletionKey = "verb_invocation.resolve",
+            SourceEventId = "evt-verb-invocation-001",
             TargetId = "wolf_01",
             ContextFields = new SortedDictionary<string, string>(StringComparer.Ordinal)
             {
