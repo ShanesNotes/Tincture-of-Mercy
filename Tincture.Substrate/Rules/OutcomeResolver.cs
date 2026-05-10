@@ -146,7 +146,7 @@ public sealed class OutcomeResolver : IOutcomeResolver
         OutcomeTableEntry entry)
     {
         var tags = entry.Tags
-            .Concat(new[] { request.Domain.ToString().ToLowerInvariant(), "resolved_outcome" })
+            .Concat(new[] { request.Domain.ToId(), "resolved_outcome" })
             .ToList();
 
         return new SimEvent

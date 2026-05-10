@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Collections.ObjectModel;
 using Tincture.Substrate.Events;
+using Tincture.Substrate.Rules;
 
 namespace Tincture.Substrate.Actors;
 
@@ -108,6 +109,11 @@ public sealed class ActorState
 
     private ActorState ApplyResourceChanged(SimEvent simEvent)
     {
+        if (!string.Equals(simEvent.SourceSystem, CostLedger.SourceSystemId, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException("resource_changed events must originate from the cost ledger.");
+        }
+
         var key = ResourceKeyExtensions.FromId(Required(simEvent.Fields, "resource_key"));
         var newValue = int.Parse(Required(simEvent.Fields, "new_value"), CultureInfo.InvariantCulture);
         var profile = resourceProfiles[key];

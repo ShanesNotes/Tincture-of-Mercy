@@ -88,6 +88,28 @@ public sealed class ActorStateTests
     }
 
     [Fact]
+    public void ActorState_RejectsResourceChangedEventsOutsideCostLedger()
+    {
+        var actor = ActorState.Create("kalev");
+        var forged = new SimEvent
+        {
+            Tick = 1,
+            ActorId = "kalev",
+            VerbId = "debug.resource.forge",
+            Domain = SimDomain.Debug,
+            SourceSystem = "debug_resource_patch.v1",
+            EventType = "resource_changed",
+            Fields = new SortedDictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["resource_key"] = "health",
+                ["new_value"] = "99"
+            }
+        };
+
+        Assert.Throws<InvalidOperationException>(() => actor.Apply(forged));
+    }
+
+    [Fact]
     public void ActorState_DerivedStatsRecomputeFromAuras()
     {
         var actor = ActorState.Create("kalev", new StatBlock { Body = 3, Spirit = 2, Care = 4, Nerve = 5, Attention = 6 });

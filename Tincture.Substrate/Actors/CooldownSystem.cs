@@ -56,7 +56,7 @@ public sealed class CooldownSystem
                 Tick = tick,
                 ActorId = actor.ActorId,
                 VerbId = verbId,
-                Domain = SimDomain.Debug,
+                Domain = cooldown.Domain,
                 SourceSystem = SourceSystemId,
                 EventType = "cooldown_ready",
                 Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
@@ -64,7 +64,7 @@ public sealed class CooldownSystem
                     ["cooldown_id"] = cooldown.CooldownId,
                     ["ready_tick"] = cooldown.ReadyTick.ToString(CultureInfo.InvariantCulture)
                 }),
-                Tags = SimEvent.StableTags(["cooldown", "ready"])
+                Tags = SimEvent.StableTags(["cooldown", "ready", cooldown.Domain.ToId()])
             })
             .ToList()
             .AsReadOnly();

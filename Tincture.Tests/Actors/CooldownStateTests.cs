@@ -35,6 +35,8 @@ public sealed class CooldownStateTests
         Assert.Equal(17, afterStart.Resource(ResourceKey.Spirit));
         Assert.Equal(afterStart.Resource(ResourceKey.Spirit), afterUnavailable.Resource(ResourceKey.Spirit));
         Assert.Equal(15, afterStart.Cooldowns[fsrVigil.CooldownId].ReadyTick);
+        Assert.Equal(SimDomain.Care, readyEvents.Single().Domain);
+        Assert.Contains("care", readyEvents.Single().Tags);
         Assert.True(afterReady.Cooldowns[fsrVigil.CooldownId].ReadyEmitted);
         Assert.Equal(afterReady.Resource(ResourceKey.Spirit), replayed.Resource(ResourceKey.Spirit));
         Assert.Equal(afterReady.Cooldowns[fsrVigil.CooldownId].ReadyTick, replayed.Cooldowns[fsrVigil.CooldownId].ReadyTick);

@@ -7,6 +7,8 @@ public sealed record CooldownState
 {
     public string CooldownId { get; init; } = string.Empty;
 
+    public SimDomain Domain { get; init; }
+
     public long StartedTick { get; init; }
 
     public long ReadyTick { get; init; }
@@ -20,6 +22,7 @@ public sealed record CooldownState
         return new CooldownState
         {
             CooldownId = Required(simEvent.Fields, "cooldown_id"),
+            Domain = simEvent.Domain,
             StartedTick = long.Parse(Required(simEvent.Fields, "started_tick"), CultureInfo.InvariantCulture),
             ReadyTick = long.Parse(Required(simEvent.Fields, "ready_tick"), CultureInfo.InvariantCulture),
             ReadyEmitted = false

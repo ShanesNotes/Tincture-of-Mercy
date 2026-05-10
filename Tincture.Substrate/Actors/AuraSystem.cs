@@ -46,7 +46,7 @@ public sealed class AuraSystem
                 Tick = tick,
                 ActorId = actor.ActorId,
                 VerbId = verbId,
-                Domain = SimDomain.Debug,
+                Domain = aura.Domain,
                 SourceSystem = SourceSystemId,
                 EventType = "aura_expired",
                 Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
@@ -55,7 +55,7 @@ public sealed class AuraSystem
                     ["expired_tick"] = tick.ToString(CultureInfo.InvariantCulture),
                     ["source_event_id"] = aura.SourceEventId
                 }),
-                Tags = SimEvent.StableTags(["aura", "expired"])
+                Tags = SimEvent.StableTags(["aura", "expired", aura.Domain.ToId()])
             })
             .ToList()
             .AsReadOnly();
@@ -89,7 +89,6 @@ public sealed class AuraSystem
             ["max_stacks"] = definition.MaxStacks.ToString(CultureInfo.InvariantCulture),
             ["modifier_amount"] = definition.ModifierAmount.ToString(CultureInfo.InvariantCulture),
             ["modifier_id"] = definition.ModifierId,
-            ["modifier_ids"] = definition.ModifierId,
             ["modifier_kind"] = definition.ModifierKind.ToString(),
             ["stack_count"] = stackCount.ToString(CultureInfo.InvariantCulture),
             ["started_tick"] = startedTick.ToString(CultureInfo.InvariantCulture)
@@ -115,7 +114,7 @@ public sealed class AuraSystem
             SourceSystem = SourceSystemId,
             EventType = eventType,
             Fields = SimEvent.StableDictionary(fields),
-            Tags = SimEvent.StableTags(["aura", "modifier", domain.ToString().ToLowerInvariant()])
+            Tags = SimEvent.StableTags(["aura", "modifier", domain.ToId()])
         };
     }
 }

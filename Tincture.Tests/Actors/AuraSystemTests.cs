@@ -22,6 +22,8 @@ public sealed class AuraSystemTests
 
         Assert.Single(expiredEvents);
         Assert.Equal("aura_expired", expiredEvents.Single().EventType);
+        Assert.Equal(SimDomain.Care, expiredEvents.Single().Domain);
+        Assert.Contains("care", expiredEvents.Single().Tags);
         Assert.Empty(expired.ActiveAuras);
     }
 
@@ -81,6 +83,18 @@ public sealed class AuraSystemTests
         Assert.Equal(2, twice.ActiveAuras[aura.AuraId].StackCount);
         Assert.Equal(2, capped.ActiveAuras[aura.AuraId].StackCount);
         Assert.Equal(4, auraSystem.AssembleModifiers(capped, 4).Single().Amount);
+    }
+
+    [Fact]
+    public void AuraSystem_AuraEventsUseSingularModifierIdMetadata()
+    {
+        var actor = ActorState.Create("kalev");
+        var auraSystem = new AuraSystem();
+        var simEvent = auraSystem.ApplyAura(actor, CalmAura(), 1, "care.tincture.administer", SimDomain.Care);
+
+        Assert.Equal("aura.tincture_calm.steady", simEvent.Fields["modifier_id"]);
+        Assert.False(simEvent.Fields.ContainsKey("modifier_ids"));
+        Assert.Contains("care", simEvent.Tags);
     }
 
     private static AuraDefinition CalmAura(

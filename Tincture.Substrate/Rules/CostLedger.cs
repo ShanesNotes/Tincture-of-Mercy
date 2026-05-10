@@ -67,7 +67,7 @@ public sealed class CostLedger
             {
                 [resourceId] = newValue.ToString(CultureInfo.InvariantCulture)
             }),
-            Tags = SimEvent.StableTags(["cost", "resource", request.Domain.ToString().ToLowerInvariant()])
+            Tags = SimEvent.StableTags(["cost", "resource", request.Domain.ToId()])
         };
     }
 
@@ -90,7 +90,7 @@ public sealed class CostLedger
                 pair => pair.Key.ToId(),
                 pair => pair.Value.ToString(CultureInfo.InvariantCulture),
                 StringComparer.Ordinal)),
-            Tags = SimEvent.StableTags(["cost", "rejected", request.Domain.ToString().ToLowerInvariant()])
+            Tags = SimEvent.StableTags(["cost", "rejected", request.Domain.ToId()])
         };
     }
 }

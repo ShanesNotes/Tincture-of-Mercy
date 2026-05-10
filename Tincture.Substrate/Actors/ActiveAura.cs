@@ -10,6 +10,8 @@ public sealed record ActiveAura
 
     public string SourceEventId { get; init; } = string.Empty;
 
+    public SimDomain Domain { get; init; }
+
     public long StartedTick { get; init; }
 
     public long ExpiresAtTick { get; init; }
@@ -67,6 +69,7 @@ public sealed record ActiveAura
         {
             AuraId = Required(fields, "aura_id"),
             SourceEventId = simEvent.Id,
+            Domain = simEvent.Domain,
             StartedTick = long.Parse(Required(fields, "started_tick"), CultureInfo.InvariantCulture),
             ExpiresAtTick = long.Parse(Required(fields, "expires_tick"), CultureInfo.InvariantCulture),
             StackCount = int.Parse(Required(fields, "stack_count"), CultureInfo.InvariantCulture),

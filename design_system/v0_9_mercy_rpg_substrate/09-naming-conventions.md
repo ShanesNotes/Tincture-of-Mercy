@@ -121,7 +121,7 @@ These are the strings that appear in event logs, debug panels, save files, and n
 | Loot table ID | dotted snake_case | `opening.wolf.materials`, `cabin.bread_supply` |
 | Receptivity profile ID | snake_case, descriptive | `child.after_water_fearful`, `mother.fading_act4`, `child.after_bread_trusting` |
 | Resource key | snake_case | `health`, `spirit`, `steady`, `burden`, `pressure`, `numbness` |
-| Domain (`SimDomain` enum value as string) | PascalCase string when serialized | `Care`, `Craft`, `Combat`, `Witness`, `Economy`, `Progression`, `Notebook`, `Debug` |
+| Domain (`SimDomain` stable id / event tag) | snake_case via explicit `SimDomainExtensions.ToId()` switch | `care`, `craft`, `combat`, `witness`, `economy`, `progression`, `notebook`, `debug` |
 
 ### Verb-ID grammar
 
