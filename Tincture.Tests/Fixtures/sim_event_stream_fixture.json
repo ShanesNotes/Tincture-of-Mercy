@@ -1,0 +1,51 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 12,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "wash_hands",
+    "domain": "care",
+    "source_system": "fixture",
+    "event_type": "verb_completed",
+    "fields": {
+      "fixture_id": "b1_stream",
+      "temperature": "warm"
+    },
+    "costs": {
+      "steady": "1"
+    },
+    "results": {
+      "comfort": "small"
+    },
+    "tags": [
+      "care",
+      "water"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 13,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "speak_softly",
+    "domain": "care",
+    "source_system": "fixture",
+    "event_type": "presence_offered",
+    "fields": {
+      "voice_register": "folk"
+    },
+    "costs": {},
+    "results": {
+      "receptivity": "1"
+    },
+    "tags": [
+      "presence",
+      "witness_seed"
+    ]
+  }
+]
