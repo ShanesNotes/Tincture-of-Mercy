@@ -44,15 +44,15 @@ Validation gate: commands at the end of this file
 | `OutcomeResolver` | Scripted fixture roll and seeded roll both produce stable events for care and combat domains; B2 records additive modifier composition under a named composer rule. | Tincture, wolves |
 | `AuraSystem` | Add/remove/expire aura events and modifier projection. | Tincture, wolves |
 | `ActorState` / `StatBlock` / `DerivedStats` | Health, Spirit, Steady, Burden, Pressure, Numbness hooks update through events. | Bread, Witness, wolves |
-| `DisparityService` | Computes encounter and care mismatch/risk without owning final outcomes. | Tincture, wolves |
-| `AttentionThreatTable` | Threat changes from care, movement, attacks, proximity, boy target pressure. | Wolves |
-| `AggroCallFleeRadius` | Call/flee/leash radius events and target selection are replayable. | Wolves |
+| `DisparityService` | Computes encounter and care mismatch/risk as resolver modifiers without owning outcomes or appending events. | Tincture, wolves |
+| `AttentionThreatTable` | Threat changes from care, movement, attacks, proximity, protected-role pressure, and line-of-protection; target choice is deterministic. | Wolves |
+| `AggroCallFleeRadius` | Call/flee/leash radius events and target selection are replayable through `EncounterAiSystem`. | Wolves |
 | Timers | GCD, work/cast/channel, swing, rite pulse timers emit start/tick/complete/interrupted events. | Bread, tincture, wolves |
 | Resource profiles | Health/Spirit/Steady/Burden/Pressure/Numbness costs and consequences are event-derived. | All acts |
 | FSR/Vigil | Cooldown and self-administration consequence are tracked. | Witness, wolves |
 | `AbilityDef` / `VerbDef` | Verbs declare costs, domains, resolver table, tags, timer/cooldown ids, item requirements, and presenter text keys; consequential care/combat actions execute through `VerbInvocation`. | All acts |
 | `ItemDef` / loot hooks | Quality budget, loot table hooks, material outcomes, and item events. | Bread, wolves |
-| Leash/route/respawn | Routes and return/reset events are explicit; later content can tune friction. | Wolves |
+| Leash/route/respawn | Routes and return/reset events are explicit; death/down-driven hooks carry `source_death_event_id` from the DeathFriction projection. | Wolves |
 | Death/friction/moral death | Death, downing, recovery, Witness, and consequence are event-backed. | Witness, wolves |
 | Progression state | Witness, Recollection, Vocation/path points accrue from events. | Witness, wolves |
 | Notebook/presenters | Notebook and domain presenters read events without owning authoritative state. | All acts |

@@ -333,8 +333,10 @@ Dependencies: B1, B2, B3, B3.5. May consume B5b invocation fixtures when availab
 Write scope:
 - `Tincture.Substrate/Combat/*`
 - `Tincture.Substrate/World/SpatialContext.cs`
+- `Tincture.Substrate/World/SpatialTypes.cs`
 - `Tincture.Tests/Combat/*`
 - `Tincture.Tests/World/*`
+- `Tincture.Tests/Fixtures/encounter_ai_keep_the_line_fixture.json`
 
 Required primitives/seams:
 - Minimal `SpatialContext` with zones/grid coordinates/noise/line-of-attention sufficient for headless tests; no Godot `Vector2` dependency.
@@ -348,6 +350,10 @@ Acceptance:
 - Threat can target Kalev or the boy using proximity, boy position, noise, wounds, movement, and prior events.
 - Aggro/call/flee/leash/respawn events are replayable and do not require scene-local state.
 - Respawn/friction hooks are named and event-shaped even where later content tunes final route behavior.
+- `EncounterAiSystem` is the only B4 append coordinator for non-consequential encounter events.
+- Consequential attacks remain routed through B5b `VerbInvocation`; B4 only returns intent/modifier inputs.
+- Death/down-driven encounter friction and respawn read through `DeathFrictionSystem.Project(stream.Events)` and record `source_death_event_id` from `DeathFrictionState.LastEventId`.
+- B4 event types are snake_case: `spatial_band_changed`, `threat_target_changed`, `aggro_entered`, `aggro_exited`, `pack_call_emitted`, `flee_initiated`, `leash_triggered`, `route_node_reached`, `encounter_friction_requested`, `encounter_respawn_reset`.
 
 Tests:
 - `SpatialContext_HeadlessZonesAndNoiseFeedThreat`
@@ -355,6 +361,10 @@ Tests:
 - `ThreatTable_TargetsBoyOrKalev`
 - `AggroCallFleeRadius_EmitsReplayableEvents`
 - `LeashRouteRespawn_ResetAndFrictionHooksReplay`
+- `EncounterAiSystem_AppendsB4EventsThroughOneCoordinator`
+- `EncounterAiSystem_KeepTheLineFixtureReplayStable`
+- `DisparityService_FeedsVerbInvocationModifiers`
+- `EncounterAiSystemStructure_*`
 
 ### B5c — Loot hooks and material consequence
 
