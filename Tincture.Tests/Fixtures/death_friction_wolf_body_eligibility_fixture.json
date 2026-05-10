@@ -1,0 +1,45 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 128,
+    "actor_id": "wolf_alpha",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "combat.wolf.death_or_flee",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "wolf_alpha",
+      "body_eligibility": "recoverable_body",
+      "body_eligibility_reason": "wolf_killed_in_reachable_zone",
+      "body_eligible": "true",
+      "cause": "combat.attack.resolve",
+      "cause_event_id": "evt-00000077",
+      "consequence_tags": "body_recoverable,combat,material_consequence,wolf",
+      "death_friction_request_id": "wolf-death-001",
+      "death_kind": "biological_death",
+      "friction_rule_id": "friction.wolf_body.recoverable.v1",
+      "loot_hook": "loot.wolf.material",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": "progression.protection"
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "true",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "biological_death",
+      "body_recoverable",
+      "combat",
+      "death",
+      "death_friction",
+      "material_consequence",
+      "wolf"
+    ]
+  }
+]

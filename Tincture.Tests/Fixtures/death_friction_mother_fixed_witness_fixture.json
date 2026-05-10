@@ -1,0 +1,76 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 410,
+    "actor_id": "mother",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "death.mother",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "mother",
+      "body_eligibility": "not_recoverable",
+      "body_eligible": "false",
+      "cause": "act4_fading_fixture",
+      "comfort_tags": "held_hand,name_spoken",
+      "consequence_tags": "act4,gravity_encounter,mother,witnessed",
+      "death_friction_request_id": "death-mother-001",
+      "death_kind": "fixed_death",
+      "fixed_outcome": "true",
+      "friction_rule_id": "friction.mother_fixed.v1",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": "witness.kalev"
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "act4",
+      "death",
+      "death_friction",
+      "fixed_death",
+      "gravity_encounter",
+      "mother",
+      "witness",
+      "witnessed"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 411,
+    "actor_id": "kalev",
+    "target_id": "mother",
+    "location": null,
+    "verb_id": "witness.kalev",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "witness_hook_recorded",
+    "fields": {
+      "burden_delta": "3",
+      "consequence_tags": "burden,mother,recollection_seed,witnessed",
+      "recollection_seed": "mother_name_witnessed",
+      "source_event_id": "evt-00000001",
+      "target_actor_id": "mother",
+      "witness_hook": "witness.kalev",
+      "witness_request_id": "witness-kalev-mother-001"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "burden",
+      "death_friction",
+      "mother",
+      "recollection_seed",
+      "witness",
+      "witnessed"
+    ]
+  }
+]

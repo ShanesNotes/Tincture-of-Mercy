@@ -1,0 +1,84 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 92,
+    "actor_id": "kalev",
+    "target_id": "wolf_alpha",
+    "location": null,
+    "verb_id": "combat.kalev.downed",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_downed",
+    "fields": {
+      "actor": "kalev",
+      "body_eligibility": "not_applicable",
+      "body_eligible": "false",
+      "boy_safety_state": "behind_kalev",
+      "cause": "wolf_bite_overwhelm",
+      "cause_event_id": "evt-combat-hit-001",
+      "consequence_tags": "boy_protected,combat,kalev,recovery_window",
+      "death_friction_request_id": "kalev-downed-001",
+      "death_kind": "downed",
+      "friction_rule_id": "friction.kalev_downed.recoverable.v1",
+      "recoverable": "true",
+      "remaining_recovery_ticks": "12",
+      "target": "wolf_alpha",
+      "witness_hook": "progression.protection"
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "downed",
+      "recoverable": "true"
+    },
+    "tags": [
+      "boy_protected",
+      "combat",
+      "death_friction",
+      "downed",
+      "kalev",
+      "recovery_window"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 104,
+    "actor_id": "kalev",
+    "target_id": "wolf_alpha",
+    "location": null,
+    "verb_id": "combat.kalev.recover",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_recovered",
+    "fields": {
+      "actor": "kalev",
+      "body_eligibility": "not_applicable",
+      "body_eligible": "false",
+      "consequence_tags": "combat,kalev,recovered",
+      "death_friction_request_id": "kalev-recovered-001",
+      "death_kind": "recovery",
+      "friction_rule_id": "friction.kalev_downed.recoverable.v1",
+      "health_floor": "1",
+      "recoverable": "false",
+      "recovery_policy": "recover_after_safe_window",
+      "source_downed_event_id": "evt-00000001",
+      "target": "wolf_alpha",
+      "witness_hook": ""
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "alive",
+      "recoverable": "false"
+    },
+    "tags": [
+      "combat",
+      "death_friction",
+      "kalev",
+      "recovered",
+      "recovery"
+    ]
+  }
+]
