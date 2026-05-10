@@ -7,6 +7,8 @@ namespace Tincture.Substrate.Rules;
 public sealed class CostLedger
 {
     public const string SourceSystemId = "cost_ledger.v1";
+    public const string ResourceChangedEventType = "resource_changed";
+    public const string CostRejectedEventType = "cost_rejected";
 
     public CostLedgerResult ApplyCosts(ActorState actor, CostRequest request)
     {
@@ -49,7 +51,7 @@ public sealed class CostLedger
             VerbId = request.VerbId,
             Domain = request.Domain,
             SourceSystem = SourceSystemId,
-            EventType = "resource_changed",
+            EventType = ResourceChangedEventType,
             Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
             {
                 ["cause"] = request.Cause,
@@ -80,7 +82,7 @@ public sealed class CostLedger
             VerbId = request.VerbId,
             Domain = request.Domain,
             SourceSystem = SourceSystemId,
-            EventType = "cost_rejected",
+            EventType = CostRejectedEventType,
             Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
             {
                 ["cost_ledger_request_id"] = request.RequestId,

@@ -7,6 +7,9 @@ namespace Tincture.Substrate.Actors;
 public sealed class CooldownSystem
 {
     public const string SourceSystemId = "cooldown_state.v1";
+    public const string ReadyEventType = "cooldown_ready";
+    public const string StartedEventType = "cooldown_started";
+    public const string UnavailableEventType = "cooldown_unavailable";
 
     private readonly CostLedger costLedger;
 
@@ -58,7 +61,7 @@ public sealed class CooldownSystem
                 VerbId = verbId,
                 Domain = cooldown.Domain,
                 SourceSystem = SourceSystemId,
-                EventType = "cooldown_ready",
+                EventType = ReadyEventType,
                 Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
                 {
                     ["cooldown_id"] = cooldown.CooldownId,
@@ -94,7 +97,7 @@ public sealed class CooldownSystem
             VerbId = request.VerbId,
             Domain = request.Domain,
             SourceSystem = SourceSystemId,
-            EventType = "cooldown_started",
+            EventType = StartedEventType,
             Fields = SimEvent.StableDictionary(fields),
             Costs = SimEvent.StableDictionary(costs),
             Tags = SimEvent.StableTags(definition.Tags.Concat(["cooldown", "started"]))
@@ -110,7 +113,7 @@ public sealed class CooldownSystem
             VerbId = request.VerbId,
             Domain = request.Domain,
             SourceSystem = SourceSystemId,
-            EventType = "cooldown_unavailable",
+            EventType = UnavailableEventType,
             Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
             {
                 ["cooldown_id"] = cooldownId,

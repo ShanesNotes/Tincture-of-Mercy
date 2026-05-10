@@ -1,0 +1,85 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 5,
+    "actor_id": "kalev",
+    "target_id": "traveler",
+    "location": null,
+    "verb_id": "economy.item.receive",
+    "domain": "economy",
+    "source_system": "fixture.item_source",
+    "event_type": "item_received",
+    "fields": {
+      "inventory_delta": "1",
+      "item_id": "bread",
+      "ledger_rule_id": "item_ledger.explicit_delta.v1",
+      "source_event_id": "evt-bread-gift"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "inventory"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 8,
+    "actor_id": "kalev",
+    "target_id": "traveler",
+    "location": null,
+    "verb_id": "care.share_bread",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "inventory_delta": "-1",
+      "item_id": "bread",
+      "ledger_rule_id": "item_ledger.explicit_delta.v1",
+      "source_event_id": "evt-bread-use"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "inventory"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 12,
+    "actor_id": "kalev",
+    "target_id": "wolf_fixture",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "material_outcome_emitted",
+    "fields": {
+      "entry_id": "wolf_pelt_fine",
+      "item_id": "wolf_pelt",
+      "quality": "fine",
+      "quantity": "2",
+      "rarity": "uncommon",
+      "source_event_id": "evt-death-0001",
+      "source_event_type": "actor_died",
+      "source_system": "death_friction.v1"
+    },
+    "costs": {},
+    "results": {
+      "item_id": "wolf_pelt",
+      "quality": "fine",
+      "quantity": "2",
+      "rarity": "uncommon"
+    },
+    "tags": [
+      "economy",
+      "loot",
+      "material",
+      "wolf"
+    ]
+  }
+]

@@ -238,7 +238,7 @@ public sealed class VerbInvocation
         IReadOnlyList<SimEvent> consequenceEvents)
     {
         var outcomeEventId = primaryEvents
-            .Last(simEvent => simEvent.SourceSystem == OutcomeResolver.ResolverId && simEvent.EventType == "outcome_resolved")
+            .Last(simEvent => simEvent.SourceSystem == OutcomeResolver.ResolverId && simEvent.EventType == OutcomeResolver.ResolvedEventType)
             .Id;
         var fields = new SortedDictionary<string, string>(StringComparer.Ordinal)
         {

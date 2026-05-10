@@ -6,6 +6,7 @@ namespace Tincture.Substrate.Rules;
 public sealed class OutcomeResolver : IOutcomeResolver
 {
     public const string ResolverId = "outcome_resolver.v1";
+    public const string ResolvedEventType = "outcome_resolved";
 
     private readonly ModifierAssembler modifierAssembler;
     private readonly ModifierComposer modifierComposer;
@@ -157,7 +158,7 @@ public sealed class OutcomeResolver : IOutcomeResolver
             VerbId = request.VerbId,
             Domain = request.Domain,
             SourceSystem = ResolverId,
-            EventType = "outcome_resolved",
+            EventType = ResolvedEventType,
             Fields = metadata,
             Results = SimEvent.StableDictionary(entry.ResultFields),
             Tags = SimEvent.StableTags(tags)

@@ -7,6 +7,10 @@ namespace Tincture.Substrate.Actors;
 public sealed class AuraSystem
 {
     public const string SourceSystemId = "aura_system.v1";
+    public const string AppliedEventType = "aura_applied";
+    public const string StackedEventType = "aura_stacked";
+    public const string RefreshedEventType = "aura_refreshed";
+    public const string ExpiredEventType = "aura_expired";
 
     private readonly ModifierAssembler modifierAssembler;
 
@@ -29,8 +33,8 @@ public sealed class AuraSystem
             : null;
         var stackCount = existing is null ? 1 : Math.Min(existing.StackCount + 1, definition.MaxStacks);
         var eventType = existing is null
-            ? "aura_applied"
-            : stackCount > existing.StackCount ? "aura_stacked" : "aura_refreshed";
+            ? AppliedEventType
+            : stackCount > existing.StackCount ? StackedEventType : RefreshedEventType;
 
         return BuildAuraEvent(actor.ActorId, definition, tick, tick + definition.DurationTicks, stackCount, eventType, verbId, domain, sourceEventId);
     }
@@ -48,7 +52,7 @@ public sealed class AuraSystem
                 VerbId = verbId,
                 Domain = aura.Domain,
                 SourceSystem = SourceSystemId,
-                EventType = "aura_expired",
+                EventType = ExpiredEventType,
                 Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
                 {
                     ["aura_id"] = aura.AuraId,

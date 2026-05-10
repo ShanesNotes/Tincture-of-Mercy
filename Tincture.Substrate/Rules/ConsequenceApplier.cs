@@ -85,7 +85,7 @@ public sealed class ConsequenceApplier
     private static bool IsResolvedOutcome(SimEvent simEvent)
     {
         return string.Equals(simEvent.SourceSystem, OutcomeResolver.ResolverId, StringComparison.Ordinal)
-            && string.Equals(simEvent.EventType, "outcome_resolved", StringComparison.Ordinal);
+            && string.Equals(simEvent.EventType, OutcomeResolver.ResolvedEventType, StringComparison.Ordinal);
     }
 
     private static SortedDictionary<string, string> DeathContextFields(IReadOnlyDictionary<string, string> results)

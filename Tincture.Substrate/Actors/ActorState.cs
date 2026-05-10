@@ -98,11 +98,11 @@ public sealed class ActorState
 
         return simEvent.EventType switch
         {
-            "resource_changed" => ApplyResourceChanged(simEvent),
-            "aura_applied" or "aura_refreshed" or "aura_stacked" => UpsertAura(simEvent),
-            "aura_expired" => RemoveAura(simEvent),
-            "cooldown_started" => UpsertCooldown(simEvent),
-            "cooldown_ready" => MarkCooldownReady(simEvent),
+            CostLedger.ResourceChangedEventType => ApplyResourceChanged(simEvent),
+            AuraSystem.AppliedEventType or AuraSystem.RefreshedEventType or AuraSystem.StackedEventType => UpsertAura(simEvent),
+            AuraSystem.ExpiredEventType => RemoveAura(simEvent),
+            CooldownSystem.StartedEventType => UpsertCooldown(simEvent),
+            CooldownSystem.ReadyEventType => MarkCooldownReady(simEvent),
             // Death/friction state is a sideband consequence projection; see ADR 0014 and DeathFrictionSystem.Project.
             _ => this
         };
