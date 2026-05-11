@@ -52,11 +52,15 @@ public sealed class ActCatalogTests
     }
 
     [Fact]
-    public void ActCatalogStructure_DoesNotContainProductionOpeningContent()
+    public void ActCatalogStructure_OpeningContentLivesInNamedFactory()
     {
-        var sourceRoot = Path.Combine(StructureGuard.SubstrateRoot, "Data");
-        var offenders = StructureGuard.FilesContainingAny(sourceRoot, ["mother", "wolf", "boy", "bethany"]);
+        var source = File.ReadAllText(Path.Combine(StructureGuard.SubstrateRoot, "Data", "ActCatalog.cs"));
 
-        Assert.Empty(offenders);
+        Assert.Contains("OpeningCabinPrologueCatalog", source, StringComparison.Ordinal);
+        Assert.Contains("wolf_01", source, StringComparison.Ordinal);
+        Assert.Contains("anna", source, StringComparison.Ordinal);
+        Assert.Contains("iiro", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("mother_01", source, StringComparison.Ordinal);
+        Assert.DoesNotContain("child_01", source, StringComparison.Ordinal);
     }
 }

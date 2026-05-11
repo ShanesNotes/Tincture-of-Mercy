@@ -77,6 +77,53 @@ public sealed class ActCatalog
         }
     ]);
 
+    public static ActCatalog OpeningCabinPrologueCatalog() => new(
+    [
+        new ActDef
+        {
+            ActId = "opening.cabin_prologue",
+            TitleKey = "act.opening.cabin_prologue.title",
+            Beats =
+            [
+                OpeningBeat("act.cinematic_two_breaths", "opening.seed.two_breaths", SimDomain.Debug, 0, [], ["cinematic", "two_breaths"]),
+                OpeningBeat("act.water", "opening.verb.water", SimDomain.Care, 10, ["water_supply"], ["care", "long_morning"]),
+                OpeningBeat("act.bread", "opening.verb.bread", SimDomain.Care, 20, ["bread"], ["bread", "care", "ordinary_mercy"]),
+                OpeningBeat("act.tincture", "opening.verb.tincture", SimDomain.Craft, 30, ["tincture_dose"], ["apothecary", "tincture"]),
+                OpeningBeat("act.wolves_hold_line", "opening.encounter.wolves_yard", SimDomain.Combat, 40, ["cudgel"], ["combat", "iiro_escape", "yard_holds"]),
+                OpeningBeat("act.mother_witness", "opening.verb.anna_witness", SimDomain.Witness, 50, [], ["anna", "hesychasm", "long_pour", "witness"]),
+                OpeningBeat("act.borrowed_mercy_depart", "opening.verb.borrowed_mercy_depart", SimDomain.Care, 60, ["tincture_dose_remaining"], ["borrowed_mercy", "iconographic", "threshold"])
+            ],
+            Metadata = new SortedDictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["actor_ids"] = "kalev,anna,iiro,wolf_01,wolf_02,wolf_03",
+                ["anna_motif_id"] = "anna.d_phrygian_solo_female",
+                ["audio_cues"] = "long_morning_start,yard_holds_start,yard_holds_resolve_safe,yard_holds_resolve_fallen,long_pour_start,long_pour_resolve",
+                ["chronology_note"] = "bible_act_numbering_is_narrative_weight_not_replay_order",
+                ["content_status"] = "epic_c_headless_fixture_rows",
+                ["event_families"] = "care,economy,resolver,witness,death_friction,combat,route,loot,progression,notebook,audio_cue,sensory_snapshot",
+                ["required_item_ids"] = "water_supply,bread,tincture_dose,tincture_dose_remaining,cudgel,wolf_material",
+                ["threshold_verb_id"] = "world.cross_threshold"
+            },
+            Tags = ["anna", "bread", "epic_c", "iiro", "opening_act"]
+        }
+    ]);
+
+    private static ActBeatDef OpeningBeat(
+        string beatId,
+        string runtimeKey,
+        SimDomain domain,
+        long sortOrder,
+        List<string> requiredItemIds,
+        List<string> tags) => new()
+        {
+            BeatId = beatId,
+            RuntimeKey = runtimeKey,
+            Domain = domain,
+            SortOrder = sortOrder,
+            RequiredItemIds = requiredItemIds,
+            Tags = tags
+        };
+
     private static void RequireNonBlank(string value, string name)
     {
         if (string.IsNullOrWhiteSpace(value))

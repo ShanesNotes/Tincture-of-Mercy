@@ -12,13 +12,13 @@ Validation gate: every act lists verbs, taught primitives, authored events, acto
 
 Opening act implementation waits until substrate core acceptance passes. This document can be authored now, but scene/content work should keep `blocked_by: [B0]` until the core primitives in `02-substrate-primitives.md` have tested contracts.
 
-The opening acts prove the substrate in play:
+The opening acts prove the substrate in play. The numbering below is narrative weight, not replay chronology; Epic C replays the music-compatible order: Two Breaths seed → Water → Bread → Tincture → Wolves / Iiro flight / combat → Anna death / Witness → Borrowed Mercy / departure.
 
 1. Water
 2. Bread
 3. Tincture
-4. Mother death / Witness gravity encounter
-5. Wolves / boy flight / combat
+4. Anna death / Witness gravity encounter
+5. Wolves / Iiro flight / combat
 
 ## Shared act structure
 
@@ -27,7 +27,7 @@ Each act must define:
 - **Player verbs:** actions available to Kalev.
 - **Taught primitives:** substrate mechanics the act proves.
 - **Authored events:** required `SimEvent` rows or fixtures.
-- **Actor state:** Kalev, mother, child, wolves, and environment state touched by the act.
+- **Actor state:** Kalev, Anna, Iiro, wolves, and environment state touched by the act.
 - **Success/cost/failure outcomes:** mechanical consequences and branch shape.
 - **UI/presenter outputs:** bedside, combat, notebook, debug, and economy surfaces as applicable.
 - **Notebook events:** person-specific records and later recall hooks.
@@ -37,11 +37,11 @@ Each act must define:
 
 | Actor | Seed role | Important substrate fields |
 |---|---|---|
-| Kalev | Player actor; healer, fighter, witness. | Health, Spirit, Steady, Burden, Pressure, Numbness, inventory, path progress, FSR/Vigil cooldown. |
-| Mother | Dying patient; fixed Act 4 death. | Health/fading state, receptivity profile, comfort state, witnessed status. |
-| Child | Protected person; later Bethany recognition seed. | Fear, trust, hunger/warmth, route state, threat target state, recognition seed. |
-| Wolves | Hostile encounter actors. | Health, threat, pack call/flee radius, loot/material table, route/leash state. |
-| Cabin/road | Environment. | Light/time pressure, hearth warmth, food supply, exits, wolf path, boy route. |
+| Kalev (`kalev`) | Player actor; healer, fighter, witness. | Health, Spirit, Steady, Burden, Pressure, Numbness, inventory, path progress, FSR/Vigil cooldown. |
+| Anna (`anna`) | Prologue mother; dying patient; fixed Witness death. | Health/fading state, breath state, receptivity profile, comfort state, witnessed status, motif id `anna.d_phrygian_solo_female`. |
+| Iiro (`iiro`) | Cabin boy; protected person; later Bethany recognition seed. | Fear, trust, hunger/warmth, route state, threat target state, recognition seed. |
+| Wolves (`wolf_01`, `wolf_02`, `wolf_03`) | Hostile encounter actors. | Health, threat, pack call/flee radius, loot/material table, route/leash state. |
+| Cabin/road | Environment. | Light/time pressure, hearth warmth, food supply, exits, wolf path, Iiro route, threshold. |
 
 ## Act 1 — Water
 
@@ -51,7 +51,7 @@ Teach embodied care as action under time and state pressure. Water is the first 
 
 ### Player verbs
 
-- `Observe` mother and child.
+- `Observe` Anna and Iiro.
 - `FetchWater` or `UseWater` from limited supply.
 - `WashFace` / `WashHands` / `CoolCloth` as scoped data verbs.
 - `WarmHands` or `StokeFire` if environmental state supports it.
@@ -71,21 +71,21 @@ Teach embodied care as action under time and state pressure. Water is the first 
 
 | Event | Domain | Required fields |
 |---|---|---|
-| `act1.enter_cabin` | Debug/Witness | tick, Kalev, location, mother state, child state |
-| `care.observe.mother` | Care | actor, target, verb, discovered state tags, pressure delta |
+| `act1.enter_cabin` | Debug/Witness | tick, Kalev, location, Anna state, Iiro state |
+| `care.observe.anna` | Care | actor, target, verb, discovered state tags, pressure delta |
 | `care.water.use` | Care/Economy | water source, quantity, target, comfort delta, inventory delta |
 | `care.warmth.adjust` | Care | fire state, actor, target, timer, result |
 | `notebook.name_seed` | Notebook | person id, name if known, source event |
 
 ### Actor state
 
-- Mother comfort can improve even though biological rescue remains out of reach.
-- Child fear/trust responds to whether Kalev attends to the room or rushes.
+- Anna comfort can improve even though biological rescue remains out of reach.
+- Iiro fear/trust responds to whether Kalev attends to the room or rushes.
 - Kalev Pressure may rise from delay and fall from ordered care.
 
 ### Outcomes
 
-- **Good care:** mother comfort improves, child trust seed improves, Kalev Steady stabilizes.
+- **Good care:** Anna comfort improves, Iiro trust seed improves, Kalev Steady stabilizes.
 - **Costly care:** water or time spent poorly raises pressure or reduces later bread flexibility.
 - **No hard failure by itself:** the act teaches consequence, not a fail screen.
 
@@ -98,8 +98,8 @@ Teach embodied care as action under time and state pressure. Water is the first 
 
 ### Debug acceptance
 
-- A replay fixture shows `care.observe.mother` then `care.water.use` events in tick order.
-- Mother comfort and child trust projections derive from events.
+- A replay fixture shows `care.observe.anna` then `care.water.use` events in tick order.
+- Anna comfort and Iiro trust projections derive from events.
 - No scene-local variable owns the final state without event backing.
 
 ## Act 2 — Bread
@@ -112,7 +112,7 @@ Teach ordinary mercy under constraint. Bread makes food, timing, scarcity, and r
 
 - `CheckFood`.
 - `BreakBread`.
-- `OfferBread` to child or mother as data permits.
+- `OfferBread` to Iiro or Anna as data permits.
 - `MoistenBread` if water remains.
 - `WaitForBreath` / `SitNear` to time the offer.
 - `SaveBread` for later scarcity tension.
@@ -139,12 +139,12 @@ Teach ordinary mercy under constraint. Bread makes food, timing, scarcity, and r
 ### Actor state
 
 - Child hunger/fear can shift toward trust if bread is offered with attention.
-- Mother comfort can change modestly through timing and gentleness.
+- Anna comfort can change modestly through timing and gentleness.
 - Kalev may spend a scarce item that affects later economy.
 
 ### Outcomes
 
-- **Fitting offer:** receptivity improves, pressure eases, child trust seed strengthens.
+- **Fitting offer:** receptivity improves, pressure eases, Iiro trust seed strengthens.
 - **Poor timing:** food is spent with less effect, pressure or burden rises.
 - **Saving bread:** preserves resource but may leave hunger/fear unresolved.
 
@@ -197,7 +197,7 @@ Expose the one-roll resolver and Ember/medicine temptation. The act shows medici
 
 ### Actor state
 
-- Mother state can be eased or clarified by treatment, but Act 4 remains fixed.
+- Anna state can be eased or clarified by treatment, but Act 4 remains fixed.
 - Kalev Steady affects preparation and administration.
 - Self-administration can reduce immediate Pressure or improve Steady while increasing Numbness, Burden, cooldown debt, or later consequence.
 
@@ -220,7 +220,7 @@ Expose the one-roll resolver and Ember/medicine temptation. The act shows medici
 - Care and later combat resolver fixtures use the same resolver family.
 - Self-use emits both benefit and consequence events.
 
-## Act 4 — Mother death / Witness gravity encounter
+## Act 4 — Anna death / Witness gravity encounter
 
 ### Purpose
 
@@ -254,7 +254,7 @@ The death outcome is fixed for this beat. The mechanics are real: player actions
 |---|---|---|
 | `care.last_actions` | Care | action list, comfort deltas, source refs |
 | `resolver.death_fixture` | Witness | fixture id, fixed outcome flag, modifiers recorded |
-| `death.mother` | Witness | actor, cause/context, tick, witnessed_by, comfort tags |
+| `actor_died` (Anna fixed death) | Witness | actor_id=`anna`, cause/context, tick, witnessed_by, comfort tags, `death_kind=fixed_death` |
 | `witness.kalev` | Witness/Progression | actor, target, burden delta, recollection seed |
 | `notebook.write_name` | Notebook | person id, name, page/line if available, source death event |
 | `progression.recollection_seed` | Progression | source witness event, path tags, later payoff hook |
@@ -263,7 +263,7 @@ The death outcome is fixed for this beat. The mechanics are real: player actions
 
 - Mother dies in the authored event.
 - Kalev gains Burden and Witness/Recollection state.
-- Child fear/trust and later recognition seed respond to whether Kalev was present, ordered, numb, or absent.
+- Iiro fear/trust and later recognition seed respond to whether Kalev was present, ordered, numb, or absent.
 - Numbness may rise if self-use or detachment shaped the moment.
 
 ### Outcomes
@@ -281,15 +281,15 @@ The death outcome is fixed for this beat. The mechanics are real: player actions
 
 ### Debug acceptance
 
-- Death occurs through a `death.mother` event with fixed outcome metadata.
-- Player actions before death are present in the event stream and affect at least three projections: comfort/state, Kalev resources, child/recognition seed, notebook/progression.
+- Death occurs through existing DeathFriction `actor_died` with `actor_id=anna` and fixed outcome metadata; `death.mother` is only a design shorthand.
+- Player actions before death are present in the event stream and affect at least three projections: comfort/state, Kalev resources, Iiro/recognition seed, notebook/progression.
 - The act is not implemented as a non-interactive cutscene.
 
-## Act 5 — Wolves / boy flight / combat
+## Act 5 — Wolves / Iiro flight / combat
 
 ### Purpose
 
-Prove combat as a first-class system under the shared substrate. Kalev protects the child through real danger, threat, violence, cost, and possible wolf loot/material consequence. The objective is boy safety.
+Prove combat as a first-class system under the shared substrate. Kalev protects Iiro through real danger, threat, violence, cost, and possible wolf loot/material consequence. The objective is Iiro safety.
 
 ### Player verbs
 
@@ -318,8 +318,8 @@ Prove combat as a first-class system under the shared substrate. Kalev protects 
 |---|---|
 | Encounter id | `opening.wolves_road` |
 | Objective | Child reaches safety route node or safe state. |
-| Fail/cost pressure | Kalev can be hurt/downed/die per tuning; child can be endangered per authored limits. |
-| Targets | Wolves can target Kalev or child based on threat, proximity, and route state. |
+| Fail/cost pressure | Kalev can be hurt/downed/die per tuning; Iiro can be endangered per authored limits. |
+| Targets | Wolves can target Kalev or Iiro based on threat, proximity, and route state. |
 | Leash/flee | Wolves have route/leash/flee behavior; pack calls can escalate. |
 | Loot/material | Wolf body can produce grounded material consequence such as hide, tooth, meat, sinew, or wound-risk material per economy spec. |
 | Progression | Witness/Recollection/Vocation/path hooks derive from combat and protection events. |
@@ -332,10 +332,10 @@ Prove combat as a first-class system under the shared substrate. Kalev protects 
 | `threat.target.shift` | Combat | wolf, old target, new target, reason, threat deltas |
 | `combat.attack.resolve` | Combat | resolver/table id, actor, target, roll, damage, tags |
 | `combat.damage.apply` | Combat | target, health delta, source event, armor/equipment tags |
-| `route.boy.advance` | Combat/Debug | route id, node, danger state, source |
+| `route.iiro.advance` | Combat/Debug | route id, node, danger state, source |
 | `combat.wolf.death_or_flee` | Combat | wolf id, cause, loot eligibility, route/leash state |
 | `loot.wolf.material` | Economy | item/material id, quality, quantity, source wolf, table id |
-| `progression.protection` | Progression | boy safety, witness/recollection/path deltas, source events |
+| `progression.protection` | Progression | Iiro safety, witness/recollection/path deltas, source events |
 | `notebook.aftermath` | Notebook | person refs, encounter refs, consequence tags |
 
 ### Actor state
@@ -357,15 +357,15 @@ Prove combat as a first-class system under the shared substrate. Kalev protects 
 
 - Combat presenter can use direct RPG debug/dev vocabulary: threat, damage, Health, cooldown, loot, route.
 - Player-facing final copy can be toned by surface: immediate combat can be clear and urgent; notebook aftermath returns to names and consequence.
-- Economy presenter records material/loot consequence separately from the boy-safety objective.
+- Economy presenter records material/loot consequence separately from the Iiro-safety objective.
 - Debug panel shows threat table, route state, resolver rolls, timers, and loot table events.
 
 ### Debug acceptance
 
-- A fixture proves a wolf targets the boy, Kalev draws threat, and the boy reaches safety.
+- A fixture proves a wolf targets Iiro, Kalev draws threat, and Iiro reaches safety.
 - A fixture proves Kalev can take damage and the event stream records cost.
 - A fixture proves a killed wolf can produce a loot/material event when eligible.
-- A fixture proves encounter objective is child safety, not kill count.
+- A fixture proves encounter objective is Iiro safety, not kill count.
 - All combat events use `SimEvent` and `OutcomeResolver`/combat table contracts from Slice 2.
 
 ## Cross-act notebook and progression seeds
@@ -385,5 +385,5 @@ This slice is accepted when:
 - All five acts have verbs, taught primitives, events, actor state, outcomes, UI/presenter outputs, notebook events, and debug acceptance.
 - Act 2 uses bread.
 - Act 4 is a fixed-outcome gravity encounter with meaningful mechanics.
-- Act 5 is real combat with lethal/risky/lootable resolution and boy safety as objective.
+- Act 5 is real combat with lethal/risky/lootable resolution and Iiro safety as objective.
 - Each act names the substrate primitives it proves.

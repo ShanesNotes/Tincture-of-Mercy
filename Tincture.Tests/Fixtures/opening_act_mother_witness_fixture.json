@@ -1,0 +1,177 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 110,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "presence.sit_near",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.mother_witness",
+      "anna_breath_state": "thin",
+      "camera_focus_target": "anna",
+      "path_id": "hesychasm",
+      "person_id": "anna",
+      "recognition_label": "sat near Anna",
+      "recognition_seed": "presence_anna_bedside",
+      "recollection_delta": "1",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "presence.hesychasm.v1",
+      "voice_register": "folk"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "care",
+      "hesychasm",
+      "presence",
+      "resolved_outcome"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 112,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "witness.keep_watch",
+    "domain": "witness",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.mother_witness",
+      "anna_breath_state": "thin",
+      "path_id": "hesychasm",
+      "person_id": "anna",
+      "progression_rule_id": "progression.witness_presence.v1",
+      "recognition_label": "kept watch",
+      "recognition_seed": "witness_presence_anna",
+      "recollection_delta": "2",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "witness.keep_watch.v1",
+      "voice_register": "sacred"
+    },
+    "costs": {},
+    "results": {
+      "burden_delta": "2"
+    },
+    "tags": [
+      "hesychasm",
+      "recollection_seed",
+      "resolved_outcome",
+      "witness"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 120,
+    "actor_id": "anna",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "witness.anna_fixed_death",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "anna",
+      "anna_breath_state": "stopped",
+      "audio_cue": "long_pour_start",
+      "body_eligibility": "not_applicable",
+      "body_eligible": "false",
+      "camera_focus_target": "anna",
+      "cause": "fixed_story_death",
+      "consequence_tags": "act4,gravity_encounter,anna,witnessed",
+      "death_friction_request_id": "opening-anna-fixed-death",
+      "death_kind": "fixed_death",
+      "friction_rule_id": "friction.anna.fixed_death.v1",
+      "person_id": "anna",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": "witness.kalev"
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "anna",
+      "audio_cue",
+      "death",
+      "death_friction",
+      "fixed_death",
+      "witness",
+      "witnessed"
+    ]
+  },
+  {
+    "id": "evt-00000004",
+    "sequence": 4,
+    "tick": 121,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "witness.kalev",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "witness_hook_recorded",
+    "fields": {
+      "burden_delta": "3",
+      "consequence_tags": "act4,anna,witnessed",
+      "person_id": "anna",
+      "recollection_seed": "anna_name_witnessed",
+      "source_event_id": "evt-00000003",
+      "target_actor_id": "anna",
+      "witness_hook": "witness.kalev",
+      "witness_request_id": "opening-anna-witness"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "anna",
+      "burden",
+      "death_friction",
+      "recollection_seed",
+      "witness"
+    ]
+  },
+  {
+    "id": "evt-00000005",
+    "sequence": 5,
+    "tick": 122,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "notebook.write_name",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.write_name.anna",
+      "line": "3",
+      "name": "Anna",
+      "notebook_entry_id": "entry.anna.name",
+      "notebook_focus_page": "66",
+      "person_id": "anna",
+      "recognition_label": "Anna",
+      "source_event_id": "evt-00000003"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "anna",
+      "name",
+      "notebook",
+      "person_record"
+    ]
+  }
+]

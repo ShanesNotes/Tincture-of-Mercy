@@ -1,0 +1,70 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 60,
+    "actor_id": "wolf_01",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "encounter.wolves.press",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "aggro_entered",
+    "fields": {
+      "act_beat": "act.wolves_hold_line",
+      "aggressor_role": "wolf",
+      "audio_cue": "yard_holds_start",
+      "encounter_id": "opening.wolves_yard",
+      "iiro_posture": "fleeing",
+      "spatial_band": "aggro"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "aggro",
+      "audio_cue",
+      "combat",
+      "encounter_ai",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 72,
+    "actor_id": "kalev",
+    "target_id": "wolf_01",
+    "location": null,
+    "verb_id": "combat.wolf.downs_kalev",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_downed",
+    "fields": {
+      "actor": "kalev",
+      "audio_cue": "yard_holds_resolve_fallen",
+      "body_eligibility": "not_applicable",
+      "body_eligible": "false",
+      "cause": "combat.wolf_bite",
+      "consequence_tags": "opening,kalev_fallen,faltering",
+      "death_friction_request_id": "opening-kalev-fall",
+      "death_kind": "downed",
+      "friction_rule_id": "friction.kalev.faltering.v1",
+      "recoverable": "true",
+      "target": "wolf_01",
+      "witness_hook": ""
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "downed",
+      "recoverable": "true"
+    },
+    "tags": [
+      "audio_cue",
+      "combat",
+      "death_friction",
+      "downed",
+      "kalev_fallen"
+    ]
+  }
+]

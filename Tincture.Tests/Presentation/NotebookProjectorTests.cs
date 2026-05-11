@@ -20,14 +20,14 @@ public sealed class NotebookProjectorTests
         Assert.Equal(surface.SourceEventIds, surface.Rows.Select(row => row.SourceEventId));
 
         Assert.Contains(surface.Rows, row =>
-            row.Label == "notebook.write_name.mother"
+            row.Label == "notebook.write_name.anna"
             && row.Metadata["entry_kind"] == "person_record"
-            && row.Metadata["person_id"] == "mother"
-            && row.Metadata["name"] == "Mara"
+            && row.Metadata["person_id"] == "anna"
+            && row.Metadata["name"] == "Anna"
             && row.Metadata["source_event_id"] == "evt-00000002");
         Assert.Contains(surface.Rows, row =>
             row.Label == "notebook.ordinary_mercy.bread"
-            && row.Metadata["person_id"] == "child"
+            && row.Metadata["person_id"] == "iiro"
             && row.Metadata["source_event_id"] == "evt-00000001");
         Assert.Contains(surface.Rows, row =>
             row.Label == "notebook.aftermath.protection"

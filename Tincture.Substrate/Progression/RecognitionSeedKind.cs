@@ -7,7 +7,8 @@ public enum RecognitionSeedKind
     Presence,
     Witness,
     Protection,
-    NotebookPersonRecord
+    NotebookPersonRecord,
+    Iconographic
 }
 
 public static class RecognitionSeedKindExtensions
@@ -20,6 +21,7 @@ public static class RecognitionSeedKindExtensions
         RecognitionSeedKind.Witness => "witness",
         RecognitionSeedKind.Protection => "protection",
         RecognitionSeedKind.NotebookPersonRecord => "notebook_person_record",
+        RecognitionSeedKind.Iconographic => "iconographic",
         _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown recognition seed kind.")
     };
 
@@ -31,6 +33,7 @@ public static class RecognitionSeedKindExtensions
         "witness" => RecognitionSeedKind.Witness,
         "protection" => RecognitionSeedKind.Protection,
         "notebook_person_record" => RecognitionSeedKind.NotebookPersonRecord,
+        "iconographic" => RecognitionSeedKind.Iconographic,
         _ => throw new ArgumentOutOfRangeException(nameof(id), id, "Unknown recognition seed kind id.")
     };
 }

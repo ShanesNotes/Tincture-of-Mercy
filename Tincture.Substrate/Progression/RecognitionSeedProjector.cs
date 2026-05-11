@@ -69,6 +69,11 @@ public sealed class RecognitionSeedProjector
             kinds.Add(RecognitionSeedKind.NotebookPersonRecord);
         }
 
+        if (HasIconographicSignal(simEvent))
+        {
+            kinds.Add(RecognitionSeedKind.Iconographic);
+        }
+
         if (simEvent.Fields.TryGetValue("recognition_seed_kind", out var explicitKind) && !string.IsNullOrWhiteSpace(explicitKind))
         {
             kinds.Add(RecognitionSeedKindExtensions.FromId(explicitKind));
@@ -198,6 +203,15 @@ public sealed class RecognitionSeedProjector
         return simEvent.Domain == SimDomain.Notebook
             || simEvent.VerbId.StartsWith("notebook.", StringComparison.Ordinal)
             || HasNonBlankField(simEvent, "notebook_entry_id");
+    }
+
+    private static bool HasIconographicSignal(SimEvent simEvent)
+    {
+        return ContainsToken(simEvent.VerbId, "iconographic")
+            || ContainsToken(simEvent.EventType, "iconographic")
+            || TagsContain(simEvent, "iconographic")
+            || FieldContains(simEvent, "recognition_seed", "iconographic")
+            || FieldContains(simEvent, "path_id", "iconographic");
     }
 
     private static bool HasNonBlankField(SimEvent simEvent, string key)

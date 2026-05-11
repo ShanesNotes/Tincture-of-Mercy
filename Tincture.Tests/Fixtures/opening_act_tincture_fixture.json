@@ -1,0 +1,134 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 40,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "craft.tincture.prepare",
+    "domain": "craft",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "inventory_delta": "3",
+      "item_id": "tincture_dose",
+      "modifier_composition": "modifier_composer.additive.v1",
+      "outcome": "tempered_febrifuge",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_fixture_id": "opening.act3.tincture",
+      "table_id": "craft.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "quality": "tempered"
+    },
+    "tags": [
+      "apothecary",
+      "craft",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 43,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "inventory_delta": "-1",
+      "item_id": "tincture_dose",
+      "outcome": "tincture_takes_whole",
+      "person_id": "iiro",
+      "recognition_label": "fever eased",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_fixture_id": "opening.act3.iiro_tincture",
+      "table_id": "care.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "3"
+    },
+    "tags": [
+      "care",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 46,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "anna_breath_state": "thin",
+      "camera_focus_target": "anna",
+      "inventory_delta": "-1",
+      "item_id": "tincture_dose",
+      "outcome": "tincture_glance",
+      "partial_amplitude": "0.4",
+      "person_id": "anna",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_entry_id": "glance",
+      "scripted_fixture_id": "opening.act3.anna_glance",
+      "table_id": "care.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "anna",
+      "care",
+      "glance",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000004",
+    "sequence": 4,
+    "tick": 47,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.tincture",
+      "invocation_id": "opening-tincture-anna",
+      "outcome_key": "tincture_glance",
+      "presenter_key": "opening.care.tincture.administer",
+      "resolver_id": "outcome_resolver.v1",
+      "timer_id": "tincture_administer"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "care",
+      "completed",
+      "tincture",
+      "verb_invocation"
+    ]
+  }
+]

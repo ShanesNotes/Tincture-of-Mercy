@@ -24,23 +24,23 @@ public sealed class RecognitionSeedProjectorTests
         Assert.Contains(snapshot.Seeds, seed =>
             seed.Kind == RecognitionSeedKind.Bread
             && seed.SourceEventId == "evt-00000001"
-            && seed.PersonId == "child");
+            && seed.PersonId == "iiro");
         Assert.Contains(snapshot.Seeds, seed =>
             seed.Kind == RecognitionSeedKind.Name
-            && seed.Label == "Mara"
-            && seed.PersonId == "mother");
+            && seed.Label == "Anna"
+            && seed.PersonId == "anna");
         Assert.Contains(snapshot.Seeds, seed =>
             seed.Kind == RecognitionSeedKind.Protection
             && seed.Label == "protected on road"
             && seed.SourceEventId == "evt-00000005");
         Assert.Contains(snapshot.Seeds, seed =>
             seed.Kind == RecognitionSeedKind.NotebookPersonRecord
-            && seed.Metadata["notebook_entry_id"] == "entry.child.protected");
+            && seed.Metadata["notebook_entry_id"] == "entry.iiro.protected");
         Assert.NotEmpty(snapshot.Duplicates);
         Assert.Contains(snapshot.Duplicates, duplicate =>
             duplicate.Kind == RecognitionSeedKind.Bread
             && duplicate.SourceEventId == "evt-00000001"
-            && duplicate.PersonId == "child");
+            && duplicate.PersonId == "iiro");
     }
     [Fact]
     public void RecognitionSeedMetadata_PreservesEconomySourceProvenance()
@@ -50,7 +50,7 @@ public sealed class RecognitionSeedProjectorTests
         {
             Tick = 91,
             ActorId = "kalev",
-            TargetId = "child",
+            TargetId = "iiro",
             VerbId = "economy.item.give",
             Domain = SimDomain.Economy,
             SourceSystem = "economy.v1",
@@ -58,7 +58,7 @@ public sealed class RecognitionSeedProjectorTests
             Fields = SimEvent.StableDictionary(new SortedDictionary<string, string>(StringComparer.Ordinal)
             {
                 ["item_id"] = "bread_loaf",
-                ["person_id"] = "child",
+                ["person_id"] = "iiro",
                 ["source_domain"] = "care",
                 ["source_event_id"] = "evt-bread-source",
                 ["source_event_type"] = "outcome_resolved",

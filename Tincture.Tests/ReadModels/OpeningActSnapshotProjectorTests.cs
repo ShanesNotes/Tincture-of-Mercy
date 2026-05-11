@@ -21,6 +21,22 @@ public sealed class OpeningActSnapshotProjectorTests
     }
 
     [Fact]
+    public void OpeningActSnapshot_DoesNotInventSensoryStateWithoutEvents()
+    {
+        var stream = new Tincture.Substrate.Events.SimEventStream();
+        var snapshot = new OpeningActSnapshotProjector().Project(stream.Events, tick: 20);
+
+        Assert.Equal(string.Empty, snapshot.HearthState);
+        Assert.Equal(string.Empty, snapshot.AnnaBreathState);
+        Assert.Equal(string.Empty, snapshot.IiroPosture);
+        Assert.Equal(string.Empty, snapshot.NotebookState);
+        Assert.Equal(string.Empty, snapshot.NotebookFocusPage);
+        Assert.Equal(string.Empty, snapshot.CameraFocusTarget);
+        Assert.Null(snapshot.FirstVerbInvokedTick);
+        Assert.False(snapshot.Metadata.ContainsKey("active_audio_cue"));
+    }
+
+    [Fact]
     public void ReadModelsStructure_AdaptersDoNotOwnSnapshots()
     {
         var presentationRoot = Path.Combine(StructureGuard.SubstrateRoot, "Presentation");

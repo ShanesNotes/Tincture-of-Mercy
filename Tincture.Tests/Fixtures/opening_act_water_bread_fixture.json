@@ -1,0 +1,233 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 0,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "act.cinematic_two_breaths",
+    "domain": "debug",
+    "source_system": "opening_fixture.v1",
+    "event_type": "opening_snapshot_seed",
+    "fields": {
+      "act_beat": "act.cinematic_two_breaths",
+      "anna_breath_state": "labored",
+      "anna_motif_id": "anna.d_phrygian_solo_female",
+      "camera_focus_target": "wide",
+      "hearth_state": "lit",
+      "iiro_posture": "on_cot",
+      "notebook_focus_page": "66",
+      "notebook_state": "open"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "opening",
+      "sensory",
+      "two_breaths"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 1,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "economy.item.receive",
+    "domain": "economy",
+    "source_system": "fixture.item_source",
+    "event_type": "item_received",
+    "fields": {
+      "inventory_delta": "2",
+      "item_id": "water_supply",
+      "source_event_id": "opening.initial_supply"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "inventory",
+      "water_supply"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 1,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "economy.item.receive",
+    "domain": "economy",
+    "source_system": "fixture.item_source",
+    "event_type": "item_received",
+    "fields": {
+      "inventory_delta": "1",
+      "item_id": "bread",
+      "source_event_id": "opening.initial_supply"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "inventory"
+    ]
+  },
+  {
+    "id": "evt-00000004",
+    "sequence": 4,
+    "tick": 10,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.observe.anna",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.water",
+      "anna_breath_state": "labored",
+      "audio_cue": "long_morning_start",
+      "camera_focus_target": "anna",
+      "hearth_state": "lit",
+      "invocation_id": "opening-water-observe-anna",
+      "notebook_focus_page": "66",
+      "presenter_key": "opening.care.observe.anna"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "audio_cue",
+      "care",
+      "long_morning",
+      "verb_invocation"
+    ]
+  },
+  {
+    "id": "evt-00000005",
+    "sequence": 5,
+    "tick": 12,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.water.use",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.water",
+      "inventory_delta": "-1",
+      "item_id": "water_supply",
+      "outcome": "water_taken",
+      "person_id": "iiro",
+      "recognition_label": "water received",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "care.water.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "care",
+      "resolved_outcome",
+      "water"
+    ]
+  },
+  {
+    "id": "evt-00000006",
+    "sequence": 6,
+    "tick": 14,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.water.use",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.water",
+      "anna_breath_state": "thin",
+      "item_id": "water_supply",
+      "outcome": "water_glance",
+      "person_id": "anna",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "care.water.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "anna",
+      "care",
+      "glance",
+      "resolved_outcome",
+      "water"
+    ]
+  },
+  {
+    "id": "evt-00000007",
+    "sequence": 7,
+    "tick": 25,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.bread.offer",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.bread",
+      "inventory_delta": "-1",
+      "invocation_id": "opening-bread-offer-iiro",
+      "item_id": "bread",
+      "path_id": "apothecary",
+      "person_id": "iiro",
+      "presenter_key": "opening.care.bread.offer",
+      "receptivity_profile_id": "iiro.hunger_fear.v1",
+      "recognition_label": "bread received",
+      "recognition_seed": "bread_received",
+      "register_match_modifier": "7",
+      "voice_register": "folk"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "care",
+      "recollection_seed",
+      "verb_invocation"
+    ]
+  },
+  {
+    "id": "evt-00000008",
+    "sequence": 8,
+    "tick": 26,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "notebook.ordinary_mercy",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.ordinary_mercy.bread",
+      "notebook_entry_id": "entry.iiro.bread",
+      "notebook_focus_page": "66",
+      "person_id": "iiro",
+      "recognition_label": "bread received",
+      "recognition_seed": "bread_ordinary_mercy",
+      "recognition_seed_kind": "bread",
+      "source_event_id": "evt-00000007"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "notebook",
+      "person_record"
+    ]
+  }
+]
