@@ -1,0 +1,177 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6cabingraybox001"]
+
+[ext_resource type="Script" path="res://scenes/cabin/CabinGrayboxAdapter.cs" id="1_cabin_adapter"]
+
+[node name="CabinGraybox" type="Node2D"]
+script = ExtResource("1_cabin_adapter")
+
+[node name="MainCamera" type="Camera2D" parent="."]
+enabled = true
+position = Vector2(200, 120)
+zoom = Vector2(1, 1)
+
+[node name="CabinFloor" type="ColorRect" parent="."]
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 288.0
+offset_bottom = 168.0
+color = Color(0.22, 0.16, 0.11, 1)
+
+[node name="Yard" type="ColorRect" parent="."]
+offset_left = 288.0
+offset_top = 80.0
+offset_right = 560.0
+offset_bottom = 240.0
+color = Color(0.11, 0.17, 0.13, 1)
+
+[node name="Threshold" type="ColorRect" parent="."]
+offset_left = 240.0
+offset_top = 104.0
+offset_right = 288.0
+offset_bottom = 152.0
+color = Color(0.78, 0.62, 0.35, 1)
+
+[node name="Hearth" type="ColorRect" parent="."]
+offset_left = 60.0
+offset_top = 44.0
+offset_right = 104.0
+offset_bottom = 88.0
+color = Color(0.86, 0.31, 0.12, 1)
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Kalev" type="Node2D" parent="Actors"]
+position = Vector2(186, 132)
+
+[node name="Body" type="ColorRect" parent="Actors/Kalev"]
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.22, 0.38, 0.72, 1)
+
+[node name="Label" type="Label" parent="Actors/Kalev"]
+offset_left = -24.0
+offset_top = 10.0
+offset_right = 52.0
+offset_bottom = 34.0
+text = "kalev"
+
+[node name="Anna" type="Node2D" parent="Actors"]
+position = Vector2(116, 76)
+
+[node name="Body" type="ColorRect" parent="Actors/Anna"]
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+color = Color(0.55, 0.48, 0.58, 1)
+
+[node name="Label" type="Label" parent="Actors/Anna"]
+offset_left = -28.0
+offset_top = 12.0
+offset_right = 96.0
+offset_bottom = 48.0
+text = "anna"
+
+[node name="Iiro" type="Node2D" parent="Actors"]
+position = Vector2(224, 104)
+
+[node name="Body" type="ColorRect" parent="Actors/Iiro"]
+offset_left = -8.0
+offset_top = -14.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.33, 0.58, 0.42, 1)
+
+[node name="Label" type="Label" parent="Actors/Iiro"]
+offset_left = -28.0
+offset_top = 10.0
+offset_right = 104.0
+offset_bottom = 46.0
+text = "iiro"
+
+[node name="Wolf01" type="Node2D" parent="Actors"]
+position = Vector2(384, 140)
+
+[node name="Body" type="ColorRect" parent="Actors/Wolf01"]
+offset_left = -14.0
+offset_top = -9.0
+offset_right = 14.0
+offset_bottom = 9.0
+color = Color(0.18, 0.18, 0.18, 1)
+
+[node name="Label" type="Label" parent="Actors/Wolf01"]
+offset_left = -28.0
+offset_top = 12.0
+offset_right = 80.0
+offset_bottom = 36.0
+text = "wolf_01"
+
+[node name="Wolf02" type="Node2D" parent="Actors"]
+position = Vector2(432, 104)
+
+[node name="Body" type="ColorRect" parent="Actors/Wolf02"]
+offset_left = -14.0
+offset_top = -9.0
+offset_right = 14.0
+offset_bottom = 9.0
+color = Color(0.18, 0.18, 0.18, 1)
+
+[node name="Label" type="Label" parent="Actors/Wolf02"]
+offset_left = -28.0
+offset_top = 12.0
+offset_right = 80.0
+offset_bottom = 36.0
+text = "wolf_02"
+
+[node name="Wolf03" type="Node2D" parent="Actors"]
+position = Vector2(470, 168)
+
+[node name="Body" type="ColorRect" parent="Actors/Wolf03"]
+offset_left = -14.0
+offset_top = -9.0
+offset_right = 14.0
+offset_bottom = 9.0
+color = Color(0.18, 0.18, 0.18, 1)
+
+[node name="Label" type="Label" parent="Actors/Wolf03"]
+offset_left = -28.0
+offset_top = 12.0
+offset_right = 80.0
+offset_bottom = 36.0
+text = "wolf_03"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="CanvasLayer"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 632.0
+offset_bottom = 154.0
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/Panel"]
+
+[node name="SnapshotMeta" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "snapshot"
+
+[node name="Hearth" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "hearth_state"
+
+[node name="AnnaBreath" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "anna_breath_state"
+
+[node name="IiroPosture" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "iiro_posture"
+
+[node name="Notebook" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "notebook_state"
+
+[node name="Inventory" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "inventory"
+
+[node name="Recognition" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "recognition_seeds"
+
+[node name="AudioCue" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "active_audio_cue"

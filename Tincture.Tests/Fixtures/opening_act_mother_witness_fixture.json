@@ -89,10 +89,12 @@
       "camera_focus_target": "anna",
       "cause": "fixed_story_death",
       "consequence_tags": "act4,gravity_encounter,anna,witnessed",
+      "copy_text": "Anna\u0027s breath stops with Kalev still beside her.",
       "death_friction_request_id": "opening-anna-fixed-death",
       "death_kind": "fixed_death",
       "friction_rule_id": "friction.anna.fixed_death.v1",
       "person_id": "anna",
+      "presenter_key": "opening.witness.anna_fixed_death",
       "recoverable": "false",
       "target": "kalev",
       "witness_hook": "witness.kalev"
@@ -157,12 +159,13 @@
     "event_type": "notebook_entry_recorded",
     "fields": {
       "copy_key": "notebook.write_name.anna",
+      "copy_text": "Anna \u2014 written after breath stopped.",
       "line": "3",
       "name": "Anna",
       "notebook_entry_id": "entry.anna.name",
       "notebook_focus_page": "66",
       "person_id": "anna",
-      "recognition_label": "Anna",
+      "recognition_label": "Anna written after breath",
       "source_event_id": "evt-00000003"
     },
     "costs": {},

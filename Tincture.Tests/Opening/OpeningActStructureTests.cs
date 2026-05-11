@@ -95,6 +95,47 @@ public sealed class OpeningActStructureTests
     }
 
     [Fact]
+    public void OpeningActStructure_C6GrayboxAdapterConsumesSnapshotKeys()
+    {
+        var constantsPath = Path.Combine(StructureGuard.RepoRoot, "scripts", "components", "OpeningActGrayboxKeys.cs");
+        var adapterPath = Path.Combine(StructureGuard.RepoRoot, "scenes", "cabin", "CabinGrayboxAdapter.cs");
+        var scenePath = Path.Combine(StructureGuard.RepoRoot, "scenes", "cabin", "cabin_graybox.tscn");
+
+        Assert.True(File.Exists(constantsPath));
+        Assert.True(File.Exists(adapterPath));
+        Assert.True(File.Exists(scenePath));
+
+        var source = File.ReadAllText(constantsPath) + File.ReadAllText(adapterPath) + File.ReadAllText(scenePath);
+        var requiredTokens = new[]
+        {
+            "OpeningActSnapshot",
+            "PresentSnapshot",
+            "kalev",
+            "anna",
+            "iiro",
+            "wolf_01",
+            "wolf_02",
+            "wolf_03",
+            "hearth_state",
+            "anna_breath_state",
+            "iiro_posture",
+            "camera_focus_target",
+            "notebook_state",
+            "notebook_focus_page",
+            "inventory",
+            "recognition_seeds",
+            "active_audio_cue"
+        };
+
+        var missing = requiredTokens
+            .Where(token => !source.Contains(token, StringComparison.Ordinal))
+            .ToList();
+
+        Assert.Empty(missing);
+        Assert.Contains("Tincture.Substrate.ReadModels", File.ReadAllText(adapterPath), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void OpeningActStructure_GodotAdaptersDoNotOwnCanonState()
     {
         var godotRoots = new[] { "scripts", "scenes" }

@@ -60,10 +60,12 @@ public sealed class OpeningActFixtureReplayTests
         Assert.Contains(tincture.Events, simEvent => simEvent.Fields.TryGetValue("scripted_entry_id", out var entry) && entry == "glance");
         Assert.Contains(witness.Events, simEvent => simEvent.VerbId == "presence.sit_near" && simEvent.Fields["path_id"] == "hesychasm");
         Assert.Contains(witness.Events, simEvent => simEvent.ActorId == "anna" && simEvent.EventType == DeathFrictionSystem.DiedEventType && simEvent.Fields["death_kind"] == "fixed_death");
+        Assert.Contains(witness.Events, simEvent => simEvent.ActorId == "anna" && simEvent.EventType == DeathFrictionSystem.DiedEventType && simEvent.Fields["copy_text"] == "Anna's breath stops with Kalev still beside her.");
         Assert.Contains(witness.Events, simEvent => simEvent.Fields.TryGetValue("audio_cue", out var cue) && cue == "long_pour_start");
         Assert.Contains(recognition.Seeds, seed => seed.PersonId == "anna" && seed.Kind == RecognitionSeedKind.Presence);
         Assert.Contains(recognition.Seeds, seed => seed.PersonId == "anna" && seed.Kind == RecognitionSeedKind.Witness);
-        Assert.Contains(recognition.Seeds, seed => seed.PersonId == "anna" && seed.Kind == RecognitionSeedKind.Name && seed.Label == "Anna");
+        Assert.Contains(recognition.Seeds, seed => seed.PersonId == "anna" && seed.Kind == RecognitionSeedKind.Name && seed.Label == "Anna written after breath");
+        Assert.Contains(witness.Events, simEvent => simEvent.VerbId == "notebook.write_name" && simEvent.Fields["name"] == "Anna" && simEvent.Fields["source_event_id"] == "evt-00000003");
     }
 
     [Fact]
@@ -101,6 +103,11 @@ public sealed class OpeningActFixtureReplayTests
         Assert.Equal(wolfLeash.Id, withheldLoot.Fields["source_event_id"]);
         Assert.Equal(annaDeath.Id, annaWitness.Fields["source_event_id"]);
         Assert.Equal(annaDeath.Id, annaName.Fields["source_event_id"]);
+        Assert.Equal("Anna's breath stops with Kalev still beside her.", annaDeath.Fields["copy_text"]);
+        Assert.Equal("Anna — written after breath stopped.", annaName.Fields["copy_text"]);
+        Assert.Equal("Anna written after breath", annaName.Fields["recognition_label"]);
+        Assert.Equal("The threshold reads as a leaving, not a rescue.", stream.Events.Single(simEvent => simEvent.VerbId == "iconographic.read_threshold").Fields["copy_text"]);
+        Assert.Equal("Page 66 stays open as Kalev crosses the threshold.", threshold.Fields["copy_text"]);
         Assert.Equal("long_pour_resolve", snapshot.Metadata["active_audio_cue"]);
         Assert.Equal("threshold", snapshot.CameraFocusTarget);
         Assert.Equal("low", snapshot.HearthState);
@@ -109,7 +116,7 @@ public sealed class OpeningActFixtureReplayTests
         Assert.Equal(0, snapshot.Inventory.QuantityOf("bread"));
         Assert.Equal(0, snapshot.Inventory.QuantityOf("tincture_dose"));
         Assert.Contains(snapshot.RecognitionSeeds.Seeds, seed => seed.Kind == RecognitionSeedKind.Protection && seed.PersonId == "iiro");
-        Assert.Contains(snapshot.RecognitionSeeds.Seeds, seed => seed.Kind == RecognitionSeedKind.Iconographic && seed.Label == "threshold read");
+        Assert.Contains(snapshot.RecognitionSeeds.Seeds, seed => seed.Kind == RecognitionSeedKind.Iconographic && seed.Label == "threshold as icon");
         Assert.Contains(stream.Events, simEvent => simEvent.VerbId == "care.tincture.self_administer" && simEvent.Fields["burden_delta"] == "3");
     }
 
