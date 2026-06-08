@@ -1,0 +1,14 @@
+{
+  "breathing-idle": {
+    "east": "e5066dbf-e9e2-434e-96dd-bdf61008d9d1",
+    "north": "cc2ab9b7-7ce8-43ec-a581-71dbb6776f5d",
+    "south": "cbd788d5-da7e-45d1-8fbb-8c295c941b51",
+    "west": "581abe4c-7bbb-4b78-9f3d-86762994dd51"
+  },
+  "walking": {
+    "east": "fcd32555-6751-4fc8-b1c2-ad3280b60ec4",
+    "north": "f2359a0b-9de4-40bd-ac4d-c30647e0cfcc",
+    "south": "8ed20a56-e25a-45ac-845c-4469aa040b4a",
+    "west": "212ea681-db50-4724-ab1f-020d3952e56d"
+  }
+}

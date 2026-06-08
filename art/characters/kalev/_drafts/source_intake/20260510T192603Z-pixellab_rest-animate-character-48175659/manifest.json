@@ -1,0 +1,257 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-05-10T19:31:02.433762+00:00",
+      "details": {},
+      "kind": "report",
+      "path": "art/characters/kalev/_drafts/source_intake/20260510T192603Z-pixellab_rest-animate-character-48175659/reports/assembly_report.json"
+    },
+    {
+      "at": "2026-05-10T19:31:02.437005+00:00",
+      "details": {},
+      "kind": "runtime_sheet",
+      "path": "art/characters/kalev/sheets/kalev_locomotion_64x96.png"
+    }
+  ],
+  "assembly_report": "art/characters/kalev/_drafts/source_intake/20260510T192603Z-pixellab_rest-animate-character-48175659/reports/assembly_report.json",
+  "character": "kalev",
+  "created_at": "2026-05-10T19:26:03.622350+00:00",
+  "events": [
+    {
+      "at": "2026-05-10T19:27:18.906893+00:00",
+      "details": {
+        "direction": "south",
+        "job_id": "cbd788d5-da7e-45d1-8fbb-8c295c941b51",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:27:23.064211+00:00",
+      "details": {
+        "direction": "west",
+        "job_id": "581abe4c-7bbb-4b78-9f3d-86762994dd51",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:27:27.348063+00:00",
+      "details": {
+        "direction": "north",
+        "job_id": "cc2ab9b7-7ce8-43ec-a581-71dbb6776f5d",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:27:31.804325+00:00",
+      "details": {
+        "direction": "east",
+        "job_id": "e5066dbf-e9e2-434e-96dd-bdf61008d9d1",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:28:42.868044+00:00",
+      "details": {
+        "direction": "north",
+        "job_id": "f2359a0b-9de4-40bd-ac4d-c30647e0cfcc",
+        "template": "walking"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:28:49.110661+00:00",
+      "details": {
+        "direction": "east",
+        "job_id": "fcd32555-6751-4fc8-b1c2-ad3280b60ec4",
+        "template": "walking"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:29:07.664394+00:00",
+      "details": {
+        "direction": "west",
+        "job_id": "212ea681-db50-4724-ab1f-020d3952e56d",
+        "template": "walking"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-10T19:29:50.592322+00:00",
+      "details": {
+        "direction": "south",
+        "job_id": "8ed20a56-e25a-45ac-845c-4469aa040b4a",
+        "template": "walking"
+      },
+      "kind": "job_completed"
+    }
+  ],
+  "expected_operations": [
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "breathing-idle"
+    },
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "walking"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-05-10T19:26:05.214590+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "cbd788d5-da7e-45d1-8fbb-8c295c941b51"
+    },
+    {
+      "at": "2026-05-10T19:26:05.215484+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "581abe4c-7bbb-4b78-9f3d-86762994dd51"
+    },
+    {
+      "at": "2026-05-10T19:26:05.217710+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "cc2ab9b7-7ce8-43ec-a581-71dbb6776f5d"
+    },
+    {
+      "at": "2026-05-10T19:26:05.218380+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "e5066dbf-e9e2-434e-96dd-bdf61008d9d1"
+    },
+    {
+      "at": "2026-05-10T19:26:07.699681+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "8ed20a56-e25a-45ac-845c-4469aa040b4a"
+    },
+    {
+      "at": "2026-05-10T19:26:07.700894+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "212ea681-db50-4724-ab1f-020d3952e56d"
+    },
+    {
+      "at": "2026-05-10T19:26:07.702795+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "f2359a0b-9de4-40bd-ac4d-c30647e0cfcc"
+    },
+    {
+      "at": "2026-05-10T19:26:07.703524+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "fcd32555-6751-4fc8-b1c2-ad3280b60ec4"
+    }
+  ],
+  "operation": "animate-character",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 324,
+    "policy": "hash_only",
+    "sha256": "d9978c8c91a2dd98284c68effc9bc250caed28e72a6f11e40ab0fd21a832e818"
+  },
+  "requests": [
+    {
+      "at": "2026-05-10T19:26:03.623184+00:00",
+      "body": {
+        "character_id": "c210b143-9001-4842-ba4c-5b7d3f114332",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "bc8a9bf24299b31a8f7bd49b7618f58d701d659b77d15291f07c4ee1730a84c1"
+    },
+    {
+      "at": "2026-05-10T19:26:05.219331+00:00",
+      "body": {
+        "character_id": "c210b143-9001-4842-ba4c-5b7d3f114332",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "2f66c7fbf09805d13db31c4eae1301d4c63d3b88cb837d2b98e892c3c5cf0a1f"
+    }
+  ],
+  "run_id": "20260510T192603Z-pixellab_rest-animate-character-48175659",
+  "runtime_output": "art/characters/kalev/sheets/kalev_locomotion_64x96.png",
+  "schema_version": 1,
+  "seed": null,
+  "status": "completed",
+  "updated_at": "2026-05-10T19:31:02.438658+00:00",
+  "validation": {
+    "failures": [],
+    "notes": [
+      "format=PNG  size=(320, 768)  mode=RGBA",
+      "unique colors: 1",
+      "alpha=0: 245760 (100.0%)  alpha=255: 0  semi: 0"
+    ],
+    "ok": true,
+    "path": "art/characters/kalev/sheets/kalev_locomotion_64x96.png",
+    "stats": {
+      "alpha0_pct": 100.0,
+      "colors": 1,
+      "semi": 0,
+      "size": "320\u00d7768"
+    }
+  }
+}

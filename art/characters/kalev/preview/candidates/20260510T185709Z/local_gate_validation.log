@@ -1,0 +1,63 @@
+== env ==
+pixellab credential=missing
+== backup sha256sum -c ==
+art/characters/kalev/_backups/20260510T185709Z/kalev_locomotion_64x96.png: OK
+art/characters/kalev/_backups/20260510T185709Z/kalev_idle_front_64x96.png: OK
+== canonical hash equals backup ==
+art/characters/kalev/sheets/kalev_locomotion_64x96.png: OK
+art/characters/kalev/sheets/kalev_idle_front_64x96.png: OK
+== health ==
+
+project sprite health
+─────────────────────
+
+character/pass   │ src │ rt │ status  │ asep │ note             
+──────────────── ┼ ─── ┼ ── ┼ ─────── ┼ ──── ┼ ─────────────────
+boy/locomotion   │ —   │ —  │ MISSING │ —    │ —                
+kalev/idle_front │ Y   │ Y  │ PASS    │ —    │ unique colors: 10
+kalev/locomotion │ —   │ Y  │ PASS    │ —    │ unique colors: 12
+kalev/care       │ —   │ —  │ MISSING │ —    │ —                
+kalev/tincture   │ —   │ —  │ MISSING │ —    │ —                
+kalev/combat     │ —   │ —  │ MISSING │ —    │ —                
+lena/locomotion  │ —   │ —  │ MISSING │ —    │ —                
+mother/bedside   │ —   │ —  │ MISSING │ —    │ —                
+wolf/full_sheet  │ —   │ —  │ MISSING │ —    │ —                
+
+9 passes total — 2 pass, 7 missing
+
+== validate locomotion ==
+
+=== kalev_locomotion_64x96.png ===
+  format=PNG  size=(320, 768)  mode=RGBA
+  unique colors: 12
+  alpha=0: 170292 (69.3%)  alpha=255: 75468  semi: 0
+
+PASS
+== validate idle_front ==
+
+=== kalev_idle_front_64x96.png ===
+  format=PNG  size=(256, 96)  mode=RGBA
+  unique colors: 10
+  alpha=0: 15722 (64.0%)  alpha=255: 8854  semi: 0
+
+PASS
+== dry-run pixellab locomotion ==
+
+pixellab generate  kalev · locomotion
+─────────────────────────────────────
+  animation keys: 8
+  supported:      8
+  job count:      8 (8 new)
+  character_id: c210b143-9001-4842-ba4c-5b7d3f114332
+  templates:    breathing-idle, walking
+  --dry-run: skipping API calls
+    would POST /animate-character template=breathing-idle new=['south', 'west', 'north', 'east'], resume=[]
+    would POST /animate-character template=walking new=['south', 'west', 'north', 'east'], resume=[]
+== validate imagegen idle candidate directly ==
+
+=== kalev_idle_front_imagegen_identity_candidate_64x96.png ===
+  format=PNG  size=(256, 96)  mode=RGBA
+  unique colors: 8
+  alpha=0: 17096 (69.6%)  alpha=255: 7480  semi: 0
+
+PASS

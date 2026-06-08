@@ -75,7 +75,7 @@ The following decisions close v0.6 open questions and are now production locks.
 |Language|Historical v0.7 note: GDScript first|Superseded by current canon: C#/.NET is the engine implementation language.|
 |Visual format|2D top-down pixel art|Human-scale exploration, small maps, clear interaction.|
 |Tile size|32×32 base tiles|Common readable top-down scale; supports 32×48 tall characters.|
-|Base viewport|960×540 logical 16:9|Shows roughly 30×16 tiles at native camera zoom; scales cleanly to 1080p at 2×.|
+|Base viewport|640×360 logical 16:9|Shows ~20×11 tiles at native (1×) camera zoom — Sea-of-Stars / Chained-Echoes framing band; scales cleanly to 1080p at 3× and 4K at 6×.|
 |Pixel scaling|Nearest filtering; integer scaling preferred|Avoid blurry pixel art; design all assets around crisp edges.|
 |Camera|Camera2D, no dramatic zoom in normal play|Keep navigation readable; icon panels handle sacred emphasis.|
 |Prototype craftables|5: Salt Wash, Clean Dressing, Pulseleaf Draught, Cedar-Wool Compress, Ember Dose/Dilution|Enough variety to prove system without overbuilding.|
@@ -144,7 +144,7 @@ All gameplay UI — pouch, notebook, patient panel, Tincture Wheel, dialogue, Ka
 
 ### 3.8 Pixel-art import and display
 
-Pixel art must use nearest-neighbor filtering and a deliberate base resolution/scale mode. The production target is 960×540 logical 16:9, scaling cleanly to 1920×1080. Nearest filtering is required globally and on imported textures.
+Pixel art must use nearest-neighbor filtering and a deliberate base resolution/scale mode. The production target is 640×360 logical 16:9, scaling cleanly to 1920×1080 at 3× and to 4K at 6×. Nearest filtering is required globally and on imported textures.
 
 **Production rule:** every PNG import must be checked for blur before acceptance.
 
@@ -304,8 +304,8 @@ tincture\_of\_mercy/
 
 |Setting|Value|Note|
 |-|-|-|
-|Window width|960|Logical base width.|
-|Window height|540|Logical base height.|
+|Window width|640|Logical base width.|
+|Window height|360|Logical base height.|
 |Stretch mode|`canvas\_items` or `viewport` after art test|Start with `canvas\_items` for smoother camera/UI; test `viewport` if stricter retro look desired.|
 |Stretch aspect|`expand` or `keep` after UX test|`keep` preserves aspect with bars; `expand` uses wider screens.|
 |Scale mode|integer where possible|Preserve square pixels.|
@@ -1789,7 +1789,7 @@ An asset is accepted only if:
 * character feet line up with collision and Y-sort expectations;
 * the silhouette reads at 2× scale;
 * icons are readable at 32×32;
-* UI remains readable at 960×540 logical resolution;
+* UI remains readable at 640×360 logical resolution;
 * palette does not become cozy-bright or hospital-neon unless deliberately Wittehaven;
 * no asset copies a living artist’s style or direct composition;
 * license/source is documented.
@@ -2122,7 +2122,7 @@ The road to Wittehaven is marked in white.
 |-|-|
 |Create Godot 4.6.x project|Opens in pinned editor version; README records version.|
 |Add folder structure|Matches Section 6.1.|
-|Configure project settings|960×540, nearest filtering, input map.|
+|Configure project settings|640×360, nearest filtering, input map.|
 |Add autoloads|GameEvents, GameState, Inventory, NotebookState, SceneRouter load without errors.|
 |Add placeholder HUDRoot|All UI panels hidden/visible via debug keys.|
 
@@ -2276,7 +2276,7 @@ The prototype is successful when a tester can say:
 4. Wireframe notebook panel.
 5. Wireframe consequence summary.
 6. Design state overlay icons.
-7. Test readability at 960×540.
+7. Test readability at 640×360.
 
 ### 24.4 Pixel artist tasks
 
@@ -2325,7 +2325,7 @@ The prototype must prove therapeutic crafting, patient triage, Ember temptation,
 
 Engine target: Godot 4.6.x stable.
 Visual target: 2D top-down Michigan icon-manuscript pixel art.
-Core asset scale: 32×32 tiles, 32×48 adult characters, 960×540 logical viewport.
+Core asset scale: 32×32 tiles, 32×48 adult characters, 640×360 logical viewport.
 
 Your first deliverables:
 1. a greybox scene map for Cabin, Ironwood Road, and Bethany Clinic;
@@ -2345,7 +2345,7 @@ The design can proceed when the team acknowledges these locks:
 
 * \[ ] Godot 4.6.x stable selected and recorded.
 * \[ ] 32×32 tile grid accepted.
-* \[ ] 960×540 logical viewport accepted.
+* \[ ] 640×360 logical viewport accepted.
 * \[ ] Cabin / Ironwood Road / Bethany only for first prototype.
 * \[ ] Five prototype recipes accepted.
 * \[ ] Two Ember doses accepted.

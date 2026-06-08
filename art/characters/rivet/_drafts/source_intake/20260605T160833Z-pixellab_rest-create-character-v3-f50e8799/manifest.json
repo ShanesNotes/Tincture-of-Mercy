@@ -1,0 +1,79 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-06-05T16:08:33.620093+00:00",
+      "details": {},
+      "kind": "reference_image",
+      "path": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/rivet.png"
+    },
+    {
+      "at": "2026-06-05T16:12:54.891546+00:00",
+      "details": {
+        "count": 0
+      },
+      "kind": "pixellab_rotations_dir",
+      "path": "art/characters/rivet/_drafts/pixellab_rotations"
+    }
+  ],
+  "character": "rivet",
+  "character_id": "9433c950-c319-4f14-9659-bfccf316b06d",
+  "created_at": "2026-06-05T16:08:33.618166+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "endpoint": "/create-character-v3",
+      "image_size": {
+        "height": 64,
+        "width": 48
+      },
+      "reference": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/rivet.png",
+      "template_id": "mannequin"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-06-05T16:08:35.341360+00:00",
+      "details": {
+        "character_id": "9433c950-c319-4f14-9659-bfccf316b06d"
+      },
+      "endpoint": "/create-character-v3",
+      "job_id": "faabee2b-df0e-4046-bbd5-5caee110353e"
+    }
+  ],
+  "operation": "create-character-v3",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 481,
+    "policy": "hash_only",
+    "sha256": "a75550471151cdaad7eb8445f5fad2b2affd97f0b2698ab5df57a52804709ee3"
+  },
+  "requests": [
+    {
+      "at": "2026-06-05T16:08:33.621206+00:00",
+      "body": {
+        "description": {
+          "length": 481,
+          "policy": "hash_only",
+          "sha256": "a75550471151cdaad7eb8445f5fad2b2affd97f0b2698ab5df57a52804709ee3"
+        },
+        "image_size": {
+          "height": 64,
+          "width": 48
+        },
+        "no_background": true,
+        "reference_image": "<redacted>",
+        "template_id": "mannequin",
+        "view": "low top-down"
+      },
+      "endpoint": "/create-character-v3",
+      "fingerprint": "54381203dc32dc52ad093274346bc807ff182f0e2c1a844155dea7cdd614d574"
+    }
+  ],
+  "run_id": "20260605T160833Z-pixellab_rest-create-character-v3-f50e8799",
+  "schema_version": 1,
+  "seed": null,
+  "state_path": "tools/sprites/pixellab_state/rivet.json",
+  "status": "completed",
+  "updated_at": "2026-06-05T16:12:54.893562+00:00"
+}

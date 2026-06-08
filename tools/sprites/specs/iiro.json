@@ -1,0 +1,27 @@
+{
+  "name": "iiro",
+  "palette": "boy",
+  "default_frame_w": 48,
+  "default_frame_h": 64,
+  "default_baseline_y": 56,
+  "passes": {
+    "locomotion": {
+      "description": "Iiro cabin-boy 48x64 idle/walk 4-direction locomotion.",
+      "source_frames": 40,
+      "source_cols": 5,
+      "source_rows": 8,
+      "target_cols": 5,
+      "target_rows": 8,
+      "animation_keys": [
+        "idle_down",
+        "walk_down",
+        "idle_left",
+        "walk_left",
+        "idle_up",
+        "walk_up",
+        "idle_right",
+        "walk_right"
+      ]
+    }
+  }
+}

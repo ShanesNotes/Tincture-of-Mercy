@@ -1,0 +1,22 @@
+{
+  "character": "iiro",
+  "character_id": "5a0ed749-1afe-4b00-98ae-9a7016b90871",
+  "prompt": "Iiro, cabin boy in the prologue, small thin child in worn ochre shirt, dark suspenders, patched trousers, anxious but alive, low top-down RPG pixel-art character, hard clean silhouette, transparent background, palette-limited, readable 48 by 64 gameplay sprite, no text.",
+  "created_at": "2026-05-11T02:31:39.757126+00:00",
+  "canvas_w": 48,
+  "canvas_h": 64,
+  "palette": "boy",
+  "last_animations": {
+    "locomotion": [
+      "e12ab29b-ebbd-4fe8-a5c0-0e5faa704e8f",
+      "0a7e9619-4ce8-4a4e-b39c-049baee40409",
+      "108ed392-ee58-4698-83e5-9f27be46bdc0",
+      "79944eda-dcd3-4029-be92-7e538a64ff2f",
+      "ee49719b-a94a-4f6e-bfb5-92d609c6bc94",
+      "b774ee7a-56c8-465c-9b05-d257789c9910",
+      "aa954bb1-e320-454e-b015-134a41adf88c",
+      "5fd86ccf-97e1-4169-828c-ab320edd54a2"
+    ]
+  },
+  "pending_animations": {}
+}

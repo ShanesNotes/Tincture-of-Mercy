@@ -175,3 +175,6 @@ text = "recognition_seeds"
 
 [node name="AudioCue" type="Label" parent="CanvasLayer/Panel/VBox"]
 text = "active_audio_cue"
+
+[node name="VisualState" type="Label" parent="CanvasLayer/Panel/VBox"]
+text = "visual_state"

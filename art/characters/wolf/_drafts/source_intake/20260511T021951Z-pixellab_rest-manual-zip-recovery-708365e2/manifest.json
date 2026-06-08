@@ -1,0 +1,523 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-05-11T02:19:51.490385+00:00",
+      "details": {},
+      "kind": "pixellab_character_zip",
+      "path": "/tmp/wolf_pixellab_export.zip"
+    },
+    {
+      "at": "2026-05-11T02:19:51.492414+00:00",
+      "details": {},
+      "kind": "report",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/reports/zip_metadata_summary.json"
+    },
+    {
+      "at": "2026-05-11T02:19:51.493803+00:00",
+      "details": {
+        "animation_key": "idle_down",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_down_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.494814+00:00",
+      "details": {
+        "animation_key": "idle_down",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_down_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.495999+00:00",
+      "details": {
+        "animation_key": "idle_down",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_down_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.497040+00:00",
+      "details": {
+        "animation_key": "idle_down",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_down_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.498009+00:00",
+      "details": {
+        "animation_key": "idle_down",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_down_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.498986+00:00",
+      "details": {
+        "animation_key": "walk_down",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_down_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.500215+00:00",
+      "details": {
+        "animation_key": "walk_down",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_down_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.501483+00:00",
+      "details": {
+        "animation_key": "walk_down",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_down_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.502676+00:00",
+      "details": {
+        "animation_key": "walk_down",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_down_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.503929+00:00",
+      "details": {
+        "animation_key": "walk_down",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_down_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.505078+00:00",
+      "details": {
+        "animation_key": "idle_left",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_left_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.506523+00:00",
+      "details": {
+        "animation_key": "idle_left",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_left_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.507795+00:00",
+      "details": {
+        "animation_key": "idle_left",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_left_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.508996+00:00",
+      "details": {
+        "animation_key": "idle_left",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_left_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.510197+00:00",
+      "details": {
+        "animation_key": "idle_left",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_left_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.511605+00:00",
+      "details": {
+        "animation_key": "walk_left",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_left_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.513330+00:00",
+      "details": {
+        "animation_key": "walk_left",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_left_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.515011+00:00",
+      "details": {
+        "animation_key": "walk_left",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_left_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.516890+00:00",
+      "details": {
+        "animation_key": "walk_left",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_left_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.518791+00:00",
+      "details": {
+        "animation_key": "walk_left",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_left_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.520240+00:00",
+      "details": {
+        "animation_key": "idle_up",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-739dae61"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_up_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.521813+00:00",
+      "details": {
+        "animation_key": "idle_up",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-739dae61"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_up_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.523276+00:00",
+      "details": {
+        "animation_key": "idle_up",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-739dae61"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_up_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.524785+00:00",
+      "details": {
+        "animation_key": "idle_up",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-739dae61"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_up_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.526354+00:00",
+      "details": {
+        "animation_key": "idle_up",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-739dae61"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_up_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.528325+00:00",
+      "details": {
+        "animation_key": "walk_up",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_up_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.530258+00:00",
+      "details": {
+        "animation_key": "walk_up",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_up_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.532369+00:00",
+      "details": {
+        "animation_key": "walk_up",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_up_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.534171+00:00",
+      "details": {
+        "animation_key": "walk_up",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_up_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.536052+00:00",
+      "details": {
+        "animation_key": "walk_up",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_up_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.537907+00:00",
+      "details": {
+        "animation_key": "idle_right",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_right_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.540007+00:00",
+      "details": {
+        "animation_key": "idle_right",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_right_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.541812+00:00",
+      "details": {
+        "animation_key": "idle_right",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_right_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.543616+00:00",
+      "details": {
+        "animation_key": "idle_right",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_right_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.545759+00:00",
+      "details": {
+        "animation_key": "idle_right",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-af2f7d6e"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/idle_right_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.548692+00:00",
+      "details": {
+        "animation_key": "walk_right",
+        "column": 0,
+        "source_frame_index": 0,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_right_0.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.551113+00:00",
+      "details": {
+        "animation_key": "walk_right",
+        "column": 1,
+        "source_frame_index": 1,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_right_1.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.553375+00:00",
+      "details": {
+        "animation_key": "walk_right",
+        "column": 2,
+        "source_frame_index": 2,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_right_2.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.555361+00:00",
+      "details": {
+        "animation_key": "walk_right",
+        "column": 3,
+        "source_frame_index": 3,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_right_3.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.557436+00:00",
+      "details": {
+        "animation_key": "walk_right",
+        "column": 4,
+        "source_frame_index": 4,
+        "zip_group": "animating-0ba3d581"
+      },
+      "kind": "zip_frame",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/raw/walk_right_4.png"
+    },
+    {
+      "at": "2026-05-11T02:19:51.848936+00:00",
+      "details": {},
+      "kind": "report",
+      "path": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/reports/assembly_report.json"
+    },
+    {
+      "at": "2026-05-11T02:19:51.854505+00:00",
+      "details": {},
+      "kind": "runtime_sheet",
+      "path": "art/characters/wolf/sheets/wolf_locomotion_96x64.png"
+    }
+  ],
+  "assembly_report": "art/characters/wolf/_drafts/source_intake/20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2/reports/assembly_report.json",
+  "character": "wolf",
+  "created_at": "2026-05-11T02:19:51.489644+00:00",
+  "events": [
+    {
+      "at": "2026-05-11T02:19:51.493117+00:00",
+      "details": {
+        "idle_groups": [
+          "animating-af2f7d6e",
+          "animating-739dae61"
+        ],
+        "walk_group": "animating-0ba3d581"
+      },
+      "kind": "selected_zip_groups"
+    }
+  ],
+  "expected_operations": [
+    {
+      "reason": "one dog idle direction job timed out; recover completed groups and rotation-safe rows",
+      "source": "/characters/{id}/zip"
+    }
+  ],
+  "jobs": [],
+  "operation": "manual-zip-recovery",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 282,
+    "policy": "hash_only",
+    "sha256": "d5321625d697c792190203c78fd73058ffd5dc7023096b209b8029e4aca1b691"
+  },
+  "requests": [],
+  "run_id": "20260511T021951Z-pixellab_rest-manual-zip-recovery-708365e2",
+  "runtime_output": "art/characters/wolf/sheets/wolf_locomotion_96x64.png",
+  "schema_version": 1,
+  "seed": 5102028,
+  "status": "completed",
+  "updated_at": "2026-05-11T02:19:51.856785+00:00",
+  "validation": {
+    "failures": [],
+    "notes": [
+      "format=PNG  size=(480, 512)  mode=RGBA",
+      "unique colors: 10",
+      "alpha=0: 180197 (73.3%)  alpha=255: 65563  semi: 0",
+      "1 cell(s) have non-standard baseline (allowed for sit/kneel/downed)"
+    ],
+    "ok": true,
+    "path": "art/characters/wolf/sheets/wolf_locomotion_96x64.png",
+    "stats": {
+      "alpha0_pct": 73.3,
+      "colors": 10,
+      "semi": 0,
+      "size": "480\u00d7512"
+    }
+  }
+}

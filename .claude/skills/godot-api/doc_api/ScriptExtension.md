@@ -1,0 +1,41 @@
+## ScriptExtension <- Script
+
+**Methods:**
+- CanInstantiate() -> bool
+- EditorCanReloadFromFile() -> bool
+- GetBaseScript() -> Script
+- GetClassIconPath() -> string
+- GetConstants() -> Godot.Collections.Dictionary
+- GetDocClassName() -> StringName
+- GetDocumentation() -> Dictionary[]
+- GetGlobalName() -> StringName
+- GetInstanceBaseType() -> StringName
+- GetLanguage() -> ScriptLanguage
+- GetMemberLine(StringName member) -> int
+- GetMembers() -> StringName[]
+- GetMethodInfo(StringName method) -> Godot.Collections.Dictionary
+- GetPropertyDefaultValue(StringName property) -> Variant
+- GetRpcConfig() -> Variant
+- GetScriptMethodArgumentCount(StringName method) -> Variant - Return the expected argument count for the given `method`, or `null` if it can't be determined (which will then fall back to the default behavior).
+- GetScriptMethodList() -> Dictionary[]
+- GetScriptPropertyList() -> Dictionary[]
+- GetScriptSignalList() -> Dictionary[]
+- GetSourceCode() -> string
+- HasMethod(StringName method) -> bool
+- HasPropertyDefaultValue(StringName property) -> bool
+- HasScriptSignal(StringName signal) -> bool
+- HasSourceCode() -> bool
+- HasStaticMethod(StringName method) -> bool
+- InheritsScript(Script script) -> bool
+- InstanceCreate(Object forObject) -> void*
+- InstanceHas(Object object) -> bool
+- IsAbstract() -> bool - Returns `true` if the script is an abstract script. Abstract scripts cannot be instantiated directly, instead other scripts should inherit them. Abstract scripts will be either unselectable or hidden in the Create New Node dialog (unselectable if there are non-abstract classes inheriting it, otherwise hidden).
+- IsPlaceholderFallbackEnabled() -> bool
+- IsTool() -> bool
+- IsValid() -> bool
+- PlaceholderErased(void* placeholder)
+- PlaceholderInstanceCreate(Object forObject) -> void*
+- Reload(bool keepState) -> int
+- SetSourceCode(string code)
+- UpdateExports()
+

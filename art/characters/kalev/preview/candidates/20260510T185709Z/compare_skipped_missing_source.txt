@@ -1,0 +1,5 @@
+compare skipped: missing art/characters/kalev/source/kalev_locomotion_source.png; stale compare images must not be copied as fresh evidence.
+source_intake_run=art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference
+raw=art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference/raw
+normalized=art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference/normalized
+manifest=art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference/manifest.json

@@ -1,0 +1,161 @@
+## NavigationServer2D <- Object
+
+NavigationServer2D is the server that handles navigation maps, regions and agents. It does not handle A* navigation from AStar2D or AStarGrid2D. Maps are divided into regions, which are composed of navigation polygons. Together, they define the traversable areas in the 2D world. **Note:** Most NavigationServer2D changes take effect after the next physics frame and not immediately. This includes all changes made to maps, regions or agents by navigation-related nodes in the scene tree or made through scripts. For two regions to be connected to each other, they must share a similar edge. An edge is considered connected to another if both of its two vertices are at a distance less than `edge_connection_margin` to the respective other edge's vertex. You may assign navigation layers to regions with `NavigationServer2D.region_set_navigation_layers`, which then can be checked upon when requesting a path with `NavigationServer2D.map_get_path`. This can be used to allow or deny certain areas for some objects. To use the collision avoidance system, you may use agents. You can set an agent's target velocity, then the servers will emit a callback with a modified velocity. **Note:** The collision avoidance system ignores regions. Using the modified velocity directly may move an agent outside of the traversable area. This is a limitation of the collision avoidance system, any more complex situation may require the use of the physics engine. This server keeps tracks of any call and executes them during the sync phase. This means that you can request any change to the map, using any thread, without worrying.
+
+**Methods:**
+- AgentCreate() -> Rid - Creates the agent.
+- AgentGetAvoidanceEnabled(Rid agent) -> bool - Return `true` if the specified `agent` uses avoidance.
+- AgentGetAvoidanceLayers(Rid agent) -> int - Returns the `avoidance_layers` bitmask of the specified `agent`.
+- AgentGetAvoidanceMask(Rid agent) -> int - Returns the `avoidance_mask` bitmask of the specified `agent`.
+- AgentGetAvoidancePriority(Rid agent) -> float - Returns the `avoidance_priority` of the specified `agent`.
+- AgentGetMap(Rid agent) -> Rid - Returns the navigation map RID the requested `agent` is currently assigned to.
+- AgentGetMaxNeighbors(Rid agent) -> int - Returns the maximum number of other agents the specified `agent` takes into account in the navigation.
+- AgentGetMaxSpeed(Rid agent) -> float - Returns the maximum speed of the specified `agent`.
+- AgentGetNeighborDistance(Rid agent) -> float - Returns the maximum distance to other agents the specified `agent` takes into account in the navigation.
+- AgentGetPaused(Rid agent) -> bool - Returns `true` if the specified `agent` is paused.
+- AgentGetPosition(Rid agent) -> Vector2 - Returns the position of the specified `agent` in world space.
+- AgentGetRadius(Rid agent) -> float - Returns the radius of the specified `agent`.
+- AgentGetTimeHorizonAgents(Rid agent) -> float - Returns the minimal amount of time for which the specified `agent`'s velocities that are computed by the simulation are safe with respect to other agents.
+- AgentGetTimeHorizonObstacles(Rid agent) -> float - Returns the minimal amount of time for which the specified `agent`'s velocities that are computed by the simulation are safe with respect to static avoidance obstacles.
+- AgentGetVelocity(Rid agent) -> Vector2 - Returns the velocity of the specified `agent`.
+- AgentHasAvoidanceCallback(Rid agent) -> bool - Return `true` if the specified `agent` has an avoidance callback.
+- AgentIsMapChanged(Rid agent) -> bool - Returns `true` if the map got changed the previous frame.
+- AgentSetAvoidanceCallback(Rid agent, Callable callback) - Sets the callback Callable that gets called after each avoidance processing step for the `agent`. The calculated `safe_velocity` will be dispatched with a signal to the object just before the physics calculations. **Note:** Created callbacks are always processed independently of the SceneTree state as long as the agent is on a navigation map and not freed. To disable the dispatch of a callback from an agent use `agent_set_avoidance_callback` again with an empty Callable.
+- AgentSetAvoidanceEnabled(Rid agent, bool enabled) - If `enabled` is `true`, the specified `agent` uses avoidance.
+- AgentSetAvoidanceLayers(Rid agent, int layers) - Set the agent's `avoidance_layers` bitmask.
+- AgentSetAvoidanceMask(Rid agent, int mask) - Set the agent's `avoidance_mask` bitmask.
+- AgentSetAvoidancePriority(Rid agent, float priority) - Set the agent's `avoidance_priority` with a `priority` between 0.0 (lowest priority) to 1.0 (highest priority). The specified `agent` does not adjust the velocity for other agents that would match the `avoidance_mask` but have a lower `avoidance_priority`. This in turn makes the other agents with lower priority adjust their velocities even more to avoid collision with this agent.
+- AgentSetMap(Rid agent, Rid map) - Puts the agent in the map.
+- AgentSetMaxNeighbors(Rid agent, int count) - Sets the maximum number of other agents the agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
+- AgentSetMaxSpeed(Rid agent, float maxSpeed) - Sets the maximum speed of the agent. Must be positive.
+- AgentSetNeighborDistance(Rid agent, float distance) - Sets the maximum distance to other agents this agent takes into account in the navigation. The larger this number, the longer the running time of the simulation. If the number is too low, the simulation will not be safe.
+- AgentSetPaused(Rid agent, bool paused) - If `paused` is `true` the specified `agent` will not be processed. For example, it will not calculate avoidance velocities or receive avoidance callbacks.
+- AgentSetPosition(Rid agent, Vector2 position) - Sets the position of the agent in world space.
+- AgentSetRadius(Rid agent, float radius) - Sets the radius of the agent.
+- AgentSetTimeHorizonAgents(Rid agent, float timeHorizon) - The minimal amount of time for which the agent's velocities that are computed by the simulation are safe with respect to other agents. The larger this number, the sooner this agent will respond to the presence of other agents, but the less freedom this agent has in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
+- AgentSetTimeHorizonObstacles(Rid agent, float timeHorizon) - The minimal amount of time for which the agent's velocities that are computed by the simulation are safe with respect to static avoidance obstacles. The larger this number, the sooner this agent will respond to the presence of static avoidance obstacles, but the less freedom this agent has in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
+- AgentSetVelocity(Rid agent, Vector2 velocity) - Sets `velocity` as the new wanted velocity for the specified `agent`. The avoidance simulation will try to fulfill this velocity if possible but will modify it to avoid collision with other agent's and obstacles. When an agent is teleported to a new position far away use `agent_set_velocity_forced` instead to reset the internal velocity state.
+- AgentSetVelocityForced(Rid agent, Vector2 velocity) - Replaces the internal velocity in the collision avoidance simulation with `velocity` for the specified `agent`. When an agent is teleported to a new position far away this function should be used in the same frame. If called frequently this function can get agents stuck.
+- BakeFromSourceGeometryData(NavigationPolygon navigationPolygon, NavigationMeshSourceGeometryData2D sourceGeometryData, Callable callback = Callable()) - Bakes the provided `navigation_polygon` with the data from the provided `source_geometry_data`. After the process is finished the optional `callback` will be called.
+- BakeFromSourceGeometryDataAsync(NavigationPolygon navigationPolygon, NavigationMeshSourceGeometryData2D sourceGeometryData, Callable callback = Callable()) - Bakes the provided `navigation_polygon` with the data from the provided `source_geometry_data` as an async task running on a background thread. After the process is finished the optional `callback` will be called.
+- FreeRid(Rid rid) - Destroys the given RID.
+- GetDebugEnabled() -> bool - Returns `true` when the NavigationServer has debug enabled.
+- GetMaps() -> RID[] - Returns all created navigation map RIDs on the NavigationServer. This returns both 2D and 3D created navigation maps as there is technically no distinction between them.
+- GetProcessInfo(int processInfo) -> int - Returns information about the current state of the NavigationServer.
+- IsBakingNavigationPolygon(NavigationPolygon navigationPolygon) -> bool - Returns `true` when the provided navigation polygon is being baked on a background thread.
+- LinkCreate() -> Rid - Create a new link between two positions on a map.
+- LinkGetEnabled(Rid link) -> bool - Returns `true` if the specified `link` is enabled.
+- LinkGetEndPosition(Rid link) -> Vector2 - Returns the ending position of this `link`.
+- LinkGetEnterCost(Rid link) -> float - Returns the enter cost of this `link`.
+- LinkGetIterationId(Rid link) -> int - Returns the current iteration ID of the navigation link. Every time the navigation link changes and synchronizes, the iteration ID increases. An iteration ID of `0` means the navigation link has never synchronized. **Note:** The iteration ID will wrap around to `1` after reaching its range limit.
+- LinkGetMap(Rid link) -> Rid - Returns the navigation map RID the requested `link` is currently assigned to.
+- LinkGetNavigationLayers(Rid link) -> int - Returns the navigation layers for this `link`.
+- LinkGetOwnerId(Rid link) -> int - Returns the `ObjectID` of the object which manages this link.
+- LinkGetStartPosition(Rid link) -> Vector2 - Returns the starting position of this `link`.
+- LinkGetTravelCost(Rid link) -> float - Returns the travel cost of this `link`.
+- LinkIsBidirectional(Rid link) -> bool - Returns whether this `link` can be travelled in both directions.
+- LinkSetBidirectional(Rid link, bool bidirectional) - Sets whether this `link` can be travelled in both directions.
+- LinkSetEnabled(Rid link, bool enabled) - If `enabled` is `true`, the specified `link` will contribute to its current navigation map.
+- LinkSetEndPosition(Rid link, Vector2 position) - Sets the exit position for the `link`.
+- LinkSetEnterCost(Rid link, float enterCost) - Sets the `enter_cost` for this `link`.
+- LinkSetMap(Rid link, Rid map) - Sets the navigation map RID for the link.
+- LinkSetNavigationLayers(Rid link, int navigationLayers) - Set the links's navigation layers. This allows selecting links from a path request (when using `NavigationServer2D.map_get_path`).
+- LinkSetOwnerId(Rid link, int ownerId) - Set the `ObjectID` of the object which manages this link.
+- LinkSetStartPosition(Rid link, Vector2 position) - Sets the entry position for this `link`.
+- LinkSetTravelCost(Rid link, float travelCost) - Sets the `travel_cost` for this `link`.
+- MapCreate() -> Rid - Create a new map.
+- MapForceUpdate(Rid map) - This function immediately forces synchronization of the specified navigation `map` RID. By default navigation maps are only synchronized at the end of each physics frame. This function can be used to immediately (re)calculate all the navigation meshes and region connections of the navigation map. This makes it possible to query a navigation path for a changed map immediately and in the same frame (multiple times if needed). Due to technical restrictions the current NavigationServer command queue will be flushed. This means all already queued update commands for this physics frame will be executed, even those intended for other maps, regions and agents not part of the specified map. The expensive computation of the navigation meshes and region connections of a map will only be done for the specified map. Other maps will receive the normal synchronization at the end of the physics frame. Should the specified map receive changes after the forced update it will update again as well when the other maps receive their update. Avoidance processing and dispatch of the `safe_velocity` signals is unaffected by this function and continues to happen for all maps and agents at the end of the physics frame. **Note:** With great power comes great responsibility. This function should only be used by users that really know what they are doing and have a good reason for it. Forcing an immediate update of a navigation map requires locking the NavigationServer and flushing the entire NavigationServer command queue. Not only can this severely impact the performance of a game but it can also introduce bugs if used inappropriately without much foresight.
+- MapGetAgents(Rid map) -> RID[] - Returns all navigation agents RIDs that are currently assigned to the requested navigation `map`.
+- MapGetCellSize(Rid map) -> float - Returns the map cell size used to rasterize the navigation mesh vertices.
+- MapGetClosestPoint(Rid map, Vector2 toPoint) -> Vector2 - Returns the navigation mesh surface point closest to the provided `to_point` on the navigation `map`.
+- MapGetClosestPointOwner(Rid map, Vector2 toPoint) -> Rid - Returns the owner region RID for the navigation mesh surface point closest to the provided `to_point` on the navigation `map`.
+- MapGetEdgeConnectionMargin(Rid map) -> float - Returns the edge connection margin of the map. The edge connection margin is a distance used to connect two regions.
+- MapGetIterationId(Rid map) -> int - Returns the current iteration id of the navigation map. Every time the navigation map changes and synchronizes the iteration id increases. An iteration id of 0 means the navigation map has never synchronized. **Note:** The iteration id will wrap back to 1 after reaching its range limit.
+- MapGetLinkConnectionRadius(Rid map) -> float - Returns the link connection radius of the map. This distance is the maximum range any link will search for navigation mesh polygons to connect to.
+- MapGetLinks(Rid map) -> RID[] - Returns all navigation link RIDs that are currently assigned to the requested navigation `map`.
+- MapGetMergeRasterizerCellScale(Rid map) -> float - Returns map's internal merge rasterizer cell scale.
+- MapGetObstacles(Rid map) -> RID[] - Returns all navigation obstacle RIDs that are currently assigned to the requested navigation `map`.
+- MapGetPath(Rid map, Vector2 origin, Vector2 destination, bool optimize, int navigationLayers = 1) -> Vector2[] - Returns the navigation path to reach the destination from the origin. `navigation_layers` is a bitmask of all region navigation layers that are allowed to be in the path.
+- MapGetRandomPoint(Rid map, int navigationLayers, bool uniformly) -> Vector2 - Returns a random position picked from all map region polygons with matching `navigation_layers`. If `uniformly` is `true`, all map regions, polygons, and faces are weighted by their surface area (slower). If `uniformly` is `false`, just a random region and a random polygon are picked (faster).
+- MapGetRegions(Rid map) -> RID[] - Returns all navigation regions RIDs that are currently assigned to the requested navigation `map`.
+- MapGetUseAsyncIterations(Rid map) -> bool - Returns `true` if the `map` synchronization uses an async process that runs on a background thread.
+- MapGetUseEdgeConnections(Rid map) -> bool - Returns whether the navigation `map` allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+- MapIsActive(Rid map) -> bool - Returns `true` if the map is active.
+- MapSetActive(Rid map, bool active) - Sets the map active.
+- MapSetCellSize(Rid map, float cellSize) - Sets the map cell size used to rasterize the navigation mesh vertices. Must match with the cell size of the used navigation meshes.
+- MapSetEdgeConnectionMargin(Rid map, float margin) - Set the map edge connection margin used to weld the compatible region edges.
+- MapSetLinkConnectionRadius(Rid map, float radius) - Set the map's link connection radius used to connect links to navigation polygons.
+- MapSetMergeRasterizerCellScale(Rid map, float scale) - Set the map's internal merge rasterizer cell scale used to control merging sensitivity.
+- MapSetUseAsyncIterations(Rid map, bool enabled) - If `enabled` is `true` the `map` synchronization uses an async process that runs on a background thread.
+- MapSetUseEdgeConnections(Rid map, bool enabled) - Set the navigation `map` edge connection use. If `enabled` is `true`, the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+- ObstacleCreate() -> Rid - Creates a new navigation obstacle.
+- ObstacleGetAvoidanceEnabled(Rid obstacle) -> bool - Returns `true` if the provided `obstacle` has avoidance enabled.
+- ObstacleGetAvoidanceLayers(Rid obstacle) -> int - Returns the `avoidance_layers` bitmask of the specified `obstacle`.
+- ObstacleGetMap(Rid obstacle) -> Rid - Returns the navigation map RID the requested `obstacle` is currently assigned to.
+- ObstacleGetPaused(Rid obstacle) -> bool - Returns `true` if the specified `obstacle` is paused.
+- ObstacleGetPosition(Rid obstacle) -> Vector2 - Returns the position of the specified `obstacle` in world space.
+- ObstacleGetRadius(Rid obstacle) -> float - Returns the radius of the specified dynamic `obstacle`.
+- ObstacleGetVelocity(Rid obstacle) -> Vector2 - Returns the velocity of the specified dynamic `obstacle`.
+- ObstacleGetVertices(Rid obstacle) -> Vector2[] - Returns the outline vertices for the specified `obstacle`.
+- ObstacleSetAvoidanceEnabled(Rid obstacle, bool enabled) - If `enabled` is `true`, the provided `obstacle` affects avoidance using agents.
+- ObstacleSetAvoidanceLayers(Rid obstacle, int layers) - Set the obstacles's `avoidance_layers` bitmask.
+- ObstacleSetMap(Rid obstacle, Rid map) - Sets the navigation map RID for the obstacle.
+- ObstacleSetPaused(Rid obstacle, bool paused) - If `paused` is `true` the specified `obstacle` will not be processed. For example, it will no longer affect avoidance velocities.
+- ObstacleSetPosition(Rid obstacle, Vector2 position) - Sets the position of the obstacle in world space.
+- ObstacleSetRadius(Rid obstacle, float radius) - Sets the radius of the dynamic obstacle.
+- ObstacleSetVelocity(Rid obstacle, Vector2 velocity) - Sets `velocity` of the dynamic `obstacle`. Allows other agents to better predict the movement of the dynamic obstacle. Only works in combination with the radius of the obstacle.
+- ObstacleSetVertices(Rid obstacle, Vector2[] vertices) - Sets the outline vertices for the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out.
+- ParseSourceGeometryData(NavigationPolygon navigationPolygon, NavigationMeshSourceGeometryData2D sourceGeometryData, Node rootNode, Callable callback = Callable()) - Parses the SceneTree for source geometry according to the properties of `navigation_polygon`. Updates the provided `source_geometry_data` resource with the resulting data. The resource can then be used to bake a navigation mesh with `bake_from_source_geometry_data`. After the process is finished the optional `callback` will be called. **Note:** This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe. **Performance:** While convenient, reading data arrays from Mesh resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the RenderingServer in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
+- QueryPath(NavigationPathQueryParameters2D parameters, NavigationPathQueryResult2D result, Callable callback = Callable()) - Queries a path in a given navigation map. Start and target position and other parameters are defined through NavigationPathQueryParameters2D. Updates the provided NavigationPathQueryResult2D result object with the path among other results requested by the query. After the process is finished the optional `callback` will be called.
+- RegionCreate() -> Rid - Creates a new region.
+- RegionGetBounds(Rid region) -> Rect2 - Returns the axis-aligned rectangle for the `region`'s transformed navigation mesh.
+- RegionGetClosestPoint(Rid region, Vector2 toPoint) -> Vector2 - Returns the navigation mesh surface point closest to the provided `to_point` on the navigation `region`.
+- RegionGetConnectionPathwayEnd(Rid region, int connection) -> Vector2 - Returns the ending point of a connection door. `connection` is an index between 0 and the return value of `region_get_connections_count`.
+- RegionGetConnectionPathwayStart(Rid region, int connection) -> Vector2 - Returns the starting point of a connection door. `connection` is an index between 0 and the return value of `region_get_connections_count`.
+- RegionGetConnectionsCount(Rid region) -> int - Returns how many connections this `region` has with other regions in the map.
+- RegionGetEnabled(Rid region) -> bool - Returns `true` if the specified `region` is enabled.
+- RegionGetEnterCost(Rid region) -> float - Returns the enter cost of this `region`.
+- RegionGetIterationId(Rid region) -> int - Returns the current iteration ID of the navigation region. Every time the navigation region changes and synchronizes, the iteration ID increases. An iteration ID of `0` means the navigation region has never synchronized. **Note:** The iteration ID will wrap around to `1` after reaching its range limit.
+- RegionGetMap(Rid region) -> Rid - Returns the navigation map RID the requested `region` is currently assigned to.
+- RegionGetNavigationLayers(Rid region) -> int - Returns the region's navigation layers.
+- RegionGetOwnerId(Rid region) -> int - Returns the `ObjectID` of the object which manages this region.
+- RegionGetRandomPoint(Rid region, int navigationLayers, bool uniformly) -> Vector2 - Returns a random position picked from all region polygons with matching `navigation_layers`. If `uniformly` is `true`, all region polygons and faces are weighted by their surface area (slower). If `uniformly` is `false`, just a random polygon and face is picked (faster).
+- RegionGetTransform(Rid region) -> Transform2D - Returns the global transformation of this `region`.
+- RegionGetTravelCost(Rid region) -> float - Returns the travel cost of this `region`.
+- RegionGetUseAsyncIterations(Rid region) -> bool - Returns `true` if the `region` uses an async synchronization process that runs on a background thread.
+- RegionGetUseEdgeConnections(Rid region) -> bool - Returns whether the navigation `region` is set to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+- RegionOwnsPoint(Rid region, Vector2 point) -> bool - Returns `true` if the provided `point` in world space is currently owned by the provided navigation `region`. Owned in this context means that one of the region's navigation mesh polygon faces has a possible position at the closest distance to this point compared to all other navigation meshes from other navigation regions that are also registered on the navigation map of the provided region. If multiple navigation meshes have positions at equal distance the navigation region whose polygons are processed first wins the ownership. Polygons are processed in the same order that navigation regions were registered on the NavigationServer. **Note:** If navigation meshes from different navigation regions overlap (which should be avoided in general) the result might not be what is expected.
+- RegionSetEnabled(Rid region, bool enabled) - If `enabled` is `true` the specified `region` will contribute to its current navigation map.
+- RegionSetEnterCost(Rid region, float enterCost) - Sets the `enter_cost` for this `region`.
+- RegionSetMap(Rid region, Rid map) - Sets the map for the region.
+- RegionSetNavigationLayers(Rid region, int navigationLayers) - Set the region's navigation layers. This allows selecting regions from a path request (when using `NavigationServer2D.map_get_path`).
+- RegionSetNavigationPolygon(Rid region, NavigationPolygon navigationPolygon) - Sets the `navigation_polygon` for the region.
+- RegionSetOwnerId(Rid region, int ownerId) - Set the `ObjectID` of the object which manages this region.
+- RegionSetTransform(Rid region, Transform2D transform) - Sets the global transformation for the region.
+- RegionSetTravelCost(Rid region, float travelCost) - Sets the `travel_cost` for this `region`.
+- RegionSetUseAsyncIterations(Rid region, bool enabled) - If `enabled` is `true` the `region` uses an async synchronization process that runs on a background thread.
+- RegionSetUseEdgeConnections(Rid region, bool enabled) - If `enabled` is `true`, the navigation `region` will use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
+- SetActive(bool active) - Control activation of this server.
+- SetDebugEnabled(bool enabled) - If `true` enables debug mode on the NavigationServer.
+- SimplifyPath(Vector2[] path, float epsilon) -> Vector2[] - Returns a simplified version of `path` with less critical path points removed. The simplification amount is in worlds units and controlled by `epsilon`. The simplification uses a variant of Ramer-Douglas-Peucker algorithm for curve point decimation. Path simplification can be helpful to mitigate various path following issues that can arise with certain agent types and script behaviors. E.g. "steering" agents or avoidance in "open fields".
+- SourceGeometryParserCreate() -> Rid - Creates a new source geometry parser. If a Callable is set for the parser with `source_geometry_parser_set_callback` the callback will be called for every single node that gets parsed whenever `parse_source_geometry_data` is used.
+- SourceGeometryParserSetCallback(Rid parser, Callable callback) - Sets the `callback` Callable for the specific source geometry `parser`. The Callable will receive a call with the following parameters: - `navigation_mesh` - The NavigationPolygon reference used to define the parse settings. Do NOT edit or add directly to the navigation mesh. - `source_geometry_data` - The NavigationMeshSourceGeometryData2D reference. Add custom source geometry for navigation mesh baking to this object. - `node` - The Node that is parsed.
+
+**Signals:**
+- AvoidanceDebugChanged - Emitted when avoidance debug settings are changed. Only available in debug builds.
+- MapChanged(Rid map) - Emitted when a navigation map is updated, when a region moves or is modified.
+- NavigationDebugChanged - Emitted when navigation debug settings are changed. Only available in debug builds.
+
+**Enums:**
+**ProcessInfo:** INFO_ACTIVE_MAPS=0, INFO_REGION_COUNT=1, INFO_AGENT_COUNT=2, INFO_LINK_COUNT=3, INFO_POLYGON_COUNT=4, INFO_EDGE_COUNT=5, INFO_EDGE_MERGE_COUNT=6, INFO_EDGE_CONNECTION_COUNT=7, INFO_EDGE_FREE_COUNT=8, INFO_OBSTACLE_COUNT=9
+  - INFO_ACTIVE_MAPS: Constant to get the number of active navigation maps.
+  - INFO_REGION_COUNT: Constant to get the number of active navigation regions.
+  - INFO_AGENT_COUNT: Constant to get the number of active navigation agents processing avoidance.
+  - INFO_LINK_COUNT: Constant to get the number of active navigation links.
+  - INFO_POLYGON_COUNT: Constant to get the number of navigation mesh polygons.
+  - INFO_EDGE_COUNT: Constant to get the number of navigation mesh polygon edges.
+  - INFO_EDGE_MERGE_COUNT: Constant to get the number of navigation mesh polygon edges that were merged due to edge key overlap.
+  - INFO_EDGE_CONNECTION_COUNT: Constant to get the number of navigation mesh polygon edges that are considered connected by edge proximity.
+  - INFO_EDGE_FREE_COUNT: Constant to get the number of navigation mesh polygon edges that could not be merged but may be still connected by edge proximity or with links.
+  - INFO_OBSTACLE_COUNT: Constant to get the number of active navigation obstacles.
+

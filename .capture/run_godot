@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -o pipefail
+NOISE="leaked RID|Leaked instance|ObjectDB instances leaked|resources still in use at exit"
+cmd=()
+if [[ "$(uname -s)" != "Darwin" && -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
+    if command -v xvfb-run >/dev/null 2>&1; then
+        cmd+=(xvfb-run -a -s '-screen 0 1920x1080x24')
+    fi
+fi
+cmd+=(godot --path . --rendering-driver vulkan)
+"${cmd[@]}" "$@" 2>&1 | { grep -Ev "$NOISE" || true; }

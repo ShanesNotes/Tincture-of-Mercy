@@ -1,0 +1,212 @@
+## CPUParticles3D <- GeometryInstance3D
+
+CPU-based 3D particle node used to create a variety of particle systems and effects. See also GPUParticles3D, which provides the same functionality with hardware acceleration, but may not run on older devices.
+
+**Props:**
+- Amount: int = 8
+- AngleCurve: Curve
+- AngleMax: float = 0.0
+- AngleMin: float = 0.0
+- AngularVelocityCurve: Curve
+- AngularVelocityMax: float = 0.0
+- AngularVelocityMin: float = 0.0
+- AnimOffsetCurve: Curve
+- AnimOffsetMax: float = 0.0
+- AnimOffsetMin: float = 0.0
+- AnimSpeedCurve: Curve
+- AnimSpeedMax: float = 0.0
+- AnimSpeedMin: float = 0.0
+- Color: Color = Color(1, 1, 1, 1)
+- ColorInitialRamp: Gradient
+- ColorRamp: Gradient
+- DampingCurve: Curve
+- DampingMax: float = 0.0
+- DampingMin: float = 0.0
+- Direction: Vector3 = Vector3(1, 0, 0)
+- DrawOrder: int (CPUParticles3D.DrawOrder) = 0
+- EmissionBoxExtents: Vector3
+- EmissionColors: Color[] = PackedColorArray()
+- EmissionNormals: Vector3[]
+- EmissionPoints: Vector3[]
+- EmissionRingAxis: Vector3
+- EmissionRingConeAngle: float
+- EmissionRingHeight: float
+- EmissionRingInnerRadius: float
+- EmissionRingRadius: float
+- EmissionShape: int (CPUParticles3D.EmissionShape) = 0
+- EmissionSphereRadius: float
+- Emitting: bool = true
+- Explosiveness: float = 0.0
+- FixedFps: int = 0
+- Flatness: float = 0.0
+- FractDelta: bool = true
+- Gravity: Vector3 = Vector3(0, -9.8, 0)
+- HueVariationCurve: Curve
+- HueVariationMax: float = 0.0
+- HueVariationMin: float = 0.0
+- InitialVelocityMax: float = 0.0
+- InitialVelocityMin: float = 0.0
+- Lifetime: float = 1.0
+- LifetimeRandomness: float = 0.0
+- LinearAccelCurve: Curve
+- LinearAccelMax: float = 0.0
+- LinearAccelMin: float = 0.0
+- LocalCoords: bool = false
+- Mesh: Mesh
+- OneShot: bool = false
+- OrbitVelocityCurve: Curve
+- OrbitVelocityMax: float
+- OrbitVelocityMin: float
+- ParticleFlagAlignY: bool = false
+- ParticleFlagDisableZ: bool = false
+- ParticleFlagRotateY: bool = false
+- Preprocess: float = 0.0
+- RadialAccelCurve: Curve
+- RadialAccelMax: float = 0.0
+- RadialAccelMin: float = 0.0
+- Randomness: float = 0.0
+- ScaleAmountCurve: Curve
+- ScaleAmountMax: float = 1.0
+- ScaleAmountMin: float = 1.0
+- ScaleCurveX: Curve
+- ScaleCurveY: Curve
+- ScaleCurveZ: Curve
+- Seed: int = 0
+- SpeedScale: float = 1.0
+- SplitScale: bool = false
+- Spread: float = 45.0
+- TangentialAccelCurve: Curve
+- TangentialAccelMax: float = 0.0
+- TangentialAccelMin: float = 0.0
+- UseFixedSeed: bool = false
+- VisibilityAabb: Aabb = AABB(0, 0, 0, 0, 0, 0)
+
+- **amount**: Number of particles emitted in one emission cycle.
+- **angle_curve**: Each particle's rotation will be animated along this Curve. Should be a unit Curve.
+- **angle_max**: Maximum angle.
+- **angle_min**: Minimum angle.
+- **angular_velocity_curve**: Each particle's angular velocity (rotation speed) will vary along this Curve over its lifetime. Should be a unit Curve.
+- **angular_velocity_max**: Maximum initial angular velocity (rotation speed) applied to each particle in *degrees* per second.
+- **angular_velocity_min**: Minimum initial angular velocity (rotation speed) applied to each particle in *degrees* per second.
+- **anim_offset_curve**: Each particle's animation offset will vary along this Curve. Should be a unit Curve.
+- **anim_offset_max**: Maximum animation offset.
+- **anim_offset_min**: Minimum animation offset.
+- **anim_speed_curve**: Each particle's animation speed will vary along this Curve. Should be a unit Curve.
+- **anim_speed_max**: Maximum particle animation speed.
+- **anim_speed_min**: Minimum particle animation speed.
+- **color**: Each particle's initial color. **Note:** `color` multiplies the particle mesh's vertex colors. To have a visible effect on a BaseMaterial3D, `BaseMaterial3D.vertex_color_use_as_albedo` *must* be `true`. For a ShaderMaterial, `ALBEDO *= COLOR.rgb;` must be inserted in the shader's `fragment()` function. Otherwise, `color` will have no visible effect.
+- **color_initial_ramp**: Each particle's initial color will vary along this Gradient (multiplied with `color`). **Note:** `color_initial_ramp` multiplies the particle mesh's vertex colors. To have a visible effect on a BaseMaterial3D, `BaseMaterial3D.vertex_color_use_as_albedo` *must* be `true`. For a ShaderMaterial, `ALBEDO *= COLOR.rgb;` must be inserted in the shader's `fragment()` function. Otherwise, `color_initial_ramp` will have no visible effect.
+- **color_ramp**: Each particle's color will vary along this Gradient over its lifetime (multiplied with `color`). **Note:** `color_ramp` multiplies the particle mesh's vertex colors. To have a visible effect on a BaseMaterial3D, `BaseMaterial3D.vertex_color_use_as_albedo` *must* be `true`. For a ShaderMaterial, `ALBEDO *= COLOR.rgb;` must be inserted in the shader's `fragment()` function. Otherwise, `color_ramp` will have no visible effect.
+- **damping_curve**: Damping will vary along this Curve. Should be a unit Curve.
+- **damping_max**: Maximum damping.
+- **damping_min**: Minimum damping.
+- **direction**: Unit vector specifying the particles' emission direction.
+- **draw_order**: Particle draw order.
+- **emission_box_extents**: The rectangle's extents if `emission_shape` is set to `EMISSION_SHAPE_BOX`.
+- **emission_colors**: Sets the Colors to modulate particles by when using `EMISSION_SHAPE_POINTS` or `EMISSION_SHAPE_DIRECTED_POINTS`. **Note:** `emission_colors` multiplies the particle mesh's vertex colors. To have a visible effect on a BaseMaterial3D, `BaseMaterial3D.vertex_color_use_as_albedo` *must* be `true`. For a ShaderMaterial, `ALBEDO *= COLOR.rgb;` must be inserted in the shader's `fragment()` function. Otherwise, `emission_colors` will have no visible effect.
+- **emission_normals**: Sets the direction the particles will be emitted in when using `EMISSION_SHAPE_DIRECTED_POINTS`.
+- **emission_points**: Sets the initial positions to spawn particles when using `EMISSION_SHAPE_POINTS` or `EMISSION_SHAPE_DIRECTED_POINTS`.
+- **emission_ring_axis**: The axis of the ring when using the emitter `EMISSION_SHAPE_RING`.
+- **emission_ring_cone_angle**: The angle of the cone when using the emitter `EMISSION_SHAPE_RING`. The default angle of 90 degrees results in a ring, while an angle of 0 degrees results in a cone. Intermediate values will result in a ring where one end is larger than the other. **Note:** Depending on `emission_ring_height`, the angle may be clamped if the ring's end is reached to form a perfect cone.
+- **emission_ring_height**: The height of the ring when using the emitter `EMISSION_SHAPE_RING`.
+- **emission_ring_inner_radius**: The inner radius of the ring when using the emitter `EMISSION_SHAPE_RING`.
+- **emission_ring_radius**: The radius of the ring when using the emitter `EMISSION_SHAPE_RING`.
+- **emission_shape**: Particles will be emitted inside this region.
+- **emission_sphere_radius**: The sphere's radius if `EmissionShape` is set to `EMISSION_SHAPE_SPHERE`.
+- **emitting**: If `true`, particles are being emitted. `emitting` can be used to start and stop particles from emitting. However, if `one_shot` is `true` setting `emitting` to `true` will not restart the emission cycle until after all active particles finish processing. You can use the `finished` signal to be notified once all active particles finish processing.
+- **explosiveness**: How rapidly particles in an emission cycle are emitted. If greater than `0`, there will be a gap in emissions before the next cycle begins.
+- **fixed_fps**: The particle system's frame rate is fixed to a value. For example, changing the value to 2 will make the particles render at 2 frames per second. Note this does not slow down the particle system itself.
+- **flatness**: Amount of `spread` in Y/Z plane. A value of `1` restricts particles to X/Z plane.
+- **fract_delta**: If `true`, results in fractional delta calculation which has a smoother particles display effect.
+- **gravity**: Gravity applied to every particle.
+- **hue_variation_curve**: Each particle's hue will vary along this Curve. Should be a unit Curve.
+- **hue_variation_max**: Maximum hue variation.
+- **hue_variation_min**: Minimum hue variation.
+- **initial_velocity_max**: Maximum value of the initial velocity.
+- **initial_velocity_min**: Minimum value of the initial velocity.
+- **lifetime**: Amount of time each particle will exist.
+- **lifetime_randomness**: Particle lifetime randomness ratio.
+- **linear_accel_curve**: Each particle's linear acceleration will vary along this Curve. Should be a unit Curve.
+- **linear_accel_max**: Maximum linear acceleration.
+- **linear_accel_min**: Minimum linear acceleration.
+- **local_coords**: If `true`, particles use the parent node's coordinate space (known as local coordinates). This will cause particles to move and rotate along the CPUParticles3D node (and its parents) when it is moved or rotated. If `false`, particles use global coordinates; they will not move or rotate along the CPUParticles3D node (and its parents) when it is moved or rotated.
+- **mesh**: The Mesh used for each particle. If `null`, particles will be spheres.
+- **one_shot**: If `true`, only one emission cycle occurs. If set `true` during a cycle, emission will stop at the cycle's end.
+- **orbit_velocity_curve**: Each particle's orbital velocity will vary along this Curve. Should be a unit Curve.
+- **orbit_velocity_max**: Maximum orbit velocity.
+- **orbit_velocity_min**: Minimum orbit velocity.
+- **particle_flag_align_y**: Align Y axis of particle with the direction of its velocity.
+- **particle_flag_disable_z**: If `true`, particles will not move on the Z axis.
+- **particle_flag_rotate_y**: If `true`, particles rotate around Y axis by `angle_min`.
+- **preprocess**: Particle system starts as if it had already run for this many seconds.
+- **radial_accel_curve**: Each particle's radial acceleration will vary along this Curve. Should be a unit Curve.
+- **radial_accel_max**: Maximum radial acceleration.
+- **radial_accel_min**: Minimum radial acceleration.
+- **randomness**: Emission lifetime randomness ratio.
+- **scale_amount_curve**: Each particle's scale will vary along this Curve. Should be a unit Curve.
+- **scale_amount_max**: Maximum scale.
+- **scale_amount_min**: Minimum scale.
+- **scale_curve_x**: Curve for the scale over life, along the x axis.
+- **scale_curve_y**: Curve for the scale over life, along the y axis.
+- **scale_curve_z**: Curve for the scale over life, along the z axis.
+- **seed**: Sets the random seed used by the particle system. Only effective if `use_fixed_seed` is `true`.
+- **speed_scale**: Particle system's running speed scaling ratio. A value of `0` can be used to pause the particles.
+- **split_scale**: If set to `true`, three different scale curves can be specified, one per scale axis.
+- **spread**: Each particle's initial direction range from `+spread` to `-spread` degrees. Applied to X/Z plane and Y/Z planes.
+- **tangential_accel_curve**: Each particle's tangential acceleration will vary along this Curve. Should be a unit Curve.
+- **tangential_accel_max**: Maximum tangent acceleration.
+- **tangential_accel_min**: Minimum tangent acceleration.
+- **use_fixed_seed**: If `true`, particles will use the same seed for every simulation using the seed defined in `seed`. This is useful for situations where the visual outcome should be consistent across replays, for example when using Movie Maker mode.
+- **visibility_aabb**: The AABB that determines the node's region which needs to be visible on screen for the particle system to be active. Grow the box if particles suddenly appear/disappear when the node enters/exits the screen. The AABB can be grown via code or with the **Particles → Generate AABB** editor tool.
+
+**Methods:**
+- CaptureAabb() -> Aabb - Returns the axis-aligned bounding box that contains all the particles that are active in the current frame.
+- ConvertFromParticles(Node particles) - Sets this node's properties to match a given GPUParticles3D node with an assigned ParticleProcessMaterial.
+- GetParamCurve(int param) -> Curve - Returns the Curve of the parameter specified by `Parameter`.
+- GetParamMax(int param) -> float - Returns the maximum value range for the given parameter.
+- GetParamMin(int param) -> float - Returns the minimum value range for the given parameter.
+- GetParticleFlag(int particleFlag) -> bool - Returns the enabled state of the given particle flag.
+- RequestParticlesProcess(float processTime, float processTimeResidual = 0.0) - Requests the particles to process for extra process time during a single frame. `process_time` defines the time that the particles will process while emitting is on. `process_time_residual` defines the time that particles will process with emitting turned off for the simulation. When combined with `speed_scale` set to `0.0`, this is useful to be able to seek a particle system timeline.
+- Restart(bool keepSeed = false) - Restarts the particle emitter. If `keep_seed` is `true`, the current random seed will be preserved. Useful for seeking and playback.
+- SetParamCurve(int param, Curve curve) - Sets the Curve of the parameter specified by `Parameter`. Should be a unit Curve.
+- SetParamMax(int param, float value) - Sets the maximum value for the given parameter.
+- SetParamMin(int param, float value) - Sets the minimum value for the given parameter.
+- SetParticleFlag(int particleFlag, bool enable) - Enables or disables the given particle flag.
+
+**Signals:**
+- Finished - Emitted when all active particles have finished processing. When `one_shot` is disabled, particles will process continuously, so this is never emitted.
+
+**Enums:**
+**DrawOrder:** DRAW_ORDER_INDEX=0, DRAW_ORDER_LIFETIME=1, DRAW_ORDER_VIEW_DEPTH=2
+  - DRAW_ORDER_INDEX: Particles are drawn in the order emitted.
+  - DRAW_ORDER_LIFETIME: Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.
+  - DRAW_ORDER_VIEW_DEPTH: Particles are drawn in order of depth.
+**Parameter:** PARAM_INITIAL_LINEAR_VELOCITY=0, PARAM_ANGULAR_VELOCITY=1, PARAM_ORBIT_VELOCITY=2, PARAM_LINEAR_ACCEL=3, PARAM_RADIAL_ACCEL=4, PARAM_TANGENTIAL_ACCEL=5, PARAM_DAMPING=6, PARAM_ANGLE=7, PARAM_SCALE=8, PARAM_HUE_VARIATION=9, ...
+  - PARAM_INITIAL_LINEAR_VELOCITY: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set initial velocity properties.
+  - PARAM_ANGULAR_VELOCITY: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set angular velocity properties.
+  - PARAM_ORBIT_VELOCITY: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set orbital velocity properties.
+  - PARAM_LINEAR_ACCEL: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set linear acceleration properties.
+  - PARAM_RADIAL_ACCEL: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set radial acceleration properties.
+  - PARAM_TANGENTIAL_ACCEL: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set tangential acceleration properties.
+  - PARAM_DAMPING: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set damping properties.
+  - PARAM_ANGLE: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set angle properties.
+  - PARAM_SCALE: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set scale properties.
+  - PARAM_HUE_VARIATION: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set hue variation properties.
+  - PARAM_ANIM_SPEED: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set animation speed properties.
+  - PARAM_ANIM_OFFSET: Use with `set_param_min`, `set_param_max`, and `set_param_curve` to set animation offset properties.
+  - PARAM_MAX: Represents the size of the `Parameter` enum.
+**ParticleFlags:** PARTICLE_FLAG_ALIGN_Y_TO_VELOCITY=0, PARTICLE_FLAG_ROTATE_Y=1, PARTICLE_FLAG_DISABLE_Z=2, PARTICLE_FLAG_MAX=3
+  - PARTICLE_FLAG_ALIGN_Y_TO_VELOCITY: Use with `set_particle_flag` to set `particle_flag_align_y`.
+  - PARTICLE_FLAG_ROTATE_Y: Use with `set_particle_flag` to set `particle_flag_rotate_y`.
+  - PARTICLE_FLAG_DISABLE_Z: Use with `set_particle_flag` to set `particle_flag_disable_z`.
+  - PARTICLE_FLAG_MAX: Represents the size of the `ParticleFlags` enum.
+**EmissionShape:** EMISSION_SHAPE_POINT=0, EMISSION_SHAPE_SPHERE=1, EMISSION_SHAPE_SPHERE_SURFACE=2, EMISSION_SHAPE_BOX=3, EMISSION_SHAPE_POINTS=4, EMISSION_SHAPE_DIRECTED_POINTS=5, EMISSION_SHAPE_RING=6, EMISSION_SHAPE_MAX=7
+  - EMISSION_SHAPE_POINT: All particles will be emitted from a single point.
+  - EMISSION_SHAPE_SPHERE: Particles will be emitted in the volume of a sphere.
+  - EMISSION_SHAPE_SPHERE_SURFACE: Particles will be emitted on the surface of a sphere.
+  - EMISSION_SHAPE_BOX: Particles will be emitted in the volume of a box.
+  - EMISSION_SHAPE_POINTS: Particles will be emitted at a position chosen randomly among `emission_points`. Particle color will be modulated by `emission_colors`.
+  - EMISSION_SHAPE_DIRECTED_POINTS: Particles will be emitted at a position chosen randomly among `emission_points`. Particle velocity and rotation will be set based on `emission_normals`. Particle color will be modulated by `emission_colors`.
+  - EMISSION_SHAPE_RING: Particles will be emitted in a ring or cylinder.
+  - EMISSION_SHAPE_MAX: Represents the size of the `EmissionShape` enum.
+

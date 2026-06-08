@@ -1,0 +1,22 @@
+{
+  "character": "lena",
+  "character_id": "7ef59bb8-7a70-456a-a514-b7be38d512fb",
+  "prompt": "Lena, prologue motherly caretaker, pale healing-green shawl over warm simple dress, steady grave presence, Orthodox mercy RPG cabin scene, low top-down RPG pixel-art character, hard clean silhouette, transparent background, palette-limited, readable 64 by 96 gameplay sprite, no text.",
+  "created_at": "2026-05-11T02:23:32.115925+00:00",
+  "canvas_w": 64,
+  "canvas_h": 96,
+  "palette": "lena",
+  "last_animations": {
+    "pixellab_locomotion": [
+      "d60e67d2-be15-4dd9-971e-83aedd8ec09d",
+      "dca7964a-d2a3-44c7-9794-5dab3de5e8b8",
+      "b8490bdd-f6a9-4614-bd45-1d3dea02a6ca",
+      "0c0060fc-30ef-4bae-86cf-564ae95fa323",
+      "ea2d934a-0ba3-4264-a583-ea7650dac0fa",
+      "39c058c7-8842-4712-883c-287650c7d54c",
+      "d3c67ad3-12c2-4fbd-acc9-9bc5aefab017",
+      "d17cd6f8-c2c9-43f9-9f4e-0af4f60299a1"
+    ]
+  },
+  "pending_animations": {}
+}

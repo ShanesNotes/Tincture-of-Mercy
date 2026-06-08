@@ -21,9 +21,11 @@ public partial class CabinGrayboxAdapter : Node2D
     [Export] public NodePath InventoryLabelPath { get; set; } = "CanvasLayer/Panel/VBox/Inventory";
     [Export] public NodePath RecognitionLabelPath { get; set; } = "CanvasLayer/Panel/VBox/Recognition";
     [Export] public NodePath AudioCueLabelPath { get; set; } = "CanvasLayer/Panel/VBox/AudioCue";
+    [Export] public NodePath VisualStateLabelPath { get; set; } = "CanvasLayer/Panel/VBox/VisualState";
     [Export] public NodePath SnapshotMetaLabelPath { get; set; } = "CanvasLayer/Panel/VBox/SnapshotMeta";
 
     [Export] public NodePath CameraPath { get; set; } = "MainCamera";
+    [Export] public NodePath HearthBodyPath { get; set; } = "Hearth";
     [Export] public NodePath KalevActorPath { get; set; } = "Actors/Kalev";
     [Export] public NodePath AnnaActorPath { get; set; } = "Actors/Anna";
     [Export] public NodePath IiroActorPath { get; set; } = "Actors/Iiro";
@@ -56,6 +58,7 @@ public partial class CabinGrayboxAdapter : Node2D
     public void PresentSnapshot(OpeningActSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
+        var visualState = new OpeningActVisualStateProjector().Project(snapshot);
 
         SetLabel(HearthLabelPath, $"{OpeningActGrayboxKeys.SnapshotHearthState}: {Display(snapshot.HearthState)}");
         SetLabel(AnnaBreathLabelPath, $"{OpeningActGrayboxKeys.SnapshotAnnaBreathState}: {Display(snapshot.AnnaBreathState)}");
@@ -64,20 +67,39 @@ public partial class CabinGrayboxAdapter : Node2D
         SetLabel(InventoryLabelPath, InventoryText(snapshot));
         SetLabel(RecognitionLabelPath, RecognitionText(snapshot));
         SetLabel(AudioCueLabelPath, AudioCueText(snapshot));
+        SetLabel(VisualStateLabelPath, VisualStateText(visualState));
         SetLabel(SnapshotMetaLabelPath, $"tick {snapshot.Tick} | events {snapshot.EventCount} | last {Display(snapshot.LastEventId)}");
 
-        ApplyActorLabels(snapshot);
-        ApplyCameraFocus(snapshot.CameraFocusTarget);
+        ApplyActorLabels(snapshot, visualState);
+        ApplyHearthVisual(visualState.HearthLightState);
+        ApplyCameraFocus(visualState.CameraFocusTarget);
     }
 
-    private void ApplyActorLabels(OpeningActSnapshot snapshot)
+    private void ApplyActorLabels(OpeningActSnapshot snapshot, OpeningActVisualState visualState)
     {
         SetActorLabel(OpeningActGrayboxKeys.ActorKalev, OpeningActGrayboxKeys.ActorKalev);
-        SetActorLabel(OpeningActGrayboxKeys.ActorAnna, $"{OpeningActGrayboxKeys.ActorAnna}\nbreath: {Display(snapshot.AnnaBreathState)}");
-        SetActorLabel(OpeningActGrayboxKeys.ActorIiro, $"{OpeningActGrayboxKeys.ActorIiro}\nposture: {Display(snapshot.IiroPosture)}");
+        SetActorLabel(OpeningActGrayboxKeys.ActorAnna, $"{OpeningActGrayboxKeys.ActorAnna}\nbreath: {Display(snapshot.AnnaBreathState)}\nrow: {visualState.AnnaAnimationRow}");
+        SetActorLabel(OpeningActGrayboxKeys.ActorIiro, $"{OpeningActGrayboxKeys.ActorIiro}\nposture: {Display(snapshot.IiroPosture)}\nrow: {visualState.IiroAnimationRow}");
         SetActorLabel(OpeningActGrayboxKeys.ActorWolf01, OpeningActGrayboxKeys.ActorWolf01);
         SetActorLabel(OpeningActGrayboxKeys.ActorWolf02, OpeningActGrayboxKeys.ActorWolf02);
         SetActorLabel(OpeningActGrayboxKeys.ActorWolf03, OpeningActGrayboxKeys.ActorWolf03);
+    }
+
+    private void ApplyHearthVisual(string hearthLightState)
+    {
+        var hearth = GetNodeOrNull<ColorRect>(HearthBodyPath);
+        if (hearth is null)
+        {
+            return;
+        }
+
+        hearth.Color = hearthLightState switch
+        {
+            "cold" => new Color(0.19f, 0.22f, 0.25f, 1.0f),
+            "banked" or "low" => new Color(0.54f, 0.28f, 0.16f, 1.0f),
+            "ember" or "lit" => new Color(0.86f, 0.31f, 0.12f, 1.0f),
+            _ => new Color(0.86f, 0.31f, 0.12f, 1.0f),
+        };
     }
 
     private void ApplyCameraFocus(string focusTarget)
@@ -155,6 +177,12 @@ public partial class CabinGrayboxAdapter : Node2D
     {
         snapshot.Metadata.TryGetValue(OpeningActGrayboxKeys.SnapshotActiveAudioCue, out var cue);
         return $"{OpeningActGrayboxKeys.SnapshotActiveAudioCue}: {Display(cue ?? string.Empty)}";
+    }
+
+    private static string VisualStateText(OpeningActVisualState visualState)
+    {
+        return $"visual rows: anna={visualState.AnnaAnimationRow} iiro={visualState.IiroAnimationRow} | " +
+            $"hearth={Display(visualState.HearthLightState)} | camera={Display(visualState.CameraFocusTarget)}";
     }
 
     private static string Display(string value) => string.IsNullOrWhiteSpace(value) ? "unset" : value;

@@ -1,0 +1,120 @@
+## FontFile <- Font
+
+FontFile contains a set of glyphs to represent Unicode characters imported from a font file, as well as a cache of rasterized glyphs, and a set of fallback Fonts to use. Use FontVariation to access specific OpenType variation of the font, create simulated bold / slanted version, and draw lines of text. For more complex text processing, use FontVariation in conjunction with TextLine or TextParagraph. Supported font formats: - Dynamic font importer: TrueType (.ttf), TrueType collection (.ttc), OpenType (.otf), OpenType collection (.otc), WOFF (.woff), WOFF2 (.woff2), Type 1 (.pfb, .pfm). - Bitmap font importer: AngelCode BMFont (.fnt, .font), text and binary (version 3) format variants. - Monospace image font importer: All supported image formats. **Note:** A character is a symbol that represents an item (letter, digit etc.) in an abstract way. **Note:** A glyph is a bitmap or a shape used to draw one or more characters in a context-dependent manner. Glyph indices are bound to the specific font data source. **Note:** If none of the font data sources contain glyphs for a character used in a string, the character in question will be replaced with a box displaying its hexadecimal code.
+
+**Props:**
+- AllowSystemFallback: bool = true
+- Antialiasing: int (TextServer.FontAntialiasing) = 1
+- Data: byte[] = PackedByteArray()
+- DisableEmbeddedBitmaps: bool = true
+- FixedSize: int = 0
+- FixedSizeScaleMode: int (TextServer.FixedSizeScaleMode) = 0
+- FontName: string = ""
+- FontStretch: int = 100
+- FontStyle: int (TextServer.FontStyle) = 0
+- FontWeight: int = 400
+- ForceAutohinter: bool = false
+- GenerateMipmaps: bool = false
+- Hinting: int (TextServer.Hinting) = 1
+- KeepRoundingRemainders: bool = true
+- ModulateColorGlyphs: bool = false
+- MsdfPixelRange: int = 16
+- MsdfSize: int = 48
+- MultichannelSignedDistanceField: bool = false
+- OpentypeFeatureOverrides: Godot.Collections.Dictionary = {}
+- Oversampling: float = 0.0
+- StyleName: string = ""
+- SubpixelPositioning: int (TextServer.SubpixelPositioning) = 1
+
+- **allow_system_fallback**: If set to `true`, system fonts can be automatically used as fallbacks.
+- **antialiasing**: Font anti-aliasing mode.
+- **data**: Contents of the dynamic font source file.
+- **disable_embedded_bitmaps**: If set to `true`, embedded font bitmap loading is disabled (bitmap-only and color fonts ignore this property).
+- **fixed_size**: Font size, used only for the bitmap fonts.
+- **fixed_size_scale_mode**: Scaling mode, used only for the bitmap fonts with `fixed_size` greater than zero.
+- **font_name**: Font family name.
+- **font_stretch**: Font stretch amount, compared to a normal width. A percentage value between `50%` and `200%`.
+- **font_style**: Font style flags.
+- **font_weight**: Weight (boldness) of the font. A value in the `100...999` range, normal font weight is `400`, bold font weight is `700`.
+- **force_autohinter**: If set to `true`, auto-hinting is supported and preferred over font built-in hinting. Used by dynamic fonts only (MSDF fonts don't support hinting).
+- **generate_mipmaps**: If set to `true`, generate mipmaps for the font textures.
+- **hinting**: Font hinting mode. Used by dynamic fonts only.
+- **keep_rounding_remainders**: If set to `true`, when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+- **modulate_color_glyphs**: If set to `true`, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
+- **msdf_pixel_range**: The width of the range around the shape between the minimum and maximum representable signed distance. If using font outlines, `msdf_pixel_range` must be set to at least *twice* the size of the largest font outline. The default `msdf_pixel_range` value of `16` allows outline sizes up to `8` to look correct.
+- **msdf_size**: Source font size used to generate MSDF textures. Higher values allow for more precision, but are slower to render and require more memory. Only increase this value if you notice a visible lack of precision in glyph rendering.
+- **multichannel_signed_distance_field**: If set to `true`, glyphs of all sizes are rendered using single multichannel signed distance field (MSDF) generated from the dynamic font vector data. Since this approach does not rely on rasterizing the font every time its size changes, this allows for resizing the font in real-time without any performance penalty. Text will also not look grainy for Controls that are scaled down (or for Label3Ds viewed from a long distance). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes. **Note:** If using font outlines, `msdf_pixel_range` must be set to at least *twice* the size of the largest font outline. **Note:** MSDF font rendering does not render glyphs with overlapping shapes correctly. Overlapping shapes are not valid per the OpenType standard, but are still commonly found in many font files, especially those converted by Google Fonts. To avoid issues with overlapping glyphs, consider downloading the font file directly from the type foundry instead of relying on Google Fonts.
+- **opentype_feature_overrides**: Font OpenType feature set override.
+- **oversampling**: If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See `Viewport.oversampling`. This value doesn't override the [code skip-lint]oversampling[/code] parameter of [code skip-lint]draw_*[/code] methods.
+- **style_name**: Font style name.
+- **subpixel_positioning**: Font glyph subpixel positioning mode. Subpixel positioning provides shaper text and better kerning for smaller font sizes, at the cost of higher memory usage and lower font rasterization speed. Use `TextServer.SUBPIXEL_POSITIONING_AUTO` to automatically enable it based on the font size.
+
+**Methods:**
+- ClearCache() - Removes all font cache entries.
+- ClearGlyphs(int cacheIndex, Vector2i size) - Removes all rendered glyph information from the cache entry. **Note:** This function will not remove textures associated with the glyphs, use `remove_texture` to remove them manually.
+- ClearKerningMap(int cacheIndex, int size) - Removes all kerning overrides.
+- ClearSizeCache(int cacheIndex) - Removes all font sizes from the cache entry.
+- ClearTextures(int cacheIndex, Vector2i size) - Removes all textures from font cache entry. **Note:** This function will not remove glyphs associated with the texture, use `remove_glyph` to remove them manually.
+- GetCacheAscent(int cacheIndex, int size) -> float - Returns the font ascent (number of pixels above the baseline).
+- GetCacheCount() -> int - Returns number of the font cache entries.
+- GetCacheDescent(int cacheIndex, int size) -> float - Returns the font descent (number of pixels below the baseline).
+- GetCacheScale(int cacheIndex, int size) -> float - Returns scaling factor of the color bitmap font.
+- GetCacheUnderlinePosition(int cacheIndex, int size) -> float - Returns pixel offset of the underline below the baseline.
+- GetCacheUnderlineThickness(int cacheIndex, int size) -> float - Returns thickness of the underline in pixels.
+- GetCharFromGlyphIndex(int size, int glyphIndex) -> int - Returns character code associated with `glyph_index`, or `0` if `glyph_index` is invalid. See `get_glyph_index`.
+- GetEmbolden(int cacheIndex) -> float - Returns embolden strength, if is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+- GetExtraBaselineOffset(int cacheIndex) -> float - Returns extra baseline offset (as a fraction of font height).
+- GetExtraSpacing(int cacheIndex, int spacing) -> int - Returns spacing for `spacing` in pixels (not relative to the font size).
+- GetFaceIndex(int cacheIndex) -> int - Returns an active face index in the TrueType / OpenType collection.
+- GetGlyphAdvance(int cacheIndex, int size, int glyph) -> Vector2 - Returns glyph advance (offset of the next glyph). **Note:** Advance for glyphs outlines is the same as the base glyph advance and is not saved.
+- GetGlyphIndex(int size, int char, int variationSelector) -> int - Returns the glyph index of a `char`, optionally modified by the `variation_selector`.
+- GetGlyphList(int cacheIndex, Vector2i size) -> int[] - Returns list of rendered glyphs in the cache entry.
+- GetGlyphOffset(int cacheIndex, Vector2i size, int glyph) -> Vector2 - Returns glyph offset from the baseline.
+- GetGlyphSize(int cacheIndex, Vector2i size, int glyph) -> Vector2 - Returns glyph size.
+- GetGlyphTextureIdx(int cacheIndex, Vector2i size, int glyph) -> int - Returns index of the cache texture containing the glyph.
+- GetGlyphUvRect(int cacheIndex, Vector2i size, int glyph) -> Rect2 - Returns rectangle in the cache texture containing the glyph.
+- GetKerning(int cacheIndex, int size, Vector2i glyphPair) -> Vector2 - Returns kerning for the pair of glyphs.
+- GetKerningList(int cacheIndex, int size) -> Vector2i[] - Returns list of the kerning overrides.
+- GetLanguageSupportOverride(string language) -> bool - Returns `true` if support override is enabled for the `language`.
+- GetLanguageSupportOverrides() -> string[] - Returns list of language support overrides.
+- GetScriptSupportOverride(string script) -> bool - Returns `true` if support override is enabled for the `script`.
+- GetScriptSupportOverrides() -> string[] - Returns list of script support overrides.
+- GetSizeCacheList(int cacheIndex) -> Vector2i[] - Returns list of the font sizes in the cache. Each size is Vector2i with font size and outline size.
+- GetTextureCount(int cacheIndex, Vector2i size) -> int - Returns number of textures used by font cache entry.
+- GetTextureImage(int cacheIndex, Vector2i size, int textureIndex) -> Image - Returns a copy of the font cache texture image.
+- GetTextureOffsets(int cacheIndex, Vector2i size, int textureIndex) -> int[] - Returns a copy of the array containing glyph packing data.
+- GetTransform(int cacheIndex) -> Transform2D - Returns 2D transform, applied to the font outlines, can be used for slanting, flipping and rotating glyphs.
+- GetVariationCoordinates(int cacheIndex) -> Godot.Collections.Dictionary - Returns variation coordinates for the specified font cache entry. See `Font.get_supported_variation_list` for more info.
+- LoadBitmapFont(string path) -> int - Loads an AngelCode BMFont (.fnt, .font) bitmap font from file `path`. **Warning:** This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the `user://` directory.
+- LoadDynamicFont(string path) -> int - Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1 (.pfb, .pfm) dynamic font from file `path`. **Warning:** This method should only be used in the editor or in cases when you need to load external fonts at run-time, such as fonts located at the `user://` directory.
+- RemoveCache(int cacheIndex) - Removes specified font cache entry.
+- RemoveGlyph(int cacheIndex, Vector2i size, int glyph) - Removes specified rendered glyph information from the cache entry. **Note:** This function will not remove textures associated with the glyphs, use `remove_texture` to remove them manually.
+- RemoveKerning(int cacheIndex, int size, Vector2i glyphPair) - Removes kerning override for the pair of glyphs.
+- RemoveLanguageSupportOverride(string language) - Remove language support override.
+- RemoveScriptSupportOverride(string script) - Removes script support override.
+- RemoveSizeCache(int cacheIndex, Vector2i size) - Removes specified font size from the cache entry.
+- RemoveTexture(int cacheIndex, Vector2i size, int textureIndex) - Removes specified texture from the cache entry. **Note:** This function will not remove glyphs associated with the texture. Remove them manually using `remove_glyph`.
+- RenderGlyph(int cacheIndex, Vector2i size, int index) - Renders specified glyph to the font cache texture.
+- RenderRange(int cacheIndex, Vector2i size, int start, int end) - Renders the range of characters to the font cache texture.
+- SetCacheAscent(int cacheIndex, int size, float ascent) - Sets the font ascent (number of pixels above the baseline).
+- SetCacheDescent(int cacheIndex, int size, float descent) - Sets the font descent (number of pixels below the baseline).
+- SetCacheScale(int cacheIndex, int size, float scale) - Sets scaling factor of the color bitmap font.
+- SetCacheUnderlinePosition(int cacheIndex, int size, float underlinePosition) - Sets pixel offset of the underline below the baseline.
+- SetCacheUnderlineThickness(int cacheIndex, int size, float underlineThickness) - Sets thickness of the underline in pixels.
+- SetEmbolden(int cacheIndex, float strength) - Sets embolden strength, if is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+- SetExtraBaselineOffset(int cacheIndex, float baselineOffset) - Sets extra baseline offset (as a fraction of font height).
+- SetExtraSpacing(int cacheIndex, int spacing, int value) - Sets the spacing for `spacing` to `value` in pixels (not relative to the font size).
+- SetFaceIndex(int cacheIndex, int faceIndex) - Sets an active face index in the TrueType / OpenType collection.
+- SetGlyphAdvance(int cacheIndex, int size, int glyph, Vector2 advance) - Sets glyph advance (offset of the next glyph). **Note:** Advance for glyphs outlines is the same as the base glyph advance and is not saved.
+- SetGlyphOffset(int cacheIndex, Vector2i size, int glyph, Vector2 offset) - Sets glyph offset from the baseline.
+- SetGlyphSize(int cacheIndex, Vector2i size, int glyph, Vector2 glSize) - Sets glyph size.
+- SetGlyphTextureIdx(int cacheIndex, Vector2i size, int glyph, int textureIdx) - Sets index of the cache texture containing the glyph.
+- SetGlyphUvRect(int cacheIndex, Vector2i size, int glyph, Rect2 uvRect) - Sets rectangle in the cache texture containing the glyph.
+- SetKerning(int cacheIndex, int size, Vector2i glyphPair, Vector2 kerning) - Sets kerning for the pair of glyphs.
+- SetLanguageSupportOverride(string language, bool supported) - Adds override for `Font.is_language_supported`.
+- SetScriptSupportOverride(string script, bool supported) - Adds override for `Font.is_script_supported`.
+- SetTextureImage(int cacheIndex, Vector2i size, int textureIndex, Image image) - Sets font cache texture image.
+- SetTextureOffsets(int cacheIndex, Vector2i size, int textureIndex, int[] offset) - Sets array containing glyph packing data.
+- SetTransform(int cacheIndex, Transform2D transform) - Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
+- SetVariationCoordinates(int cacheIndex, Godot.Collections.Dictionary variationCoordinates) - Sets variation coordinates for the specified font cache entry. See `Font.get_supported_variation_list` for more info.
+

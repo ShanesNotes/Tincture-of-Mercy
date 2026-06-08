@@ -7,6 +7,8 @@ Dependencies: `design_system/v0_8_1/godot_asset_manifest_v0_8_1.md` (sprite mani
 
 This template produces a runtime sprite sheet that drops directly into Godot `SpriteFrames` resources. Fill in every `[BRACKET]` per character. Do not relax the pixel-art-rigor or palette sections — they are the project visual lock.
 
+The deliverable is **native pixel art at the runtime frame size**. Source IS the runtime sheet — no upscaling, no chroma background, no per-cell scaling step. The pipeline does dimension validation and palette quantization only.
+
 ## Template
 
 ```text
@@ -26,6 +28,12 @@ CANVAS
 - Format: transparent PNG, RGBA, 8-bit per channel
 - No background, no grid lines, no labels, no guide rulers, no concept-sheet decoration
 - Feet baseline: y = [frame_height − 12] consistent across all frames so Godot anchor stays put
+
+PER-CELL FRAMING PARITY (hard constraints)
+- Figure vertical extent (top-of-hair pixel to bottom-of-feet pixel) is within ±1 px across every cell. Front-view, profile, and back-view figures are the same height.
+- ≥ 4 px gutter from frame edges to silhouette — no character pixels touch the frame border.
+- Vertical centering on the baseline: bottom-of-feet pixel sits on y = [frame_height − 12] in every cell, with no per-cell drift.
+- Head proportion parity: head (top-of-hair to chin/jawline, before scarf or collar) is 18–22% of figure height in every direction. Profile and back views MUST show a hair canopy above the scarf or collar. Never merge the head silhouette into the scarf or coat in any view.
 
 ANIMATION ROWS (top to bottom)
 [Row index, animation_name, frame_count, motion notes]
@@ -47,8 +55,8 @@ Wittehaven (later)       witte-white #F4F6F7 · witte-blue #D5DEE4 · witte-cool
 Avoid: bright fantasy saturation, neon, clean sci-fi medic teal, shiny armor highlights, cozy-village warmth.
 
 OUTPUT
-- File path: `[res://art/characters/CHARACTER_DIR/CHARACTER_full_sheet_WxH.png]`
-- One PNG. No alts, no annotation overlay, no reference tile.
+- File path: `art/characters/[CHARACTER_DIR]/sheets/[CHARACTER]_[PASS]_[frame_w]x[frame_h].png`
+- One PNG, RGBA with alpha 0 background. No alts, no annotation overlay, no reference tile.
 - Empty cells fully transparent (alpha 0, all channels).
 
 ACCEPTANCE (self-check before returning)
@@ -58,6 +66,7 @@ ACCEPTANCE (self-check before returning)
 4. Outline is one-pixel solid; no semi-transparent silhouette pixels.
 5. The character is recognizable at native size without zoom — view a single cell at 1× and confirm silhouette laws still read.
 6. PNG is RGBA with explicit transparency, not a flattened image with a key color.
+7. Framing parity: figure heights (top-of-hair to bottom-of-feet) within ±1 px across all cells; head occupies 18–22% of figure height in every direction; profile and back views show a hair canopy above the scarf.
 
 REFERENCES (for tone, not imitation)
 - Project concept reference for this character: `[path/to/design_asset.png]` — silhouette + accessory guide ONLY; do not trace; do not downscale.
@@ -73,16 +82,22 @@ Do not imitate any living artist. Produce one transparent-PNG sprite sheet meeti
 | Constraint | Reason |
 |---|---|
 | Native canvas authoring | Downscaled illustrations have anti-aliased edges and uncontrolled palettes; they degrade the moment Godot scales them with a nearest filter. |
+| Source = runtime shape | Industry standard for 2D sprite sheets is direct authoring at engine resolution. The pipeline validates and palette-snaps; it does not transform shape, geometry, or framing. Anything else is a workaround. |
 | ≤ 48 colors / sheet | Forces deliberate value structure; matches the "icon-manuscript" tone where every color carries meaning. |
 | Single-pixel ink outline | Reads cleanly at 2× zoom and keeps silhouettes legible against the cold Michigan world palette. |
 | 12fps, fewer-better keyframes | Ships within a small-team production budget; the contemplative pace fits the project. |
 | Feet baseline at y = h−12 | Godot collision shapes and floor anchoring stay consistent across animations and characters. |
+| Per-cell framing parity | Figures must be the same height across every direction. If profile-view figures sit higher in their cells than front-view figures, runtime visuals look "cropped" — even though every other constraint passed. The pipeline cannot recover from per-cell drift. |
+| Head proportion parity | Profile and back views drawn with the head merged into a scarf or collar will be unreadable at native size. The hair canopy must exist in source for it to read at runtime. |
 
 ## Tooling guidance
 
-General-purpose image models (Midjourney, DALL·E, SDXL base) consistently produce *pixel-art-styled illustrations* at high resolution rather than native-resolution pixel art. They will fail acceptance criterion 3 (color count) and criterion 4 (single-pixel outline). Prefer one of:
+General-purpose image models (Midjourney, DALL·E, SDXL base) consistently produce *pixel-art-styled illustrations* at high resolution rather than native-resolution pixel art. They will fail acceptance criteria 3 (color count) and 4 (single-pixel outline). Prefer one of:
 
-1. A multimodal LLM with a Pillow / image tool, instructed to author at native size with a palette-clamp step.
-2. Aseprite + a pixel-art-tuned ML plugin (artist stays in the loop on edges and color budget).
-3. A specialist pixel-art model (PixelLab, Pixaki, Retro Diffusion at small native target).
-4. A human pixel artist using this prompt + the existing `design_system/v0_8_1/kalev/templates/` blank canvas.
+1. A human pixel artist using Aseprite / Pyxel / Pro Motion at the exact native frame size.
+2. A specialist pixel-art model (PixelLab, Pixaki, Retro Diffusion at small native target).
+3. Aseprite + a pixel-art-tuned ML plugin (artist stays in the loop on edges and color budget).
+
+## Legacy fallback (rare)
+
+If a delivery arrives in a non-native shape (e.g., a 4× upscaled sheet with magenta chroma background), the pipeline at `tools/sprites/make_runtime_sprite.py` has a legacy chroma-key + isolate + aspect-fit path that auto-engages when source dimensions do not match runtime dimensions. Treat this as a salvage tool, not the canonical path — it cannot recover from per-cell framing drift or proportion drift in the source.

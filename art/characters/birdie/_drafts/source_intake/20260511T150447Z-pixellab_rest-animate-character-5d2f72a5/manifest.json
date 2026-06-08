@@ -1,0 +1,138 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [],
+  "character": "birdie",
+  "created_at": "2026-05-11T15:04:47.425597+00:00",
+  "events": [
+    {
+      "at": "2026-05-11T15:04:53.721518+00:00",
+      "details": {
+        "direction": "south",
+        "job_id": "860aef19-0f63-4160-b283-b59d06c98407",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T15:05:00.818576+00:00",
+      "details": {
+        "direction": "west",
+        "job_id": "5cc61b20-41ec-410c-9d0e-cf20269e21c6",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T15:07:55.845511+00:00",
+      "details": {
+        "direction": "east",
+        "job_id": "ac1b2c28-697c-4c58-8d1e-e290ecc76a8e",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T15:08:47.936736+00:00",
+      "details": {
+        "direction": "north",
+        "job_id": "748a2cdc-2759-4e32-a238-cbc327302263",
+        "template": "breathing-idle"
+      },
+      "kind": "job_completed"
+    }
+  ],
+  "expected_operations": [
+    {
+      "directions": [],
+      "endpoint": "/animate-character",
+      "resume": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "template_animation_id": "breathing-idle"
+    },
+    {
+      "directions": [
+        "south"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [
+        "west",
+        "north",
+        "east"
+      ],
+      "template_animation_id": "walking"
+    }
+  ],
+  "failed_job": {
+    "direction": "east",
+    "job_id": "9628dd8e-6abf-4efa-99d4-84df9a6ffab0",
+    "payload": {
+      "created_at": "2026-05-11T15:00:09.250358+00:00",
+      "id": "9628dd8e-6abf-4efa-99d4-84df9a6ffab0",
+      "last_response": {
+        "animation_description": "walking",
+        "animation_group_id": "8501b7e7-8dae-414f-a408-36939be56843",
+        "animation_name": null,
+        "character_id": "660f9fbe-6f9e-4a0c-aeee-a0e23a507623",
+        "code": 500,
+        "detail": "LookupError: Job e1eb07ef-cb8c-427a-9a70-d1a2eb26e49e was removed from the queue",
+        "direction": "east",
+        "error": "Batch 1/6 failed: LookupError: Job e1eb07ef-cb8c-427a-9a70-d1a2eb26e49e was removed from the queue",
+        "limit_type": null,
+        "number_of_frames": 1,
+        "queue_position": 23,
+        "template_animation_id": "walking",
+        "trace": null,
+        "type": "error"
+      },
+      "status": "failed",
+      "usage": {
+        "type": "usd",
+        "usd": 0.0
+      }
+    },
+    "template": "walking"
+  },
+  "jobs": [
+    {
+      "at": "2026-05-11T15:04:49.248876+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "f0630bfa-b069-4f5a-b4d0-b8aa9beb1112"
+    }
+  ],
+  "operation": "animate-character",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 304,
+    "policy": "hash_only",
+    "sha256": "419d2654144e4b9671cd68f9e6ab3fad0ab80109348021910ef79b7005f49daf"
+  },
+  "requests": [
+    {
+      "at": "2026-05-11T15:04:47.426913+00:00",
+      "body": {
+        "character_id": "660f9fbe-6f9e-4a0c-aeee-a0e23a507623",
+        "color_image": "<redacted>",
+        "directions": [
+          "south"
+        ],
+        "force_colors": true,
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "86f8d488b5b7bf690c869ba052f1489575ebfa89df40f8cb93eeb85f5a09e4e4"
+    }
+  ],
+  "run_id": "20260511T150447Z-pixellab_rest-animate-character-5d2f72a5",
+  "schema_version": 1,
+  "seed": null,
+  "status": "failed",
+  "updated_at": "2026-05-11T15:20:45.767978+00:00"
+}

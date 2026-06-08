@@ -1,0 +1,37 @@
+{
+  "name": "birdie",
+  "palette": "birdie",
+  "default_frame_w": 48,
+  "default_frame_h": 64,
+  "default_baseline_y": 56,
+  "passes": {
+    "idle": {
+      "description": "Birdie perch/wing-flick loop for cabin roof/tree staging; 4 frames in 4\u00d71.",
+      "source_frames": 4,
+      "source_cols": 4,
+      "source_rows": 1,
+      "target_cols": 4,
+      "target_rows": 1,
+      "animation_keys": [
+        "perch"
+      ],
+      "frame_w": 32,
+      "frame_h": 32,
+      "baseline_y": 27
+    },
+    "character_idle": {
+      "description": "Birdie 48x64 character-scale four-direction idle; oversized coat and raised-shoulder silhouette remain required polish gates while walk remains pending source intake.",
+      "source_frames": 20,
+      "source_cols": 5,
+      "source_rows": 4,
+      "target_cols": 5,
+      "target_rows": 4,
+      "animation_keys": [
+        "idle_down",
+        "idle_left",
+        "idle_up",
+        "idle_right"
+      ]
+    }
+  }
+}

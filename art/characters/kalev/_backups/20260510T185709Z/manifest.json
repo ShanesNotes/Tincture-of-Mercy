@@ -1,0 +1,20 @@
+{
+  "candidate_isolation": "backup+candidate-directory; no PixelLab paid generation performed",
+  "created_at": "2026-05-10T18:57:09.168880+00:00",
+  "entries": [
+    {
+      "backup": "art/characters/kalev/_backups/20260510T185709Z/kalev_locomotion_64x96.png",
+      "bytes": 57308,
+      "original": "art/characters/kalev/sheets/kalev_locomotion_64x96.png",
+      "sha256": "75fcff5f3c6d760251483983ce798c266c8f19e0745d38d7ba61441460aebbc2"
+    },
+    {
+      "backup": "art/characters/kalev/_backups/20260510T185709Z/kalev_idle_front_64x96.png",
+      "bytes": 6588,
+      "original": "art/characters/kalev/sheets/kalev_idle_front_64x96.png",
+      "sha256": "ea4e90d24dac27b0ae3e30550093becf1404b72abcd0b1eab464b9280af1a1a5"
+    }
+  ],
+  "paid_generation_authorized": false,
+  "scope": "pre-paid local prep for Kalev professional sprite improvement"
+}

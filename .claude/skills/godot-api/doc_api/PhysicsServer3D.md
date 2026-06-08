@@ -1,0 +1,336 @@
+## PhysicsServer3D <- Object
+
+PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects: - A *space* is a self-contained world for a physics simulation. It contains bodies, areas, and joints. Its state can be queried for collision and intersection information, and several parameters of the simulation can be modified. - A *shape* is a geometric shape such as a sphere, a box, a cylinder, or a polygon. It can be used for collision detection by adding it to a body/area, possibly with an extra transformation relative to the body/area's origin. Bodies/areas can have multiple (transformed) shapes added to them, and a single shape can be added to bodies/areas multiple times with different local transformations. - A *body* is a physical object which can be in static, kinematic, or rigid mode. Its state (such as position and velocity) can be queried and updated. A force integration callback can be set to customize the body's physics. - An *area* is a region in space which can be used to detect bodies and areas entering and exiting it. A body monitoring callback can be set to report entering/exiting body shapes, and similarly an area monitoring callback can be set. Gravity and damping can be overridden within the area by setting area parameters. - A *joint* is a constraint, either between two bodies or on one body relative to a point. Parameters such as the joint bias and the rest length of a spring joint can be adjusted. Physics objects in PhysicsServer3D may be created and manipulated independently; they do not have to be tied to nodes in the scene tree. **Note:** All the 3D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
+
+**Methods:**
+- AreaAddShape(Rid area, Rid shape, Transform3D transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), bool disabled = false) - Adds a shape to the area, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
+- AreaAttachObjectInstanceId(Rid area, int id) - Assigns the area to a descendant of Object, so it can exist in the node tree.
+- AreaClearShapes(Rid area) - Removes all shapes from an area. It does not delete the shapes, so they can be reassigned later.
+- AreaCreate() -> Rid - Creates a 3D area object in the physics server, and returns the RID that identifies it. The default settings for the created area include a collision layer and mask set to `1`, and `monitorable` set to `false`. Use `area_add_shape` to add shapes to it, use `area_set_transform` to set its transform, and use `area_set_space` to add the area to a space. If you want the area to be detectable use `area_set_monitorable`.
+- AreaGetCollisionLayer(Rid area) -> int - Returns the physics layer or layers an area belongs to.
+- AreaGetCollisionMask(Rid area) -> int - Returns the physics layer or layers an area can contact with.
+- AreaGetObjectInstanceId(Rid area) -> int - Gets the instance ID of the object the area is assigned to.
+- AreaGetParam(Rid area, int param) -> Variant - Returns an area parameter value. A list of available parameters is on the `AreaParameter` constants.
+- AreaGetShape(Rid area, int shapeIdx) -> Rid - Returns the RID of the nth shape of an area.
+- AreaGetShapeCount(Rid area) -> int - Returns the number of shapes assigned to an area.
+- AreaGetShapeTransform(Rid area, int shapeIdx) -> Transform3D - Returns the transform matrix of a shape within an area.
+- AreaGetSpace(Rid area) -> Rid - Returns the space assigned to the area.
+- AreaGetTransform(Rid area) -> Transform3D - Returns the transform matrix for an area.
+- AreaRemoveShape(Rid area, int shapeIdx) - Removes a shape from an area. It does not delete the shape, so it can be reassigned later.
+- AreaSetAreaMonitorCallback(Rid area, Callable callback) - Sets the area's area monitor callback. This callback will be called when any other (shape of an) area enters or exits (a shape of) the given area, and must take the following five parameters: 1. an integer `status`: either `AREA_BODY_ADDED` or `AREA_BODY_REMOVED` depending on whether the other area's shape entered or exited the area, 2. an RID `area_rid`: the RID of the other area that entered or exited the area, 3. an integer `instance_id`: the `ObjectID` attached to the other area, 4. an integer `area_shape_idx`: the index of the shape of the other area that entered or exited the area, 5. an integer `self_shape_idx`: the index of the shape of the area where the other area entered or exited. By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
+- AreaSetCollisionLayer(Rid area, int layer) - Assigns the area to one or many physics layers.
+- AreaSetCollisionMask(Rid area, int mask) - Sets which physics layers the area will monitor.
+- AreaSetMonitorCallback(Rid area, Callable callback) - Sets the area's body monitor callback. This callback will be called when any other (shape of a) body enters or exits (a shape of) the given area, and must take the following five parameters: 1. an integer `status`: either `AREA_BODY_ADDED` or `AREA_BODY_REMOVED` depending on whether the other body shape entered or exited the area, 2. an RID `body_rid`: the RID of the body that entered or exited the area, 3. an integer `instance_id`: the `ObjectID` attached to the body, 4. an integer `body_shape_idx`: the index of the shape of the body that entered or exited the area, 5. an integer `self_shape_idx`: the index of the shape of the area where the body entered or exited. By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
+- AreaSetMonitorable(Rid area, bool monitorable)
+- AreaSetParam(Rid area, int param, Variant value) - Sets the value for an area parameter. A list of available parameters is on the `AreaParameter` constants.
+- AreaSetRayPickable(Rid area, bool enable) - Sets object pickable with rays.
+- AreaSetShape(Rid area, int shapeIdx, Rid shape) - Substitutes a given area shape by another. The old shape is selected by its index, the new one by its RID.
+- AreaSetShapeDisabled(Rid area, int shapeIdx, bool disabled)
+- AreaSetShapeTransform(Rid area, int shapeIdx, Transform3D transform) - Sets the transform matrix for an area shape.
+- AreaSetSpace(Rid area, Rid space) - Assigns a space to the area.
+- AreaSetTransform(Rid area, Transform3D transform) - Sets the transform matrix for an area.
+- BodyAddCollisionException(Rid body, Rid exceptedBody) - Adds a body to the list of bodies exempt from collisions.
+- BodyAddConstantCentralForce(Rid body, Vector3 force) - Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with `body_set_constant_force(body, Vector3(0, 0, 0))`. This is equivalent to using `body_add_constant_force` at the body's center of mass.
+- BodyAddConstantForce(Rid body, Vector3 force, Vector3 position = Vector3(0, 0, 0)) - Adds a constant positioned force to the body that keeps being applied over time until cleared with `body_set_constant_force(body, Vector3(0, 0, 0))`. `position` is the offset from the body origin in global coordinates.
+- BodyAddConstantTorque(Rid body, Vector3 torque) - Adds a constant rotational force without affecting position that keeps being applied over time until cleared with `body_set_constant_torque(body, Vector3(0, 0, 0))`.
+- BodyAddShape(Rid body, Rid shape, Transform3D transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), bool disabled = false) - Adds a shape to the body, along with a transform matrix. Shapes are usually referenced by their index, so you should track which shape has a given index.
+- BodyApplyCentralForce(Rid body, Vector3 force) - Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update. This is equivalent to using `body_apply_force` at the body's center of mass.
+- BodyApplyCentralImpulse(Rid body, Vector3 impulse) - Applies a directional impulse without affecting rotation. An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise). This is equivalent to using `body_apply_impulse` at the body's center of mass.
+- BodyApplyForce(Rid body, Vector3 force, Vector3 position = Vector3(0, 0, 0)) - Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update. `position` is the offset from the body origin in global coordinates.
+- BodyApplyImpulse(Rid body, Vector3 impulse, Vector3 position = Vector3(0, 0, 0)) - Applies a positioned impulse to the body. An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise). `position` is the offset from the body origin in global coordinates.
+- BodyApplyTorque(Rid body, Vector3 torque) - Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
+- BodyApplyTorqueImpulse(Rid body, Vector3 impulse) - Applies a rotational impulse to the body without affecting the position. An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+- BodyAttachObjectInstanceId(Rid body, int id) - Assigns the area to a descendant of Object, so it can exist in the node tree.
+- BodyClearShapes(Rid body) - Removes all shapes from a body.
+- BodyCreate() -> Rid - Creates a 3D body object in the physics server, and returns the RID that identifies it. The default settings for the created area include a collision layer and mask set to `1`, and body mode set to `BODY_MODE_RIGID`. Use `body_add_shape` to add shapes to it, use `body_set_state` to set its transform, and use `body_set_space` to add the body to a space.
+- BodyGetCollisionLayer(Rid body) -> int - Returns the physics layer or layers a body belongs to.
+- BodyGetCollisionMask(Rid body) -> int - Returns the physics layer or layers a body can collide with.
+- BodyGetCollisionPriority(Rid body) -> float - Returns the body's collision priority.
+- BodyGetConstantForce(Rid body) -> Vector3 - Returns the body's total constant positional forces applied during each physics update. See `body_add_constant_force` and `body_add_constant_central_force`.
+- BodyGetConstantTorque(Rid body) -> Vector3 - Returns the body's total constant rotational forces applied during each physics update. See `body_add_constant_torque`.
+- BodyGetDirectState(Rid body) -> PhysicsDirectBodyState3D - Returns the PhysicsDirectBodyState3D of the body. Returns `null` if the body is destroyed or removed from the physics space.
+- BodyGetMaxContactsReported(Rid body) -> int - Returns the maximum contacts that can be reported. See `body_set_max_contacts_reported`.
+- BodyGetMode(Rid body) -> int - Returns the body mode.
+- BodyGetObjectInstanceId(Rid body) -> int - Gets the instance ID of the object the area is assigned to.
+- BodyGetParam(Rid body, int param) -> Variant - Returns the value of a body parameter. A list of available parameters is on the `BodyParameter` constants.
+- BodyGetShape(Rid body, int shapeIdx) -> Rid - Returns the RID of the nth shape of a body.
+- BodyGetShapeCount(Rid body) -> int - Returns the number of shapes assigned to a body.
+- BodyGetShapeTransform(Rid body, int shapeIdx) -> Transform3D - Returns the transform matrix of a body shape.
+- BodyGetSpace(Rid body) -> Rid - Returns the RID of the space assigned to a body.
+- BodyGetState(Rid body, int state) -> Variant - Returns a body state.
+- BodyIsAxisLocked(Rid body, int axis) -> bool
+- BodyIsContinuousCollisionDetectionEnabled(Rid body) -> bool - If `true`, the continuous collision detection mode is enabled.
+- BodyIsOmittingForceIntegration(Rid body) -> bool - Returns `true` if the body is omitting the standard force integration. See `body_set_omit_force_integration`.
+- BodyRemoveCollisionException(Rid body, Rid exceptedBody) - Removes a body from the list of bodies exempt from collisions. Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
+- BodyRemoveShape(Rid body, int shapeIdx) - Removes a shape from a body. The shape is not deleted, so it can be reused afterwards.
+- BodyResetMassProperties(Rid body) - Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using `body_set_param`.
+- BodySetAxisLock(Rid body, int axis, bool lock)
+- BodySetAxisVelocity(Rid body, Vector3 axisVelocity) - Sets an axis velocity. The velocity in the given vector axis will be set as the given vector length. This is useful for jumping behavior.
+- BodySetCollisionLayer(Rid body, int layer) - Sets the physics layer or layers a body belongs to.
+- BodySetCollisionMask(Rid body, int mask) - Sets the physics layer or layers a body can collide with.
+- BodySetCollisionPriority(Rid body, float priority) - Sets the body's collision priority.
+- BodySetConstantForce(Rid body, Vector3 force) - Sets the body's total constant positional forces applied during each physics update. See `body_add_constant_force` and `body_add_constant_central_force`.
+- BodySetConstantTorque(Rid body, Vector3 torque) - Sets the body's total constant rotational forces applied during each physics update. See `body_add_constant_torque`.
+- BodySetEnableContinuousCollisionDetection(Rid body, bool enable) - If `true`, the continuous collision detection mode is enabled. Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
+- BodySetForceIntegrationCallback(Rid body, Callable callable, Variant userdata = null) - Sets the body's custom force integration callback function to `callable`. Use an empty Callable ([code skip-lint]Callable()[/code]) to clear the custom callback. The function `callable` will be called every physics tick, before the standard force integration (see `body_set_omit_force_integration`). It can be used for example to update the body's linear and angular velocity based on contact with other bodies. If `userdata` is not `null`, the function `callable` must take the following two parameters: 1. `state`: a PhysicsDirectBodyState3D, used to retrieve and modify the body's state, 2. [code skip-lint]userdata[/code]: a Variant; its value will be the `userdata` passed into this method. If `userdata` is `null`, then `callable` must take only the `state` parameter.
+- BodySetMaxContactsReported(Rid body, int amount) - Sets the maximum contacts to report. Bodies can keep a log of the contacts with other bodies. This is enabled by setting the maximum number of contacts reported to a number greater than 0.
+- BodySetMode(Rid body, int mode) - Sets the body mode.
+- BodySetOmitForceIntegration(Rid body, bool enable) - Sets whether the body omits the standard force integration. If `enable` is `true`, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, `body_set_force_integration_callback` can be used to manually update the linear and angular velocity instead. This method is called when the property `RigidBody3D.custom_integrator` is set.
+- BodySetParam(Rid body, int param, Variant value) - Sets a body parameter. A list of available parameters is on the `BodyParameter` constants.
+- BodySetRayPickable(Rid body, bool enable) - Sets the body pickable with rays if `enable` is set.
+- BodySetShape(Rid body, int shapeIdx, Rid shape) - Substitutes a given body shape by another. The old shape is selected by its index, the new one by its RID.
+- BodySetShapeDisabled(Rid body, int shapeIdx, bool disabled)
+- BodySetShapeTransform(Rid body, int shapeIdx, Transform3D transform) - Sets the transform matrix for a body shape.
+- BodySetSpace(Rid body, Rid space) - Assigns a space to the body (see `space_create`).
+- BodySetState(Rid body, int state, Variant value) - Sets a body state.
+- BodySetStateSyncCallback(Rid body, Callable callable) - Sets the body's state synchronization callback function to `callable`. Use an empty Callable ([code skip-lint]Callable()[/code]) to clear the callback. The function `callable` will be called every physics frame, assuming that the body was active during the previous physics tick, and can be used to fetch the latest state from the physics server. The function `callable` must take the following parameters: 1. `state`: a PhysicsDirectBodyState3D, used to retrieve the body's state.
+- BodyTestMotion(Rid body, PhysicsTestMotionParameters3D parameters, PhysicsTestMotionResult3D result = null) -> bool - Returns `true` if a collision would result from moving along a motion vector from a given point in space. PhysicsTestMotionParameters3D is passed to set motion parameters. PhysicsTestMotionResult3D can be passed to return additional information.
+- BoxShapeCreate() -> Rid - Creates a 3D box shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the box's half-extents.
+- CapsuleShapeCreate() -> Rid - Creates a 3D capsule shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the capsule's height and radius.
+- ConcavePolygonShapeCreate() -> Rid - Creates a 3D concave polygon shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the concave polygon's triangles.
+- ConeTwistJointGetParam(Rid joint, int param) -> float - Gets a cone twist joint parameter.
+- ConeTwistJointSetParam(Rid joint, int param, float value) - Sets a cone twist joint parameter.
+- ConvexPolygonShapeCreate() -> Rid - Creates a 3D convex polygon shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the convex polygon's points.
+- CustomShapeCreate() -> Rid - Creates a custom shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the shape's data. **Note:** Custom shapes are not supported by the built-in physics servers, so calling this method always produces an error when using Godot Physics or Jolt Physics. Custom physics servers implemented as GDExtensions may support a custom shape.
+- CylinderShapeCreate() -> Rid - Creates a 3D cylinder shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the cylinder's height and radius.
+- FreeRid(Rid rid) - Destroys any of the objects created by PhysicsServer3D. If the RID passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
+- Generic6dofJointGetFlag(Rid joint, int axis, int flag) -> bool - Returns the value of a generic 6DOF joint flag.
+- Generic6dofJointGetParam(Rid joint, int axis, int param) -> float - Returns the value of a generic 6DOF joint parameter.
+- Generic6dofJointSetFlag(Rid joint, int axis, int flag, bool enable) - Sets the value of a given generic 6DOF joint flag.
+- Generic6dofJointSetParam(Rid joint, int axis, int param, float value) - Sets the value of a given generic 6DOF joint parameter.
+- GetProcessInfo(int processInfo) -> int - Returns the value of a physics engine state specified by `process_info`.
+- HeightmapShapeCreate() -> Rid - Creates a 3D heightmap shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the heightmap's data.
+- HingeJointGetFlag(Rid joint, int flag) -> bool - Gets a hinge joint flag.
+- HingeJointGetParam(Rid joint, int param) -> float - Gets a hinge joint parameter.
+- HingeJointSetFlag(Rid joint, int flag, bool enabled) - Sets a hinge joint flag.
+- HingeJointSetParam(Rid joint, int param, float value) - Sets a hinge joint parameter.
+- JointClear(Rid joint)
+- JointCreate() -> Rid
+- JointDisableCollisionsBetweenBodies(Rid joint, bool disable) - Sets whether the bodies attached to the Joint3D will collide with each other.
+- JointGetSolverPriority(Rid joint) -> int - Gets the priority value of the Joint3D. **Note:** Only supported when using GodotPhysics3D. This method always returns `1` when using Jolt Physics, as it does not support joint solver priority.
+- JointGetType(Rid joint) -> int - Returns the type of the Joint3D.
+- JointIsDisabledCollisionsBetweenBodies(Rid joint) -> bool - Returns whether the bodies attached to the Joint3D will collide with each other.
+- JointMakeConeTwist(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB)
+- JointMakeGeneric6dof(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB) - Make the joint a generic six degrees of freedom (6DOF) joint. Use `generic_6dof_joint_set_flag` and `generic_6dof_joint_set_param` to set the joint's flags and parameters respectively.
+- JointMakeHinge(Rid joint, Rid bodyA, Transform3D hingeA, Rid bodyB, Transform3D hingeB)
+- JointMakePin(Rid joint, Rid bodyA, Vector3 localA, Rid bodyB, Vector3 localB)
+- JointMakeSlider(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB)
+- JointSetSolverPriority(Rid joint, int priority) - Sets the priority value of the Joint3D. **Note:** Only supported when using GodotPhysics3D. This method has no effect when using Jolt Physics, as it does not support joint solver priority.
+- PinJointGetLocalA(Rid joint) -> Vector3 - Returns position of the joint in the local space of body a of the joint.
+- PinJointGetLocalB(Rid joint) -> Vector3 - Returns position of the joint in the local space of body b of the joint.
+- PinJointGetParam(Rid joint, int param) -> float - Gets a pin joint parameter.
+- PinJointSetLocalA(Rid joint, Vector3 localA) - Sets position of the joint in the local space of body a of the joint.
+- PinJointSetLocalB(Rid joint, Vector3 localB) - Sets position of the joint in the local space of body b of the joint.
+- PinJointSetParam(Rid joint, int param, float value) - Sets a pin joint parameter.
+- SeparationRayShapeCreate() -> Rid - Creates a 3D separation ray shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the shape's `length` and `slide_on_slope` properties.
+- SetActive(bool active) - Activates or deactivates the 3D physics engine.
+- ShapeGetData(Rid shape) -> Variant - Returns the shape data that configures the shape, such as the half-extents of a box or the triangles of a concave (trimesh) shape. See `shape_set_data` for the precise format of this data in each case.
+- ShapeGetMargin(Rid shape) -> float - Returns the collision margin for the shape. **Note:** This is not used in Godot Physics, so will always return `0`.
+- ShapeGetType(Rid shape) -> int - Returns the shape's type.
+- ShapeSetData(Rid shape, Variant data) - Sets the shape data that configures the shape. The `data` to be passed depends on the shape's type (see `shape_get_type`): - `SHAPE_WORLD_BOUNDARY`: a Plane, - `SHAPE_SEPARATION_RAY`: a dictionary containing the key `"length"` with a [float] value and the key `"slide_on_slope"` with a [bool] value, - `SHAPE_SPHERE`: a [float] that is the radius of the sphere, - `SHAPE_BOX`: a Vector3 containing the half-extents of the box, - `SHAPE_CAPSULE`: a dictionary containing the keys `"height"` and `"radius"` with [float] values, - `SHAPE_CYLINDER`: a dictionary containing the keys `"height"` and `"radius"` with [float] values, - `SHAPE_CONVEX_POLYGON`: a PackedVector3Array of points defining a convex polygon (the shape will be the convex hull of the points), - `SHAPE_CONCAVE_POLYGON`: a dictionary containing the key `"faces"` with a PackedVector3Array value (with a length divisible by 3, so that each 3-tuple of points forms a face) and the key `"backface_collision"` with a [bool] value, - `SHAPE_HEIGHTMAP`: a dictionary containing the keys `"width"` and `"depth"` with [int] values, and the key `"heights"` with a value that is a packed array of [float]s of length `width * depth` (that is a PackedFloat32Array, or a PackedFloat64Array if Godot was compiled with the `precision=double` option), and optionally the keys `"min_height"` and `"max_height"` with [float] values, - `SHAPE_SOFT_BODY`: the input `data` is ignored and this method has no effect, - `SHAPE_CUSTOM`: the input `data` is interpreted by a custom physics server, if it supports custom shapes.
+- ShapeSetMargin(Rid shape, float margin) - Sets the collision margin for the shape. **Note:** This is not used in Godot Physics.
+- SliderJointGetParam(Rid joint, int param) -> float - Gets a slider joint parameter.
+- SliderJointSetParam(Rid joint, int param, float value) - Gets a slider joint parameter.
+- SoftBodyAddCollisionException(Rid body, Rid bodyB) - Adds the given body to the list of bodies exempt from collisions.
+- SoftBodyApplyCentralForce(Rid body, Vector3 force) - Distributes and applies a force to all points. A force is time dependent and meant to be applied every physics update.
+- SoftBodyApplyCentralImpulse(Rid body, Vector3 impulse) - Distributes and applies an impulse to all points. An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+- SoftBodyApplyPointForce(Rid body, int pointIndex, Vector3 force) - Applies a force to a point. A force is time dependent and meant to be applied every physics update.
+- SoftBodyApplyPointImpulse(Rid body, int pointIndex, Vector3 impulse) - Applies an impulse to a point. An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+- SoftBodyCreate() -> Rid - Creates a new soft body and returns its internal RID.
+- SoftBodyGetBounds(Rid body) -> Aabb - Returns the bounds of the given soft body in global coordinates.
+- SoftBodyGetCollisionLayer(Rid body) -> int - Returns the physics layer or layers that the given soft body belongs to.
+- SoftBodyGetCollisionMask(Rid body) -> int - Returns the physics layer or layers that the given soft body can collide with.
+- SoftBodyGetDampingCoefficient(Rid body) -> float - Returns the damping coefficient of the given soft body.
+- SoftBodyGetDragCoefficient(Rid body) -> float - Returns the drag coefficient of the given soft body.
+- SoftBodyGetLinearStiffness(Rid body) -> float - Returns the linear stiffness of the given soft body.
+- SoftBodyGetPointGlobalPosition(Rid body, int pointIndex) -> Vector3 - Returns the current position of the given soft body point in global coordinates.
+- SoftBodyGetPressureCoefficient(Rid body) -> float - Returns the pressure coefficient of the given soft body.
+- SoftBodyGetShrinkingFactor(Rid body) -> float - Returns the shrinking factor of the given soft body.
+- SoftBodyGetSimulationPrecision(Rid body) -> int - Returns the simulation precision of the given soft body.
+- SoftBodyGetSpace(Rid body) -> Rid - Returns the RID of the space assigned to the given soft body.
+- SoftBodyGetState(Rid body, int state) -> Variant - Returns the given soft body state. **Note:** Godot's default physics implementation does not support `BODY_STATE_LINEAR_VELOCITY`, `BODY_STATE_ANGULAR_VELOCITY`, `BODY_STATE_SLEEPING`, or `BODY_STATE_CAN_SLEEP`.
+- SoftBodyGetTotalMass(Rid body) -> float - Returns the total mass assigned to the given soft body.
+- SoftBodyIsPointPinned(Rid body, int pointIndex) -> bool - Returns whether the given soft body point is pinned.
+- SoftBodyMovePoint(Rid body, int pointIndex, Vector3 globalPosition) - Moves the given soft body point to a position in global coordinates.
+- SoftBodyPinPoint(Rid body, int pointIndex, bool pin) - Pins or unpins the given soft body point based on the value of `pin`. **Note:** Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using `soft_body_move_point`.
+- SoftBodyRemoveAllPinnedPoints(Rid body) - Unpins all points of the given soft body.
+- SoftBodyRemoveCollisionException(Rid body, Rid bodyB) - Removes the given body from the list of bodies exempt from collisions.
+- SoftBodySetCollisionLayer(Rid body, int layer) - Sets the physics layer or layers the given soft body belongs to.
+- SoftBodySetCollisionMask(Rid body, int mask) - Sets the physics layer or layers the given soft body can collide with.
+- SoftBodySetDampingCoefficient(Rid body, float dampingCoefficient) - Sets the damping coefficient of the given soft body. Higher values will slow down the body more noticeably when forces are applied.
+- SoftBodySetDragCoefficient(Rid body, float dragCoefficient) - Sets the drag coefficient of the given soft body. Higher values increase this body's air resistance. **Note:** This value is currently unused by Godot's default physics implementation.
+- SoftBodySetLinearStiffness(Rid body, float stiffness) - Sets the linear stiffness of the given soft body. Higher values will result in a stiffer body, while lower values will increase the body's ability to bend. The value can be between `0.0` and `1.0` (inclusive).
+- SoftBodySetMesh(Rid body, Rid mesh) - Sets the mesh of the given soft body.
+- SoftBodySetPressureCoefficient(Rid body, float pressureCoefficient) - Sets the pressure coefficient of the given soft body. Simulates pressure build-up from inside this body. Higher values increase the strength of this effect.
+- SoftBodySetRayPickable(Rid body, bool enable) - Sets whether the given soft body will be pickable when using object picking.
+- SoftBodySetShrinkingFactor(Rid body, float shrinkingFactor) - Sets the shrinking factor of the given soft body.
+- SoftBodySetSimulationPrecision(Rid body, int simulationPrecision) - Sets the simulation precision of the given soft body. Increasing this value will improve the resulting simulation, but can affect performance. Use with care.
+- SoftBodySetSpace(Rid body, Rid space) - Assigns a space to the given soft body (see `space_create`).
+- SoftBodySetState(Rid body, int state, Variant variant) - Sets the given body state for the given body. **Note:** Godot's default physics implementation does not support `BODY_STATE_LINEAR_VELOCITY`, `BODY_STATE_ANGULAR_VELOCITY`, `BODY_STATE_SLEEPING`, or `BODY_STATE_CAN_SLEEP`.
+- SoftBodySetTotalMass(Rid body, float totalMass) - Sets the total mass for the given soft body.
+- SoftBodySetTransform(Rid body, Transform3D transform) - Sets the global transform of the given soft body.
+- SoftBodyUpdateRenderingServer(Rid body, PhysicsServer3DRenderingServerHandler renderingServerHandler) - Requests that the physics server updates the rendering server with the latest positions of the given soft body's points through the `rendering_server_handler` interface.
+- SpaceCreate() -> Rid - Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with `area_set_space`, or to a body with `body_set_space`.
+- SpaceGetDirectState(Rid space) -> PhysicsDirectSpaceState3D - Returns the state of a space, a PhysicsDirectSpaceState3D. This object can be used to make collision/intersection queries.
+- SpaceGetParam(Rid space, int param) -> float - Returns the value of a space parameter.
+- SpaceIsActive(Rid space) -> bool - Returns whether the space is active.
+- SpaceSetActive(Rid space, bool active) - Marks a space as active. It will not have an effect, unless it is assigned to an area or body.
+- SpaceSetParam(Rid space, int param, float value) - Sets the value for a space parameter. A list of available parameters is on the `SpaceParameter` constants.
+- SphereShapeCreate() -> Rid - Creates a 3D sphere shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the sphere's radius.
+- WorldBoundaryShapeCreate() -> Rid - Creates a 3D world boundary shape in the physics server, and returns the RID that identifies it. Use `shape_set_data` to set the shape's normal direction and distance properties.
+
+**Enums:**
+**JointType:** JOINT_TYPE_PIN=0, JOINT_TYPE_HINGE=1, JOINT_TYPE_SLIDER=2, JOINT_TYPE_CONE_TWIST=3, JOINT_TYPE_6DOF=4, JOINT_TYPE_MAX=5
+  - JOINT_TYPE_PIN: The Joint3D is a PinJoint3D.
+  - JOINT_TYPE_HINGE: The Joint3D is a HingeJoint3D.
+  - JOINT_TYPE_SLIDER: The Joint3D is a SliderJoint3D.
+  - JOINT_TYPE_CONE_TWIST: The Joint3D is a ConeTwistJoint3D.
+  - JOINT_TYPE_6DOF: The Joint3D is a Generic6DOFJoint3D.
+  - JOINT_TYPE_MAX: Represents the size of the `JointType` enum.
+**PinJointParam:** PIN_JOINT_BIAS=0, PIN_JOINT_DAMPING=1, PIN_JOINT_IMPULSE_CLAMP=2
+  - PIN_JOINT_BIAS: The strength with which the pinned objects try to stay in positional relation to each other. The higher, the stronger. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - PIN_JOINT_DAMPING: The strength with which the pinned objects try to stay in velocity relation to each other. The higher, the stronger. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - PIN_JOINT_IMPULSE_CLAMP: If above 0, this value is the maximum value for an impulse that this Joint3D puts on its ends. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+**HingeJointParam:** HINGE_JOINT_BIAS=0, HINGE_JOINT_LIMIT_UPPER=1, HINGE_JOINT_LIMIT_LOWER=2, HINGE_JOINT_LIMIT_BIAS=3, HINGE_JOINT_LIMIT_SOFTNESS=4, HINGE_JOINT_LIMIT_RELAXATION=5, HINGE_JOINT_MOTOR_TARGET_VELOCITY=6, HINGE_JOINT_MOTOR_MAX_IMPULSE=7
+  - HINGE_JOINT_BIAS: The speed with which the two bodies get pulled together when they move in different directions. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - HINGE_JOINT_LIMIT_UPPER: The maximum rotation across the Hinge.
+  - HINGE_JOINT_LIMIT_LOWER: The minimum rotation across the Hinge.
+  - HINGE_JOINT_LIMIT_BIAS: The speed with which the rotation across the axis perpendicular to the hinge gets corrected. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - HINGE_JOINT_LIMIT_SOFTNESS: **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - HINGE_JOINT_LIMIT_RELAXATION: The lower this value, the more the rotation gets slowed down. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - HINGE_JOINT_MOTOR_TARGET_VELOCITY: Target speed for the motor.
+  - HINGE_JOINT_MOTOR_MAX_IMPULSE: Maximum acceleration for the motor.
+**HingeJointFlag:** HINGE_JOINT_FLAG_USE_LIMIT=0, HINGE_JOINT_FLAG_ENABLE_MOTOR=1
+  - HINGE_JOINT_FLAG_USE_LIMIT: If `true`, the Hinge has a maximum and a minimum rotation.
+  - HINGE_JOINT_FLAG_ENABLE_MOTOR: If `true`, a motor turns the Hinge.
+**SliderJointParam:** SLIDER_JOINT_LINEAR_LIMIT_UPPER=0, SLIDER_JOINT_LINEAR_LIMIT_LOWER=1, SLIDER_JOINT_LINEAR_LIMIT_SOFTNESS=2, SLIDER_JOINT_LINEAR_LIMIT_RESTITUTION=3, SLIDER_JOINT_LINEAR_LIMIT_DAMPING=4, SLIDER_JOINT_LINEAR_MOTION_SOFTNESS=5, SLIDER_JOINT_LINEAR_MOTION_RESTITUTION=6, SLIDER_JOINT_LINEAR_MOTION_DAMPING=7, SLIDER_JOINT_LINEAR_ORTHOGONAL_SOFTNESS=8, SLIDER_JOINT_LINEAR_ORTHOGONAL_RESTITUTION=9, ...
+  - SLIDER_JOINT_LINEAR_LIMIT_UPPER: The maximum difference between the pivot points on their X axis before damping happens.
+  - SLIDER_JOINT_LINEAR_LIMIT_LOWER: The minimum difference between the pivot points on their X axis before damping happens.
+  - SLIDER_JOINT_LINEAR_LIMIT_SOFTNESS: A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_LIMIT_RESTITUTION: The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_LIMIT_DAMPING: The amount of damping once the slider limits are surpassed. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_MOTION_SOFTNESS: A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_MOTION_RESTITUTION: The amount of restitution inside the slider limits. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_MOTION_DAMPING: The amount of damping inside the slider limits. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_ORTHOGONAL_SOFTNESS: A factor applied to the movement across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_ORTHOGONAL_RESTITUTION: The amount of restitution when movement is across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_LINEAR_ORTHOGONAL_DAMPING: The amount of damping when movement is across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_LIMIT_UPPER: The upper limit of rotation in the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_LIMIT_LOWER: The lower limit of rotation in the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_LIMIT_SOFTNESS: A factor applied to the all rotation once the limit is surpassed. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_LIMIT_RESTITUTION: The amount of restitution of the rotation when the limit is surpassed. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_LIMIT_DAMPING: The amount of damping of the rotation when the limit is surpassed. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_MOTION_SOFTNESS: A factor that gets applied to the all rotation in the limits. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_MOTION_RESTITUTION: The amount of restitution of the rotation in the limits. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_MOTION_DAMPING: The amount of damping of the rotation in the limits. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_ORTHOGONAL_SOFTNESS: A factor that gets applied to the all rotation across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_ORTHOGONAL_RESTITUTION: The amount of restitution of the rotation across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_ANGULAR_ORTHOGONAL_DAMPING: The amount of damping of the rotation across axes orthogonal to the slider. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SLIDER_JOINT_MAX: Represents the size of the `SliderJointParam` enum.
+**ConeTwistJointParam:** CONE_TWIST_JOINT_SWING_SPAN=0, CONE_TWIST_JOINT_TWIST_SPAN=1, CONE_TWIST_JOINT_BIAS=2, CONE_TWIST_JOINT_SOFTNESS=3, CONE_TWIST_JOINT_RELAXATION=4
+  - CONE_TWIST_JOINT_SWING_SPAN: Swing is rotation from side to side, around the axis perpendicular to the twist axis. The swing span defines, how much rotation will not get corrected along the swing axis. Could be defined as looseness in the ConeTwistJoint3D. If below 0.05, this behavior is locked.
+  - CONE_TWIST_JOINT_TWIST_SPAN: Twist is the rotation around the twist axis, this value defined how far the joint can twist. Twist is locked if below 0.05.
+  - CONE_TWIST_JOINT_BIAS: The speed with which the swing or twist will take place. The higher, the faster. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - CONE_TWIST_JOINT_SOFTNESS: The ease with which the Joint3D twists, if it's too low, it takes more force to twist the joint. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - CONE_TWIST_JOINT_RELAXATION: Defines, how fast the swing- and twist-speed-difference on both sides gets synced. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+**G6DOFJointAxisParam:** G6DOF_JOINT_LINEAR_LOWER_LIMIT=0, G6DOF_JOINT_LINEAR_UPPER_LIMIT=1, G6DOF_JOINT_LINEAR_LIMIT_SOFTNESS=2, G6DOF_JOINT_LINEAR_RESTITUTION=3, G6DOF_JOINT_LINEAR_DAMPING=4, G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY=5, G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT=6, G6DOF_JOINT_LINEAR_SPRING_STIFFNESS=7, G6DOF_JOINT_LINEAR_SPRING_DAMPING=8, G6DOF_JOINT_LINEAR_SPRING_EQUILIBRIUM_POINT=9, ...
+  - G6DOF_JOINT_LINEAR_LOWER_LIMIT: The minimum difference between the pivot points' axes.
+  - G6DOF_JOINT_LINEAR_UPPER_LIMIT: The maximum difference between the pivot points' axes.
+  - G6DOF_JOINT_LINEAR_LIMIT_SOFTNESS: A factor that gets applied to the movement across the axes. The lower, the slower the movement. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_LINEAR_RESTITUTION: The amount of restitution on the axes movement. The lower, the more velocity-energy gets lost. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_LINEAR_DAMPING: The amount of damping that happens at the linear motion across the axes. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_LINEAR_MOTOR_TARGET_VELOCITY: The velocity that the joint's linear motor will attempt to reach.
+  - G6DOF_JOINT_LINEAR_MOTOR_FORCE_LIMIT: The maximum force that the linear motor can apply while trying to reach the target velocity.
+  - G6DOF_JOINT_ANGULAR_LOWER_LIMIT: The minimum rotation in negative direction to break loose and rotate around the axes.
+  - G6DOF_JOINT_ANGULAR_UPPER_LIMIT: The minimum rotation in positive direction to break loose and rotate around the axes.
+  - G6DOF_JOINT_ANGULAR_LIMIT_SOFTNESS: A factor that gets multiplied onto all rotations across the axes. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_ANGULAR_DAMPING: The amount of rotational damping across the axes. The lower, the more damping occurs. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_ANGULAR_RESTITUTION: The amount of rotational restitution across the axes. The lower, the more restitution occurs. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_ANGULAR_FORCE_LIMIT: The maximum amount of force that can occur, when rotating around the axes. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_ANGULAR_ERP: When correcting the crossing of limits in rotation across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - G6DOF_JOINT_ANGULAR_MOTOR_TARGET_VELOCITY: Target speed for the motor at the axes.
+  - G6DOF_JOINT_ANGULAR_MOTOR_FORCE_LIMIT: Maximum acceleration for the motor at the axes.
+  - G6DOF_JOINT_MAX: Represents the size of the `G6DOFJointAxisParam` enum.
+**G6DOFJointAxisFlag:** G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT=0, G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT=1, G6DOF_JOINT_FLAG_ENABLE_ANGULAR_SPRING=2, G6DOF_JOINT_FLAG_ENABLE_LINEAR_SPRING=3, G6DOF_JOINT_FLAG_ENABLE_MOTOR=4, G6DOF_JOINT_FLAG_ENABLE_LINEAR_MOTOR=5, G6DOF_JOINT_FLAG_MAX=6
+  - G6DOF_JOINT_FLAG_ENABLE_LINEAR_LIMIT: If set, linear motion is possible within the given limits.
+  - G6DOF_JOINT_FLAG_ENABLE_ANGULAR_LIMIT: If set, rotational motion is possible.
+  - G6DOF_JOINT_FLAG_ENABLE_MOTOR: If set, there is a rotational motor across these axes.
+  - G6DOF_JOINT_FLAG_ENABLE_LINEAR_MOTOR: If set, there is a linear motor on this axis that targets a specific velocity.
+  - G6DOF_JOINT_FLAG_MAX: Represents the size of the `G6DOFJointAxisFlag` enum.
+**ShapeType:** SHAPE_WORLD_BOUNDARY=0, SHAPE_SEPARATION_RAY=1, SHAPE_SPHERE=2, SHAPE_BOX=3, SHAPE_CAPSULE=4, SHAPE_CYLINDER=5, SHAPE_CONVEX_POLYGON=6, SHAPE_CONCAVE_POLYGON=7, SHAPE_HEIGHTMAP=8, SHAPE_SOFT_BODY=9, ...
+  - SHAPE_WORLD_BOUNDARY: Constant for creating a world boundary shape (used by the WorldBoundaryShape3D resource).
+  - SHAPE_SEPARATION_RAY: Constant for creating a separation ray shape (used by the SeparationRayShape3D resource).
+  - SHAPE_SPHERE: Constant for creating a sphere shape (used by the SphereShape3D resource).
+  - SHAPE_BOX: Constant for creating a box shape (used by the BoxShape3D resource).
+  - SHAPE_CAPSULE: Constant for creating a capsule shape (used by the CapsuleShape3D resource).
+  - SHAPE_CYLINDER: Constant for creating a cylinder shape (used by the CylinderShape3D resource).
+  - SHAPE_CONVEX_POLYGON: Constant for creating a convex polygon shape (used by the ConvexPolygonShape3D resource).
+  - SHAPE_CONCAVE_POLYGON: Constant for creating a concave polygon (trimesh) shape (used by the ConcavePolygonShape3D resource).
+  - SHAPE_HEIGHTMAP: Constant for creating a heightmap shape (used by the HeightMapShape3D resource).
+  - SHAPE_SOFT_BODY: Constant used internally for a soft body shape. Any attempt to create this kind of shape results in an error.
+  - SHAPE_CUSTOM: Constant used internally for a custom shape. Any attempt to create this kind of shape results in an error when using Godot Physics or Jolt Physics.
+**AreaParameter:** AREA_PARAM_GRAVITY_OVERRIDE_MODE=0, AREA_PARAM_GRAVITY=1, AREA_PARAM_GRAVITY_VECTOR=2, AREA_PARAM_GRAVITY_IS_POINT=3, AREA_PARAM_GRAVITY_POINT_UNIT_DISTANCE=4, AREA_PARAM_LINEAR_DAMP_OVERRIDE_MODE=5, AREA_PARAM_LINEAR_DAMP=6, AREA_PARAM_ANGULAR_DAMP_OVERRIDE_MODE=7, AREA_PARAM_ANGULAR_DAMP=8, AREA_PARAM_PRIORITY=9, ...
+  - AREA_PARAM_GRAVITY_OVERRIDE_MODE: Constant to set/get gravity override mode in an area. See `AreaSpaceOverrideMode` for possible values.
+  - AREA_PARAM_GRAVITY: Constant to set/get gravity strength in an area.
+  - AREA_PARAM_GRAVITY_VECTOR: Constant to set/get gravity vector/center in an area.
+  - AREA_PARAM_GRAVITY_IS_POINT: Constant to set/get whether the gravity vector of an area is a direction, or a center point.
+  - AREA_PARAM_GRAVITY_POINT_UNIT_DISTANCE: Constant to set/get the distance at which the gravity strength is equal to the gravity controlled by `AREA_PARAM_GRAVITY`. For example, on a planet 100 meters in radius with a surface gravity of 4.0 m/s², set the gravity to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 meters from the center the gravity will be 1.0 m/s² (twice the distance, 1/4th the gravity), at 50 meters it will be 16.0 m/s² (half the distance, 4x the gravity), and so on. The above is true only when the unit distance is a positive number. When this is set to 0.0, the gravity will be constant regardless of distance.
+  - AREA_PARAM_LINEAR_DAMP_OVERRIDE_MODE: Constant to set/get linear damping override mode in an area. See `AreaSpaceOverrideMode` for possible values.
+  - AREA_PARAM_LINEAR_DAMP: Constant to set/get the linear damping factor of an area.
+  - AREA_PARAM_ANGULAR_DAMP_OVERRIDE_MODE: Constant to set/get angular damping override mode in an area. See `AreaSpaceOverrideMode` for possible values.
+  - AREA_PARAM_ANGULAR_DAMP: Constant to set/get the angular damping factor of an area.
+  - AREA_PARAM_PRIORITY: Constant to set/get the priority (order of processing) of an area.
+  - AREA_PARAM_WIND_FORCE_MAGNITUDE: Constant to set/get the magnitude of area-specific wind force. This wind force only applies to SoftBody3D nodes. Other physics bodies are currently not affected by wind.
+  - AREA_PARAM_WIND_SOURCE: Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.
+  - AREA_PARAM_WIND_DIRECTION: Constant to set/get the 3D vector that specifies the direction in which an area-specific wind blows.
+  - AREA_PARAM_WIND_ATTENUATION_FACTOR: Constant to set/get the exponential rate at which wind force decreases with distance from its origin.
+**AreaSpaceOverrideMode:** AREA_SPACE_OVERRIDE_DISABLED=0, AREA_SPACE_OVERRIDE_COMBINE=1, AREA_SPACE_OVERRIDE_COMBINE_REPLACE=2, AREA_SPACE_OVERRIDE_REPLACE=3, AREA_SPACE_OVERRIDE_REPLACE_COMBINE=4
+  - AREA_SPACE_OVERRIDE_DISABLED: This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.
+  - AREA_SPACE_OVERRIDE_COMBINE: This area adds its gravity/damp values to whatever has been calculated so far. This way, many overlapping areas can combine their physics to make interesting effects.
+  - AREA_SPACE_OVERRIDE_COMBINE_REPLACE: This area adds its gravity/damp values to whatever has been calculated so far. Then stops taking into account the rest of the areas, even the default one.
+  - AREA_SPACE_OVERRIDE_REPLACE: This area replaces any gravity/damp, even the default one, and stops taking into account the rest of the areas.
+  - AREA_SPACE_OVERRIDE_REPLACE_COMBINE: This area replaces any gravity/damp calculated so far, but keeps calculating the rest of the areas, down to the default one.
+**BodyMode:** BODY_MODE_STATIC=0, BODY_MODE_KINEMATIC=1, BODY_MODE_RIGID=2, BODY_MODE_RIGID_LINEAR=3
+  - BODY_MODE_STATIC: Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.
+  - BODY_MODE_KINEMATIC: Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.
+  - BODY_MODE_RIGID: Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.
+  - BODY_MODE_RIGID_LINEAR: Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.
+**BodyParameter:** BODY_PARAM_BOUNCE=0, BODY_PARAM_FRICTION=1, BODY_PARAM_MASS=2, BODY_PARAM_INERTIA=3, BODY_PARAM_CENTER_OF_MASS=4, BODY_PARAM_GRAVITY_SCALE=5, BODY_PARAM_LINEAR_DAMP_MODE=6, BODY_PARAM_ANGULAR_DAMP_MODE=7, BODY_PARAM_LINEAR_DAMP=8, BODY_PARAM_ANGULAR_DAMP=9, ...
+  - BODY_PARAM_BOUNCE: Constant to set/get a body's bounce factor.
+  - BODY_PARAM_FRICTION: Constant to set/get a body's friction.
+  - BODY_PARAM_MASS: Constant to set/get a body's mass.
+  - BODY_PARAM_INERTIA: Constant to set/get a body's inertia.
+  - BODY_PARAM_CENTER_OF_MASS: Constant to set/get a body's center of mass position in the body's local coordinate system.
+  - BODY_PARAM_GRAVITY_SCALE: Constant to set/get a body's gravity multiplier.
+  - BODY_PARAM_LINEAR_DAMP_MODE: Constant to set/get a body's linear damping mode. See `BodyDampMode` for possible values.
+  - BODY_PARAM_ANGULAR_DAMP_MODE: Constant to set/get a body's angular damping mode. See `BodyDampMode` for possible values.
+  - BODY_PARAM_LINEAR_DAMP: Constant to set/get a body's linear damping factor.
+  - BODY_PARAM_ANGULAR_DAMP: Constant to set/get a body's angular damping factor.
+  - BODY_PARAM_MAX: Represents the size of the `BodyParameter` enum.
+**BodyDampMode:** BODY_DAMP_MODE_COMBINE=0, BODY_DAMP_MODE_REPLACE=1
+  - BODY_DAMP_MODE_COMBINE: The body's damping value is added to any value set in areas or the default value.
+  - BODY_DAMP_MODE_REPLACE: The body's damping value replaces any value set in areas or the default value.
+**BodyState:** BODY_STATE_TRANSFORM=0, BODY_STATE_LINEAR_VELOCITY=1, BODY_STATE_ANGULAR_VELOCITY=2, BODY_STATE_SLEEPING=3, BODY_STATE_CAN_SLEEP=4
+  - BODY_STATE_TRANSFORM: Constant to set/get the current transform matrix of the body.
+  - BODY_STATE_LINEAR_VELOCITY: Constant to set/get the current linear velocity of the body.
+  - BODY_STATE_ANGULAR_VELOCITY: Constant to set/get the current angular velocity of the body.
+  - BODY_STATE_SLEEPING: Constant to sleep/wake up a body, or to get whether it is sleeping.
+  - BODY_STATE_CAN_SLEEP: Constant to set/get whether the body can sleep.
+**AreaBodyStatus:** AREA_BODY_ADDED=0, AREA_BODY_REMOVED=1
+  - AREA_BODY_ADDED: The value of the first parameter and area callback function receives, when an object enters one of its shapes.
+  - AREA_BODY_REMOVED: The value of the first parameter and area callback function receives, when an object exits one of its shapes.
+**ProcessInfo:** INFO_ACTIVE_OBJECTS=0, INFO_COLLISION_PAIRS=1, INFO_ISLAND_COUNT=2
+  - INFO_ACTIVE_OBJECTS: Constant to get the number of objects that are not sleeping.
+  - INFO_COLLISION_PAIRS: Constant to get the number of possible collisions.
+  - INFO_ISLAND_COUNT: Constant to get the number of space regions where a collision could occur.
+**SpaceParameter:** SPACE_PARAM_CONTACT_RECYCLE_RADIUS=0, SPACE_PARAM_CONTACT_MAX_SEPARATION=1, SPACE_PARAM_CONTACT_MAX_ALLOWED_PENETRATION=2, SPACE_PARAM_CONTACT_DEFAULT_BIAS=3, SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD=4, SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD=5, SPACE_PARAM_BODY_TIME_TO_SLEEP=6, SPACE_PARAM_SOLVER_ITERATIONS=7
+  - SPACE_PARAM_CONTACT_RECYCLE_RADIUS: Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.
+  - SPACE_PARAM_CONTACT_MAX_SEPARATION: Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded.
+  - SPACE_PARAM_CONTACT_MAX_ALLOWED_PENETRATION: Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision.
+  - SPACE_PARAM_CONTACT_DEFAULT_BIAS: Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision.
+  - SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD: Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD: Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. **Note:** Only supported when using GodotPhysics3D. This parameter is ignored when using Jolt Physics.
+  - SPACE_PARAM_BODY_TIME_TO_SLEEP: Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time.
+  - SPACE_PARAM_SOLVER_ITERATIONS: Constant to set/get the number of solver iterations for contacts and constraints. The greater the number of iterations, the more accurate the collisions and constraints will be. However, a greater number of iterations requires more CPU power, which can decrease performance.
+**BodyAxis:** BODY_AXIS_LINEAR_X=1, BODY_AXIS_LINEAR_Y=2, BODY_AXIS_LINEAR_Z=4, BODY_AXIS_ANGULAR_X=8, BODY_AXIS_ANGULAR_Y=16, BODY_AXIS_ANGULAR_Z=32
+

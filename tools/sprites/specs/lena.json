@@ -1,0 +1,46 @@
+{
+  "name": "lena",
+  "palette": "lena",
+  "default_frame_w": 64,
+  "default_frame_h": 96,
+  "default_baseline_y": 84,
+  "passes": {
+    "locomotion": {
+      "description": "Lena 64\u00d796 locomotion + hand_on_shoulder; 8 idle/walk + 1 presence row.",
+      "source_frames": 35,
+      "source_cols": 5,
+      "source_rows": 9,
+      "target_cols": 5,
+      "target_rows": 9,
+      "animation_keys": [
+        "idle_down",
+        "idle_left",
+        "idle_up",
+        "idle_right",
+        "walk_down",
+        "walk_left",
+        "walk_up",
+        "walk_right",
+        "hand_on_shoulder"
+      ]
+    },
+    "pixellab_locomotion": {
+      "description": "PixelLab-supported Lena idle/walk 4-direction locomotion; hand_on_shoulder remains in canonical locomotion pass.",
+      "source_frames": 40,
+      "source_cols": 5,
+      "source_rows": 8,
+      "target_cols": 5,
+      "target_rows": 8,
+      "animation_keys": [
+        "idle_down",
+        "walk_down",
+        "idle_left",
+        "walk_left",
+        "idle_up",
+        "walk_up",
+        "idle_right",
+        "walk_right"
+      ]
+    }
+  }
+}

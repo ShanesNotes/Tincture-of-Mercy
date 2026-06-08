@@ -1,0 +1,26 @@
+{
+  "character": "rivet",
+  "character_id": "9433c950-c319-4f14-9659-bfccf316b06d",
+  "prompt": "Rivet, a small friendly raccoon helper mascot for a gentle children game. Dark navy fur with golden-brown patches on belly, ear-fluff and paw-tips, large kind round eyes with warm amber pupils, a brown leather satchel across the chest. Cute storybook proportions, oversized head, stubby limbs, soft rounded shapes, relaxed slightly forward-leaning friendly pose. Hard ink outline, clean readable pixel art, transparent background, low top-down view, facing south toward the viewer.",
+  "created_at": "2026-06-05T16:12:34.769268+00:00",
+  "canvas_w": 48,
+  "canvas_h": 64,
+  "palette": "project",
+  "last_animations": {},
+  "pending_animations": {
+    "locomotion": {
+      "breathing-idle": {
+        "south": "5141eca8-690e-4324-b524-70307038a615",
+        "west": "e43a7d7f-cb85-4968-a576-e644c168cc00",
+        "north": "4053dfad-f5ad-4153-b40b-c46c1c2a7583",
+        "east": "a8014e99-3d32-47d3-9fdf-7ca3df625e44"
+      },
+      "walking": {
+        "south": "1c7910e9-efc7-4410-9152-bf4ac4fefe2a",
+        "west": "94f42903-9b50-4b64-a7e4-7079dd6876f2",
+        "north": "f84854e8-3cf3-41ee-b65a-ee559f7c8366",
+        "east": "4bafc289-9d2b-4001-85ec-41dca690b4fe"
+      }
+    }
+  }
+}

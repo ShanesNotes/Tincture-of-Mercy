@@ -1,0 +1,146 @@
+## PhysicsServer2DExtension <- PhysicsServer2D
+
+This class extends PhysicsServer2D by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server. Intended for use with GDExtension to create custom implementations of PhysicsServer2D.
+
+**Methods:**
+- AreaAddShape(Rid area, Rid shape, Transform2D transform, bool disabled) - Overridable version of `PhysicsServer2D.area_add_shape`.
+- AreaAttachCanvasInstanceId(Rid area, int id) - Overridable version of `PhysicsServer2D.area_attach_canvas_instance_id`.
+- AreaAttachObjectInstanceId(Rid area, int id) - Overridable version of `PhysicsServer2D.area_attach_object_instance_id`.
+- AreaClearShapes(Rid area) - Overridable version of `PhysicsServer2D.area_clear_shapes`.
+- AreaCreate() -> Rid - Overridable version of `PhysicsServer2D.area_create`.
+- AreaGetCanvasInstanceId(Rid area) -> int - Overridable version of `PhysicsServer2D.area_get_canvas_instance_id`.
+- AreaGetCollisionLayer(Rid area) -> int - Overridable version of `PhysicsServer2D.area_get_collision_layer`.
+- AreaGetCollisionMask(Rid area) -> int - Overridable version of `PhysicsServer2D.area_get_collision_mask`.
+- AreaGetObjectInstanceId(Rid area) -> int - Overridable version of `PhysicsServer2D.area_get_object_instance_id`.
+- AreaGetParam(Rid area, int param) -> Variant - Overridable version of `PhysicsServer2D.area_get_param`.
+- AreaGetShape(Rid area, int shapeIdx) -> Rid - Overridable version of `PhysicsServer2D.area_get_shape`.
+- AreaGetShapeCount(Rid area) -> int - Overridable version of `PhysicsServer2D.area_get_shape_count`.
+- AreaGetShapeTransform(Rid area, int shapeIdx) -> Transform2D - Overridable version of `PhysicsServer2D.area_get_shape_transform`.
+- AreaGetSpace(Rid area) -> Rid - Overridable version of `PhysicsServer2D.area_get_space`.
+- AreaGetTransform(Rid area) -> Transform2D - Overridable version of `PhysicsServer2D.area_get_transform`.
+- AreaRemoveShape(Rid area, int shapeIdx) - Overridable version of `PhysicsServer2D.area_remove_shape`.
+- AreaSetAreaMonitorCallback(Rid area, Callable callback) - Overridable version of `PhysicsServer2D.area_set_area_monitor_callback`.
+- AreaSetCollisionLayer(Rid area, int layer) - Overridable version of `PhysicsServer2D.area_set_collision_layer`.
+- AreaSetCollisionMask(Rid area, int mask) - Overridable version of `PhysicsServer2D.area_set_collision_mask`.
+- AreaSetMonitorCallback(Rid area, Callable callback) - Overridable version of `PhysicsServer2D.area_set_monitor_callback`.
+- AreaSetMonitorable(Rid area, bool monitorable) - Overridable version of `PhysicsServer2D.area_set_monitorable`.
+- AreaSetParam(Rid area, int param, Variant value) - Overridable version of `PhysicsServer2D.area_set_param`.
+- AreaSetPickable(Rid area, bool pickable) - If set to `true`, allows the area with the given RID to detect mouse inputs when the mouse cursor is hovering on it. Overridable version of PhysicsServer2D's internal `area_set_pickable` method. Corresponds to `CollisionObject2D.input_pickable`.
+- AreaSetShape(Rid area, int shapeIdx, Rid shape) - Overridable version of `PhysicsServer2D.area_set_shape`.
+- AreaSetShapeDisabled(Rid area, int shapeIdx, bool disabled) - Overridable version of `PhysicsServer2D.area_set_shape_disabled`.
+- AreaSetShapeTransform(Rid area, int shapeIdx, Transform2D transform) - Overridable version of `PhysicsServer2D.area_set_shape_transform`.
+- AreaSetSpace(Rid area, Rid space) - Overridable version of `PhysicsServer2D.area_set_space`.
+- AreaSetTransform(Rid area, Transform2D transform) - Overridable version of `PhysicsServer2D.area_set_transform`.
+- BodyAddCollisionException(Rid body, Rid exceptedBody) - Overridable version of `PhysicsServer2D.body_add_collision_exception`.
+- BodyAddConstantCentralForce(Rid body, Vector2 force) - Overridable version of `PhysicsServer2D.body_add_constant_central_force`.
+- BodyAddConstantForce(Rid body, Vector2 force, Vector2 position) - Overridable version of `PhysicsServer2D.body_add_constant_force`.
+- BodyAddConstantTorque(Rid body, float torque) - Overridable version of `PhysicsServer2D.body_add_constant_torque`.
+- BodyAddShape(Rid body, Rid shape, Transform2D transform, bool disabled) - Overridable version of `PhysicsServer2D.body_add_shape`.
+- BodyApplyCentralForce(Rid body, Vector2 force) - Overridable version of `PhysicsServer2D.body_apply_central_force`.
+- BodyApplyCentralImpulse(Rid body, Vector2 impulse) - Overridable version of `PhysicsServer2D.body_apply_central_impulse`.
+- BodyApplyForce(Rid body, Vector2 force, Vector2 position) - Overridable version of `PhysicsServer2D.body_apply_force`.
+- BodyApplyImpulse(Rid body, Vector2 impulse, Vector2 position) - Overridable version of `PhysicsServer2D.body_apply_impulse`.
+- BodyApplyTorque(Rid body, float torque) - Overridable version of `PhysicsServer2D.body_apply_torque`.
+- BodyApplyTorqueImpulse(Rid body, float impulse) - Overridable version of `PhysicsServer2D.body_apply_torque_impulse`.
+- BodyAttachCanvasInstanceId(Rid body, int id) - Overridable version of `PhysicsServer2D.body_attach_canvas_instance_id`.
+- BodyAttachObjectInstanceId(Rid body, int id) - Overridable version of `PhysicsServer2D.body_attach_object_instance_id`.
+- BodyClearShapes(Rid body) - Overridable version of `PhysicsServer2D.body_clear_shapes`.
+- BodyCollideShape(Rid body, int bodyShape, Rid shape, Transform2D shapeXform, Vector2 motion, void* rResults, int resultMax, int32_t* rResultCount) -> bool - Given a `body`, a `shape`, and their respective parameters, this method should return `true` if a collision between the two would occur, with additional details passed in `r_results`. Overridable version of PhysicsServer2D's internal `shape_collide` method. Corresponds to `PhysicsDirectSpaceState2D.collide_shape`.
+- BodyCreate() -> Rid - Overridable version of `PhysicsServer2D.body_create`.
+- BodyGetCanvasInstanceId(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_canvas_instance_id`.
+- BodyGetCollisionExceptions(Rid body) -> RID[] - Returns the RIDs of all bodies added as collision exceptions for the given `body`. See also `_body_add_collision_exception` and `_body_remove_collision_exception`. Overridable version of PhysicsServer2D's internal `body_get_collision_exceptions` method. Corresponds to `PhysicsBody2D.get_collision_exceptions`.
+- BodyGetCollisionLayer(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_collision_layer`.
+- BodyGetCollisionMask(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_collision_mask`.
+- BodyGetCollisionPriority(Rid body) -> float - Overridable version of `PhysicsServer2D.body_get_collision_priority`.
+- BodyGetConstantForce(Rid body) -> Vector2 - Overridable version of `PhysicsServer2D.body_get_constant_force`.
+- BodyGetConstantTorque(Rid body) -> float - Overridable version of `PhysicsServer2D.body_get_constant_torque`.
+- BodyGetContactsReportedDepthThreshold(Rid body) -> float - Overridable version of PhysicsServer2D's internal `body_get_contacts_reported_depth_threshold` method. **Note:** This method is currently unused by Godot's default physics implementation.
+- BodyGetContinuousCollisionDetectionMode(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_continuous_collision_detection_mode`.
+- BodyGetDirectState(Rid body) -> PhysicsDirectBodyState2D - Overridable version of `PhysicsServer2D.body_get_direct_state`.
+- BodyGetMaxContactsReported(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_max_contacts_reported`.
+- BodyGetMode(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_mode`.
+- BodyGetObjectInstanceId(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_object_instance_id`.
+- BodyGetParam(Rid body, int param) -> Variant - Overridable version of `PhysicsServer2D.body_get_param`.
+- BodyGetShape(Rid body, int shapeIdx) -> Rid - Overridable version of `PhysicsServer2D.body_get_shape`.
+- BodyGetShapeCount(Rid body) -> int - Overridable version of `PhysicsServer2D.body_get_shape_count`.
+- BodyGetShapeTransform(Rid body, int shapeIdx) -> Transform2D - Overridable version of `PhysicsServer2D.body_get_shape_transform`.
+- BodyGetSpace(Rid body) -> Rid - Overridable version of `PhysicsServer2D.body_get_space`.
+- BodyGetState(Rid body, int state) -> Variant - Overridable version of `PhysicsServer2D.body_get_state`.
+- BodyIsOmittingForceIntegration(Rid body) -> bool - Overridable version of `PhysicsServer2D.body_is_omitting_force_integration`.
+- BodyRemoveCollisionException(Rid body, Rid exceptedBody) - Overridable version of `PhysicsServer2D.body_remove_collision_exception`.
+- BodyRemoveShape(Rid body, int shapeIdx) - Overridable version of `PhysicsServer2D.body_remove_shape`.
+- BodyResetMassProperties(Rid body) - Overridable version of `PhysicsServer2D.body_reset_mass_properties`.
+- BodySetAxisVelocity(Rid body, Vector2 axisVelocity) - Overridable version of `PhysicsServer2D.body_set_axis_velocity`.
+- BodySetCollisionLayer(Rid body, int layer) - Overridable version of `PhysicsServer2D.body_set_collision_layer`.
+- BodySetCollisionMask(Rid body, int mask) - Overridable version of `PhysicsServer2D.body_set_collision_mask`.
+- BodySetCollisionPriority(Rid body, float priority) - Overridable version of `PhysicsServer2D.body_set_collision_priority`.
+- BodySetConstantForce(Rid body, Vector2 force) - Overridable version of `PhysicsServer2D.body_set_constant_force`.
+- BodySetConstantTorque(Rid body, float torque) - Overridable version of `PhysicsServer2D.body_set_constant_torque`.
+- BodySetContactsReportedDepthThreshold(Rid body, float threshold) - Overridable version of PhysicsServer2D's internal `body_set_contacts_reported_depth_threshold` method. **Note:** This method is currently unused by Godot's default physics implementation.
+- BodySetContinuousCollisionDetectionMode(Rid body, int mode) - Overridable version of `PhysicsServer2D.body_set_continuous_collision_detection_mode`.
+- BodySetForceIntegrationCallback(Rid body, Callable callable, Variant userdata) - Overridable version of `PhysicsServer2D.body_set_force_integration_callback`.
+- BodySetMaxContactsReported(Rid body, int amount) - Overridable version of `PhysicsServer2D.body_set_max_contacts_reported`.
+- BodySetMode(Rid body, int mode) - Overridable version of `PhysicsServer2D.body_set_mode`.
+- BodySetOmitForceIntegration(Rid body, bool enable) - Overridable version of `PhysicsServer2D.body_set_omit_force_integration`.
+- BodySetParam(Rid body, int param, Variant value) - Overridable version of `PhysicsServer2D.body_set_param`.
+- BodySetPickable(Rid body, bool pickable) - If set to `true`, allows the body with the given RID to detect mouse inputs when the mouse cursor is hovering on it. Overridable version of PhysicsServer2D's internal `body_set_pickable` method. Corresponds to `CollisionObject2D.input_pickable`.
+- BodySetShape(Rid body, int shapeIdx, Rid shape) - Overridable version of `PhysicsServer2D.body_set_shape`.
+- BodySetShapeAsOneWayCollision(Rid body, int shapeIdx, bool enable, float margin, Vector2 direction) - Overridable version of `PhysicsServer2D.body_set_shape_as_one_way_collision`.
+- BodySetShapeDisabled(Rid body, int shapeIdx, bool disabled) - Overridable version of `PhysicsServer2D.body_set_shape_disabled`.
+- BodySetShapeTransform(Rid body, int shapeIdx, Transform2D transform) - Overridable version of `PhysicsServer2D.body_set_shape_transform`.
+- BodySetSpace(Rid body, Rid space) - Overridable version of `PhysicsServer2D.body_set_space`.
+- BodySetState(Rid body, int state, Variant value) - Overridable version of `PhysicsServer2D.body_set_state`.
+- BodySetStateSyncCallback(Rid body, Callable callable) - Assigns the `body` to call the given `callable` during the synchronization phase of the loop, before `_step` is called. See also `_sync`. Overridable version of `PhysicsServer2D.body_set_state_sync_callback`.
+- BodyTestMotion(Rid body, Transform2D from, Vector2 motion, float margin, bool collideSeparationRay, bool recoveryAsCollision, PhysicsServer2DExtensionMotionResult* rResult) -> bool - Overridable version of `PhysicsServer2D.body_test_motion`. Unlike the exposed implementation, this method does not receive all of the arguments inside a PhysicsTestMotionParameters2D.
+- CapsuleShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.capsule_shape_create`.
+- CircleShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.circle_shape_create`.
+- ConcavePolygonShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.concave_polygon_shape_create`.
+- ConvexPolygonShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.convex_polygon_shape_create`.
+- DampedSpringJointGetParam(Rid joint, int param) -> float - Overridable version of `PhysicsServer2D.damped_spring_joint_get_param`.
+- DampedSpringJointSetParam(Rid joint, int param, float value) - Overridable version of `PhysicsServer2D.damped_spring_joint_set_param`.
+- EndSync() - Called to indicate that the physics server has stopped synchronizing. It is in the loop's iteration/physics phase, and can access physics objects even if running on a separate thread. See also `_sync`. Overridable version of PhysicsServer2D's internal `end_sync` method.
+- Finish() - Called when the main loop finalizes to shut down the physics server. See also `MainLoop._finalize` and `_init`. Overridable version of PhysicsServer2D's internal `finish` method.
+- FlushQueries() - Called every physics step before `_step` to process all remaining queries. Overridable version of PhysicsServer2D's internal `flush_queries` method.
+- FreeRid(Rid rid) - Overridable version of `PhysicsServer2D.free_rid`.
+- GetProcessInfo(int processInfo) -> int - Overridable version of `PhysicsServer2D.get_process_info`.
+- Init() - Called when the main loop is initialized and creates a new instance of this physics server. See also `MainLoop._initialize` and `_finish`. Overridable version of PhysicsServer2D's internal `init` method.
+- IsFlushingQueries() -> bool - Overridable method that should return `true` when the physics server is processing queries. See also `_flush_queries`. Overridable version of PhysicsServer2D's internal `is_flushing_queries` method.
+- JointClear(Rid joint) - Overridable version of `PhysicsServer2D.joint_clear`.
+- JointCreate() -> Rid - Overridable version of `PhysicsServer2D.joint_create`.
+- JointDisableCollisionsBetweenBodies(Rid joint, bool disable) - Overridable version of `PhysicsServer2D.joint_disable_collisions_between_bodies`.
+- JointGetParam(Rid joint, int param) -> float - Overridable version of `PhysicsServer2D.joint_get_param`.
+- JointGetType(Rid joint) -> int - Overridable version of `PhysicsServer2D.joint_get_type`.
+- JointIsDisabledCollisionsBetweenBodies(Rid joint) -> bool - Overridable version of `PhysicsServer2D.joint_is_disabled_collisions_between_bodies`.
+- JointMakeDampedSpring(Rid joint, Vector2 anchorA, Vector2 anchorB, Rid bodyA, Rid bodyB) - Overridable version of `PhysicsServer2D.joint_make_damped_spring`.
+- JointMakeGroove(Rid joint, Vector2 aGroove1, Vector2 aGroove2, Vector2 bAnchor, Rid bodyA, Rid bodyB) - Overridable version of `PhysicsServer2D.joint_make_groove`.
+- JointMakePin(Rid joint, Vector2 anchor, Rid bodyA, Rid bodyB) - Overridable version of `PhysicsServer2D.joint_make_pin`.
+- JointSetParam(Rid joint, int param, float value) - Overridable version of `PhysicsServer2D.joint_set_param`.
+- PinJointGetFlag(Rid joint, int flag) -> bool - Overridable version of `PhysicsServer2D.pin_joint_get_flag`.
+- PinJointGetParam(Rid joint, int param) -> float - Overridable version of `PhysicsServer2D.pin_joint_get_param`.
+- PinJointSetFlag(Rid joint, int flag, bool enabled) - Overridable version of `PhysicsServer2D.pin_joint_set_flag`.
+- PinJointSetParam(Rid joint, int param, float value) - Overridable version of `PhysicsServer2D.pin_joint_set_param`.
+- RectangleShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.rectangle_shape_create`.
+- SegmentShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.segment_shape_create`.
+- SeparationRayShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.separation_ray_shape_create`.
+- SetActive(bool active) - Overridable version of `PhysicsServer2D.set_active`.
+- ShapeCollide(Rid shapeA, Transform2D xformA, Vector2 motionA, Rid shapeB, Transform2D xformB, Vector2 motionB, void* rResults, int resultMax, int32_t* rResultCount) -> bool - Given two shapes and their parameters, should return `true` if a collision between the two would occur, with additional details passed in `r_results`. Overridable version of PhysicsServer2D's internal `shape_collide` method. Corresponds to `PhysicsDirectSpaceState2D.collide_shape`.
+- ShapeGetCustomSolverBias(Rid shape) -> float - Should return the custom solver bias of the given `shape`, which defines how much bodies are forced to separate on contact when this shape is involved. Overridable version of PhysicsServer2D's internal `shape_get_custom_solver_bias` method. Corresponds to `Shape2D.custom_solver_bias`.
+- ShapeGetData(Rid shape) -> Variant - Overridable version of `PhysicsServer2D.shape_get_data`.
+- ShapeGetType(Rid shape) -> int - Overridable version of `PhysicsServer2D.shape_get_type`.
+- ShapeSetCustomSolverBias(Rid shape, float bias) - Should set the custom solver bias for the given `shape`. It defines how much bodies are forced to separate on contact. Overridable version of PhysicsServer2D's internal `shape_get_custom_solver_bias` method. Corresponds to `Shape2D.custom_solver_bias`.
+- ShapeSetData(Rid shape, Variant data) - Overridable version of `PhysicsServer2D.shape_set_data`.
+- SpaceCreate() -> Rid - Overridable version of `PhysicsServer2D.space_create`.
+- SpaceGetContactCount(Rid space) -> int - Should return how many contacts have occurred during the last physics step in the given `space`. See also `_space_get_contacts` and `_space_set_debug_contacts`. Overridable version of PhysicsServer2D's internal `space_get_contact_count` method.
+- SpaceGetContacts(Rid space) -> Vector2[] - Should return the positions of all contacts that have occurred during the last physics step in the given `space`. See also `_space_get_contact_count` and `_space_set_debug_contacts`. Overridable version of PhysicsServer2D's internal `space_get_contacts` method.
+- SpaceGetDirectState(Rid space) -> PhysicsDirectSpaceState2D - Overridable version of `PhysicsServer2D.space_get_direct_state`.
+- SpaceGetParam(Rid space, int param) -> float - Overridable version of `PhysicsServer2D.space_get_param`.
+- SpaceIsActive(Rid space) -> bool - Overridable version of `PhysicsServer2D.space_is_active`.
+- SpaceSetActive(Rid space, bool active) - Overridable version of `PhysicsServer2D.space_set_active`.
+- SpaceSetDebugContacts(Rid space, int maxContacts) - Used internally to allow the given `space` to store contact points, up to `max_contacts`. This is automatically set for the main World2D's space when `SceneTree.debug_collisions_hint` is `true`, or by checking "Visible Collision Shapes" in the editor. Only works in debug builds. Overridable version of PhysicsServer2D's internal `space_set_debug_contacts` method.
+- SpaceSetParam(Rid space, int param, float value) - Overridable version of `PhysicsServer2D.space_set_param`.
+- Step(float step) - Called every physics step to process the physics simulation. `step` is the time elapsed since the last physics step, in seconds. It is usually the same as the value returned by `Node.get_physics_process_delta_time`. Overridable version of PhysicsServer2D's internal [code skip-lint]step[/code] method.
+- Sync() - Called to indicate that the physics server is synchronizing and cannot access physics states if running on a separate thread. See also `_end_sync`. Overridable version of PhysicsServer2D's internal `sync` method.
+- WorldBoundaryShapeCreate() -> Rid - Overridable version of `PhysicsServer2D.world_boundary_shape_create`.
+- BodyTestMotionIsExcludingBody(Rid body) -> bool - Returns `true` if the body with the given RID is being excluded from `_body_test_motion`. See also `Object.get_instance_id`.
+- BodyTestMotionIsExcludingObject(int object) -> bool - Returns `true` if the object with the given instance ID is being excluded from `_body_test_motion`. See also `Object.get_instance_id`.
+

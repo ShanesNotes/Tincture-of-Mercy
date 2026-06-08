@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Tincture of Mercy sprite-pipeline entrypoint.
+# Forwards every argument to tools/sprites/cli.py with the project's Python.
+
+set -euo pipefail
+HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+exec python3 "${HERE}/sprites/cli.py" "$@"

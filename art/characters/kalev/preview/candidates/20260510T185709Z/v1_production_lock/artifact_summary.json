@@ -1,0 +1,22 @@
+{
+  "dialogue_bust_256": "art/characters/kalev/portraits/kalev_v1_dialogue_bust_256.png",
+  "dialogue_bust_512": "art/characters/kalev/portraits/kalev_v1_dialogue_bust_512.png",
+  "idle_front_identity_candidate": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_idle_front_identity_lock_candidate_64x96.png",
+  "lock_dir": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock",
+  "portrait_component_bbox": [
+    716,
+    42,
+    1155,
+    985
+  ],
+  "portrait_fullbody": "art/characters/kalev/portraits/kalev_v1_fullbody_portrait.png",
+  "review_board": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_production_lock_review_board.png",
+  "sprite_component_bbox": [
+    339,
+    331,
+    538,
+    749
+  ],
+  "sprite_identity_lock": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_sprite_identity_lock_64x96.png",
+  "sprite_source_crop": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_sprite_reference_crop.png"
+}

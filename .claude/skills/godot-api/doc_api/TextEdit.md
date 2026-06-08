@@ -1,0 +1,335 @@
+## TextEdit <- Control
+
+A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see CodeEdit. While entering text, it is possible to insert special characters using Unicode, OEM or Windows alt codes: - To enter Unicode codepoints, hold [kbd]Alt[/kbd] and type the codepoint on the numpad. For example, to enter the character `á` (U+00E1), hold [kbd]Alt[/kbd] and type [kbd]+E1[/kbd] on the numpad (the leading zeroes can be omitted). - To enter OEM codepoints, hold [kbd]Alt[/kbd] and type the code on the numpad. For example, to enter the character `á` (OEM 160), hold [kbd]Alt[/kbd] and type `160` on the numpad. - To enter Windows codepoints, hold [kbd]Alt[/kbd] and type the code on the numpad. For example, to enter the character `á` (Windows 0225), hold [kbd]Alt[/kbd] and type [kbd]0[/kbd], [kbd]2[/kbd], [kbd]2[/kbd], [kbd]5[/kbd] on the numpad. The leading zero here must **not** be omitted, as this is how Windows codepoints are distinguished from OEM codepoints. **Note:** Most viewport, caret, and edit methods contain a `caret_index` argument for `caret_multiple` support. The argument should be one of the following: `-1` for all carets, `0` for the main caret, or greater than `0` for secondary carets in the order they were created. **Note:** When holding down [kbd]Alt[/kbd], the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
+
+**Props:**
+- AutowrapMode: int (TextServer.AutowrapMode) = 3
+- BackspaceDeletesCompositeCharacterEnabled: bool = false
+- CaretBlink: bool = false
+- CaretBlinkInterval: float = 0.65
+- CaretDrawWhenEditableDisabled: bool = false
+- CaretMidGrapheme: bool = false
+- CaretMoveOnRightClick: bool = true
+- CaretMultiple: bool = true
+- CaretType: int (TextEdit.CaretType) = 0
+- ContextMenuEnabled: bool = true
+- CustomWordSeparators: string = ""
+- DeselectOnFocusLossEnabled: bool = true
+- DragAndDropSelectionEnabled: bool = true
+- DrawControlChars: bool = false
+- DrawSpaces: bool = false
+- DrawTabs: bool = false
+- Editable: bool = true
+- EmojiMenuEnabled: bool = true
+- EmptySelectionClipboardEnabled: bool = true
+- FocusMode: int (Control.FocusMode) = 2
+- HighlightAllOccurrences: bool = false
+- HighlightCurrentLine: bool = false
+- IndentWrappedLines: bool = false
+- Language: string = ""
+- MiddleMousePasteEnabled: bool = true
+- MinimapDraw: bool = false
+- MinimapWidth: int = 80
+- MouseDefaultCursorShape: int (Control.CursorShape) = 1
+- PlaceholderText: string = ""
+- ScrollFitContentHeight: bool = false
+- ScrollFitContentWidth: bool = false
+- ScrollHorizontal: int = 0
+- ScrollPastEndOfFile: bool = false
+- ScrollSmooth: bool = false
+- ScrollVScrollSpeed: float = 80.0
+- ScrollVertical: float = 0.0
+- SelectingEnabled: bool = true
+- ShortcutKeysEnabled: bool = true
+- StructuredTextBidiOverride: int (TextServer.StructuredTextParser) = 0
+- StructuredTextBidiOverrideOptions: Godot.Collections.Array = []
+- SyntaxHighlighter: SyntaxHighlighter
+- TabInputMode: bool = true
+- Text: string = ""
+- TextDirection: int (Control.TextDirection) = 0
+- UseCustomWordSeparators: bool = false
+- UseDefaultWordSeparators: bool = true
+- VirtualKeyboardEnabled: bool = true
+- VirtualKeyboardShowOnFocus: bool = true
+- WrapMode: int (TextEdit.LineWrappingMode) = 0
+
+- **autowrap_mode**: If `wrap_mode` is set to `LINE_WRAPPING_BOUNDARY`, sets text wrapping mode.
+- **backspace_deletes_composite_character_enabled**: If `true` and `caret_mid_grapheme` is `false`, backspace deletes an entire composite character such as ❤️‍🩹, instead of deleting part of the composite character.
+- **caret_blink**: If `true`, makes the caret blink.
+- **caret_blink_interval**: The interval at which the caret blinks (in seconds).
+- **caret_draw_when_editable_disabled**: If `true`, caret will be visible when `editable` is disabled.
+- **caret_mid_grapheme**: Allow moving caret, selecting and removing the individual composite character components. **Note:** [kbd]Backspace[/kbd] is always removing individual composite character components.
+- **caret_move_on_right_click**: If `true`, a right-click moves the caret at the mouse position before displaying the context menu. If `false`, the context menu ignores mouse location.
+- **caret_multiple**: If `true`, multiple carets are allowed. Left-clicking with [kbd]Alt[/kbd] adds a new caret. See `add_caret` and `get_caret_count`.
+- **caret_type**: Set the type of caret to draw.
+- **context_menu_enabled**: If `true`, a right-click displays the context menu.
+- **custom_word_separators**: The characters to consider as word delimiters if `use_custom_word_separators` is `true`. The characters should be defined without separation, for example `#_!`.
+- **deselect_on_focus_loss_enabled**: If `true`, the selected text will be deselected when focus is lost.
+- **drag_and_drop_selection_enabled**: If `true`, allow drag and drop of selected text. Text can still be dropped from other sources.
+- **draw_control_chars**: If `true`, control characters are displayed.
+- **draw_spaces**: If `true`, the "space" character will have a visible representation.
+- **draw_tabs**: If `true`, the "tab" character will have a visible representation.
+- **editable**: If `false`, existing text cannot be modified and new text cannot be added.
+- **emoji_menu_enabled**: If `true`, "Emoji and Symbols" menu is enabled.
+- **empty_selection_clipboard_enabled**: If `true`, copying or cutting without a selection is performed on all lines with a caret. Otherwise, copy and cut require a selection.
+- **highlight_all_occurrences**: If `true`, all occurrences of the selected text will be highlighted.
+- **highlight_current_line**: If `true`, the line containing the cursor is highlighted.
+- **indent_wrapped_lines**: If `true`, all wrapped lines are indented to the same amount as the unwrapped line.
+- **language**: Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
+- **middle_mouse_paste_enabled**: If `false`, using middle mouse button to paste clipboard will be disabled. **Note:** This method is only implemented on Linux.
+- **minimap_draw**: If `true`, a minimap is shown, providing an outline of your source code. The minimap uses a fixed-width text size.
+- **minimap_width**: The width, in pixels, of the minimap.
+- **placeholder_text**: Text shown when the TextEdit is empty. It is **not** the TextEdit's default value (see `text`).
+- **scroll_fit_content_height**: If `true`, TextEdit fits its minimum height to the number of visible lines instead of scrolling vertically. If a maximum height is set (for example via `Control.custom_maximum_size`) and content exceeds it, a vertical scrollbar is shown.
+- **scroll_fit_content_width**: If `true`, TextEdit fits its minimum width to the widest line instead of scrolling horizontally. If a maximum width is set (for example via `Control.custom_maximum_size`) and content exceeds it, a horizontal scrollbar is shown.
+- **scroll_horizontal**: If there is a horizontal scrollbar, this determines the current horizontal scroll value in pixels.
+- **scroll_past_end_of_file**: Allow scrolling past the last line into "virtual" space.
+- **scroll_smooth**: Scroll smoothly over the text rather than jumping to the next location.
+- **scroll_v_scroll_speed**: Sets the scroll speed with the minimap or when `scroll_smooth` is enabled.
+- **scroll_vertical**: If there is a vertical scrollbar, this determines the current vertical scroll value in line numbers, starting at 0 for the top line.
+- **selecting_enabled**: If `true`, text can be selected. If `false`, text can not be selected by the user or by the `select` or `select_all` methods.
+- **shortcut_keys_enabled**: If `true`, shortcut keys for context menu items are enabled, even if the context menu is disabled.
+- **structured_text_bidi_override**: Set BiDi algorithm override for the structured text.
+- **structured_text_bidi_override_options**: Set additional options for BiDi override.
+- **syntax_highlighter**: The syntax highlighter to use. **Note:** A SyntaxHighlighter instance should not be used across multiple TextEdit nodes.
+- **tab_input_mode**: If `true`, `ProjectSettings.input/ui_text_indent` input `Tab` character, otherwise it moves keyboard focus to the next Control in the scene.
+- **text**: String value of the TextEdit.
+- **text_direction**: Base text writing direction.
+- **use_custom_word_separators**: If `false`, using [kbd]Ctrl + Left[/kbd] or [kbd]Ctrl + Right[/kbd] ([kbd]Cmd + Left[/kbd] or [kbd]Cmd + Right[/kbd] on macOS) bindings will use the behavior of `use_default_word_separators`. If `true`, it will also stop the caret if a character within `custom_word_separators` is detected. Useful for subword moving. This behavior also will be applied to the behavior of text selection.
+- **use_default_word_separators**: If `false`, using [kbd]Ctrl + Left[/kbd] or [kbd]Ctrl + Right[/kbd] ([kbd]Cmd + Left[/kbd] or [kbd]Cmd + Right[/kbd] on macOS) bindings will stop moving caret only if a space or punctuation is detected. If `true`, it will also stop the caret if a character is part of `!"#$%&'()*+,-./:;<=>?@[\]^`{|}~`, the Unicode General Punctuation table, or the Unicode CJK Punctuation table. Useful for subword moving. This behavior also will be applied to the behavior of text selection.
+- **virtual_keyboard_enabled**: If `true`, the native virtual keyboard is enabled on platforms that support it.
+- **virtual_keyboard_show_on_focus**: If `true`, the native virtual keyboard is shown on focus events on platforms that support it.
+- **wrap_mode**: Sets the line wrapping mode to use.
+
+**Methods:**
+- Backspace(int caretIndex) - Override this method to define what happens when the user presses the backspace key.
+- Copy(int caretIndex) - Override this method to define what happens when the user performs a copy operation.
+- Cut(int caretIndex) - Override this method to define what happens when the user performs a cut operation.
+- HandleUnicodeInput(int unicodeChar, int caretIndex) - Override this method to define what happens when the user types in the provided key `unicode_char`.
+- Paste(int caretIndex) - Override this method to define what happens when the user performs a paste operation.
+- PastePrimaryClipboard(int caretIndex) - Override this method to define what happens when the user performs a paste operation with middle mouse button. **Note:** This method is only implemented on Linux.
+- AddCaret(int line, int column) -> int - Adds a new caret at the given location. Returns the index of the new caret, or `-1` if the location is invalid.
+- AddCaretAtCarets(bool below) - Adds an additional caret above or below every caret. If `below` is `true` the new caret will be added below and above otherwise.
+- AddGutter(int at = -1) - Register a new gutter to this TextEdit. Use `at` to have a specific gutter order. A value of `-1` appends the gutter to the right.
+- AddSelectionForNextOccurrence() - Adds a selection and a caret for the next occurrence of the current selection. If there is no active selection, selects word under caret.
+- AdjustCaretsAfterEdit(int caret, int fromLine, int fromCol, int toLine, int toCol) - This method does nothing.
+- AdjustViewportToCaret(int caretIndex = 0) - Adjust the viewport so the caret is visible.
+- ApplyIme() - Applies text from the (IME) to each caret and closes the IME if it is open.
+- Backspace(int caretIndex = -1) - Called when the user presses the backspace key. Can be overridden with `_backspace`.
+- BeginComplexOperation() - Starts a multipart edit. All edits will be treated as one action until `end_complex_operation` is called.
+- BeginMulticaretEdit() - Starts an edit for multiple carets. The edit must be ended with `end_multicaret_edit`. Multicaret edits can be used to edit text at multiple carets and delay merging the carets until the end, so the caret indexes aren't affected immediately. `begin_multicaret_edit` and `end_multicaret_edit` can be nested, and the merge will happen at the last `end_multicaret_edit`.
+- CancelIme() - Closes the (IME) if it is open. Any text in the IME will be lost.
+- CenterViewportToCaret(int caretIndex = 0) - Centers the viewport on the line the editing caret is at. This also resets the `scroll_horizontal` value to `0`.
+- Clear() - Performs a full reset of TextEdit, including undo history.
+- ClearUndoHistory() - Clears the undo history.
+- CollapseCarets(int fromLine, int fromColumn, int toLine, int toColumn, bool inclusive = false) - Collapse all carets in the given range to the `from_line` and `from_column` position. `inclusive` applies to both ends. If `is_in_mulitcaret_edit` is `true`, carets that are collapsed will be `true` for `multicaret_edit_ignore_caret`. `merge_overlapping_carets` will be called if any carets were collapsed.
+- Copy(int caretIndex = -1) - Copies the current text selection. Can be overridden with `_copy`.
+- Cut(int caretIndex = -1) - Cut's the current selection. Can be overridden with `_cut`.
+- DeleteSelection(int caretIndex = -1) - Deletes the selected text.
+- Deselect(int caretIndex = -1) - Deselects the current selection.
+- EndAction() - Marks the end of steps in the current action started with `start_action`.
+- EndComplexOperation() - Ends a multipart edit, started with `begin_complex_operation`. If called outside a complex operation, the current operation is pushed onto the undo/redo stack.
+- EndMulticaretEdit() - Ends an edit for multiple carets, that was started with `begin_multicaret_edit`. If this was the last `end_multicaret_edit` and `merge_overlapping_carets` was called, carets will be merged.
+- GetCaretColumn(int caretIndex = 0) -> int - Returns the column the editing caret is at.
+- GetCaretCount() -> int - Returns the number of carets in this TextEdit.
+- GetCaretDrawPos(int caretIndex = 0) -> Vector2 - Returns the caret pixel draw position.
+- GetCaretIndexEditOrder() -> int[] - Returns a list of caret indexes in their edit order, this done from bottom to top. Edit order refers to the way actions such as `insert_text_at_caret` are applied.
+- GetCaretLine(int caretIndex = 0) -> int - Returns the line the editing caret is on.
+- GetCaretWrapIndex(int caretIndex = 0) -> int - Returns the wrap index the editing caret is on.
+- GetFirstNonWhitespaceColumn(int line) -> int - Returns the first column containing a non-whitespace character on the given line. If there is only whitespace, returns the number of characters.
+- GetFirstVisibleLine() -> int - Returns the first visible line.
+- GetGutterCount() -> int - Returns the number of gutters registered.
+- GetGutterName(int gutter) -> string - Returns the name of the gutter at the given index.
+- GetGutterType(int gutter) -> int - Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals.
+- GetGutterWidth(int gutter) -> int - Returns the width of the gutter at the given index.
+- GetHScrollBar() -> HScrollBar - Returns the HScrollBar used by TextEdit.
+- GetIndentLevel(int line) -> int - Returns the indent level of the given line. This is the number of spaces and tabs at the beginning of the line, with the tabs taking the tab size into account (see `get_tab_size`).
+- GetLastFullVisibleLine() -> int - Returns the last visible line. Use `get_last_full_visible_line_wrap_index` for the wrap index.
+- GetLastFullVisibleLineWrapIndex() -> int - Returns the last visible wrap index of the last visible line.
+- GetLastUnhiddenLine() -> int - Returns the last unhidden line in the entire TextEdit.
+- GetLine(int line) -> string - Returns the text of a specific line.
+- GetLineBackgroundColor(int line) -> Color - Returns the custom background color of the given line. If no color is set, returns `Color(0, 0, 0, 0)`.
+- GetLineColumnAtPos(Vector2i position, bool clampLine = true, bool clampColumn = true) -> Vector2i - Returns the line and column at the given position. In the returned vector, `x` is the column and `y` is the line. If `clamp_line` is `false` and `position` is below the last line, `Vector2i(-1, -1)` is returned. If `clamp_column` is `false` and `position` is outside the column range of the line, `Vector2i(-1, -1)` is returned.
+- GetLineCount() -> int - Returns the number of lines in the text.
+- GetLineGutterIcon(int line, int gutter) -> Texture2D - Returns the icon currently in `gutter` at `line`. This only works when the gutter type is `GUTTER_TYPE_ICON` (see `set_gutter_type`).
+- GetLineGutterItemColor(int line, int gutter) -> Color - Returns the color currently in `gutter` at `line`.
+- GetLineGutterMetadata(int line, int gutter) -> Variant - Returns the metadata currently in `gutter` at `line`.
+- GetLineGutterText(int line, int gutter) -> string - Returns the text currently in `gutter` at `line`. This only works when the gutter type is `GUTTER_TYPE_STRING` (see `set_gutter_type`).
+- GetLineHeight() -> int - Returns the maximum value of the line height among all lines. **Note:** The return value is influenced by [theme_item line_spacing] and [theme_item font_size]. And it will not be less than `1`.
+- GetLineRangesFromCarets(bool onlySelections = false, bool mergeAdjacent = true) -> Vector2i[] - Returns an Array of line ranges where `x` is the first line and `y` is the last line. All lines within these ranges will have a caret on them or be part of a selection. Each line will only be part of one line range, even if it has multiple carets on it. If a selection's end column (`get_selection_to_column`) is at column `0`, that line will not be included. If a selection begins on the line after another selection ends and `merge_adjacent` is `true`, or they begin and end on the same line, one line range will include both selections.
+- GetLineWidth(int line, int wrapIndex = -1) -> int - Returns the width in pixels of the `wrap_index` on `line`.
+- GetLineWithIme(int line) -> string - Returns line text as it is currently displayed, including IME composition string.
+- GetLineWrapCount(int line) -> int - Returns the number of times the given line is wrapped.
+- GetLineWrapIndexAtColumn(int line, int column) -> int - Returns the wrap index of the given column on the given line. This ranges from `0` to `get_line_wrap_count`.
+- GetLineWrappedText(int line) -> string[] - Returns an array of Strings representing each wrapped index.
+- GetLocalMousePos() -> Vector2 - Returns the local mouse position adjusted for the text direction.
+- GetMenu() -> PopupMenu - Returns the PopupMenu of this TextEdit. By default, this menu is displayed when right-clicking on the TextEdit. You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see `MenuItems`). For example: **Warning:** This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their `Window.visible` property.
+- GetMinimapLineAtPos(Vector2i position) -> int - Returns the equivalent minimap line at `position`.
+- GetMinimapVisibleLines() -> int - Returns the number of lines that may be drawn on the minimap.
+- GetNextCompositeCharacterColumn(int line, int column) -> int - Returns the correct column at the end of a composite character like ❤️‍🩹 (mending heart; Unicode: `U+2764 U+FE0F U+200D U+1FA79`) which is comprised of more than one Unicode code point, if the caret is at the start of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters. **Note:** To check at caret location use `get_next_composite_character_column(get_caret_line(), get_caret_column())`
+- GetNextVisibleLineIndexOffsetFrom(int line, int wrapIndex, int visibleAmount) -> Vector2i - Similar to `get_next_visible_line_offset_from`, but takes into account the line wrap indexes. In the returned vector, `x` is the line, `y` is the wrap index.
+- GetNextVisibleLineOffsetFrom(int line, int visibleAmount) -> int - Returns the count to the next visible line from `line` to `line + visible_amount`. Can also count backwards. For example if a TextEdit has 5 lines with lines 2 and 3 hidden, calling this with `line = 1, visible_amount = 1` would return 3.
+- GetPosAtLineColumn(int line, int column) -> Vector2i - Returns the local position for the given `line` and `column`. If `x` or `y` of the returned vector equal `-1`, the position is outside of the viewable area of the control. **Note:** The Y position corresponds to the bottom side of the line. Use `get_rect_at_line_column` to get the top side position.
+- GetPreviousCompositeCharacterColumn(int line, int column) -> int - Returns the correct column at the start of a composite character like ❤️‍🩹 (mending heart; Unicode: `U+2764 U+FE0F U+200D U+1FA79`) which is comprised of more than one Unicode code point, if the caret is at the end of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters. **Note:** To check at caret location use `get_previous_composite_character_column(get_caret_line(), get_caret_column())`
+- GetRectAtLineColumn(int line, int column) -> Rect2i - Returns the local position and size for the grapheme at the given `line` and `column`. If `x` or `y` position of the returned rect equal `-1`, the position is outside of the viewable area of the control. **Note:** The Y position of the returned rect corresponds to the top side of the line, unlike `get_pos_at_line_column` which returns the bottom side.
+- GetSavedVersion() -> int - Returns the last tagged saved version from `tag_saved_version`.
+- GetScrollPosForLine(int line, int wrapIndex = 0) -> float - Returns the scroll position for `wrap_index` of `line`.
+- GetSelectedText(int caretIndex = -1) -> string - Returns the text inside the selection of a caret, or all the carets if `caret_index` is its default value `-1`.
+- GetSelectionAtLineColumn(int line, int column, bool includeEdges = true, bool onlySelections = true) -> int - Returns the caret index of the selection at the given `line` and `column`, or `-1` if there is none. If `include_edges` is `false`, the position must be inside the selection and not at either end. If `only_selections` is `false`, carets without a selection will also be considered.
+- GetSelectionColumn(int caretIndex = 0) -> int - Returns the original start column of the selection.
+- GetSelectionFromColumn(int caretIndex = 0) -> int - Returns the selection begin column. Returns the caret column if there is no selection.
+- GetSelectionFromLine(int caretIndex = 0) -> int - Returns the selection begin line. Returns the caret line if there is no selection.
+- GetSelectionLine(int caretIndex = 0) -> int - Returns the original start line of the selection.
+- GetSelectionMode() -> int - Returns the current selection mode.
+- GetSelectionOriginColumn(int caretIndex = 0) -> int - Returns the origin column of the selection. This is the opposite end from the caret.
+- GetSelectionOriginLine(int caretIndex = 0) -> int - Returns the origin line of the selection. This is the opposite end from the caret.
+- GetSelectionToColumn(int caretIndex = 0) -> int - Returns the selection end column. Returns the caret column if there is no selection.
+- GetSelectionToLine(int caretIndex = 0) -> int - Returns the selection end line. Returns the caret line if there is no selection.
+- GetSortedCarets(bool includeIgnoredCarets = false) -> int[] - Returns the carets sorted by selection beginning from lowest line and column to highest (from top to bottom of text). If `include_ignored_carets` is `false`, carets from `multicaret_edit_ignore_caret` will be ignored.
+- GetTabSize() -> int - Returns the TextEdit's' tab size.
+- GetTotalGutterWidth() -> int - Returns the total width of all gutters and internal padding.
+- GetTotalVisibleLineCount() -> int - Returns the total number of lines in the text. This includes wrapped lines and excludes folded lines. If `wrap_mode` is set to `LINE_WRAPPING_NONE` and no lines are folded (see `CodeEdit.is_line_folded`) then this is equivalent to `get_line_count`. See `get_visible_line_count_in_range` for a limited range of lines.
+- GetVScrollBar() -> VScrollBar - Returns the VScrollBar of the TextEdit.
+- GetVersion() -> int - Returns the current version of the TextEdit. The version is a count of recorded operations by the undo/redo history.
+- GetVisibleLineCount() -> int - Returns the number of lines that can visually fit, rounded down, based on this control's height.
+- GetVisibleLineCountInRange(int fromLine, int toLine) -> int - Returns the total number of lines between `from_line` and `to_line` (inclusive) in the text. This includes wrapped lines and excludes folded lines. If the range covers all lines it is equivalent to `get_total_visible_line_count`.
+- GetWordAtPos(Vector2 position) -> string - Returns the word at `position`.
+- GetWordUnderCaret(int caretIndex = -1) -> string - Returns a String text with the word under the caret's location.
+- HasImeText() -> bool - Returns `true` if the user has text in the (IME).
+- HasRedo() -> bool - Returns `true` if a "redo" action is available.
+- HasSelection(int caretIndex = -1) -> bool - Returns `true` if the user has selected text.
+- HasUndo() -> bool - Returns `true` if an "undo" action is available.
+- InsertLineAt(int line, string text) - Inserts a new line with `text` at `line`.
+- InsertText(string text, int line, int column, bool beforeSelectionBegin = true, bool beforeSelectionEnd = false) - Inserts the `text` at `line` and `column`. If `before_selection_begin` is `true`, carets and selections that begin at `line` and `column` will moved to the end of the inserted text, along with all carets after it. If `before_selection_end` is `true`, selections that end at `line` and `column` will be extended to the end of the inserted text. These parameters can be used to insert text inside of or outside of selections.
+- InsertTextAtCaret(string text, int caretIndex = -1) - Insert the specified text at the caret position.
+- IsCaretAfterSelectionOrigin(int caretIndex = 0) -> bool - Returns `true` if the caret of the selection is after the selection origin. This can be used to determine the direction of the selection.
+- IsCaretVisible(int caretIndex = 0) -> bool - Returns `true` if the caret is visible, `false` otherwise. A caret will be considered hidden if it is outside the scrollable area when scrolling is enabled. **Note:** `is_caret_visible` does not account for a caret being off-screen if it is still within the scrollable area. It will return `true` even if the caret is off-screen as long as it meets TextEdit's own conditions for being visible. This includes uses of `scroll_fit_content_width` and `scroll_fit_content_height` that cause the TextEdit to expand beyond the viewport's bounds. **Note:** This method does *not* guarantee an accurate visibility check immediately after setting the caret position. The correct value may only be available in the next frame after the TextEdit has finished drawing. This also applies to any operation that causes the TextEdit to change in size.
+- IsDraggingCursor() -> bool - Returns `true` if the user is dragging their mouse for scrolling, selecting, or text dragging.
+- IsGutterClickable(int gutter) -> bool - Returns `true` if the gutter at the given index is clickable. See `set_gutter_clickable`.
+- IsGutterDrawn(int gutter) -> bool - Returns `true` if the gutter at the given index is currently drawn. See `set_gutter_draw`.
+- IsGutterOverwritable(int gutter) -> bool - Returns `true` if the gutter at the given index is overwritable. See `set_gutter_overwritable`.
+- IsInMulitcaretEdit() -> bool - Returns `true` if a `begin_multicaret_edit` has been called and `end_multicaret_edit` has not yet been called.
+- IsLineGutterClickable(int line, int gutter) -> bool - Returns `true` if the gutter at the given index on the given line is clickable. See `set_line_gutter_clickable`.
+- IsLineInViewport(int line) -> bool - Returns `true` if the given line is within the scope of the scrollable area of the viewport.
+- IsLineWrapped(int line) -> bool - Returns if the given line is wrapped.
+- IsMenuVisible() -> bool - Returns `true` if the menu is visible. Use this instead of `get_menu().visible` to improve performance (so the creation of the menu is avoided). See `get_menu`.
+- IsMouseOverSelection(bool edges, int caretIndex = -1) -> bool - Returns `true` if the mouse is over a selection. If `edges` is `true`, the edges are considered part of the selection.
+- IsOvertypeModeEnabled() -> bool - Returns `true` if overtype mode is enabled. See `set_overtype_mode_enabled`.
+- MenuOption(int option) - Executes a given action as defined in the `MenuItems` enum.
+- MergeGutters(int fromLine, int toLine) - Merge the gutters from `from_line` into `to_line`. Only overwritable gutters will be copied. See `set_gutter_overwritable`.
+- MergeOverlappingCarets() - Merges any overlapping carets. Will favor the newest caret, or the caret with a selection. If `is_in_mulitcaret_edit` is `true`, the merge will be queued to happen at the end of the multicaret edit. See `begin_multicaret_edit` and `end_multicaret_edit`. **Note:** This is not called when a caret changes position but after certain actions, so it is possible to get into a state where carets overlap.
+- MulticaretEditIgnoreCaret(int caretIndex) -> bool - Returns `true` if the given `caret_index` should be ignored as part of a multicaret edit. See `begin_multicaret_edit` and `end_multicaret_edit`. Carets that should be ignored are ones that were part of removed text and will likely be merged at the end of the edit, or carets that were added during the edit. It is recommended to `continue` within a loop iterating on multiple carets if a caret should be ignored.
+- Paste(int caretIndex = -1) - Paste at the current location. Can be overridden with `_paste`.
+- PastePrimaryClipboard(int caretIndex = -1) - Pastes the primary clipboard.
+- Redo() - Perform redo operation.
+- RemoveCaret(int caret) - Removes the given caret index. **Note:** This can result in adjustment of all other caret indices.
+- RemoveGutter(int gutter) - Removes the gutter at the given index.
+- RemoveLineAt(int line, bool moveCaretsDown = true) - Removes the line of text at `line`. Carets on this line will attempt to match their previous visual x position. If `move_carets_down` is `true` carets will move to the next line down, otherwise carets will move up.
+- RemoveSecondaryCarets() - Removes all additional carets.
+- RemoveText(int fromLine, int fromColumn, int toLine, int toColumn) - Removes text between the given positions.
+- Search(string text, int flags, int fromLine, int fromColumn) -> Vector2i - Perform a search inside the text. Search flags can be specified in the `SearchFlags` enum. In the returned vector, `x` is the column, `y` is the line. If no results are found, both are equal to `-1`.
+- Select(int originLine, int originColumn, int caretLine, int caretColumn, int caretIndex = 0) - Selects text from `origin_line` and `origin_column` to `caret_line` and `caret_column` for the given `caret_index`. This moves the selection origin and the caret. If the positions are the same, the selection will be deselected. If `selecting_enabled` is `false`, no selection will occur. **Note:** If supporting multiple carets this will not check for any overlap. See `merge_overlapping_carets`.
+- SelectAll() - Select all the text. If `selecting_enabled` is `false`, no selection will occur.
+- SelectWordUnderCaret(int caretIndex = -1) - Selects the word under the caret.
+- SetCaretColumn(int column, bool adjustViewport = true, int caretIndex = 0) - Moves the caret to the specified `column` index. If `adjust_viewport` is `true`, the viewport will center at the caret position after the move occurs. **Note:** If supporting multiple carets this will not check for any overlap. See `merge_overlapping_carets`.
+- SetCaretLine(int line, bool adjustViewport = true, bool canBeHidden = true, int wrapIndex = 0, int caretIndex = 0) - Moves the caret to the specified `line` index. The caret column will be moved to the same visual position it was at the last time `set_caret_column` was called, or clamped to the end of the line. If `adjust_viewport` is `true`, the viewport will center at the caret position after the move occurs. If `can_be_hidden` is `true`, the specified `line` can be hidden. If `wrap_index` is `-1`, the caret column will be clamped to the `line`'s length. If `wrap_index` is greater than `-1`, the column will be moved to attempt to match the visual x position on the line's `wrap_index` to the position from the last time `set_caret_column` was called. **Note:** If supporting multiple carets this will not check for any overlap. See `merge_overlapping_carets`.
+- SetGutterClickable(int gutter, bool clickable) - If `true`, the mouse cursor will change to a pointing hand (`Control.CURSOR_POINTING_HAND`) when hovering over the gutter at the given index. See `is_gutter_clickable` and `set_line_gutter_clickable`.
+- SetGutterCustomDraw(int column, Callable drawCallback) - Set a custom draw callback for the gutter at the given index. `draw_callback` must take the following arguments: A line index [int], a gutter index [int], and an area Rect2. This callback only works when the gutter type is `GUTTER_TYPE_CUSTOM` (see `set_gutter_type`).
+- SetGutterDraw(int gutter, bool draw) - If `true`, the gutter at the given index is drawn. The gutter type (`set_gutter_type`) determines how it is drawn. See `is_gutter_drawn`.
+- SetGutterName(int gutter, string name) - Sets the name of the gutter at the given index.
+- SetGutterOverwritable(int gutter, bool overwritable) - If `true`, the line data of the gutter at the given index can be overridden when using `merge_gutters`. See `is_gutter_overwritable`.
+- SetGutterType(int gutter, int type) - Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals.
+- SetGutterWidth(int gutter, int width) - Set the width of the gutter at the given index.
+- SetLine(int line, string newText) - Sets the text for a specific `line`. Carets on the line will attempt to keep their visual x position.
+- SetLineAsCenterVisible(int line, int wrapIndex = 0) - Positions the `wrap_index` of `line` at the center of the viewport.
+- SetLineAsFirstVisible(int line, int wrapIndex = 0) - Positions the `wrap_index` of `line` at the top of the viewport.
+- SetLineAsLastVisible(int line, int wrapIndex = 0) - Positions the `wrap_index` of `line` at the bottom of the viewport.
+- SetLineBackgroundColor(int line, Color color) - Sets the custom background color of the given line. If transparent, this color is applied on top of the default background color (See [theme_item background_color]). If set to `Color(0, 0, 0, 0)`, no additional color is applied.
+- SetLineGutterClickable(int line, int gutter, bool clickable) - If `clickable` is `true`, makes the `gutter` on the given `line` clickable. This is like `set_gutter_clickable`, but for a single line. If `is_gutter_clickable` is `true`, this will not have any effect. See `is_line_gutter_clickable` and `gutter_clicked`.
+- SetLineGutterIcon(int line, int gutter, Texture2D icon) - Sets the icon for `gutter` on `line` to `icon`. This only works when the gutter type is `GUTTER_TYPE_ICON` (see `set_gutter_type`).
+- SetLineGutterItemColor(int line, int gutter, Color color) - Sets the color for `gutter` on `line` to `color`.
+- SetLineGutterMetadata(int line, int gutter, Variant metadata) - Sets the metadata for `gutter` on `line` to `metadata`.
+- SetLineGutterText(int line, int gutter, string text) - Sets the text for `gutter` on `line` to `text`. This only works when the gutter type is `GUTTER_TYPE_STRING` (see `set_gutter_type`).
+- SetOvertypeModeEnabled(bool enabled) - If `true`, enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The `ProjectSettings.input/ui_text_toggle_insert_mode` action toggles overtype mode. See `is_overtype_mode_enabled`.
+- SetSearchFlags(int flags) - Sets the search `flags`. This is used with `set_search_text` to highlight occurrences of the searched text. Search flags can be specified from the `SearchFlags` enum.
+- SetSearchText(string searchText) - Sets the search text. See `set_search_flags`.
+- SetSelectionMode(int mode) - Sets the current selection mode.
+- SetSelectionOriginColumn(int column, int caretIndex = 0) - Sets the selection origin column to the `column` for the given `caret_index`. If the selection origin is moved to the caret position, the selection will deselect.
+- SetSelectionOriginLine(int line, bool canBeHidden = true, int wrapIndex = -1, int caretIndex = 0) - Sets the selection origin line to the `line` for the given `caret_index`. If the selection origin is moved to the caret position, the selection will deselect. If `can_be_hidden` is `false`, The line will be set to the nearest unhidden line below or above. If `wrap_index` is `-1`, the selection origin column will be clamped to the `line`'s length. If `wrap_index` is greater than `-1`, the column will be moved to attempt to match the visual x position on the line's `wrap_index` to the position from the last time `set_selection_origin_column` or `select` was called.
+- SetTabSize(int size) - Sets the tab size for the TextEdit to use.
+- SetTooltipRequestFunc(Callable callback) - Provide custom tooltip text. The callback method must take the following args: `hovered_word: String`.
+- SkipSelectionForNextOccurrence() - Moves a selection and a caret for the next occurrence of the current selection. If there is no active selection, moves to the next occurrence of the word under caret.
+- StartAction(int action) - Starts an action, will end the current action if `action` is different. An action will also end after a call to `end_action`, after `ProjectSettings.gui/timers/text_edit_idle_detect_sec` is triggered or a new undoable step outside the `start_action` and `end_action` calls.
+- SwapLines(int fromLine, int toLine) - Swaps the two lines. Carets will be swapped with the lines.
+- TagSavedVersion() - Tag the current version as saved.
+- Undo() - Perform undo operation.
+
+**Signals:**
+- CaretChanged - Emitted when any caret changes position.
+- GutterAdded - Emitted when a gutter is added.
+- GutterClicked(int line, int gutter) - Emitted when a gutter is clicked.
+- GutterRemoved - Emitted when a gutter is removed.
+- LinesEditedFrom(int fromLine, int toLine) - Emitted immediately when the text changes. When text is added `from_line` will be less than `to_line`. On a remove `to_line` will be less than `from_line`.
+- TextChanged - Emitted when the text changes.
+- TextSet - Emitted when `clear` is called or `text` is set.
+
+**Enums:**
+**MenuItems:** MENU_CUT=0, MENU_COPY=1, MENU_PASTE=2, MENU_CLEAR=3, MENU_SELECT_ALL=4, MENU_UNDO=5, MENU_REDO=6, MENU_SUBMENU_TEXT_DIR=7, MENU_DIR_INHERITED=8, MENU_DIR_AUTO=9, ...
+  - MENU_CUT: Cuts (copies and clears) the selected text.
+  - MENU_COPY: Copies the selected text.
+  - MENU_PASTE: Pastes the clipboard text over the selected text (or at the cursor's position).
+  - MENU_CLEAR: Erases the whole TextEdit text.
+  - MENU_SELECT_ALL: Selects the whole TextEdit text.
+  - MENU_UNDO: Undoes the previous action.
+  - MENU_REDO: Redoes the previous action.
+  - MENU_SUBMENU_TEXT_DIR: ID of "Text Writing Direction" submenu.
+  - MENU_DIR_INHERITED: Sets text direction to inherited.
+  - MENU_DIR_AUTO: Sets text direction to automatic.
+  - MENU_DIR_LTR: Sets text direction to left-to-right.
+  - MENU_DIR_RTL: Sets text direction to right-to-left.
+  - MENU_DISPLAY_UCC: Toggles control character display.
+  - MENU_SUBMENU_INSERT_UCC: ID of "Insert Control Character" submenu.
+  - MENU_INSERT_LRM: Inserts left-to-right mark (LRM) character.
+  - MENU_INSERT_RLM: Inserts right-to-left mark (RLM) character.
+  - MENU_INSERT_LRE: Inserts start of left-to-right embedding (LRE) character.
+  - MENU_INSERT_RLE: Inserts start of right-to-left embedding (RLE) character.
+  - MENU_INSERT_LRO: Inserts start of left-to-right override (LRO) character.
+  - MENU_INSERT_RLO: Inserts start of right-to-left override (RLO) character.
+  - MENU_INSERT_PDF: Inserts pop direction formatting (PDF) character.
+  - MENU_INSERT_ALM: Inserts Arabic letter mark (ALM) character.
+  - MENU_INSERT_LRI: Inserts left-to-right isolate (LRI) character.
+  - MENU_INSERT_RLI: Inserts right-to-left isolate (RLI) character.
+  - MENU_INSERT_FSI: Inserts first strong isolate (FSI) character.
+  - MENU_INSERT_PDI: Inserts pop direction isolate (PDI) character.
+  - MENU_INSERT_ZWJ: Inserts zero width joiner (ZWJ) character.
+  - MENU_INSERT_ZWNJ: Inserts zero width non-joiner (ZWNJ) character.
+  - MENU_INSERT_WJ: Inserts word joiner (WJ) character.
+  - MENU_INSERT_SHY: Inserts soft hyphen (SHY) character.
+  - MENU_EMOJI_AND_SYMBOL: Opens system emoji and symbol picker.
+  - MENU_MAX: Represents the size of the `MenuItems` enum.
+**EditAction:** ACTION_NONE=0, ACTION_TYPING=1, ACTION_BACKSPACE=2, ACTION_DELETE=3
+  - ACTION_NONE: No current action.
+  - ACTION_TYPING: A typing action.
+  - ACTION_BACKSPACE: A backwards delete action.
+  - ACTION_DELETE: A forward delete action.
+**SearchFlags:** SEARCH_MATCH_CASE=1, SEARCH_WHOLE_WORDS=2, SEARCH_BACKWARDS=4
+  - SEARCH_MATCH_CASE: Match case when searching.
+  - SEARCH_WHOLE_WORDS: Match whole words when searching.
+  - SEARCH_BACKWARDS: Search from end to beginning.
+**CaretType:** CARET_TYPE_LINE=0, CARET_TYPE_BLOCK=1
+  - CARET_TYPE_LINE: Vertical line caret.
+  - CARET_TYPE_BLOCK: Block caret.
+**SelectionMode:** SELECTION_MODE_NONE=0, SELECTION_MODE_SHIFT=1, SELECTION_MODE_POINTER=2, SELECTION_MODE_WORD=3, SELECTION_MODE_LINE=4
+  - SELECTION_MODE_NONE: Not selecting.
+  - SELECTION_MODE_SHIFT: Select as if `shift` is pressed.
+  - SELECTION_MODE_POINTER: Select single characters as if the user single clicked.
+  - SELECTION_MODE_WORD: Select whole words as if the user double clicked.
+  - SELECTION_MODE_LINE: Select whole lines as if the user triple clicked.
+**LineWrappingMode:** LINE_WRAPPING_NONE=0, LINE_WRAPPING_BOUNDARY=1
+  - LINE_WRAPPING_NONE: Line wrapping is disabled.
+  - LINE_WRAPPING_BOUNDARY: Line wrapping occurs at the control boundary, beyond what would normally be visible.
+**GutterType:** GUTTER_TYPE_STRING=0, GUTTER_TYPE_ICON=1, GUTTER_TYPE_CUSTOM=2
+  - GUTTER_TYPE_STRING: When a gutter is set to string using `set_gutter_type`, it is used to contain text set via the `set_line_gutter_text` method.
+  - GUTTER_TYPE_ICON: When a gutter is set to icon using `set_gutter_type`, it is used to contain an icon set via the `set_line_gutter_icon` method.
+  - GUTTER_TYPE_CUSTOM: When a gutter is set to custom using `set_gutter_type`, it is used to contain custom visuals controlled by a callback method set via the `set_gutter_custom_draw` method.
+

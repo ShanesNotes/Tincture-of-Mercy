@@ -1,0 +1,22 @@
+{
+  "name": "boy",
+  "palette": "boy",
+  "default_frame_w": 48,
+  "default_frame_h": 64,
+  "default_baseline_y": 56,
+  "passes": {
+    "locomotion": {
+      "description": "Boy locomotion + receive_bread + sit; 21 frames in 5×9.",
+      "source_frames": 21,
+      "source_cols": 5,
+      "source_rows": 9,
+      "target_cols": 5,
+      "target_rows": 9,
+      "animation_keys": [
+        "idle_down", "idle_left", "idle_up", "idle_right",
+        "walk_down", "walk_left", "walk_up", "walk_right",
+        "receive_bread"
+      ]
+    }
+  }
+}

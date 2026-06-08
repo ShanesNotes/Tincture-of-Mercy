@@ -87,7 +87,7 @@ v0.8.1 acceptance rows green:
 - `U-09` — No raw Pressure / Burden / Numbness numbers in player-facing UI.
 - `U-10` — No morality meter on the bedside / contemplative surfaces.
   *(A separate combat-only surface may expose its own numbers.)*
-- `V-01` through `V-12` — visual locks (32×32 tiles, 64×96 Kalev, 960×540
+- `V-01` through `V-12` — visual locks (32×32 tiles, 64×96 Kalev, 640×360
   viewport, etc.) hold inside combat encounters too.
 - `CANON-01..10` — canonical names and reservations.
 - `M-01..M-05` — manual review gates around tone and contemplative core.

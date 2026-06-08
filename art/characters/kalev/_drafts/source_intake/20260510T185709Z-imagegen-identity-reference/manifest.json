@@ -1,0 +1,171 @@
+{
+  "adapter": "imagegen",
+  "artifacts": [
+    {
+      "at": "2026-05-10T18:57:09.171309+00:00",
+      "details": {
+        "paid": false,
+        "source": "local_codex_generated_image"
+      },
+      "kind": "raw_imagegen_reference",
+      "path": "art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference/raw/kalev_imagegen_reference_raw.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.393246+00:00",
+      "details": {
+        "bbox": [
+          347,
+          54,
+          1143,
+          973
+        ]
+      },
+      "kind": "normalized_crop",
+      "path": "art/characters/kalev/_drafts/source_intake/20260510T185709Z-imagegen-identity-reference/normalized/kalev_imagegen_reference_crop.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.438263+00:00",
+      "details": {
+        "resample": "box"
+      },
+      "kind": "downscale_trial_frame",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/kalev_imagegen_identity_frame_64x96_box.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.440798+00:00",
+      "details": {
+        "resample": "lanczos"
+      },
+      "kind": "downscale_trial_frame",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/kalev_imagegen_identity_frame_64x96_lanczos.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.442720+00:00",
+      "details": {
+        "resample": "nearest"
+      },
+      "kind": "downscale_trial_frame",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/kalev_imagegen_identity_frame_64x96_nearest.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.445162+00:00",
+      "details": {
+        "draft_copy": "art/characters/kalev/_drafts/kalev_identity_reference_imagegen_20260510T185709Z_64x96.png"
+      },
+      "kind": "recommended_64x96_reference",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/kalev_imagegen_identity_frame_64x96_recommended.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.448423+00:00",
+      "details": {
+        "note": "static 4-frame identity lock; not canonical runtime"
+      },
+      "kind": "idle_front_candidate_sheet",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/kalev_idle_front_imagegen_identity_candidate_64x96.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.491609+00:00",
+      "details": {},
+      "kind": "downscale_trials_board",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/imagegen_reference_downscale_trials_1x2x4x.png"
+    },
+    {
+      "at": "2026-05-10T18:57:14.633347+00:00",
+      "details": {
+        "note": "local substitute for rotation review; no API call"
+      },
+      "kind": "identity_review_board",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/rotation_review_1x2x4x.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.467753+00:00",
+      "details": {},
+      "kind": "transparent_full_reference",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_full_reference_transparent.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.467923+00:00",
+      "details": {},
+      "kind": "v1_sprite_source_crop",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_sprite_reference_crop.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468030+00:00",
+      "details": {},
+      "kind": "v1_sprite_identity_lock",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_sprite_identity_lock_64x96.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468114+00:00",
+      "details": {},
+      "kind": "v1_idle_front_identity_lock_candidate_sheet",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_idle_front_identity_lock_candidate_64x96.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468202+00:00",
+      "details": {},
+      "kind": "v1_fullbody_portrait",
+      "path": "art/characters/kalev/portraits/kalev_v1_fullbody_portrait.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468272+00:00",
+      "details": {},
+      "kind": "v1_dialogue_bust_256",
+      "path": "art/characters/kalev/portraits/kalev_v1_dialogue_bust_256.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468332+00:00",
+      "details": {},
+      "kind": "v1_dialogue_bust_512",
+      "path": "art/characters/kalev/portraits/kalev_v1_dialogue_bust_512.png"
+    },
+    {
+      "at": "2026-05-10T19:09:19.468389+00:00",
+      "details": {},
+      "kind": "v1_production_lock_review_board",
+      "path": "art/characters/kalev/preview/candidates/20260510T185709Z/v1_production_lock/kalev_v1_production_lock_review_board.png"
+    }
+  ],
+  "backup_dir": "art/characters/kalev/_backups/20260510T185709Z",
+  "candidate_dir": "art/characters/kalev/preview/candidates/20260510T185709Z",
+  "canonical_changed": false,
+  "character": "kalev",
+  "created_at": "2026-05-10T18:57:09.169256+00:00",
+  "events": [
+    {
+      "at": "2026-05-10T19:09:19.467722+00:00",
+      "details": {
+        "decision": "use left mini-sprite as gameplay identity lock; preserve right fullbody as portrait/dialogue-card source",
+        "portrait_component_bbox": [
+          716,
+          42,
+          1155,
+          985
+        ],
+        "sprite_component_bbox": [
+          339,
+          331,
+          538,
+          749
+        ]
+      },
+      "kind": "v1_preferred_split"
+    }
+  ],
+  "expected_operations": [
+    {
+      "operation": "local reference extraction",
+      "paid": false
+    }
+  ],
+  "jobs": [],
+  "operation": "identity-reference",
+  "pass": "idle_front",
+  "prompt": "<redacted>",
+  "requests": [],
+  "run_id": "20260510T185709Z-imagegen-identity-reference",
+  "schema_version": 1,
+  "seed": null,
+  "status": "complete",
+  "updated_at": "2026-05-10T19:09:19.468455+00:00"
+}

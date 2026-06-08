@@ -1,0 +1,69 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-06-05T17:03:06.167647+00:00",
+      "details": {},
+      "kind": "reference_image",
+      "path": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/ember.png"
+    }
+  ],
+  "character": "ember",
+  "created_at": "2026-06-05T17:03:06.165865+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "endpoint": "/create-character-v3",
+      "image_size": {
+        "height": 64,
+        "width": 48
+      },
+      "reference": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/ember.png",
+      "template_id": "mannequin"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-06-05T17:03:07.636731+00:00",
+      "details": {
+        "character_id": "b2fdc536-d8ae-48c7-a289-d7e7ba1612b9"
+      },
+      "endpoint": "/create-character-v3",
+      "job_id": "fc2a0010-94bd-4ee0-ae44-d0b488ad2cd5"
+    }
+  ],
+  "operation": "create-character-v3",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 514,
+    "policy": "hash_only",
+    "sha256": "7f78b28224f35a4fd0bb14195e5cb81c4c9058724695e0ba106f3d91de115156"
+  },
+  "requests": [
+    {
+      "at": "2026-06-05T17:03:06.168722+00:00",
+      "body": {
+        "description": {
+          "length": 514,
+          "policy": "hash_only",
+          "sha256": "7f78b28224f35a4fd0bb14195e5cb81c4c9058724695e0ba106f3d91de115156"
+        },
+        "image_size": {
+          "height": 64,
+          "width": 48
+        },
+        "no_background": true,
+        "reference_image": "<redacted>",
+        "template_id": "mannequin",
+        "view": "low top-down"
+      },
+      "endpoint": "/create-character-v3",
+      "fingerprint": "99710ad66135fd708d18fed740bb3ebb093a38c77bebc457718a050bb7a93a43"
+    }
+  ],
+  "run_id": "20260605T170306Z-pixellab_rest-create-character-v3-17539618",
+  "schema_version": 1,
+  "seed": null,
+  "status": "pending",
+  "updated_at": "2026-06-05T17:03:07.637053+00:00"
+}

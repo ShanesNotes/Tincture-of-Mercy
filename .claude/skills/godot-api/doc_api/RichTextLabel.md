@@ -1,0 +1,183 @@
+## RichTextLabel <- Control
+
+A control for displaying text that can contain custom fonts, images, and basic formatting. RichTextLabel manages these as an internal tag stack. It also adapts itself to given width/heights. **Note:** `newline`, `push_paragraph`, `"\n"`, `"\r\n"`, `p` tag, and alignment tags start a new paragraph. Each paragraph is processed independently, in its own BiDi context. If you want to force line wrapping within paragraph, any other line breaking character can be used, for example, Form Feed (U+000C), Next Line (U+0085), Line Separator (U+2028). **Note:** Assignments to `text` clear the tag stack and reconstruct it from the property's contents. Any edits made to `text` will erase previous edits made from other manual sources such as `append_text` and the `push_*` / `pop` methods. **Note:** RichTextLabel doesn't support entangled BBCode tags. For example, instead of using [code skip-lint]**bold*bold italic**italic*[/code], use [code skip-lint]**bold*bold italic****italic*[/code]. **Note:** `push_*/pop_*` functions won't affect BBCode. **Note:** While `bbcode_enabled` is enabled, alignment tags such as [code skip-lint][center][/code] will take priority over the `horizontal_alignment` setting which determines the default text alignment.
+
+**Props:**
+- AutowrapMode: int (TextServer.AutowrapMode) = 3
+- AutowrapTrimFlags: int (TextServer.LineBreakFlag) = 192
+- BbcodeEnabled: bool = false
+- ClipContents: bool = true
+- ContextMenuEnabled: bool = false
+- CustomEffects: Godot.Collections.Array = []
+- DeselectOnFocusLossEnabled: bool = true
+- DragAndDropSelectionEnabled: bool = true
+- FitContent: bool = false
+- FocusMode: int (Control.FocusMode) = 3
+- HintUnderlined: bool = true
+- HorizontalAlignment: int (HorizontalAlignment) = 0
+- JustificationFlags: int (TextServer.JustificationFlag) = 163
+- Language: string = ""
+- MetaUnderlined: bool = true
+- ProgressBarDelay: int = 1000
+- ScrollActive: bool = true
+- ScrollFollowing: bool = false
+- ScrollFollowingVisibleCharacters: bool = false
+- SelectionEnabled: bool = false
+- ShortcutKeysEnabled: bool = true
+- StructuredTextBidiOverride: int (TextServer.StructuredTextParser) = 0
+- StructuredTextBidiOverrideOptions: Godot.Collections.Array = []
+- TabSize: int = 4
+- TabStops: float[] = PackedFloat32Array()
+- Text: string = ""
+- TextDirection: int (Control.TextDirection) = 0
+- Threaded: bool = false
+- VerticalAlignment: int (VerticalAlignment) = 0
+- VisibleCharacters: int = -1
+- VisibleCharactersBehavior: int (TextServer.VisibleCharactersBehavior) = 0
+- VisibleRatio: float = 1.0
+
+- **autowrap_mode**: If set to something other than `TextServer.AUTOWRAP_OFF`, the text gets wrapped inside the node's bounding rectangle. **Note:** RichTextLabels with autowrapping and `fit_content` enabled must have a custom maximum width configured to work correctly, either through the RichTextLabel's own `Control.custom_maximum_size` or as a result of a propagated maximum size from a parent Control with `Control.propagate_maximum_size` enabled.
+- **autowrap_trim_flags**: Autowrap space trimming flags. See `TextServer.BREAK_TRIM_START_EDGE_SPACES` and `TextServer.BREAK_TRIM_END_EDGE_SPACES` for more info.
+- **bbcode_enabled**: If `true`, the label uses BBCode formatting. **Note:** This only affects the contents of `text`, not the tag stack.
+- **context_menu_enabled**: If `true`, a right-click displays the context menu.
+- **custom_effects**: The currently installed custom effects. This is an array of RichTextEffects. To add a custom effect, it's more convenient to use `install_effect`.
+- **deselect_on_focus_loss_enabled**: If `true`, the selected text will be deselected when focus is lost.
+- **drag_and_drop_selection_enabled**: If `true`, allow drag and drop of selected text.
+- **fit_content**: If `true`, the label's minimum size will be automatically updated to fit its content, matching the behavior of Label. **Note:** RichTextLabels with autowrapping and `fit_content` enabled must have a custom maximum width configured to work correctly, either through the RichTextLabel's own `Control.custom_maximum_size` or as a result of a propagated maximum size from a parent Control with `Control.propagate_maximum_size` enabled.
+- **hint_underlined**: If `true`, the label underlines hint tags such as [code skip-lint][hint=description]{text}[/hint][/code].
+- **horizontal_alignment**: Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
+- **justification_flags**: Line fill alignment rules.
+- **language**: Language code used for line-breaking and text shaping algorithms. If left empty, the current locale is used instead.
+- **meta_underlined**: If `true`, the label underlines meta tags such as [code skip-lint][/code]. These tags can call a function when clicked if `meta_clicked` is connected to a function.
+- **progress_bar_delay**: The delay after which the loading progress bar is displayed, in milliseconds. Set to `-1` to disable progress bar entirely. **Note:** Progress bar is displayed only if `threaded` is enabled.
+- **scroll_active**: If `true`, the scrollbar is visible. Setting this to `false` does not block scrolling completely. See `scroll_to_line`.
+- **scroll_following**: If `true`, the window scrolls down to display new content automatically.
+- **scroll_following_visible_characters**: If `true`, the window scrolls to display the last visible line when `visible_characters` or `visible_ratio` is changed.
+- **selection_enabled**: If `true`, the label allows text selection.
+- **shortcut_keys_enabled**: If `true`, shortcut keys for context menu items are enabled, even if the context menu is disabled.
+- **structured_text_bidi_override**: Set BiDi algorithm override for the structured text.
+- **structured_text_bidi_override_options**: Set additional options for BiDi override.
+- **tab_size**: The number of spaces associated with a single tab length. Does not affect `\t` in text tags, only indent tags.
+- **tab_stops**: Aligns text to the given tab-stops.
+- **text**: The label's text in BBCode format. Is not representative of manual modifications to the internal tag stack. Erases changes made by other methods when edited. **Note:** If `bbcode_enabled` is `true`, it is unadvised to use the `+=` operator with `text` (e.g. `text += "some string"`) as it replaces the whole text and can cause slowdowns. It will also erase all BBCode that was added to stack using `push_*` methods. Use `append_text` for adding text instead, unless you absolutely need to close a tag that was opened in an earlier method call.
+- **text_direction**: Base text writing direction.
+- **threaded**: If `true`, text processing is done in a background thread.
+- **vertical_alignment**: Controls the text's vertical alignment. Supports top, center, bottom, and fill.
+- **visible_characters**: The number of characters to display. If set to `-1`, all characters are displayed. This can be useful when animating the text appearing in a dialog box. **Note:** Setting this property updates `visible_ratio` accordingly. **Note:** Characters are counted as Unicode codepoints. A single visible grapheme may contain multiple codepoints (e.g. certain emoji use three codepoints). A single codepoint may contain two UTF-16 characters, which are used in C# strings.
+- **visible_characters_behavior**: The clipping behavior when `visible_characters` or `visible_ratio` is set.
+- **visible_ratio**: The fraction of characters to display, relative to the total number of characters (see `get_total_character_count`). If set to `1.0`, all characters are displayed. If set to `0.5`, only half of the characters will be displayed. This can be useful when animating the text appearing in a dialog box. **Note:** Setting this property updates `visible_characters` accordingly.
+
+**Methods:**
+- AddHr(int width = 90, int height = 2, Color color = Color(1, 1, 1, 1), int alignment = 1, bool widthInPercent = true, bool heightInPercent = false) - Adds a horizontal rule that can be used to separate content. If `width_in_percent` is set, `width` values are percentages of the control width instead of pixels. If `height_in_percent` is set, `height` values are percentages of the control width instead of pixels.
+- AddImage(Texture2D image, float width = 0, float height = 0, Color color = Color(1, 1, 1, 1), int inlineAlign = 5, Rect2 region = Rect2(0, 0, 0, 0), Variant key = null, bool pad = false, string tooltip = "", int widthUnit = 0, int heightUnit = 0, string altText = "") - Adds an image's opening and closing tags to the tag stack, optionally providing a `width` and `height` to resize the image, a `color` to tint the image and a `region` to only use parts of the image. If `width` or `height` is set to 0, the image size will be adjusted in order to keep the original aspect ratio. If `width` and `height` are not set, but `region` is, the region's rect will be used. `key` is an optional identifier, that can be used to modify the image via `update_image`. If `pad` is set, and the image is smaller than the size specified by `width` and `height`, the image padding is added to match the size instead of upscaling. Parameters `width_unit` and `height_unit` determine the units used to calculate the image width and height, respectively. `alt_text` is used as the image description for assistive apps.
+- AddText(string text) - Adds raw non-BBCode-parsed text to the tag stack.
+- AppendText(string bbcode) - Parses `bbcode` and adds tags to the tag stack as needed. **Note:** Using this method, you can't close a tag that was opened in a previous `append_text` call. This is done to improve performance, especially when updating large RichTextLabels since rebuilding the whole BBCode every time would be slower. If you absolutely need to close a tag in a future method call, append the `text` instead of using `append_text`.
+- Clear() - Clears the tag stack, causing the label to display nothing. **Note:** This method does not affect `text`, and its contents will show again if the label is redrawn. However, setting `text` to an empty String also clears the stack.
+- Deselect() - Clears the current selection.
+- GetCharacterLine(int character) -> int - Returns the line number of the character position provided. Line and character numbers are both zero-indexed. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetCharacterParagraph(int character) -> int - Returns the paragraph number of the character position provided. Paragraph and character numbers are both zero-indexed. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetContentHeight() -> int - Returns the height of the content. **Note:** This method always returns the full content size, and is not affected by `visible_ratio` and `visible_characters`. To get the visible content size, use `get_visible_content_rect`. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetContentWidth() -> int - Returns the width of the content. **Note:** This method always returns the full content size, and is not affected by `visible_ratio` and `visible_characters`. To get the visible content size, use `get_visible_content_rect`. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetLineCount() -> int - Returns the total number of lines in the text. Wrapped text is counted as multiple lines. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetLineHeight(int line) -> int - Returns the height of the line found at the provided index. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether the document is fully loaded.
+- GetLineOffset(int line) -> float - Returns the vertical offset of the line found at the provided index. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetLineRange(int line) -> Vector2i - Returns the indexes of the first and last visible characters for the given `line`, as a Vector2i. **Note:** If `visible_characters_behavior` is set to `TextServer.VC_CHARS_BEFORE_SHAPING` only visible wrapped lines are counted. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetLineWidth(int line) -> int - Returns the width of the line found at the provided index. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether the document is fully loaded.
+- GetMenu() -> PopupMenu - Returns the PopupMenu of this RichTextLabel. By default, this menu is displayed when right-clicking on the RichTextLabel. You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see `MenuItems`). For example: **Warning:** This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their `Window.visible` property.
+- GetParagraphCount() -> int - Returns the total number of paragraphs (newlines or `p` tags in the tag stack's text tags). Considers wrapped text as one paragraph.
+- GetParagraphOffset(int paragraph) -> float - Returns the vertical offset of the paragraph found at the provided index. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetParsedText() -> string - Returns the text without BBCode mark-up.
+- GetSelectedText() -> string - Returns the current selection text. Does not include BBCodes.
+- GetSelectionFrom() -> int - Returns the current selection first character index if a selection is active, `-1` otherwise. Does not include BBCodes.
+- GetSelectionLineOffset() -> float - Returns the current selection vertical line offset if a selection is active, `-1.0` otherwise.
+- GetSelectionTo() -> int - Returns the current selection last character index if a selection is active, `-1` otherwise. Does not include BBCodes.
+- GetTotalCharacterCount() -> int - Returns the total number of characters from text tags. Does not include BBCodes.
+- GetVScrollBar() -> VScrollBar - Returns the vertical scrollbar. **Warning:** This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their `CanvasItem.visible` property.
+- GetVisibleContentRect() -> Rect2i - Returns the bounding rectangle of the visible content. **Note:** This method returns a correct value only after the label has been drawn.
+- GetVisibleLineCount() -> int - Returns the number of visible lines. **Note:** This method returns a correct value only after the label has been drawn. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- GetVisibleParagraphCount() -> int - Returns the number of visible paragraphs. A paragraph is considered visible if at least one of its lines is visible. **Note:** This method returns a correct value only after the label has been drawn. **Note:** If `threaded` is enabled, this method returns a value for the loaded part of the document. Use `is_finished` or `finished` to determine whether document is fully loaded.
+- InstallEffect(Variant effect) - Installs a custom effect. This can also be done in the Inspector through the `custom_effects` property. `effect` should be a valid RichTextEffect. **Example:** With the following script extending from RichTextEffect: The above effect can be installed in RichTextLabel from a script:
+- InvalidateParagraph(int paragraph) -> bool - Invalidates `paragraph` and all subsequent paragraphs cache.
+- IsFinished() -> bool - If `threaded` is enabled, returns `true` if the background thread has finished text processing, otherwise always return `true`.
+- IsMenuVisible() -> bool - Returns whether the menu is visible. Use this instead of `get_menu().visible` to improve performance (so the creation of the menu is avoided).
+- IsReady() -> bool - If `threaded` is enabled, returns `true` if the background thread has finished text processing, otherwise always return `true`.
+- MenuOption(int option) - Executes a given action as defined in the `MenuItems` enum.
+- Newline() - Adds a newline tag to the tag stack.
+- ParseBbcode(string bbcode) - The assignment version of `append_text`. Clears the tag stack and inserts the new content.
+- ParseExpressionsForValues(string[] expressions) -> Godot.Collections.Dictionary - Parses BBCode parameter `expressions` into a dictionary.
+- Pop() - Terminates the current tag. Use after `push_*` methods to close BBCodes manually. Does not need to follow `add_*` methods.
+- PopAll() - Terminates all tags opened by `push_*` methods.
+- PopContext() - Terminates tags opened after the last `push_context` call (including context marker), or all tags if there's no context marker on the stack.
+- PushBgcolor(Color bgcolor) - Adds a [code skip-lint][bgcolor][/code] tag to the tag stack. **Note:** The background color has padding applied by default, which is controlled using [theme_item text_highlight_h_padding] and [theme_item text_highlight_v_padding]. This can lead to overlapping highlights if background colors are placed on neighboring lines/columns, so consider setting those theme items to `0` if you want to avoid this.
+- PushBold() - Adds a [code skip-lint][font][/code] tag with a bold font to the tag stack. This is the same as adding a [code skip-lint][b][/code] tag if not currently in a [code skip-lint][i][/code] tag.
+- PushBoldItalics() - Adds a [code skip-lint][font][/code] tag with a bold italics font to the tag stack.
+- PushCell() - Adds a [code skip-lint][cell][/code] tag to the tag stack. Must be inside a [code skip-lint][table][/code] tag. See `push_table` for details. Use `set_table_column_expand` to set column expansion ratio, `set_cell_border_color` to set cell border, `set_cell_row_background_color` to set cell background, `set_cell_size_override` to override cell size, and `set_cell_padding` to set padding.
+- PushColor(Color color) - Adds a [code skip-lint][color][/code] tag to the tag stack.
+- PushContext() - Adds a context marker to the tag stack. See `pop_context`.
+- PushCustomfx(RichTextEffect effect, Godot.Collections.Dictionary env) - Adds a custom effect tag to the tag stack. The effect does not need to be in `custom_effects`. The environment is directly passed to the effect.
+- PushDropcap(string string, Font font, int size, Rect2 dropcapMargins = Rect2(0, 0, 0, 0), Color color = Color(1, 1, 1, 1), int outlineSize = 0, Color outlineColor = Color(0, 0, 0, 0)) - Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped capital) is a decorative element at the beginning of a paragraph that is larger than the rest of the text.
+- PushFgcolor(Color fgcolor) - Adds a [code skip-lint][fgcolor][/code] tag to the tag stack. **Note:** The foreground color has padding applied by default, which is controlled using [theme_item text_highlight_h_padding] and [theme_item text_highlight_v_padding]. This can lead to overlapping highlights if foreground colors are placed on neighboring lines/columns, so consider setting those theme items to `0` if you want to avoid this.
+- PushFont(Font font, int fontSize = 0) - Adds a [code skip-lint][font][/code] tag to the tag stack. Overrides default fonts for its duration. Passing `0` to `font_size` will use the existing default font size.
+- PushFontSize(int fontSize) - Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides default font size for its duration.
+- PushHint(string description) - Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code skip-lint][hint=something]{text}[/hint][/code].
+- PushIndent(int level) - Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies `level` by current `tab_size` to determine new margin length.
+- PushItalics() - Adds a [code skip-lint][font][/code] tag with an italics font to the tag stack. This is the same as adding an [code skip-lint][i][/code] tag if not currently in a [code skip-lint][b][/code] tag.
+- PushLanguage(string language) - Adds language code used for text shaping algorithm and Open-Type font features.
+- PushList(int level, int type, bool capitalize, string bullet = "•") - Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag stack. Multiplies `level` by current `tab_size` to determine new margin length.
+- PushMeta(Variant data, int underlineMode = 1, string tooltip = "") - Adds a meta tag to the tag stack. Similar to the BBCode [code skip-lint][/code], but supports non-String metadata types. If `meta_underlined` is `true`, meta tags display an underline. This behavior can be customized with `underline_mode`. **Note:** Meta tags do nothing by default when clicked. To assign behavior when clicked, connect `meta_clicked` to a function that is called when the meta tag is clicked.
+- PushMono() - Adds a [code skip-lint][font][/code] tag with a monospace font to the tag stack.
+- PushNormal() - Adds a [code skip-lint][font][/code] tag with a normal font to the tag stack.
+- PushOutlineColor(Color color) - Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text outline for its duration.
+- PushOutlineSize(int outlineSize) - Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides default text outline size for its duration.
+- PushParagraph(int alignment, int baseDirection = 0, string language = "", int stParser = 0, int justificationFlags = 163, float[] tabStops = PackedFloat32Array()) - Adds a [code skip-lint][p][/code] tag to the tag stack.
+- PushStrikethrough(Color color = Color(0, 0, 0, 0)) - Adds a [code skip-lint][s][/code] tag to the tag stack. If `color`'s alpha value is `0.0`, the current font's color with its alpha multiplied by [theme_item strikethrough_alpha] is used.
+- PushTable(int columns, int inlineAlign = 0, int alignToRow = -1, string name = "") - Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack. Use `set_table_column_expand` to set column expansion ratio. Use `push_cell` to add cells. `name` is used as the table name for assistive apps.
+- PushUnderline(Color color = Color(0, 0, 0, 0)) - Adds a [code skip-lint][u][/code] tag to the tag stack. If `color`'s alpha value is `0.0`, the current font's color with its alpha multiplied by [theme_item underline_alpha] is used.
+- ReloadEffects() - Reloads custom effects. Useful when `custom_effects` is modified manually.
+- RemoveParagraph(int paragraph, bool noInvalidate = false) -> bool - Removes a paragraph of content from the label. Returns `true` if the paragraph exists. The `paragraph` argument is the index of the paragraph to remove, it can take values in the interval `[0, get_paragraph_count() - 1]`. If `no_invalidate` is set to `true`, cache for the subsequent paragraphs is not invalidated. Use it for faster updates if deleted paragraph is fully self-contained (have no unclosed tags), or this call is part of the complex edit operation and `invalidate_paragraph` will be called at the end of operation.
+- ScrollToLine(int line) - Scrolls the window's top line to match `line`.
+- ScrollToParagraph(int paragraph) - Scrolls the window's top line to match first line of the `paragraph`.
+- ScrollToSelection() - Scrolls to the beginning of the current selection.
+- SelectAll() - Select all the text. If `selection_enabled` is `false`, no selection will occur.
+- SetCellBorderColor(Color color) - Sets color of a table cell border.
+- SetCellPadding(Rect2 padding) - Sets inner padding of a table cell.
+- SetCellRowBackgroundColor(Color oddRowBg, Color evenRowBg) - Sets color of a table cell. Separate colors for alternating rows can be specified.
+- SetCellSizeOverride(Vector2 minSize, Vector2 maxSize) - Sets minimum and maximum size overrides for a table cell.
+- SetTableColumnExpand(int column, bool expand, int ratio = 1, bool shrink = true) - Edits the selected column's expansion options. If `expand` is `true`, the column expands in proportion to its expansion ratio versus the other columns' ratios. For example, 2 columns with ratios 3 and 4 plus 70 pixels in available width would expand 30 and 40 pixels, respectively. If `expand` is `false`, the column will not contribute to the total ratio.
+- SetTableColumnName(int column, string name) - Sets table column name for assistive apps.
+- UpdateImage(Variant key, int mask, Texture2D image, float width = 0, float height = 0, Color color = Color(1, 1, 1, 1), int inlineAlign = 5, Rect2 region = Rect2(0, 0, 0, 0), bool pad = false, string tooltip = "", int widthUnit = 0, int heightUnit = 0) - Updates the existing images with the key `key`. Only properties specified by `mask` bits are updated. See `add_image`.
+
+**Signals:**
+- Finished - Triggered when the document is fully loaded. **Note:** This can happen before the text is processed for drawing. Scrolling values may not be valid until the document is drawn for the first time after this signal.
+- MetaClicked(Variant meta) - Triggered when the user clicks on content between meta (URL) tags. If the meta is defined in BBCode, e.g. [code skip-lint][/code], then the parameter for this signal will always be a String type. If a particular type or an object is desired, the `push_meta` method must be used to manually insert the data into the tag stack. Alternatively, you can convert the String input to the desired type based on its contents (such as calling `JSON.parse` on it). For example, the following method can be connected to `meta_clicked` to open clicked URLs using the user's default web browser:
+- MetaHoverEnded(Variant meta) - Triggers when the mouse exits a meta tag.
+- MetaHoverStarted(Variant meta) - Triggers when the mouse enters a meta tag.
+
+**Enums:**
+**ListType:** LIST_NUMBERS=0, LIST_LETTERS=1, LIST_ROMAN=2, LIST_DOTS=3
+  - LIST_NUMBERS: Each list item has a number marker.
+  - LIST_LETTERS: Each list item has a letter marker.
+  - LIST_ROMAN: Each list item has a roman number marker.
+  - LIST_DOTS: Each list item has a filled circle marker.
+**MenuItems:** MENU_COPY=0, MENU_SELECT_ALL=1, MENU_MAX=2
+  - MENU_COPY: Copies the selected text.
+  - MENU_SELECT_ALL: Selects the whole RichTextLabel text.
+  - MENU_MAX: Represents the size of the `MenuItems` enum.
+**MetaUnderline:** META_UNDERLINE_NEVER=0, META_UNDERLINE_ALWAYS=1, META_UNDERLINE_ON_HOVER=2
+  - META_UNDERLINE_NEVER: Meta tag does not display an underline, even if `meta_underlined` is `true`.
+  - META_UNDERLINE_ALWAYS: If `meta_underlined` is `true`, meta tag always display an underline.
+  - META_UNDERLINE_ON_HOVER: If `meta_underlined` is `true`, meta tag display an underline when the mouse cursor is over it.
+**ImageUpdateMask:** UPDATE_TEXTURE=1, UPDATE_SIZE=2, UPDATE_COLOR=4, UPDATE_ALIGNMENT=8, UPDATE_REGION=16, UPDATE_PAD=32, UPDATE_TOOLTIP=64, UPDATE_WIDTH_UNIT=128
+  - UPDATE_TEXTURE: If this bit is set, `update_image` changes image texture.
+  - UPDATE_SIZE: If this bit is set, `update_image` changes image size.
+  - UPDATE_COLOR: If this bit is set, `update_image` changes image color.
+  - UPDATE_ALIGNMENT: If this bit is set, `update_image` changes image inline alignment.
+  - UPDATE_REGION: If this bit is set, `update_image` changes image texture region.
+  - UPDATE_PAD: If this bit is set, `update_image` changes image padding.
+  - UPDATE_TOOLTIP: If this bit is set, `update_image` changes image tooltip.
+  - UPDATE_WIDTH_UNIT: If this bit is set, `update_image` changes the units used to calculate image size.
+**ImageUnit:** IMAGE_UNIT_PIXEL=0, IMAGE_UNIT_PERCENT=1, IMAGE_UNIT_EM=2
+  - IMAGE_UNIT_PIXEL: Images drawn with this unit will be in pixels.
+  - IMAGE_UNIT_PERCENT: Images drawn with this unit will be in percentages of the control width.
+  - IMAGE_UNIT_EM: Images drawn with this unit will be in percentages of the surrounding font size.
+

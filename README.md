@@ -99,7 +99,7 @@ v0.8.1 decisions below remain useful where they do not conflict with the
 active direction. Treat v0.8.1 combat-exclusion language as historical P0
 scope, not a project-wide rule.
 
-- **Sprite scales:** Kalev / Lena 64×96 · Birdie 48×64 · minor adults 48×72 · bedside patients 96×48 (or 128×64) · environment tiles 32×32 · viewport 960×540 logical (480×270 composition, 2× zoom).
+- **Sprite scales:** Kalev / Lena 64×96 · Birdie 48×64 · minor adults 48×72 · bedside patients 96×48 (or 128×64) · environment tiles 32×32 · viewport 640×360 logical (640×360 composition, 1× zoom; ~20 tiles wide × ~11 tall, scales cleanly to 1080p at 3× and 4K at 6×).
 - **Cast names:** Kalev Ward · Lena Hart · Birdie/Ruth · Eli Keene · Miriam Toll (elder) · Nora Finch · Dr. Amos Bell. _(Not Nora Field. Not Dr. Bell.)_
 - **Pouch:** slot 1 cedar dog (locked) · slot 16 Ember (locked).
 - **Ember:** cannot target Eli; self-use after Eli's name is written; scarce.

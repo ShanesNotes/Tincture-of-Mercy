@@ -1,0 +1,22 @@
+{
+  "character": "kalev",
+  "character_id": "c210b143-9001-4842-ba4c-5b7d3f114332",
+  "prompt": "Kalev Ward, age 33, weathered cedar-brown coat to mid-thigh, scarf and collar mass framing the face, leather notebook in left hand, medicine pouch on right hip, practical boots, burdened shoulders, tired and grave. Hard one-pixel ink outline, no anti-aliasing, palette-pinned, transparent background. Front-facing idle pose.",
+  "created_at": "2026-05-10T15:56:29.552170+00:00",
+  "canvas_w": 64,
+  "canvas_h": 96,
+  "palette": "kalev",
+  "last_animations": {
+    "locomotion": [
+      "cbd788d5-da7e-45d1-8fbb-8c295c941b51",
+      "581abe4c-7bbb-4b78-9f3d-86762994dd51",
+      "cc2ab9b7-7ce8-43ec-a581-71dbb6776f5d",
+      "e5066dbf-e9e2-434e-96dd-bdf61008d9d1",
+      "8ed20a56-e25a-45ac-845c-4469aa040b4a",
+      "212ea681-db50-4724-ab1f-020d3952e56d",
+      "f2359a0b-9de4-40bd-ac4d-c30647e0cfcc",
+      "fcd32555-6751-4fc8-b1c2-ad3280b60ec4"
+    ]
+  },
+  "pending_animations": {}
+}

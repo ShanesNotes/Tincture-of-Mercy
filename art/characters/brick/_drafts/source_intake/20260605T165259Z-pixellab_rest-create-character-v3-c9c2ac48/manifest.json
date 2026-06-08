@@ -1,0 +1,69 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-06-05T16:52:59.767429+00:00",
+      "details": {},
+      "kind": "reference_image",
+      "path": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/brick.png"
+    }
+  ],
+  "character": "brick",
+  "created_at": "2026-06-05T16:52:59.765633+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "endpoint": "/create-character-v3",
+      "image_size": {
+        "height": 64,
+        "width": 48
+      },
+      "reference": "/home/ark/rtb-overhaul/public/assets/hearthlight/characters/brick.png",
+      "template_id": "mannequin"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-06-05T16:53:01.548405+00:00",
+      "details": {
+        "character_id": "0fd72748-83ba-4246-80bf-e364908ed557"
+      },
+      "endpoint": "/create-character-v3",
+      "job_id": "dded11c8-2ffd-43f7-9c2e-c68fbdb0f410"
+    }
+  ],
+  "operation": "create-character-v3",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 469,
+    "policy": "hash_only",
+    "sha256": "d7efbb8f43f3cb6f56b54b277bcbabf2ec8e608f9795f0a412ff83cc50fe1f8f"
+  },
+  "requests": [
+    {
+      "at": "2026-06-05T16:52:59.768496+00:00",
+      "body": {
+        "description": {
+          "length": 469,
+          "policy": "hash_only",
+          "sha256": "d7efbb8f43f3cb6f56b54b277bcbabf2ec8e608f9795f0a412ff83cc50fe1f8f"
+        },
+        "image_size": {
+          "height": 64,
+          "width": 48
+        },
+        "no_background": true,
+        "reference_image": "<redacted>",
+        "template_id": "mannequin",
+        "view": "low top-down"
+      },
+      "endpoint": "/create-character-v3",
+      "fingerprint": "7f944f0ec9212cfe87ff0c165724052ca9caa0be3416fc7a4aeba52c6ea337b5"
+    }
+  ],
+  "run_id": "20260605T165259Z-pixellab_rest-create-character-v3-c9c2ac48",
+  "schema_version": 1,
+  "seed": null,
+  "status": "pending",
+  "updated_at": "2026-06-05T16:53:01.548749+00:00"
+}

@@ -1,0 +1,195 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [],
+  "character": "rivet",
+  "created_at": "2026-06-05T16:19:22.891983+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "breathing-idle"
+    },
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "walking"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-06-05T16:19:25.396766+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "5141eca8-690e-4324-b524-70307038a615"
+    },
+    {
+      "at": "2026-06-05T16:19:25.397982+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "e43a7d7f-cb85-4968-a576-e644c168cc00"
+    },
+    {
+      "at": "2026-06-05T16:19:25.425200+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "4053dfad-f5ad-4153-b40b-c46c1c2a7583"
+    },
+    {
+      "at": "2026-06-05T16:19:25.426518+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "a8014e99-3d32-47d3-9fdf-7ca3df625e44"
+    },
+    {
+      "at": "2026-06-05T16:19:28.186402+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "1c7910e9-efc7-4410-9152-bf4ac4fefe2a"
+    },
+    {
+      "at": "2026-06-05T16:19:28.188173+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "94f42903-9b50-4b64-a7e4-7079dd6876f2"
+    },
+    {
+      "at": "2026-06-05T16:19:28.190265+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "f84854e8-3cf3-41ee-b65a-ee559f7c8366"
+    },
+    {
+      "at": "2026-06-05T16:19:28.191688+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "4bafc289-9d2b-4001-85ec-41dca690b4fe"
+    }
+  ],
+  "operation": "animate-character",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 481,
+    "policy": "hash_only",
+    "sha256": "a75550471151cdaad7eb8445f5fad2b2affd97f0b2698ab5df57a52804709ee3"
+  },
+  "remaining_jobs": [
+    {
+      "direction": "south",
+      "job_id": "5141eca8-690e-4324-b524-70307038a615",
+      "template": "breathing-idle"
+    },
+    {
+      "direction": "west",
+      "job_id": "e43a7d7f-cb85-4968-a576-e644c168cc00",
+      "template": "breathing-idle"
+    },
+    {
+      "direction": "north",
+      "job_id": "4053dfad-f5ad-4153-b40b-c46c1c2a7583",
+      "template": "breathing-idle"
+    },
+    {
+      "direction": "east",
+      "job_id": "a8014e99-3d32-47d3-9fdf-7ca3df625e44",
+      "template": "breathing-idle"
+    },
+    {
+      "direction": "south",
+      "job_id": "1c7910e9-efc7-4410-9152-bf4ac4fefe2a",
+      "template": "walking"
+    },
+    {
+      "direction": "west",
+      "job_id": "94f42903-9b50-4b64-a7e4-7079dd6876f2",
+      "template": "walking"
+    },
+    {
+      "direction": "north",
+      "job_id": "f84854e8-3cf3-41ee-b65a-ee559f7c8366",
+      "template": "walking"
+    },
+    {
+      "direction": "east",
+      "job_id": "4bafc289-9d2b-4001-85ec-41dca690b4fe",
+      "template": "walking"
+    }
+  ],
+  "requests": [
+    {
+      "at": "2026-06-05T16:19:22.892773+00:00",
+      "body": {
+        "character_id": "9433c950-c319-4f14-9659-bfccf316b06d",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "49736986064f1e944d70ccc0237071958124566762da35520b155ee0c4551730"
+    },
+    {
+      "at": "2026-06-05T16:19:25.442615+00:00",
+      "body": {
+        "character_id": "9433c950-c319-4f14-9659-bfccf316b06d",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "template_animation_id": "walking"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "4d22ba2d69d086909fa6763864dee6c92e3ae4c2665796740c13a369d484ad03"
+    }
+  ],
+  "run_id": "20260605T161922Z-pixellab_rest-animate-character-400ce439",
+  "schema_version": 1,
+  "seed": null,
+  "status": "timed_out",
+  "updated_at": "2026-06-05T16:49:55.402170+00:00"
+}

@@ -1,0 +1,255 @@
+## TextServerExtension <- TextServer
+
+External TextServer implementations should inherit from this class.
+
+**Methods:**
+- Cleanup() - This method is called before text server is unregistered.
+- CreateFont() -> Rid - Creates a new, empty font cache entry resource.
+- CreateFontLinkedVariation(Rid fontRid) -> Rid - Optional, implement if font supports extra spacing or baseline offset. Creates a new variation existing font which is reusing the same glyph cache and font data.
+- CreateShapedText(int direction, int orientation) -> Rid - Creates a new buffer for complex text layout, with the given `direction` and `orientation`.
+- DrawHexCodeBox(Rid canvas, int size, Vector2 pos, int index, Color color) - Draws box displaying character hexadecimal code.
+- FontClearGlyphs(Rid fontRid, Vector2i size) - Removes all rendered glyph information from the cache entry.
+- FontClearKerningMap(Rid fontRid, int size) - Removes all kerning overrides.
+- FontClearSizeCache(Rid fontRid) - Removes all font sizes from the cache entry.
+- FontClearSystemFallbackCache() - Frees all automatically loaded system fonts.
+- FontClearTextures(Rid fontRid, Vector2i size) - Removes all textures from font cache entry.
+- FontDrawGlyph(Rid fontRid, Rid canvas, int size, Vector2 pos, int index, Color color, float oversampling) - Draws single glyph into a canvas item at the position, using `font_rid` at the size `size`. If `oversampling` is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+- FontDrawGlyphOutline(Rid fontRid, Rid canvas, int size, int outlineSize, Vector2 pos, int index, Color color, float oversampling) - Draws single glyph outline of size `outline_size` into a canvas item at the position, using `font_rid` at the size `size`. If `oversampling` is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+- FontGetAntialiasing(Rid fontRid) -> int - Returns font anti-aliasing mode.
+- FontGetAscent(Rid fontRid, int size) -> float - Returns the font ascent (number of pixels above the baseline).
+- FontGetBaselineOffset(Rid fontRid) -> float - Returns extra baseline offset (as a fraction of font height).
+- FontGetCharFromGlyphIndex(Rid fontRid, int size, int glyphIndex) -> int - Returns character code associated with `glyph_index`, or `0` if `glyph_index` is invalid.
+- FontGetDescent(Rid fontRid, int size) -> float - Returns the font descent (number of pixels below the baseline).
+- FontGetDisableEmbeddedBitmaps(Rid fontRid) -> bool - Returns whether the font's embedded bitmap loading is disabled.
+- FontGetEmbolden(Rid fontRid) -> float - Returns font embolden strength.
+- FontGetFaceCount(Rid fontRid) -> int - Returns number of faces in the TrueType / OpenType collection.
+- FontGetFaceIndex(Rid fontRid) -> int - Returns an active face index in the TrueType / OpenType collection.
+- FontGetFixedSize(Rid fontRid) -> int - Returns bitmap font fixed size.
+- FontGetFixedSizeScaleMode(Rid fontRid) -> int - Returns bitmap font scaling mode.
+- FontGetGenerateMipmaps(Rid fontRid) -> bool - Returns `true` if font texture mipmap generation is enabled.
+- FontGetGlobalOversampling() -> float - Returns the font oversampling factor, shared by all fonts in the TextServer.
+- FontGetGlyphAdvance(Rid fontRid, int size, int glyph) -> Vector2 - Returns glyph advance (offset of the next glyph).
+- FontGetGlyphContours(Rid fontRid, int size, int index) -> Godot.Collections.Dictionary - Returns outline contours of the glyph.
+- FontGetGlyphIndex(Rid fontRid, int size, int char, int variationSelector) -> int - Returns the glyph index of a `char`, optionally modified by the `variation_selector`.
+- FontGetGlyphList(Rid fontRid, Vector2i size) -> int[] - Returns list of rendered glyphs in the cache entry.
+- FontGetGlyphOffset(Rid fontRid, Vector2i size, int glyph) -> Vector2 - Returns glyph offset from the baseline.
+- FontGetGlyphSize(Rid fontRid, Vector2i size, int glyph) -> Vector2 - Returns size of the glyph.
+- FontGetGlyphTextureIdx(Rid fontRid, Vector2i size, int glyph) -> int - Returns index of the cache texture containing the glyph.
+- FontGetGlyphTextureRid(Rid fontRid, Vector2i size, int glyph) -> Rid - Returns resource ID of the cache texture containing the glyph.
+- FontGetGlyphTextureSize(Rid fontRid, Vector2i size, int glyph) -> Vector2 - Returns size of the cache texture containing the glyph.
+- FontGetGlyphUvRect(Rid fontRid, Vector2i size, int glyph) -> Rect2 - Returns rectangle in the cache texture containing the glyph.
+- FontGetHinting(Rid fontRid) -> int - Returns the font hinting mode. Used by dynamic fonts only.
+- FontGetKeepRoundingRemainders(Rid fontRid) -> bool - Returns glyph position rounding behavior. If set to `true`, when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+- FontGetKerning(Rid fontRid, int size, Vector2i glyphPair) -> Vector2 - Returns kerning for the pair of glyphs.
+- FontGetKerningList(Rid fontRid, int size) -> Vector2i[] - Returns list of the kerning overrides.
+- FontGetLanguageSupportOverride(Rid fontRid, string language) -> bool - Returns `true` if support override is enabled for the `language`.
+- FontGetLanguageSupportOverrides(Rid fontRid) -> string[] - Returns list of language support overrides.
+- FontGetMsdfPixelRange(Rid fontRid) -> int - Returns the width of the range around the shape between the minimum and maximum representable signed distance.
+- FontGetMsdfSize(Rid fontRid) -> int - Returns source font size used to generate MSDF textures.
+- FontGetName(Rid fontRid) -> string - Returns font family name.
+- FontGetOpentypeFeatureOverrides(Rid fontRid) -> Godot.Collections.Dictionary - Returns font OpenType feature set override.
+- FontGetOtNameStrings(Rid fontRid) -> Godot.Collections.Dictionary - Returns Dictionary with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
+- FontGetOversampling(Rid fontRid) -> float - Returns oversampling factor override. If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See `Viewport.oversampling`. This value doesn't override the [code skip-lint]oversampling[/code] parameter of [code skip-lint]draw_*[/code] methods. Used by dynamic fonts only.
+- FontGetPaletteColors(Rid fontRid, int index) -> Color[] - Returns the array in the predefined color palette at `index`. Palette contains all colors used to render font glyphs. Each palette has the same number of colors. Colors can be overridden using `_font_set_palette_custom_colors`.
+- FontGetPaletteCount(Rid fontRid) -> int - Returns the number of predefined color palettes. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+- FontGetPaletteCustomColors(Rid fontRid) -> Color[] - Returns array of custom colors to override predefined palette.
+- FontGetPaletteName(Rid fontRid, int index) -> string - Returns the name of the predefined color palette at `index`. Palette contains all colors used to render font glyphs. Each palette has the same number of colors.
+- FontGetScale(Rid fontRid, int size) -> float - Returns scaling factor of the color bitmap font.
+- FontGetScriptSupportOverride(Rid fontRid, string script) -> bool - Returns `true` if support override is enabled for the `script`.
+- FontGetScriptSupportOverrides(Rid fontRid) -> string[] - Returns list of script support overrides.
+- FontGetSizeCacheInfo(Rid fontRid) -> Dictionary[] - Returns font cache information, each entry contains the following fields: `Vector2i size_px` - font size in pixels, `float viewport_oversampling` - viewport oversampling factor, `int glyphs` - number of rendered glyphs, `int textures` - number of used textures, `int textures_size` - size of texture data in bytes.
+- FontGetSizeCacheList(Rid fontRid) -> Vector2i[] - Returns list of the font sizes in the cache. Each size is Vector2i with font size and outline size.
+- FontGetSpacing(Rid fontRid, int spacing) -> int - Returns the spacing for `spacing` in pixels (not relative to the font size).
+- FontGetStretch(Rid fontRid) -> int - Returns font stretch amount, compared to a normal width. A percentage value between `50%` and `200%`.
+- FontGetStyle(Rid fontRid) -> int - Returns font style flags.
+- FontGetStyleName(Rid fontRid) -> string - Returns font style name.
+- FontGetSubpixelPositioning(Rid fontRid) -> int - Returns font subpixel glyph positioning mode.
+- FontGetSupportedChars(Rid fontRid) -> string - Returns a string containing all the characters available in the font.
+- FontGetSupportedGlyphs(Rid fontRid) -> int[] - Returns an array containing all glyph indices in the font.
+- FontGetTextureCount(Rid fontRid, Vector2i size) -> int - Returns number of textures used by font cache entry.
+- FontGetTextureImage(Rid fontRid, Vector2i size, int textureIndex) -> Image - Returns font cache texture image data.
+- FontGetTextureOffsets(Rid fontRid, Vector2i size, int textureIndex) -> int[] - Returns array containing glyph packing data.
+- FontGetTransform(Rid fontRid) -> Transform2D - Returns 2D transform applied to the font outlines.
+- FontGetUnderlinePosition(Rid fontRid, int size) -> float - Returns pixel offset of the underline below the baseline.
+- FontGetUnderlineThickness(Rid fontRid, int size) -> float - Returns thickness of the underline in pixels.
+- FontGetUsedPalette(Rid fontRid) -> int - Returns used palette index.
+- FontGetVariationCoordinates(Rid fontRid) -> Godot.Collections.Dictionary - Returns variation coordinates for the specified font cache entry.
+- FontGetWeight(Rid fontRid) -> int - Returns weight (boldness) of the font. A value in the `100...999` range, normal font weight is `400`, bold font weight is `700`.
+- FontHasChar(Rid fontRid, int char) -> bool - Returns `true` if a Unicode `char` is available in the font.
+- FontIsAllowSystemFallback(Rid fontRid) -> bool - Returns `true` if system fonts can be automatically used as fallbacks.
+- FontIsForceAutohinter(Rid fontRid) -> bool - Returns `true` if auto-hinting is supported and preferred over font built-in hinting.
+- FontIsLanguageSupported(Rid fontRid, string language) -> bool - Returns `true` if the font supports the given language (as a code).
+- FontIsModulateColorGlyphs(Rid fontRid) -> bool - Returns `true` if color modulation is applied when drawing the font's colored glyphs.
+- FontIsMultichannelSignedDistanceField(Rid fontRid) -> bool - Returns `true` if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
+- FontIsScriptSupported(Rid fontRid, string script) -> bool - Returns `true` if the font supports the given script (as a code).
+- FontRemoveGlyph(Rid fontRid, Vector2i size, int glyph) - Removes specified rendered glyph information from the cache entry.
+- FontRemoveKerning(Rid fontRid, int size, Vector2i glyphPair) - Removes kerning override for the pair of glyphs.
+- FontRemoveLanguageSupportOverride(Rid fontRid, string language) - Remove language support override.
+- FontRemoveScriptSupportOverride(Rid fontRid, string script) - Removes script support override.
+- FontRemoveSizeCache(Rid fontRid, Vector2i size) - Removes specified font size from the cache entry.
+- FontRemoveTexture(Rid fontRid, Vector2i size, int textureIndex) - Removes specified texture from the cache entry.
+- FontRenderGlyph(Rid fontRid, Vector2i size, int index) - Renders specified glyph to the font cache texture.
+- FontRenderRange(Rid fontRid, Vector2i size, int start, int end) - Renders the range of characters to the font cache texture.
+- FontSetAllowSystemFallback(Rid fontRid, bool allowSystemFallback) - If set to `true`, system fonts can be automatically used as fallbacks.
+- FontSetAntialiasing(Rid fontRid, int antialiasing) - Sets font anti-aliasing mode.
+- FontSetAscent(Rid fontRid, int size, float ascent) - Sets the font ascent (number of pixels above the baseline).
+- FontSetBaselineOffset(Rid fontRid, float baselineOffset) - Sets extra baseline offset (as a fraction of font height).
+- FontSetData(Rid fontRid, byte[] data) - Sets font source data, e.g contents of the dynamic font source file.
+- FontSetDataPtr(Rid fontRid, const uint8_t* dataPtr, int dataSize) - Sets pointer to the font source data, e.g contents of the dynamic font source file.
+- FontSetDescent(Rid fontRid, int size, float descent) - Sets the font descent (number of pixels below the baseline).
+- FontSetDisableEmbeddedBitmaps(Rid fontRid, bool disableEmbeddedBitmaps) - If set to `true`, embedded font bitmap loading is disabled.
+- FontSetEmbolden(Rid fontRid, float strength) - Sets font embolden strength. If `strength` is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
+- FontSetFaceIndex(Rid fontRid, int faceIndex) - Sets an active face index in the TrueType / OpenType collection.
+- FontSetFixedSize(Rid fontRid, int fixedSize) - Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
+- FontSetFixedSizeScaleMode(Rid fontRid, int fixedSizeScaleMode) - Sets bitmap font scaling mode. This property is used only if `fixed_size` is greater than zero.
+- FontSetForceAutohinter(Rid fontRid, bool forceAutohinter) - If set to `true` auto-hinting is preferred over font built-in hinting.
+- FontSetGenerateMipmaps(Rid fontRid, bool generateMipmaps) - If set to `true` font texture mipmap generation is enabled.
+- FontSetGlobalOversampling(float oversampling) - Sets oversampling factor, shared by all font in the TextServer.
+- FontSetGlyphAdvance(Rid fontRid, int size, int glyph, Vector2 advance) - Sets glyph advance (offset of the next glyph).
+- FontSetGlyphOffset(Rid fontRid, Vector2i size, int glyph, Vector2 offset) - Sets glyph offset from the baseline.
+- FontSetGlyphSize(Rid fontRid, Vector2i size, int glyph, Vector2 glSize) - Sets size of the glyph.
+- FontSetGlyphTextureIdx(Rid fontRid, Vector2i size, int glyph, int textureIdx) - Sets index of the cache texture containing the glyph.
+- FontSetGlyphUvRect(Rid fontRid, Vector2i size, int glyph, Rect2 uvRect) - Sets rectangle in the cache texture containing the glyph.
+- FontSetHinting(Rid fontRid, int hinting) - Sets font hinting mode. Used by dynamic fonts only.
+- FontSetKeepRoundingRemainders(Rid fontRid, bool keepRoundingRemainders) - Sets glyph position rounding behavior. If set to `true`, when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
+- FontSetKerning(Rid fontRid, int size, Vector2i glyphPair, Vector2 kerning) - Sets kerning for the pair of glyphs.
+- FontSetLanguageSupportOverride(Rid fontRid, string language, bool supported) - Adds override for `_font_is_language_supported`.
+- FontSetModulateColorGlyphs(Rid fontRid, bool modulate) - If set to `true`, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
+- FontSetMsdfPixelRange(Rid fontRid, int msdfPixelRange) - Sets the width of the range around the shape between the minimum and maximum representable signed distance.
+- FontSetMsdfSize(Rid fontRid, int msdfSize) - Sets source font size used to generate MSDF textures.
+- FontSetMultichannelSignedDistanceField(Rid fontRid, bool msdf) - If set to `true`, glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
+- FontSetName(Rid fontRid, string name) - Sets the font family name.
+- FontSetOpentypeFeatureOverrides(Rid fontRid, Godot.Collections.Dictionary overrides) - Sets font OpenType feature set override.
+- FontSetOversampling(Rid fontRid, float oversampling) - If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See `Viewport.oversampling`. This value doesn't override the [code skip-lint]oversampling[/code] parameter of [code skip-lint]draw_*[/code] methods. Used by dynamic fonts only.
+- FontSetPaletteCustomColors(Rid fontRid, Color[] colors) - Sets array of custom colors to override predefined palette. Set to empty array to reset overrides. Use `Color(0, 0, 0, 0)`, to keep predefined palette color at specific position.
+- FontSetScale(Rid fontRid, int size, float scale) - Sets scaling factor of the color bitmap font.
+- FontSetScriptSupportOverride(Rid fontRid, string script, bool supported) - Adds override for `_font_is_script_supported`.
+- FontSetSpacing(Rid fontRid, int spacing, int value) - Sets the spacing for `spacing` to `value` in pixels (not relative to the font size).
+- FontSetStretch(Rid fontRid, int stretch) - Sets font stretch amount, compared to a normal width. A percentage value between `50%` and `200%`.
+- FontSetStyle(Rid fontRid, int style) - Sets the font style flags.
+- FontSetStyleName(Rid fontRid, string nameStyle) - Sets the font style name.
+- FontSetSubpixelPositioning(Rid fontRid, int subpixelPositioning) - Sets font subpixel glyph positioning mode.
+- FontSetTextureImage(Rid fontRid, Vector2i size, int textureIndex, Image image) - Sets font cache texture image data.
+- FontSetTextureOffsets(Rid fontRid, Vector2i size, int textureIndex, int[] offset) - Sets array containing glyph packing data.
+- FontSetTransform(Rid fontRid, Transform2D transform) - Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
+- FontSetUnderlinePosition(Rid fontRid, int size, float underlinePosition) - Sets pixel offset of the underline below the baseline.
+- FontSetUnderlineThickness(Rid fontRid, int size, float underlineThickness) - Sets thickness of the underline in pixels.
+- FontSetUsedPalette(Rid fontRid, int index) - Sets used palette index.
+- FontSetVariationCoordinates(Rid fontRid, Godot.Collections.Dictionary variationCoordinates) - Sets variation coordinates for the specified font cache entry.
+- FontSetWeight(Rid fontRid, int weight) - Sets weight (boldness) of the font. A value in the `100...999` range, normal font weight is `400`, bold font weight is `700`.
+- FontSupportedFeatureList(Rid fontRid) -> Godot.Collections.Dictionary - Returns the dictionary of the supported OpenType features.
+- FontSupportedVariationList(Rid fontRid) -> Godot.Collections.Dictionary - Returns the dictionary of the supported OpenType variation coordinates.
+- FormatNumber(string number, string language) -> string - Converts a number from Western Arabic (0..9) to the numeral system used in the given `language`. If `language` is an empty string, the active locale will be used.
+- FreeRid(Rid rid) - Frees an object created by this TextServer.
+- GetFeatures() -> int - Returns text server features, see `TextServer.Feature`.
+- GetHexCodeBoxSize(int size, int index) -> Vector2 - Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
+- GetName() -> string - Returns the name of the server interface.
+- GetSupportData() -> byte[] - Returns default TextServer database (e.g. ICU break iterators and dictionaries).
+- GetSupportDataFilename() -> string - Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
+- GetSupportDataInfo() -> string - Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
+- Has(Rid rid) -> bool - Returns `true` if `rid` is valid resource owned by this text server.
+- HasFeature(int feature) -> bool - Returns `true` if the server supports a feature.
+- IsConfusable(string string, string[] dict) -> int - Returns index of the first string in `dict` which is visually confusable with the `string`, or `-1` if none is found.
+- IsLocaleRightToLeft(string locale) -> bool - Returns `true` if locale is right-to-left.
+- IsLocaleUsingSupportData(string locale) -> bool - Returns `true` if the locale requires text server support data for line/word breaking.
+- IsValidIdentifier(string string) -> bool - Returns `true` if `string` is a valid identifier.
+- IsValidLetter(int unicode) -> bool
+- LoadSupportData(string filename) -> bool - Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
+- NameToTag(string name) -> int - Converts the given readable name of a feature, variation, script, or language to an OpenType tag.
+- ParseNumber(string number, string language) -> string - Converts `number` from the numeral system used in the given `language` to Western Arabic (0..9). If `language` is an empty string, the active locale will be used.
+- ParseStructuredText(int parserType, Godot.Collections.Array args, string text) -> Vector3i[] - Default implementation of the BiDi algorithm override function.
+- PercentSign(string language) -> string - Returns percent sign used in the given `language`.
+- ReferenceOversamplingLevel(float oversampling) - Increases the reference count of the specified oversampling level. This method is called by Viewport, and should not be used directly.
+- SaveSupportData(string filename) -> bool - Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
+- ShapedGetRunCount(Rid shaped) -> int - Returns the number of uniform text runs in the buffer.
+- ShapedGetRunDirection(Rid shaped, int index) -> int - Returns the direction of the `index` text run (in visual order).
+- ShapedGetRunFontRid(Rid shaped, int index) -> Rid - Returns the font RID of the `index` text run (in visual order).
+- ShapedGetRunFontSize(Rid shaped, int index) -> int - Returns the font size of the `index` text run (in visual order).
+- ShapedGetRunGlyphRange(Rid shaped, int index) -> Vector2i - Returns the glyph range of the `index` text run (in visual order).
+- ShapedGetRunLanguage(Rid shaped, int index) -> string - Returns the language of the `index` text run (in visual order).
+- ShapedGetRunObject(Rid shaped, int index) -> Variant - Returns the embedded object of the `index` text run (in visual order).
+- ShapedGetRunRange(Rid shaped, int index) -> Vector2i - Returns the source text range of the `index` text run (in visual order).
+- ShapedGetRunText(Rid shaped, int index) -> string - Returns the source text of the `index` text run (in visual order).
+- ShapedGetSpanCount(Rid shaped) -> int - Returns number of text spans added using `_shaped_text_add_string` or `_shaped_text_add_object`.
+- ShapedGetSpanEmbeddedObject(Rid shaped, int index) -> Variant - Returns text embedded object key.
+- ShapedGetSpanMeta(Rid shaped, int index) -> Variant - Returns text span metadata.
+- ShapedGetSpanObject(Rid shaped, int index) -> Variant - Returns the text span embedded object key.
+- ShapedGetSpanText(Rid shaped, int index) -> string - Returns the text span source text.
+- ShapedGetText(Rid shaped) -> string - Returns the text buffer source text, including object replacement characters.
+- ShapedSetSpanUpdateFont(Rid shaped, int index, RID[] fonts, int size, Godot.Collections.Dictionary opentypeFeatures) - Changes text span font, font size, and OpenType features, without changing the text.
+- ShapedTextAddObject(Rid shaped, Variant key, Vector2 size, int inlineAlign, int length, float baseline) -> bool - Adds inline object to the text buffer, `key` must be unique. In the text, object is represented as `length` object replacement characters.
+- ShapedTextAddString(Rid shaped, string text, RID[] fonts, int size, Godot.Collections.Dictionary opentypeFeatures, string language, Variant meta) -> bool - Adds text span and font to draw it to the text buffer.
+- ShapedTextClear(Rid shaped) - Clears text buffer (removes text and inline objects).
+- ShapedTextClosestCharacterPos(Rid shaped, int pos) -> int - Returns composite character position closest to the `pos`.
+- ShapedTextDraw(Rid shaped, Rid canvas, Vector2 pos, float clipL, float clipR, Color color, float oversampling) - Draw shaped text into a canvas item at a given position, with `color`. `pos` specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If `oversampling` is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+- ShapedTextDrawOutline(Rid shaped, Rid canvas, Vector2 pos, float clipL, float clipR, int outlineSize, Color color, float oversampling) - Draw the outline of the shaped text into a canvas item at a given position, with `color`. `pos` specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If `oversampling` is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+- ShapedTextDuplicate(Rid shaped) -> Rid - Duplicates shaped text buffer.
+- ShapedTextFitToWidth(Rid shaped, float width, int justificationFlags) -> float - Adjusts text width to fit to specified width, returns new text width.
+- ShapedTextGetAscent(Rid shaped) -> float - Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
+- ShapedTextGetCarets(Rid shaped, int position, CaretInfo* rCaret) - Returns shapes of the carets corresponding to the character offset `position` in the text. Returned caret shape is 1 pixel wide rectangle.
+- ShapedTextGetCharacterBreaks(Rid shaped) -> int[] - Returns array of the composite character boundaries.
+- ShapedTextGetCustomEllipsis(Rid shaped) -> int - Returns ellipsis character used for text clipping.
+- ShapedTextGetCustomPunctuation(Rid shaped) -> string - Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
+- ShapedTextGetDescent(Rid shaped) -> float - Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
+- ShapedTextGetDirection(Rid shaped) -> int - Returns direction of the text.
+- ShapedTextGetDominantDirectionInRange(Rid shaped, int start, int end) -> int - Returns dominant direction of in the range of text.
+- ShapedTextGetEllipsisGlyphCount(Rid shaped) -> int - Returns number of glyphs in the ellipsis.
+- ShapedTextGetEllipsisGlyphs(Rid shaped) -> const Glyph* - Returns array of the glyphs in the ellipsis.
+- ShapedTextGetEllipsisPos(Rid shaped) -> int - Returns position of the ellipsis.
+- ShapedTextGetGlyphCount(Rid shaped) -> int - Returns number of glyphs in the buffer.
+- ShapedTextGetGlyphs(Rid shaped) -> const Glyph* - Returns an array of glyphs in the visual order.
+- ShapedTextGetGraphemeBounds(Rid shaped, int pos) -> Vector2 - Returns composite character's bounds as offsets from the start of the line.
+- ShapedTextGetInferredDirection(Rid shaped) -> int - Returns direction of the text, inferred by the BiDi algorithm.
+- ShapedTextGetLineBreaks(Rid shaped, float width, int start, int breakFlags) -> int[] - Breaks text to the lines and returns character ranges for each line.
+- ShapedTextGetLineBreaksAdv(Rid shaped, float[] width, int start, bool once, int breakFlags) -> int[] - Breaks text to the lines and columns. Returns character ranges for each segment.
+- ShapedTextGetObjectGlyph(Rid shaped, Variant key) -> int - Returns the glyph index of the inline object.
+- ShapedTextGetObjectRange(Rid shaped, Variant key) -> Vector2i - Returns the character range of the inline object.
+- ShapedTextGetObjectRect(Rid shaped, Variant key) -> Rect2 - Returns bounding rectangle of the inline object.
+- ShapedTextGetObjects(Rid shaped) -> Godot.Collections.Array - Returns array of inline objects.
+- ShapedTextGetOrientation(Rid shaped) -> int - Returns text orientation.
+- ShapedTextGetParent(Rid shaped) -> Rid - Returns the parent buffer from which the substring originates.
+- ShapedTextGetPreserveControl(Rid shaped) -> bool - Returns `true` if text buffer is configured to display control characters.
+- ShapedTextGetPreserveInvalid(Rid shaped) -> bool - Returns `true` if text buffer is configured to display hexadecimal codes in place of invalid characters.
+- ShapedTextGetRange(Rid shaped) -> Vector2i - Returns substring buffer character range in the parent buffer.
+- ShapedTextGetSelection(Rid shaped, int start, int end) -> Vector2[] - Returns selection rectangles for the specified character range.
+- ShapedTextGetSize(Rid shaped) -> Vector2 - Returns size of the text.
+- ShapedTextGetSpacing(Rid shaped, int spacing) -> int - Returns extra spacing added between glyphs or lines in pixels.
+- ShapedTextGetTrimPos(Rid shaped) -> int - Returns the position of the overrun trim.
+- ShapedTextGetUnderlinePosition(Rid shaped) -> float - Returns pixel offset of the underline below the baseline.
+- ShapedTextGetUnderlineThickness(Rid shaped) -> float - Returns thickness of the underline.
+- ShapedTextGetWidth(Rid shaped) -> float - Returns width (for horizontal layout) or height (for vertical) of the text.
+- ShapedTextGetWordBreaks(Rid shaped, int graphemeFlags, int skipGraphemeFlags) -> int[] - Breaks text into words and returns array of character ranges. Use `grapheme_flags` to set what characters are used for breaking.
+- ShapedTextHasObject(Rid shaped, Variant key) -> bool - Returns `true` if an object with `key` is embedded in this shaped text buffer.
+- ShapedTextHitTestGrapheme(Rid shaped, float coord) -> int - Returns grapheme index at the specified pixel offset at the baseline, or `-1` if none is found.
+- ShapedTextHitTestPosition(Rid shaped, float coord) -> int - Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
+- ShapedTextIsReady(Rid shaped) -> bool - Returns `true` if buffer is successfully shaped.
+- ShapedTextNextCharacterPos(Rid shaped, int pos) -> int - Returns composite character end position closest to the `pos`.
+- ShapedTextNextGraphemePos(Rid shaped, int pos) -> int - Returns grapheme end position closest to the `pos`.
+- ShapedTextOverrunTrimToWidth(Rid shaped, float width, int trimFlags) - Trims text if it exceeds the given width.
+- ShapedTextPrevCharacterPos(Rid shaped, int pos) -> int - Returns composite character start position closest to the `pos`.
+- ShapedTextPrevGraphemePos(Rid shaped, int pos) -> int - Returns grapheme start position closest to the `pos`.
+- ShapedTextResizeObject(Rid shaped, Variant key, Vector2 size, int inlineAlign, float baseline) -> bool - Sets new size and alignment of embedded object.
+- ShapedTextSetBidiOverride(Rid shaped, Godot.Collections.Array override) - Overrides BiDi for the structured text.
+- ShapedTextSetCustomEllipsis(Rid shaped, int char) - Sets ellipsis character used for text clipping.
+- ShapedTextSetCustomPunctuation(Rid shaped, string punct) - Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
+- ShapedTextSetDirection(Rid shaped, int direction) - Sets desired text direction. If set to `TextServer.DIRECTION_AUTO`, direction will be detected based on the buffer contents and current locale.
+- ShapedTextSetOrientation(Rid shaped, int orientation) - Sets desired text orientation.
+- ShapedTextSetPreserveControl(Rid shaped, bool enabled) - If set to `true` text buffer will display control characters.
+- ShapedTextSetPreserveInvalid(Rid shaped, bool enabled) - If set to `true` text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
+- ShapedTextSetSpacing(Rid shaped, int spacing, int value) - Sets extra spacing added between glyphs or lines in pixels.
+- ShapedTextShape(Rid shaped) -> bool - Shapes buffer if it's not shaped. Returns `true` if the string is shaped successfully.
+- ShapedTextSortLogical(Rid shaped) -> const Glyph* - Returns text glyphs in the logical order.
+- ShapedTextSubstr(Rid shaped, int start, int length) -> Rid - Returns text buffer for the substring of the text in the `shaped` text buffer (including inline objects).
+- ShapedTextTabAlign(Rid shaped, float[] tabStops) -> float - Aligns shaped text to the given tab-stops.
+- ShapedTextUpdateBreaks(Rid shaped) -> bool - Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
+- ShapedTextUpdateJustificationOps(Rid shaped) -> bool - Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
+- SpoofCheck(string string) -> bool - Returns `true` if `string` is likely to be an attempt at confusing the reader.
+- StringGetCharacterBreaks(string string, string language) -> int[] - Returns array of the composite character boundaries.
+- StringGetWordBreaks(string string, string language, int charsPerLine) -> int[] - Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
+- StringToLower(string string, string language) -> string - Returns the string converted to `lowercase`.
+- StringToTitle(string string, string language) -> string - Returns the string converted to `Title Case`.
+- StringToUpper(string string, string language) -> string - Returns the string converted to `UPPERCASE`.
+- StripDiacritics(string string) -> string - Strips diacritics from the string.
+- TagToName(int tag) -> string - Converts the given OpenType tag to the readable name of a feature, variation, script, or language.
+- UnreferenceOversamplingLevel(float oversampling) - Decreases the reference count of the specified oversampling level, and frees the font cache for oversampling level when the reference count reaches zero. This method is called by Viewport, and should not be used directly.
+

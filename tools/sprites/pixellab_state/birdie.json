@@ -1,0 +1,26 @@
+{
+  "character": "birdie",
+  "character_id": "660f9fbe-6f9e-4a0c-aeee-a0e23a507623",
+  "prompt": "Birdie Ruth, small Michigan child in oversized rot-brown winter coat, one shoulder raised, apple in left hand, worn scarf, too-large boots, grave wary face, Orthodox mercy RPG pixel-art character, hard clean silhouette, transparent background, palette-limited, readable 48 by 64 gameplay sprite, no text.",
+  "created_at": "2026-05-11T14:35:24.921899+00:00",
+  "canvas_w": 48,
+  "canvas_h": 64,
+  "palette": "birdie",
+  "last_animations": {},
+  "pending_animations": {
+    "locomotion": {
+      "breathing-idle": {
+        "south": "860aef19-0f63-4160-b283-b59d06c98407",
+        "west": "5cc61b20-41ec-410c-9d0e-cf20269e21c6",
+        "north": "748a2cdc-2759-4e32-a238-cbc327302263",
+        "east": "ac1b2c28-697c-4c58-8d1e-e290ecc76a8e"
+      },
+      "walking": {
+        "west": "5789d5cd-ff02-4bb1-abcd-2551f2fc8d0c",
+        "north": "7eea7082-1c20-4e3e-a27b-b087c5589638",
+        "east": "9628dd8e-6abf-4efa-99d4-84df9a6ffab0",
+        "south": "f0630bfa-b069-4f5a-b4d0-b8aa9beb1112"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "anna",
+  "palette": "mother",
+  "default_frame_w": 96,
+  "default_frame_h": 48,
+  "default_baseline_y": 44,
+  "passes": {
+    "bedside": {
+      "description": "Anna bedside — resting, labored, crisis breath states; 15 frames in 5×3 for substrate-driven presence/recognition projection.",
+      "source_frames": 15,
+      "source_cols": 5,
+      "source_rows": 3,
+      "target_cols": 5,
+      "target_rows": 3,
+      "animation_keys": [
+        "resting",
+        "labored",
+        "crisis"
+      ]
+    }
+  }
+}

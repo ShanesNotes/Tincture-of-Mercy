@@ -19,3 +19,6 @@ Thumbs.db
 # Python caches
 __pycache__/
 *.py[cod]
+
+# Bootstrapped Godot API doc source (regenerate via ensure_doc_api.sh)
+.claude/skills/godot-api/doc_source/godot/

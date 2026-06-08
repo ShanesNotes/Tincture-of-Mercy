@@ -1,0 +1,191 @@
+## Generic6DOFJoint3D <- Joint3D
+
+The Generic6DOFJoint3D (6 Degrees Of Freedom) joint allows for implementing custom types of joints by locking the rotation and translation of certain axes. The first 3 DOF represent the linear motion of the physics bodies and the last 3 DOF represent the angular motion of the physics bodies. Each axis can be either locked, or limited.
+
+**Props:**
+- AngularLimitX/damping: float = 1.0
+- AngularLimitX/enabled: bool = true
+- AngularLimitX/erp: float = 0.5
+- AngularLimitX/forceLimit: float = 0.0
+- AngularLimitX/lowerAngle: float = 0.0
+- AngularLimitX/restitution: float = 0.0
+- AngularLimitX/softness: float = 0.5
+- AngularLimitX/upperAngle: float = 0.0
+- AngularLimitY/damping: float = 1.0
+- AngularLimitY/enabled: bool = true
+- AngularLimitY/erp: float = 0.5
+- AngularLimitY/forceLimit: float = 0.0
+- AngularLimitY/lowerAngle: float = 0.0
+- AngularLimitY/restitution: float = 0.0
+- AngularLimitY/softness: float = 0.5
+- AngularLimitY/upperAngle: float = 0.0
+- AngularLimitZ/damping: float = 1.0
+- AngularLimitZ/enabled: bool = true
+- AngularLimitZ/erp: float = 0.5
+- AngularLimitZ/forceLimit: float = 0.0
+- AngularLimitZ/lowerAngle: float = 0.0
+- AngularLimitZ/restitution: float = 0.0
+- AngularLimitZ/softness: float = 0.5
+- AngularLimitZ/upperAngle: float = 0.0
+- AngularMotorX/enabled: bool = false
+- AngularMotorX/forceLimit: float = 300.0
+- AngularMotorX/targetVelocity: float = 0.0
+- AngularMotorY/enabled: bool = false
+- AngularMotorY/forceLimit: float = 300.0
+- AngularMotorY/targetVelocity: float = 0.0
+- AngularMotorZ/enabled: bool = false
+- AngularMotorZ/forceLimit: float = 300.0
+- AngularMotorZ/targetVelocity: float = 0.0
+- AngularSpringX/damping: float = 0.0
+- AngularSpringX/enabled: bool = false
+- AngularSpringX/equilibriumPoint: float = 0.0
+- AngularSpringX/stiffness: float = 0.0
+- AngularSpringY/damping: float = 0.0
+- AngularSpringY/enabled: bool = false
+- AngularSpringY/equilibriumPoint: float = 0.0
+- AngularSpringY/stiffness: float = 0.0
+- AngularSpringZ/damping: float = 0.0
+- AngularSpringZ/enabled: bool = false
+- AngularSpringZ/equilibriumPoint: float = 0.0
+- AngularSpringZ/stiffness: float = 0.0
+- LinearLimitX/damping: float = 1.0
+- LinearLimitX/enabled: bool = true
+- LinearLimitX/lowerDistance: float = 0.0
+- LinearLimitX/restitution: float = 0.5
+- LinearLimitX/softness: float = 0.7
+- LinearLimitX/upperDistance: float = 0.0
+- LinearLimitY/damping: float = 1.0
+- LinearLimitY/enabled: bool = true
+- LinearLimitY/lowerDistance: float = 0.0
+- LinearLimitY/restitution: float = 0.5
+- LinearLimitY/softness: float = 0.7
+- LinearLimitY/upperDistance: float = 0.0
+- LinearLimitZ/damping: float = 1.0
+- LinearLimitZ/enabled: bool = true
+- LinearLimitZ/lowerDistance: float = 0.0
+- LinearLimitZ/restitution: float = 0.5
+- LinearLimitZ/softness: float = 0.7
+- LinearLimitZ/upperDistance: float = 0.0
+- LinearMotorX/enabled: bool = false
+- LinearMotorX/forceLimit: float = 0.0
+- LinearMotorX/targetVelocity: float = 0.0
+- LinearMotorY/enabled: bool = false
+- LinearMotorY/forceLimit: float = 0.0
+- LinearMotorY/targetVelocity: float = 0.0
+- LinearMotorZ/enabled: bool = false
+- LinearMotorZ/forceLimit: float = 0.0
+- LinearMotorZ/targetVelocity: float = 0.0
+- LinearSpringX/damping: float = 0.01
+- LinearSpringX/enabled: bool = false
+- LinearSpringX/equilibriumPoint: float = 0.0
+- LinearSpringX/stiffness: float = 0.01
+- LinearSpringY/damping: float = 0.01
+- LinearSpringY/enabled: bool = false
+- LinearSpringY/equilibriumPoint: float = 0.0
+- LinearSpringY/stiffness: float = 0.01
+- LinearSpringZ/damping: float = 0.01
+- LinearSpringZ/enabled: bool = false
+- LinearSpringZ/equilibriumPoint: float = 0.0
+- LinearSpringZ/stiffness: float = 0.01
+
+- **angular_limit_x/damping**: The amount of rotational damping across the X axis. The lower, the longer an impulse from one side takes to travel to the other side.
+- **angular_limit_x/enabled**: If `true`, rotation across the X axis is limited.
+- **angular_limit_x/erp**: When rotating across the X axis, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.
+- **angular_limit_x/force_limit**: The maximum amount of force that can occur, when rotating around the X axis.
+- **angular_limit_x/lower_angle**: The minimum rotation in negative direction to break loose and rotate around the X axis.
+- **angular_limit_x/restitution**: The amount of rotational restitution across the X axis. The lower, the more restitution occurs.
+- **angular_limit_x/softness**: The speed of all rotations across the X axis.
+- **angular_limit_x/upper_angle**: The minimum rotation in positive direction to break loose and rotate around the X axis.
+- **angular_limit_y/damping**: The amount of rotational damping across the Y axis. The lower, the more damping occurs.
+- **angular_limit_y/enabled**: If `true`, rotation across the Y axis is limited.
+- **angular_limit_y/erp**: When rotating across the Y axis, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.
+- **angular_limit_y/force_limit**: The maximum amount of force that can occur, when rotating around the Y axis.
+- **angular_limit_y/lower_angle**: The minimum rotation in negative direction to break loose and rotate around the Y axis.
+- **angular_limit_y/restitution**: The amount of rotational restitution across the Y axis. The lower, the more restitution occurs.
+- **angular_limit_y/softness**: The speed of all rotations across the Y axis.
+- **angular_limit_y/upper_angle**: The minimum rotation in positive direction to break loose and rotate around the Y axis.
+- **angular_limit_z/damping**: The amount of rotational damping across the Z axis. The lower, the more damping occurs.
+- **angular_limit_z/enabled**: If `true`, rotation across the Z axis is limited.
+- **angular_limit_z/erp**: When rotating across the Z axis, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.
+- **angular_limit_z/force_limit**: The maximum amount of force that can occur, when rotating around the Z axis.
+- **angular_limit_z/lower_angle**: The minimum rotation in negative direction to break loose and rotate around the Z axis.
+- **angular_limit_z/restitution**: The amount of rotational restitution across the Z axis. The lower, the more restitution occurs.
+- **angular_limit_z/softness**: The speed of all rotations across the Z axis.
+- **angular_limit_z/upper_angle**: The minimum rotation in positive direction to break loose and rotate around the Z axis.
+- **angular_motor_x/enabled**: If `true`, a rotating motor at the X axis is enabled.
+- **angular_motor_x/force_limit**: Maximum acceleration for the motor at the X axis.
+- **angular_motor_x/target_velocity**: Target speed for the motor at the X axis.
+- **angular_motor_y/enabled**: If `true`, a rotating motor at the Y axis is enabled.
+- **angular_motor_y/force_limit**: Maximum acceleration for the motor at the Y axis.
+- **angular_motor_y/target_velocity**: Target speed for the motor at the Y axis.
+- **angular_motor_z/enabled**: If `true`, a rotating motor at the Z axis is enabled.
+- **angular_motor_z/force_limit**: Maximum acceleration for the motor at the Z axis.
+- **angular_motor_z/target_velocity**: Target speed for the motor at the Z axis.
+- **linear_limit_x/damping**: The amount of damping that happens at the X motion.
+- **linear_limit_x/enabled**: If `true`, the linear motion across the X axis is limited.
+- **linear_limit_x/lower_distance**: The minimum difference between the pivot points' X axis.
+- **linear_limit_x/restitution**: The amount of restitution on the X axis movement. The lower, the more momentum gets lost.
+- **linear_limit_x/softness**: A factor applied to the movement across the X axis. The lower, the slower the movement.
+- **linear_limit_x/upper_distance**: The maximum difference between the pivot points' X axis.
+- **linear_limit_y/damping**: The amount of damping that happens at the Y motion.
+- **linear_limit_y/enabled**: If `true`, the linear motion across the Y axis is limited.
+- **linear_limit_y/lower_distance**: The minimum difference between the pivot points' Y axis.
+- **linear_limit_y/restitution**: The amount of restitution on the Y axis movement. The lower, the more momentum gets lost.
+- **linear_limit_y/softness**: A factor applied to the movement across the Y axis. The lower, the slower the movement.
+- **linear_limit_y/upper_distance**: The maximum difference between the pivot points' Y axis.
+- **linear_limit_z/damping**: The amount of damping that happens at the Z motion.
+- **linear_limit_z/enabled**: If `true`, the linear motion across the Z axis is limited.
+- **linear_limit_z/lower_distance**: The minimum difference between the pivot points' Z axis.
+- **linear_limit_z/restitution**: The amount of restitution on the Z axis movement. The lower, the more momentum gets lost.
+- **linear_limit_z/softness**: A factor applied to the movement across the Z axis. The lower, the slower the movement.
+- **linear_limit_z/upper_distance**: The maximum difference between the pivot points' Z axis.
+- **linear_motor_x/enabled**: If `true`, then there is a linear motor on the X axis. It will attempt to reach the target velocity while staying within the force limits.
+- **linear_motor_x/force_limit**: The maximum force the linear motor can apply on the X axis while trying to reach the target velocity.
+- **linear_motor_x/target_velocity**: The speed that the linear motor will attempt to reach on the X axis.
+- **linear_motor_y/enabled**: If `true`, then there is a linear motor on the Y axis. It will attempt to reach the target velocity while staying within the force limits.
+- **linear_motor_y/force_limit**: The maximum force the linear motor can apply on the Y axis while trying to reach the target velocity.
+- **linear_motor_y/target_velocity**: The speed that the linear motor will attempt to reach on the Y axis.
+- **linear_motor_z/enabled**: If `true`, then there is a linear motor on the Z axis. It will attempt to reach the target velocity while staying within the force limits.
+- **linear_motor_z/force_limit**: The maximum force the linear motor can apply on the Z axis while trying to reach the target velocity.
+- **linear_motor_z/target_velocity**: The speed that the linear motor will attempt to reach on the Z axis.
+
+**Methods:**
+- GetFlagX(int flag) -> bool
+- GetFlagY(int flag) -> bool
+- GetFlagZ(int flag) -> bool
+- GetParamX(int param) -> float
+- GetParamY(int param) -> float
+- GetParamZ(int param) -> float
+- SetFlagX(int flag, bool value)
+- SetFlagY(int flag, bool value)
+- SetFlagZ(int flag, bool value)
+- SetParamX(int param, float value)
+- SetParamY(int param, float value)
+- SetParamZ(int param, float value)
+
+**Enums:**
+**Param:** PARAM_LINEAR_LOWER_LIMIT=0, PARAM_LINEAR_UPPER_LIMIT=1, PARAM_LINEAR_LIMIT_SOFTNESS=2, PARAM_LINEAR_RESTITUTION=3, PARAM_LINEAR_DAMPING=4, PARAM_LINEAR_MOTOR_TARGET_VELOCITY=5, PARAM_LINEAR_MOTOR_FORCE_LIMIT=6, PARAM_LINEAR_SPRING_STIFFNESS=7, PARAM_LINEAR_SPRING_DAMPING=8, PARAM_LINEAR_SPRING_EQUILIBRIUM_POINT=9, ...
+  - PARAM_LINEAR_LOWER_LIMIT: The minimum difference between the pivot points' axes.
+  - PARAM_LINEAR_UPPER_LIMIT: The maximum difference between the pivot points' axes.
+  - PARAM_LINEAR_LIMIT_SOFTNESS: A factor applied to the movement across the axes. The lower, the slower the movement.
+  - PARAM_LINEAR_RESTITUTION: The amount of restitution on the axes' movement. The lower, the more momentum gets lost.
+  - PARAM_LINEAR_DAMPING: The amount of damping that happens at the linear motion across the axes.
+  - PARAM_LINEAR_MOTOR_TARGET_VELOCITY: The velocity the linear motor will try to reach.
+  - PARAM_LINEAR_MOTOR_FORCE_LIMIT: The maximum force the linear motor will apply while trying to reach the velocity target.
+  - PARAM_ANGULAR_LOWER_LIMIT: The minimum rotation in negative direction to break loose and rotate around the axes.
+  - PARAM_ANGULAR_UPPER_LIMIT: The minimum rotation in positive direction to break loose and rotate around the axes.
+  - PARAM_ANGULAR_LIMIT_SOFTNESS: The speed of all rotations across the axes.
+  - PARAM_ANGULAR_DAMPING: The amount of rotational damping across the axes. The lower, the more damping occurs.
+  - PARAM_ANGULAR_RESTITUTION: The amount of rotational restitution across the axes. The lower, the more restitution occurs.
+  - PARAM_ANGULAR_FORCE_LIMIT: The maximum amount of force that can occur, when rotating around the axes.
+  - PARAM_ANGULAR_ERP: When rotating across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.
+  - PARAM_ANGULAR_MOTOR_TARGET_VELOCITY: Target speed for the motor at the axes.
+  - PARAM_ANGULAR_MOTOR_FORCE_LIMIT: Maximum acceleration for the motor at the axes.
+  - PARAM_MAX: Represents the size of the `Param` enum.
+**Flag:** FLAG_ENABLE_LINEAR_LIMIT=0, FLAG_ENABLE_ANGULAR_LIMIT=1, FLAG_ENABLE_LINEAR_SPRING=3, FLAG_ENABLE_ANGULAR_SPRING=2, FLAG_ENABLE_MOTOR=4, FLAG_ENABLE_LINEAR_MOTOR=5, FLAG_MAX=6
+  - FLAG_ENABLE_LINEAR_LIMIT: If enabled, linear motion is possible within the given limits.
+  - FLAG_ENABLE_ANGULAR_LIMIT: If enabled, rotational motion is possible within the given limits.
+  - FLAG_ENABLE_MOTOR: If enabled, there is a rotational motor across these axes.
+  - FLAG_ENABLE_LINEAR_MOTOR: If enabled, there is a linear motor across these axes.
+  - FLAG_MAX: Represents the size of the `Flag` enum.
+

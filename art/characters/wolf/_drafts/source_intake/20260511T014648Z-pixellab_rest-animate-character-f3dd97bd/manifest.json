@@ -1,0 +1,64 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [],
+  "character": "wolf",
+  "created_at": "2026-05-11T01:46:48.121016+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "breathing-idle"
+    },
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "walking"
+    }
+  ],
+  "jobs": [],
+  "operation": "animate-character",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 282,
+    "policy": "hash_only",
+    "sha256": "d5321625d697c792190203c78fd73058ffd5dc7023096b209b8029e4aca1b691"
+  },
+  "requests": [
+    {
+      "at": "2026-05-11T01:46:48.122383+00:00",
+      "body": {
+        "character_id": "e92035b0-8f13-4edf-abfd-7f8e47db77c3",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "seed": 5102027,
+        "template_animation_id": "breathing-idle"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "af8bb927a3fa205fcc795b77206d476ce4f518e0afa6806d937fbfbff54f9362"
+    }
+  ],
+  "run_id": "20260511T014648Z-pixellab_rest-animate-character-f3dd97bd",
+  "schema_version": 1,
+  "seed": 5102027,
+  "status": "pending",
+  "updated_at": "2026-05-11T01:46:48.122745+00:00"
+}

@@ -1,0 +1,292 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [],
+  "character": "wolf",
+  "created_at": "2026-05-11T01:47:40.917929+00:00",
+  "events": [
+    {
+      "at": "2026-05-11T01:52:35.766248+00:00",
+      "details": {
+        "direction": "south",
+        "job_id": "a9d1406e-4acc-4b9b-8ac0-4c4f82d40f54",
+        "template": "walk-6-frames"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T01:55:04.549806+00:00",
+      "details": {
+        "direction": "south",
+        "job_id": "e664067e-6aeb-4a81-8779-42f9610ba5ec",
+        "template": "idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T01:55:42.905396+00:00",
+      "details": {
+        "direction": "north",
+        "job_id": "22884ab3-a7ee-48f1-9a0d-f8fc6f63d8ae",
+        "template": "walk-6-frames"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T01:59:13.095083+00:00",
+      "details": {
+        "direction": "west",
+        "job_id": "9f97dfd3-75e0-4780-a247-30b6aaec414a",
+        "template": "idle"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T01:59:29.145829+00:00",
+      "details": {
+        "direction": "west",
+        "job_id": "28d7a8d5-4f35-43ba-90cf-d2b9442d5198",
+        "template": "walk-6-frames"
+      },
+      "kind": "job_completed"
+    },
+    {
+      "at": "2026-05-11T01:59:39.959288+00:00",
+      "details": {
+        "direction": "east",
+        "job_id": "82cd962e-e16b-4a69-8cc1-bafc603e70c2",
+        "template": "walk-6-frames"
+      },
+      "kind": "job_completed"
+    }
+  ],
+  "expected_operations": [
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "idle"
+    },
+    {
+      "directions": [
+        "south",
+        "west",
+        "north",
+        "east"
+      ],
+      "endpoint": "/animate-character",
+      "resume": [],
+      "template_animation_id": "walk-6-frames"
+    }
+  ],
+  "failed_job": {
+    "direction": "north",
+    "job_id": "1b5a15f8-05d1-4d52-9582-9e88973a12f2",
+    "payload": {
+      "created_at": "2026-05-11T01:47:43.315981+00:00",
+      "id": "1b5a15f8-05d1-4d52-9582-9e88973a12f2",
+      "last_response": {
+        "animation_description": "animating",
+        "animation_group_id": "af2f7d6e-ae87-4709-b537-7f7d22a022f0",
+        "animation_name": null,
+        "character_id": "e92035b0-8f13-4edf-abfd-7f8e47db77c3",
+        "code": 504,
+        "detail": "Connection timed out. The server took too long to respond. Please try again.",
+        "direction": "north",
+        "error": "Batch 1/1 failed: Connection timed out. The server took too long to respond. Please try again.",
+        "generation_id": "e907878c-473a-445b-9cec-98e9c9ed6fd9",
+        "images": [
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          },
+          {
+            "base64": "<redacted>",
+            "height": 256,
+            "type": "rgba_bytes",
+            "width": 256
+          }
+        ],
+        "limit_type": null,
+        "number_of_frames": 1,
+        "progress": 0.17391304347826086,
+        "queue_position": 0,
+        "template_animation_id": "idle",
+        "trace": null,
+        "type": "error"
+      },
+      "status": "failed",
+      "usage": {
+        "type": "usd",
+        "usd": 0.0
+      }
+    },
+    "template": "idle"
+  },
+  "jobs": [
+    {
+      "at": "2026-05-11T01:47:44.077266+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "e664067e-6aeb-4a81-8779-42f9610ba5ec"
+    },
+    {
+      "at": "2026-05-11T01:47:44.078468+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "9f97dfd3-75e0-4780-a247-30b6aaec414a"
+    },
+    {
+      "at": "2026-05-11T01:47:44.080423+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "1b5a15f8-05d1-4d52-9582-9e88973a12f2"
+    },
+    {
+      "at": "2026-05-11T01:47:44.081074+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "idle"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "32e7cbf1-1fee-4057-90b3-819a93f27a01"
+    },
+    {
+      "at": "2026-05-11T01:47:46.812117+00:00",
+      "details": {
+        "direction": "south",
+        "template_animation_id": "walk-6-frames"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "a9d1406e-4acc-4b9b-8ac0-4c4f82d40f54"
+    },
+    {
+      "at": "2026-05-11T01:47:46.813558+00:00",
+      "details": {
+        "direction": "west",
+        "template_animation_id": "walk-6-frames"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "28d7a8d5-4f35-43ba-90cf-d2b9442d5198"
+    },
+    {
+      "at": "2026-05-11T01:47:46.814959+00:00",
+      "details": {
+        "direction": "north",
+        "template_animation_id": "walk-6-frames"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "22884ab3-a7ee-48f1-9a0d-f8fc6f63d8ae"
+    },
+    {
+      "at": "2026-05-11T01:47:46.816073+00:00",
+      "details": {
+        "direction": "east",
+        "template_animation_id": "walk-6-frames"
+      },
+      "endpoint": "/animate-character",
+      "job_id": "82cd962e-e16b-4a69-8cc1-bafc603e70c2"
+    }
+  ],
+  "operation": "animate-character",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 282,
+    "policy": "hash_only",
+    "sha256": "d5321625d697c792190203c78fd73058ffd5dc7023096b209b8029e4aca1b691"
+  },
+  "requests": [
+    {
+      "at": "2026-05-11T01:47:40.918612+00:00",
+      "body": {
+        "character_id": "e92035b0-8f13-4edf-abfd-7f8e47db77c3",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "seed": 5102027,
+        "template_animation_id": "idle"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "69bd27e9d8c6201059092da26ffd84fae1b0b9eb0fe9581205942349c9164265"
+    },
+    {
+      "at": "2026-05-11T01:47:44.082021+00:00",
+      "body": {
+        "character_id": "e92035b0-8f13-4edf-abfd-7f8e47db77c3",
+        "color_image": "<redacted>",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "force_colors": true,
+        "seed": 5102027,
+        "template_animation_id": "walk-6-frames"
+      },
+      "endpoint": "/animate-character",
+      "fingerprint": "3aa908c35371234244435d29a52bcfdd030a3eb64acfa9b3171a9b8d3ba7f448"
+    }
+  ],
+  "run_id": "20260511T014740Z-pixellab_rest-animate-character-8d92079e",
+  "schema_version": 1,
+  "seed": 5102027,
+  "status": "failed",
+  "updated_at": "2026-05-11T01:59:53.486375+00:00"
+}

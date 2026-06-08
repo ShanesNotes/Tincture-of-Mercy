@@ -1,0 +1,25 @@
+## PhysicsShapeQueryParameters2D <- RefCounted
+
+By changing various properties of this object, such as the shape, you can configure the parameters for PhysicsDirectSpaceState2D's methods.
+
+**Props:**
+- CollideWithAreas: bool = false
+- CollideWithBodies: bool = true
+- CollisionMask: int = 4294967295
+- Exclude: RID[] = []
+- Margin: float = 0.0
+- Motion: Vector2 = Vector2(0, 0)
+- Shape: Resource
+- ShapeRid: Rid = RID()
+- Transform: Transform2D = Transform2D(1, 0, 0, 1, 0, 0)
+
+- **collide_with_areas**: If `true`, the query will take Area2Ds into account.
+- **collide_with_bodies**: If `true`, the query will take PhysicsBody2Ds into account.
+- **collision_mask**: The physics layers the query will detect (as a bitmask). By default, all collision layers are detected. See in the documentation for more information.
+- **exclude**: The list of object RIDs that will be excluded from collisions. Use `CollisionObject2D.get_rid` to get the RID associated with a CollisionObject2D-derived node. **Note:** The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then assign it to the property again.
+- **margin**: The collision margin for the shape.
+- **motion**: The motion of the shape being queried for.
+- **shape**: The Shape2D that will be used for collision/intersection queries. This stores the actual reference which avoids the shape to be released while being used for queries, so always prefer using this over `shape_rid`.
+- **shape_rid**: The queried shape's RID that will be used for collision/intersection queries. Use this over `shape` if you want to optimize for performance using the Servers API:
+- **transform**: The queried shape's transform matrix.
+

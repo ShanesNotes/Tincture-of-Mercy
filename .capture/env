@@ -1,0 +1,2 @@
+GPU_AVAILABLE=false
+TIMEOUT_CMD=timeout

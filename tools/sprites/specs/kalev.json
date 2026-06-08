@@ -1,0 +1,63 @@
+{
+  "name": "kalev",
+  "palette": "kalev",
+  "default_frame_w": 64,
+  "default_frame_h": 96,
+  "default_baseline_y": 84,
+  "passes": {
+    "idle_front": {
+      "description": "Pass 1a — smallest viable test; 4-frame idle_down breath cycle.",
+      "source_frames": 4,
+      "source_cols": 4,
+      "source_rows": 1,
+      "target_cols": 4,
+      "target_rows": 1,
+      "animation_keys": ["idle_down"]
+    },
+    "locomotion": {
+      "description": "Pass 1 — idle and walk in 4 directions; native 5×8 layout, source matches runtime shape.",
+      "source_frames": 40,
+      "source_cols": 5,
+      "source_rows": 8,
+      "target_cols": 5,
+      "target_rows": 8,
+      "animation_keys": [
+        "idle_down",
+        "walk_down",
+        "idle_left",
+        "walk_left",
+        "idle_up",
+        "walk_up",
+        "idle_right",
+        "walk_right"
+      ]
+    },
+    "care": {
+      "description": "Pass 2 — write_name, wash, warm, sit, kneel.",
+      "source_frames": 15,
+      "source_cols": 5,
+      "source_rows": 5,
+      "target_cols": 5,
+      "target_rows": 5,
+      "animation_keys": ["write_name", "wash", "warm", "sit", "kneel"]
+    },
+    "tincture": {
+      "description": "Pass 3 — administer_ember, self_administer, recoil_neutral.",
+      "source_frames": 13,
+      "source_cols": 5,
+      "source_rows": 3,
+      "target_cols": 5,
+      "target_rows": 3,
+      "animation_keys": ["administer_ember", "self_administer", "recoil_neutral"]
+    },
+    "combat": {
+      "description": "Pass 4 — hurt, dodge_brace, push_guard, downed (v0.9 combat compatibility).",
+      "source_frames": 13,
+      "source_cols": 5,
+      "source_rows": 4,
+      "target_cols": 5,
+      "target_rows": 4,
+      "animation_keys": ["hurt", "dodge_brace", "push_guard", "downed"]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+
+pixellab generate  kalev · locomotion
+─────────────────────────────────────
+  animation keys: 8
+  supported:      8
+  job count:      8 (0 new)
+  character_id: c210b143-9001-4842-ba4c-5b7d3f114332
+  templates:    breathing-idle, walking
+  resuming: 8 previously-fired job(s) found in state
+  color_image:  tools/sprites/palettes/kalev_swatch.png
+  [breathing-idle] all directions already in flight; skipping fire
+  [walking] all directions already in flight; skipping fire
+  polling 8 job(s); timeout 600s each
+    ✓ breathing-idle/south
+    ✓ breathing-idle/west
+    ✓ breathing-idle/north
+    ✓ breathing-idle/east
+    ✓ walking/south
+    ✓ walking/west
+    ✓ walking/north
+    ✓ walking/east
+  fetching character detail for frame URLs…
+    idle_down: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_left: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_up: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_right: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_down: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_left: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_up: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_right: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+  direct frame fetch incomplete (0/40); trying character ZIP export fallback
+  ZIP fallback recovered 40/40 frame cells
+  runtime: art/characters/kalev/sheets/kalev_locomotion_64x96.png

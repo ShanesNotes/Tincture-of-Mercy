@@ -1,0 +1,5 @@
+timestamp=20260510T152118-0400
+candidate_dir=art/characters/kalev/preview/candidates/20260510T152118-0400-pixellab-locomotion-paid-probe
+backup_dir=art/characters/kalev/_backups/20260510T152118-0400-pre-pixellab-locomotion-paid-probe
+secret_present=no
+authorization=one paid PixelLab Kalev locomotion probe; expected 8 jobs; existing character id; no token printed

@@ -1,0 +1,142 @@
+## TreeItem <- Object
+
+A single item of a Tree control. It can contain other TreeItems as children, which allows it to create a hierarchy. It can also contain text and buttons. TreeItem is not a Node, it is internal to the Tree. To create a TreeItem, use `Tree.create_item` or `TreeItem.create_child`. To remove a TreeItem, use `Object.free`. **Note:** The ID values used for buttons are 32-bit, unlike [int] which is always 64-bit. They go from `-2147483648` to `2147483647`.
+
+**Props:**
+- Collapsed: bool
+- CustomMinimumHeight: int
+- DisableFolding: bool
+- Visible: bool
+
+- **collapsed**: If `true`, the TreeItem is collapsed.
+- **custom_minimum_height**: The custom minimum height.
+- **disable_folding**: If `true`, folding is disabled for this TreeItem.
+- **visible**: If `true`, the TreeItem is visible (default). Note that if a TreeItem is set to not be visible, none of its children will be visible either.
+
+**Methods:**
+- AddButton(int column, Texture2D button, int id = -1, bool disabled = false, string tooltipText = "", string description = "") - Adds a button with Texture2D `button` to the end of the cell at column `column`. The `id` is used to identify the button in the according `Tree.button_clicked` signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling `get_button_count` immediately before this method. Optionally, the button can be `disabled` and have a `tooltip_text`. `description` is used as the button description for assistive apps.
+- AddChild(TreeItem child) - Adds a previously unparented TreeItem as a direct child of this one. The `child` item must not be a part of any Tree or parented to any TreeItem. See also `remove_child`.
+- CallRecursive(StringName method) - Calls the `method` on the actual TreeItem and its children recursively. Pass parameters as a comma separated list.
+- ClearButtons() - Removes all buttons from all columns of this item.
+- ClearCustomBgColor(int column) - Resets the background color for the given column to default.
+- ClearCustomColor(int column) - Resets the color for the given column to default.
+- CreateChild(int index = -1) -> TreeItem - Creates an item and adds it as a child. The new item will be inserted as position `index` (the default value `-1` means the last position), or it will be the last child if `index` is higher than the child count.
+- Deselect(int column) - Deselects the given column.
+- EraseButton(int column, int buttonIndex) - Removes the button at index `button_index` in column `column`.
+- GetAutoTranslateMode(int column) -> int - Returns the column's auto translate mode.
+- GetAutowrapMode(int column) -> int - Returns the text autowrap mode in the given `column`. By default it is `TextServer.AUTOWRAP_OFF`.
+- GetAutowrapTrimFlags(int column) -> int - Returns the autowrap trim flags for the given `column`. By default, both `TextServer.BREAK_TRIM_START_EDGE_SPACES` and `TextServer.BREAK_TRIM_END_EDGE_SPACES` are enabled.
+- GetButton(int column, int buttonIndex) -> Texture2D - Returns the Texture2D of the button at index `button_index` in column `column`.
+- GetButtonById(int column, int id) -> int - Returns the button index if there is a button with ID `id` in column `column`, otherwise returns -1.
+- GetButtonColor(int column, int id) -> Color - Returns the color of the button with ID `id` in column `column`. If the specified button does not exist, returns `Color.BLACK`.
+- GetButtonCount(int column) -> int - Returns the number of buttons in column `column`.
+- GetButtonId(int column, int buttonIndex) -> int - Returns the ID for the button at index `button_index` in column `column`.
+- GetButtonTooltipText(int column, int buttonIndex) -> string - Returns the tooltip text for the button at index `button_index` in column `column`.
+- GetCellMode(int column) -> int - Returns the column's cell mode.
+- GetChild(int index) -> TreeItem - Returns a child item by its `index` (see `get_child_count`). This method is often used for iterating all children of an item. Negative indices access the children from the last one.
+- GetChildCount() -> int - Returns the number of child items.
+- GetChildren() -> TreeItem[] - Returns an array of references to the item's children.
+- GetCustomBgColor(int column) -> Color - Returns the custom background color of column `column`.
+- GetCustomColor(int column) -> Color - Returns the custom color of column `column`.
+- GetCustomDrawCallback(int column) -> Callable - Returns the custom callback of column `column`.
+- GetCustomFont(int column) -> Font - Returns custom font used to draw text in the column `column`.
+- GetCustomFontSize(int column) -> int - Returns custom font size used to draw text in the column `column`.
+- GetCustomStylebox(int column) -> StyleBox - Returns the given column's custom StyleBox used to draw the background.
+- GetDescription(int column) -> string - Returns the given column's description for assistive apps.
+- GetExpandRight(int column) -> bool - Returns `true` if `expand_right` is set.
+- GetFirstChild() -> TreeItem - Returns the TreeItem's first child.
+- GetIcon(int column) -> Texture2D - Returns the given column's icon Texture2D. Error if no icon is set.
+- GetIconMaxWidth(int column) -> int - Returns the maximum allowed width of the icon in the given `column`.
+- GetIconModulate(int column) -> Color - Returns the Color modulating the column's icon.
+- GetIconOverlay(int column) -> Texture2D - Returns the given column's icon overlay Texture2D.
+- GetIconRegion(int column) -> Rect2 - Returns the icon Texture2D region as Rect2.
+- GetIndex() -> int - Returns the node's order in the tree. For example, if called on the first child item the position is `0`.
+- GetLanguage(int column) -> string - Returns item's text language code.
+- GetMetadata(int column) -> Variant - Returns the metadata value that was set for the given column using `set_metadata`.
+- GetNext() -> TreeItem - Returns the next sibling TreeItem in the tree or a `null` object if there is none.
+- GetNextInTree(bool wrap = false) -> TreeItem - Returns the next TreeItem in the tree (in the context of a depth-first search) or a `null` object if there is none. If `wrap` is enabled, the method will wrap around to the first element in the tree when called on the last element, otherwise it returns `null`.
+- GetNextVisible(bool wrap = false) -> TreeItem - Returns the next visible TreeItem in the tree (in the context of a depth-first search) or a `null` object if there is none. If `wrap` is enabled, the method will wrap around to the first visible element in the tree when called on the last visible element, otherwise it returns `null`.
+- GetParent() -> TreeItem - Returns the parent TreeItem or a `null` object if there is none.
+- GetPrev() -> TreeItem - Returns the previous sibling TreeItem in the tree or a `null` object if there is none.
+- GetPrevInTree(bool wrap = false) -> TreeItem - Returns the previous TreeItem in the tree (in the context of a depth-first search) or a `null` object if there is none. If `wrap` is enabled, the method will wrap around to the last element in the tree when called on the first visible element, otherwise it returns `null`.
+- GetPrevVisible(bool wrap = false) -> TreeItem - Returns the previous visible sibling TreeItem in the tree (in the context of a depth-first search) or a `null` object if there is none. If `wrap` is enabled, the method will wrap around to the last visible element in the tree when called on the first visible element, otherwise it returns `null`.
+- GetRange(int column) -> float - Returns the value of a `CELL_MODE_RANGE` column.
+- GetRangeConfig(int column) -> Godot.Collections.Dictionary - Returns a dictionary containing the range parameters for a given column. The keys are "min", "max", "step", and "expr".
+- GetStructuredTextBidiOverride(int column) -> int - Returns the BiDi algorithm override set for this cell.
+- GetStructuredTextBidiOverrideOptions(int column) -> Godot.Collections.Array - Returns the additional BiDi options set for this cell.
+- GetSuffix(int column) -> string - Gets the suffix string shown after the column value.
+- GetText(int column) -> string - Returns the given column's text.
+- GetTextAlignment(int column) -> int - Returns the given column's text alignment.
+- GetTextDirection(int column) -> int - Returns item's text base writing direction.
+- GetTextOverrunBehavior(int column) -> int - Returns the clipping behavior when the text exceeds the item's bounding rectangle in the given `column`. By default it is `TextServer.OVERRUN_TRIM_ELLIPSIS`.
+- GetTooltipText(int column) -> string - Returns the given column's tooltip text.
+- GetTree() -> Tree - Returns the Tree that owns this TreeItem.
+- IsAcceptingChildren() -> bool - Returns `true` if this TreeItem is allowed to accept children.
+- IsAnyCollapsed(bool onlyVisible = false) -> bool - Returns `true` if this TreeItem, or any of its descendants, is collapsed. If `only_visible` is `true` it ignores non-visible TreeItems.
+- IsButtonDisabled(int column, int buttonIndex) -> bool - Returns `true` if the button at index `button_index` for the given `column` is disabled.
+- IsChecked(int column) -> bool - Returns `true` if the given `column` is checked.
+- IsCustomSetAsButton(int column) -> bool - Returns `true` if the cell was made into a button with `set_custom_as_button`.
+- IsEditMultiline(int column) -> bool - Returns `true` if the given `column` is multiline editable.
+- IsEditable(int column) -> bool - Returns `true` if the given `column` is editable.
+- IsIndeterminate(int column) -> bool - Returns `true` if the given `column` is indeterminate.
+- IsSelectable(int column) -> bool - Returns `true` if the given `column` is selectable.
+- IsSelected(int column) -> bool - Returns `true` if the given `column` is selected.
+- IsVisibleInTree() -> bool - Returns `true` if `visible` is `true` and all its ancestors are also visible.
+- MoveAfter(TreeItem item) - Moves this TreeItem right after the given `item`. **Note:** You can't move to the root or move the root.
+- MoveBefore(TreeItem item) - Moves this TreeItem right before the given `item`. **Note:** You can't move to the root or move the root.
+- PropagateCheck(int column, bool emitSignal = true) - Propagates this item's checked status to its children and parents for the given `column`. It is possible to process the items affected by this method call by connecting to `Tree.check_propagated_to_item`. The order that the items affected will be processed is as follows: the item invoking this method, children of that item, and finally parents of that item. If `emit_signal` is `false`, then `Tree.check_propagated_to_item` will not be emitted.
+- RemoveChild(TreeItem child) - Removes the given child TreeItem and all its children from the Tree. Note that it doesn't free the item from memory, so it can be reused later (see `add_child`). To completely remove a TreeItem use `Object.free`. **Note:** If you want to move a child from one Tree to another, then instead of removing and adding it manually you can use `move_before` or `move_after`.
+- Select(int column) - Selects the given `column`.
+- SetAcceptChildren(bool allowed) - Sets TreeItem's ability to accept children.
+- SetAutoTranslateMode(int column, int mode) - Sets the given column's auto translate mode to `mode`. All columns use `Node.AUTO_TRANSLATE_MODE_INHERIT` by default, which uses the same auto translate mode as the Tree itself.
+- SetAutowrapMode(int column, int autowrapMode) - Sets the autowrap mode in the given `column`. If set to something other than `TextServer.AUTOWRAP_OFF`, the text gets wrapped inside the cell's bounding rectangle.
+- SetAutowrapTrimFlags(int column, int flags) - Sets the autowrap trim flags for the given `column`. These flags control whether leading and trailing spaces are trimmed on wrapped lines. Set to `0` to disable all trimming.
+- SetButton(int column, int buttonIndex, Texture2D button) - Sets the given column's button Texture2D at index `button_index` to `button`.
+- SetButtonColor(int column, int buttonIndex, Color color) - Sets the given column's button color at index `button_index` to `color`.
+- SetButtonDescription(int column, int buttonIndex, string description) - Sets the given column's button description at index `button_index` for assistive apps.
+- SetButtonDisabled(int column, int buttonIndex, bool disabled) - If `true`, disables the button at index `button_index` in the given `column`.
+- SetButtonTooltipText(int column, int buttonIndex, string tooltip) - Sets the tooltip text for the button at index `button_index` in the given `column`.
+- SetCellMode(int column, int mode) - Sets the given column's cell mode to `mode`. This determines how the cell is displayed and edited.
+- SetChecked(int column, bool checked) - If `checked` is `true`, the given `column` is checked. Clears column's indeterminate status.
+- SetCollapsedRecursive(bool enable) - Collapses or uncollapses this TreeItem and all the descendants of this item.
+- SetCustomAsButton(int column, bool enable) - Makes a cell with `CELL_MODE_CUSTOM` display as a non-flat button with a StyleBox.
+- SetCustomBgColor(int column, Color color, bool justOutline = false) - Sets the given column's custom background color and whether to just use it as an outline. **Note:** If a custom StyleBox is set, the background color will be drawn behind it.
+- SetCustomColor(int column, Color color) - Sets the given column's custom color.
+- SetCustomDraw(int column, Object object, StringName callback) - Sets the given column's custom draw callback to the `callback` method on `object`. The method named `callback` should accept two arguments: the TreeItem that is drawn and its position and size as a Rect2.
+- SetCustomDrawCallback(int column, Callable callback) - Sets the given column's custom draw callback. Use an empty Callable ([code skip-lint]Callable()[/code]) to clear the custom callback. The cell has to be in `CELL_MODE_CUSTOM` to use this feature. The `callback` should accept two arguments: the TreeItem that is drawn and its position and size as a Rect2. To draw custom content over the native style, please use `Tree.get_custom_drawing_canvas_item`.
+- SetCustomFont(int column, Font font) - Sets custom font used to draw text in the given `column`.
+- SetCustomFontSize(int column, int fontSize) - Sets custom font size used to draw text in the given `column`.
+- SetCustomStylebox(int column, StyleBox stylebox) - Sets the given column's custom StyleBox used to draw the background. **Note:** If a custom background color is set, the StyleBox will be drawn in front of it.
+- SetDescription(int column, string description) - Sets the given column's description for assistive apps.
+- SetEditMultiline(int column, bool multiline) - If `multiline` is `true`, the given `column` is multiline editable. **Note:** This option only affects the type of control (LineEdit or TextEdit) that appears when editing the column. You can set multiline values with `set_text` even if the column is not multiline editable.
+- SetEditable(int column, bool enabled) - If `enabled` is `true`, the given `column` is editable.
+- SetExpandRight(int column, bool enable) - If `enable` is `true`, the given `column` is expanded to the right.
+- SetIcon(int column, Texture2D texture) - Sets the given cell's icon Texture2D. If the cell is in `CELL_MODE_ICON` mode, the icon is displayed in the center of the cell. Otherwise, the icon is displayed before the cell's text. `CELL_MODE_RANGE` does not display an icon.
+- SetIconMaxWidth(int column, int width) - Sets the maximum allowed width of the icon in the given `column`. This limit is applied on top of the default size of the icon and on top of [theme_item Tree.icon_max_width]. The height is adjusted according to the icon's ratio.
+- SetIconModulate(int column, Color modulate) - Modulates the given column's icon with `modulate`.
+- SetIconOverlay(int column, Texture2D texture) - Sets the given cell's icon overlay Texture2D. The cell has to be in `CELL_MODE_ICON` mode, and icon has to be set. Overlay is drawn on top of icon, in the bottom left corner.
+- SetIconRegion(int column, Rect2 region) - Sets the given column's icon's texture region.
+- SetIndeterminate(int column, bool indeterminate) - If `indeterminate` is `true`, the given `column` is marked indeterminate. **Note:** If set `true` from `false`, then column is cleared of checked status.
+- SetLanguage(int column, string language) - Sets the language code of the given `column`'s text to `language`. This is used for line-breaking and text shaping algorithms. If `language` is empty, the current locale is used.
+- SetMetadata(int column, Variant meta) - Sets the metadata value for the given column, which can be retrieved later using `get_metadata`. This can be used, for example, to store a reference to the original data.
+- SetRange(int column, float value) - Sets the value of a `CELL_MODE_RANGE` column.
+- SetRangeConfig(int column, float min, float max, float step, bool expr = false) - Sets the range of accepted values for a column. The column must be in the `CELL_MODE_RANGE` mode. If `expr` is `true`, the edit mode slider will use an exponential scale as with `Range.exp_edit`.
+- SetSelectable(int column, bool selectable) - If `selectable` is `true`, the given `column` is selectable.
+- SetStructuredTextBidiOverride(int column, int parser) - Set BiDi algorithm override for the structured text. Has effect for cells that display text.
+- SetStructuredTextBidiOverrideOptions(int column, Godot.Collections.Array args) - Set additional options for BiDi override. Has effect for cells that display text.
+- SetSuffix(int column, string text) - Sets a string to be shown after a column's value (for example, a unit abbreviation).
+- SetText(int column, string text) - Sets the given column's text value.
+- SetTextAlignment(int column, int textAlignment) - Sets the given column's text alignment to `text_alignment`.
+- SetTextDirection(int column, int direction) - Sets item's text base writing direction.
+- SetTextOverrunBehavior(int column, int overrunBehavior) - Sets the clipping behavior when the text exceeds the item's bounding rectangle in the given `column`.
+- SetTooltipText(int column, string tooltip) - Sets the given column's tooltip text.
+- UncollapseTree() - Uncollapses all TreeItems necessary to reveal this TreeItem, i.e. all ancestor TreeItems.
+
+**Enums:**
+**TreeCellMode:** CELL_MODE_STRING=0, CELL_MODE_CHECK=1, CELL_MODE_RANGE=2, CELL_MODE_ICON=3, CELL_MODE_CUSTOM=4
+  - CELL_MODE_STRING: Cell shows a string label, optionally with an icon. When editable, the text can be edited using a LineEdit, or a TextEdit popup if `set_edit_multiline` is used.
+  - CELL_MODE_CHECK: Cell shows a checkbox, optionally with text and an icon. The checkbox can be pressed, released, or indeterminate (via `set_indeterminate`). The checkbox can't be clicked unless the cell is editable.
+  - CELL_MODE_RANGE: Cell shows a numeric range. When editable, it can be edited using a range slider. Use `set_range` to set the value and `set_range_config` to configure the range. This cell can also be used in a text dropdown mode when you assign a text with `set_text`. Separate options with a comma, e.g. `"Option1,Option2,Option3"`.
+  - CELL_MODE_ICON: Cell shows an icon. It can't be edited nor display text. The icon is always centered within the cell.
+  - CELL_MODE_CUSTOM: Cell shows as a clickable button. It will display an arrow similar to OptionButton, but doesn't feature a dropdown (for that you can use `CELL_MODE_RANGE`). Clicking the button emits the `Tree.item_edited` signal. The button is flat by default, you can use `set_custom_as_button` to display it with a StyleBox. This mode also supports custom drawing using `set_custom_draw_callback`.
+

@@ -1,0 +1,80 @@
+{
+  "adapter": "pixellab_rest",
+  "artifacts": [
+    {
+      "at": "2026-05-11T02:28:26.441385+00:00",
+      "details": {},
+      "kind": "reference_image",
+      "path": "art/characters/iiro/_drafts/iiro_pixellab_reference_64x96.png"
+    },
+    {
+      "at": "2026-05-11T02:32:09.420007+00:00",
+      "details": {
+        "count": 8
+      },
+      "kind": "pixellab_rotations_dir",
+      "path": "art/characters/iiro/_drafts/pixellab_rotations"
+    }
+  ],
+  "character": "iiro",
+  "character_id": "5a0ed749-1afe-4b00-98ae-9a7016b90871",
+  "created_at": "2026-05-11T02:28:26.440189+00:00",
+  "events": [],
+  "expected_operations": [
+    {
+      "endpoint": "/create-character-v3",
+      "image_size": {
+        "height": 64,
+        "width": 48
+      },
+      "reference": "art/characters/iiro/_drafts/iiro_pixellab_reference_64x96.png",
+      "template_id": "mannequin"
+    }
+  ],
+  "jobs": [
+    {
+      "at": "2026-05-11T02:28:28.164686+00:00",
+      "details": {
+        "character_id": "5a0ed749-1afe-4b00-98ae-9a7016b90871"
+      },
+      "endpoint": "/create-character-v3",
+      "job_id": "2c536e53-d676-4398-9800-5b5c67a76bfd"
+    }
+  ],
+  "operation": "create-character-v3",
+  "pass": "locomotion",
+  "prompt": {
+    "length": 270,
+    "policy": "hash_only",
+    "sha256": "5c071ea58b03f19b5bfee3ad8a2ef1b698c3c206e7ccb80678e8c64d13d5007c"
+  },
+  "requests": [
+    {
+      "at": "2026-05-11T02:28:26.442049+00:00",
+      "body": {
+        "description": {
+          "length": 270,
+          "policy": "hash_only",
+          "sha256": "5c071ea58b03f19b5bfee3ad8a2ef1b698c3c206e7ccb80678e8c64d13d5007c"
+        },
+        "image_size": {
+          "height": 64,
+          "width": 48
+        },
+        "no_background": true,
+        "reference_image": "<redacted>",
+        "seed": 5102040,
+        "template_id": "mannequin",
+        "view": "low top-down"
+      },
+      "endpoint": "/create-character-v3",
+      "fingerprint": "edc51f71d7391c786ad23f9ccd2caee8ccf462765fe4a844b3386cb05e85f6c9"
+    }
+  ],
+  "run_id": "20260511T022826Z-pixellab_rest-create-character-v3-8f1e8579",
+  "schema_version": 1,
+  "seed": 5102040,
+  "state_path": "tools/sprites/pixellab_state/iiro.json",
+  "status": "completed",
+  "updated_at": "2026-05-11T02:32:09.422017+00:00"
+}

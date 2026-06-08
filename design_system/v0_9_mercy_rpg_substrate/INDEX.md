@@ -35,7 +35,9 @@ Use this order when a document conflicts:
 | `07-anti-drift-vocabulary.md` | Scoped vocabulary and drift-gate policy for v0.9 RPG language. | Active once authored |
 | `08-epic-b-substrate-pipeline-plan.md` | Pipeline-shaped Epic B execution graph for B-prep through B0, including B1/B2 anti-fracture seams. | Active implementation handoff |
 | `09-naming-conventions.md` | Godot artifact naming canon: filesystem layout, code identifiers, animation keys, verb/item/encounter IDs, blocked legacy patterns, validation. | Active |
+| `10-asset-pipeline.md` | Source → runtime sprite asset pipeline: source/sheets/aseprite folder split, `tools/sprites/` deterministic conversion, Aseprite vs LibreSprite, project-spec amendment. | Active |
 | `prompts/` | Sprite-sheet authoring prompts (master template + Kalev pass-sliced production plan + Lena/Mother/Boy/Wolf full sheets) and the `06-name-an-artifact.md` template for naming new Godot artifacts. | Active |
+| `tools/sprites/` (project root) | Asset-pipeline scripts: `make_runtime_sprite.py`, `validate_sprite.py`, `palette.py`, `palettes/*.gpl`. Required gate before any runtime sheet enters Godot. | Active |
 
 ## Product direction
 

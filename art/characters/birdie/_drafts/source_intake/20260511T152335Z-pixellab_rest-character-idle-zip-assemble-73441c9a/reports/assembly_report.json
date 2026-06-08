@@ -1,0 +1,76 @@
+{
+  "animation_keys": [
+    "idle_down",
+    "idle_left",
+    "idle_up",
+    "idle_right"
+  ],
+  "character": "birdie",
+  "frame_h": 64,
+  "frame_w": 48,
+  "missing_frames": [],
+  "normalized_frames": {
+    "idle_down_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_down_0.png",
+    "idle_down_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_down_1.png",
+    "idle_down_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_down_2.png",
+    "idle_down_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_down_3.png",
+    "idle_down_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_down_4.png",
+    "idle_left_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_left_0.png",
+    "idle_left_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_left_1.png",
+    "idle_left_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_left_2.png",
+    "idle_left_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_left_3.png",
+    "idle_left_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_left_4.png",
+    "idle_right_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_right_0.png",
+    "idle_right_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_right_1.png",
+    "idle_right_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_right_2.png",
+    "idle_right_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_right_3.png",
+    "idle_right_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_right_4.png",
+    "idle_up_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_up_0.png",
+    "idle_up_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_up_1.png",
+    "idle_up_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_up_2.png",
+    "idle_up_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_up_3.png",
+    "idle_up_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/normalized/idle_up_4.png"
+  },
+  "pass": "character_idle",
+  "runtime_output": "/home/ark/tincture-of-mercy/art/characters/birdie/sheets/birdie_character_idle_48x64.png",
+  "source_frames": {
+    "idle_down_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_down_0.png",
+    "idle_down_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_down_1.png",
+    "idle_down_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_down_2.png",
+    "idle_down_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_down_3.png",
+    "idle_down_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_down_4.png",
+    "idle_left_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_left_0.png",
+    "idle_left_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_left_1.png",
+    "idle_left_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_left_2.png",
+    "idle_left_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_left_3.png",
+    "idle_left_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_left_4.png",
+    "idle_right_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_right_0.png",
+    "idle_right_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_right_1.png",
+    "idle_right_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_right_2.png",
+    "idle_right_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_right_3.png",
+    "idle_right_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_right_4.png",
+    "idle_up_0": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_up_0.png",
+    "idle_up_1": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_up_1.png",
+    "idle_up_2": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_up_2.png",
+    "idle_up_3": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_up_3.png",
+    "idle_up_4": "/home/ark/tincture-of-mercy/art/characters/birdie/_drafts/source_intake/20260511T152335Z-pixellab_rest-character-idle-zip-assemble-73441c9a/raw/idle_up_4.png"
+  },
+  "target_cols": 5,
+  "target_rows": 4,
+  "validation": {
+    "failures": [],
+    "notes": [
+      "format=PNG  size=(240, 256)  mode=RGBA",
+      "unique colors: 7",
+      "alpha=0: 47298 (77.0%)  alpha=255: 14142  semi: 0"
+    ],
+    "ok": true,
+    "path": "/home/ark/tincture-of-mercy/art/characters/birdie/sheets/birdie_character_idle_48x64.png",
+    "stats": {
+      "alpha0_pct": 77.0,
+      "colors": 7,
+      "semi": 0,
+      "size": "240\u00d7256"
+    }
+  }
+}

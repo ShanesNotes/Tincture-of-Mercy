@@ -1,0 +1,18 @@
+{
+  "name": "mother",
+  "palette": "mother",
+  "default_frame_w": 96,
+  "default_frame_h": 48,
+  "default_baseline_y": 44,
+  "passes": {
+    "bedside": {
+      "description": "Mother bedside — breath_calm, breath_thinning, fading; 11 frames in 5×3.",
+      "source_frames": 11,
+      "source_cols": 5,
+      "source_rows": 3,
+      "target_cols": 5,
+      "target_rows": 3,
+      "animation_keys": ["breath_calm", "breath_thinning", "fading"]
+    }
+  }
+}

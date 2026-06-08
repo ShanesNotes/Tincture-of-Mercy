@@ -1,0 +1,7 @@
+timestamp=20260510T152601-0400
+candidate_dir=art/characters/kalev/preview/candidates/20260510T152601-0400-pixellab-locomotion-paid-probe
+backup_dir=art/characters/kalev/_backups/20260510T152601-0400-pre-pixellab-locomotion-paid-probe
+authorized_scope=one paid PixelLab Kalev locomotion probe
+expected_jobs=8
+secret_source=.secrets/pixellab.env
+secret_printed=no

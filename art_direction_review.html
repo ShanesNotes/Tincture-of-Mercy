@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tincture of Mercy — Art Direction Visual Review</title>
+<style>
+  :root {
+    --bg: #1a1814;
+    --panel: #232019;
+    --ink: #e8e1d0;
+    --dim: #9a907d;
+    --accent: #b08a4a;     /* old-ochre, the kalev skin token */
+    --hearth: #c66b3d;
+    --damp: #4a4a3f;
+    --good: #6a8f4a;
+    --warn: #c9a84a;
+    --hot: #b85a3a;
+    --rule: #3a352b;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--ink); margin: 0; }
+  body {
+    font: 15px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 28px 80px;
+  }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 18px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); color: var(--accent); }
+  h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 20px 0 8px; }
+  p { margin: 8px 0; }
+  small, .dim { color: var(--dim); }
+  code { font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace; background: #2c2820; padding: 1px 5px; border-radius: 3px; color: #d6c89a; }
+  .lede { color: var(--dim); margin-bottom: 24px; }
+
+  .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px; margin: 14px 0; }
+
+  /* —————————————————— scale ruler —————————————————— */
+  .ruler {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 16px 0 8px;
+  }
+  .ruler figure { margin: 0; text-align: center; }
+  .ruler .stage {
+    background: #14110d;
+    border: 1px dashed var(--rule);
+    height: 280px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+  /* Each "px" is rendered at 2 screen-pixels for clarity. */
+  .px2 { display: block; }
+  .tile      { width: 64px;  height: 64px;  background: var(--damp);   outline: 1px solid #2a2820; }
+  .birdie    { width: 96px;  height: 128px; background: var(--accent); outline: 1px solid #2a2820; }
+  .kalev     { width: 128px; height: 192px; background: var(--accent); outline: 1px solid #2a2820; }
+  .patient   { width: 192px; height: 96px;  background: var(--accent); outline: 1px solid #2a2820; }
+  .ruler figcaption { margin-top: 8px; font-size: 13px; }
+  .ruler figcaption b { color: var(--ink); }
+  .ruler figcaption .px { color: var(--dim); display: block; font: 12px ui-monospace, monospace; }
+
+  /* —————————————————— viewport demo —————————————————— */
+  .viewport-wrap { text-align: center; margin: 18px 0; }
+  /* 640×360 viewport at 0.5x scale = 320×180 screen px. */
+  .viewport {
+    width: 320px; height: 180px;
+    background:
+      repeating-linear-gradient(0deg,   transparent 0 15px, rgba(255,255,255,0.04) 15px 16px),
+      repeating-linear-gradient(90deg,  transparent 0 15px, rgba(255,255,255,0.04) 15px 16px),
+      #1f1d18;
+    border: 2px solid var(--accent);
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .viewport .grid-label {
+    position: absolute; left: 6px; top: 4px;
+    font: 11px ui-monospace, monospace; color: var(--dim);
+  }
+  .viewport .kalev-on { position: absolute; left: 144px; top: 66px;  width: 32px; height: 48px; background: var(--accent); }
+  .viewport .npc      { position: absolute; left: 56px;  top: 120px; width: 24px; height: 36px; background: #6f5e3a; }
+  .viewport .bedside  { position: absolute; left: 224px; top: 130px; width: 64px; height: 32px; background: #4a3f2c; }
+  .viewport .tile-mark{ position: absolute; left: 80px;  top: 80px;  width: 16px; height: 16px; outline: 1px solid var(--hearth); }
+
+  /* —————————————————— comparison table —————————————————— */
+  table.cmp { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  table.cmp th, table.cmp td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); font-size: 14px; }
+  table.cmp th { color: var(--dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  table.cmp td.us { background: rgba(176,138,74,0.10); }
+  table.cmp .badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .b-near    { background: var(--good);   color: #0d1408; }
+  .b-similar { background: var(--warn);   color: #1d1605; }
+  .b-far     { background: var(--hot);    color: #1a0a06; }
+
+  /* —————————————————— traffic light —————————————————— */
+  .traffic { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .traffic .col { border-radius: 6px; padding: 14px 16px; border: 1px solid var(--rule); background: var(--panel); }
+  .traffic .col h3 { margin-top: 0; }
+  .traffic .green  h3 { color: var(--good); }
+  .traffic .yellow h3 { color: var(--warn); }
+  .traffic .red    h3 { color: var(--hot); }
+  .traffic ul { margin: 6px 0 0; padding-left: 18px; }
+  .traffic li { margin: 6px 0; }
+
+  /* —————————————————— actual sprite —————————————————— */
+  .sprite-row { display: flex; gap: 22px; align-items: flex-end; margin: 10px 0 6px; flex-wrap: wrap; }
+  .sprite-row figure { margin: 0; text-align: center; }
+  .sprite-row img { display: block; image-rendering: pixelated; image-rendering: crisp-edges; background: #14110d; border: 1px solid var(--rule); }
+  .sprite-row figcaption { font-size: 12px; color: var(--dim); margin-top: 6px; }
+
+  .legend { font-size: 12px; color: var(--dim); margin-top: 6px; }
+  .legend .swatch { display: inline-block; width: 10px; height: 10px; vertical-align: middle; margin: 0 4px 2px 0; border: 1px solid #000; }
+</style>
+</head>
+<body>
+
+<h1>Art Direction — visual review</h1>
+<p class="lede">A one-page sanity check on the pixel scales chosen for <i>Tincture of Mercy</i>. Read top to bottom; each section is a picture first, words second.</p>
+
+<!-- ============================================================== -->
+<h2>1. The numbers, in one breath</h2>
+<div class="panel">
+  <p style="margin-top:0;">
+    <b>Viewport</b> <code>640 × 360</code> &nbsp;·&nbsp;
+    <b>Tile</b> <code>32 × 32</code> &nbsp;·&nbsp;
+    <b>Kalev (hero)</b> <code>64 × 96</code> &nbsp;·&nbsp;
+    <b>Birdie (child)</b> <code>48 × 64</code> &nbsp;·&nbsp;
+    <b>Bedside patient</b> <code>96 × 48</code> or <code>128 × 64</code>
+  </p>
+  <p>That gives you a screen <b>20 tiles wide × ~11 tall</b>, with Kalev occupying <b>2 tiles wide × 3 tiles tall</b>. Kalev's silhouette is ~10% of the screen's width and ~27% of its height — closer to a Sea of Stars / Chained Echoes hero than a Stardew Valley one. Tighter framing, more presence per character.</p>
+</div>
+
+<!-- ============================================================== -->
+<h2>2. Scale ruler — what these numbers mean side by side</h2>
+<p class="dim">Each shape below is drawn at <b>2 screen-pixels per game-pixel</b>, so you can actually see them. Same scale across all four panels.</p>
+<div class="ruler">
+  <figure>
+    <div class="stage"><div class="tile px2"></div></div>
+    <figcaption><b>Tile</b><span class="px">32 × 32</span></figcaption>
+  </figure>
+  <figure>
+    <div class="stage"><div class="birdie px2"></div></div>
+    <figcaption><b>Birdie / child</b><span class="px">48 × 64</span></figcaption>
+  </figure>
+  <figure>
+    <div class="stage"><div class="kalev px2"></div></div>
+    <figcaption><b>Kalev / hero adult</b><span class="px">64 × 96</span></figcaption>
+  </figure>
+  <figure>
+    <div class="stage"><div class="patient px2"></div></div>
+    <figcaption><b>Bedside patient</b><span class="px">96 × 48</span></figcaption>
+  </figure>
+</div>
+<p class="legend"><span class="swatch" style="background:var(--accent)"></span>character &nbsp;·&nbsp; <span class="swatch" style="background:var(--damp)"></span>tile</p>
+
+<!-- ============================================================== -->
+<h2>3. The actual Kalev sprite, at three zooms</h2>
+<p class="dim">This is the only sprite that exists today (<code>art/characters/kalev/sheets/kalev_idle_front_64x96.png</code>). Pass 1a — 4-frame breath cycle.</p>
+<div class="sprite-row">
+  <figure>
+    <img src="art/characters/kalev/sheets/kalev_idle_front_64x96.png" alt="kalev idle sheet 1×" style="width:auto; height:auto;">
+    <figcaption>1× (native — what Godot ships)</figcaption>
+  </figure>
+  <figure>
+    <img src="art/characters/kalev/sheets/kalev_idle_front_64x96.png" alt="kalev idle sheet 2×" style="width:auto; height:192px;">
+    <figcaption>2× (close to on-screen size at <code>stretch=viewport</code>)</figcaption>
+  </figure>
+  <figure>
+    <img src="art/characters/kalev/preview/kalev_idle_front_64x96_zoom4x.png" alt="kalev idle 4×" style="width:auto; height:384px;">
+    <figcaption>4× zoom (review only, never shipped)</figcaption>
+  </figure>
+</div>
+
+<!-- ============================================================== -->
+<h2>4. What it looks like in-frame</h2>
+<p class="dim">Simulated 640×360 viewport at half-scale. Grid cells are tiles. Ochre = Kalev, brown = an NPC at <code>48×72</code>, dark = a bedside patient at <code>96×48</code>.</p>
+<div class="viewport-wrap">
+  <div class="viewport">
+    <div class="grid-label">640 × 360 viewport · 20 × ~11 tiles · grid = 32px</div>
+    <div class="tile-mark"></div>
+    <div class="kalev-on"></div>
+    <div class="npc"></div>
+    <div class="bedside"></div>
+  </div>
+  <p class="dim" style="font-size:12px; margin-top:6px;">Hero is small enough that ~6 NPCs + props can share a frame; large enough that a face animation is legible without zooming.</p>
+</div>
+
+<!-- ============================================================== -->
+<h2>5. Where you sit on the indie pixel-art map</h2>
+<table class="cmp">
+  <thead>
+    <tr><th>Game</th><th>Tile</th><th>Character</th><th>Viewport (logical)</th><th>Closeness to your spec</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Stardew Valley</td><td>16 × 16</td><td>~16 × 32</td><td>~400 × 240</td><td><span class="badge b-far">half your fidelity</span></td></tr>
+    <tr><td>Hyper Light Drifter</td><td>16 × 16</td><td>~24 × 32</td><td>480 × 270</td><td><span class="badge b-far">half-fidelity, atmosphere-led</span></td></tr>
+    <tr><td>Eastward</td><td>16 × 16</td><td>~32 × 48</td><td>~480 × 270</td><td><span class="badge b-similar">same proportions, ½ resolution</span></td></tr>
+    <tr><td>CrossCode</td><td>16 × 16</td><td>~32 × 48</td><td>568 × 320</td><td><span class="badge b-similar">closest in spirit</span></td></tr>
+    <tr class="us"><td><b>Tincture of Mercy</b></td><td><b>32 × 32</b></td><td><b>64 × 96</b></td><td><b>640 × 360</b></td><td><span class="badge b-near">— you are here —</span></td></tr>
+    <tr><td>Sea of Stars</td><td>~32 × 32</td><td>~48 × 96</td><td>~640 × 360</td><td><span class="badge b-near">very close, slightly chunkier hero</span></td></tr>
+    <tr><td>Chained Echoes</td><td>32 × 32</td><td>~48 × 96</td><td>~640 × 360</td><td><span class="badge b-near">very close</span></td></tr>
+    <tr><td>Octopath Traveler (HD-2D)</td><td>~32 × 32</td><td>~64 × 96</td><td>3D-rendered</td><td><span class="badge b-near">same sprite scale, different stack</span></td></tr>
+  </tbody>
+</table>
+<p class="dim" style="font-size:12px;">Take-away: you are firmly in the <b>"high-fidelity 32-tile JRPG"</b> band. You are <i>not</i> in the chunky-Stardew band, and you are <i>not</i> in the boutique-Hyper-Light band. Sea of Stars and Chained Echoes are the closest mood-board references for what your fidelity will support.</p>
+
+<!-- ============================================================== -->
+<h2>6. The tradeoffs you bought, and the ones you sold</h2>
+<div class="panel">
+  <h3>What 64×96 + 32-tile gets you</h3>
+  <ul>
+    <li><b>Faces are legible.</b> A face fits in ~16×16 inside the head. That's enough to read fear, attention, exhaustion — the whole point of a mercy game.</li>
+    <li><b>Hands and held objects.</b> Bread, a kettle, a tincture vial, a notebook, the boy's shoulder — all of these can be drawn as readable shapes on a 64-wide sprite. At 32-wide they would be smudges.</li>
+    <li><b>Bedside scenes work.</b> A 128×64 patient under blankets reads as a person, not a lump. This is non-negotiable for your Act-2 cabin material.</li>
+  </ul>
+  <h3>What you paid for it</h3>
+  <ul>
+    <li><b>Animation cost.</b> A 64×96 frame has 4× the pixels of a 32×48 frame. Every walk cycle, every recoil, every "administer ember" pose is 4× the pixel-art labor — and you are one developer.</li>
+    <li><b>Palette discipline matters more.</b> At this size, color drift is visible. That is exactly why your pipeline pins ≤48 colors per sheet and runs <code>validate_sprite.py</code>. Without that gate, the art would look like 2014 RPG-Maker assets within a month.</li>
+    <li><b>Fewer characters on screen.</b> A wolf pack on a 30-tile-wide screen is 4–5 wolves, not 12. Encounter design has to lean on staging and sequence, not crowd density.</li>
+    <li><b>Tilesets are bigger jobs.</b> 32×32 tiles need ~4× the painting effort per tile vs 16×16. You will feel this when the cabin and the road both need their own tileset.</li>
+  </ul>
+</div>
+
+<!-- ============================================================== -->
+<h2>7. Where you're pushing too hard, where you have headroom</h2>
+<div class="traffic">
+  <div class="col green">
+    <h3>Solid — keep doing this</h3>
+    <ul>
+      <li>The <b>source → runtime → polish</b> pipeline. This is the single biggest reason your art will stay coherent as a solo dev.</li>
+      <li>Per-character palettes (Kalev gets <i>old-ochre</i> for skin). This is what separates "indie pixel art" from "AI pixel-art-styled illustration."</li>
+      <li>32×32 tiles + 64×96 hero. <b>The proportions are correct</b> — you are at the same ratio as Sea of Stars and Chained Echoes, both 1-to-2-person teams that shipped.</li>
+    </ul>
+  </div>
+  <div class="col yellow">
+    <h3>Pushing the limits — watch this</h3>
+    <ul>
+      <li><b>Animation count.</b> Kalev's full set (idle×4dir, walk×4dir, plus care/combat verbs) is ~150–200 frames. At your fidelity that's ~40–80 hours of polish even with the pipeline doing bulk work.</li>
+      <li><b>Bedside sprite variety.</b> 96×48 / 128×64 is unusual; comparable games rarely have this. Powerful but every patient is bespoke art.</li>
+      <li><b>Multi-character combat scenes.</b> Wolves on the road = a lot of large sprites overlapping. Plan staging now.</li>
+    </ul>
+  </div>
+  <div class="col red">
+    <h3>Don't escalate further</h3>
+    <ul>
+      <li><b>Don't go to 96×144 or higher</b> for "important" characters. You'd be in Owlboy / Iconoclasts territory — those are 5–8 year, multi-person projects.</li>
+      <li><b>Don't add a second tile size.</b> Mixing 32 and 16 tiles is a snap-grid nightmare. One size, no exceptions.</li>
+      <li><b>Don't add 8-direction movement</b> if it implies 8-direction sprites. 4-direction × your verb count is already the bigger animation budget than most solo devs ship.</li>
+      <li><b>Don't add normal maps / dynamic lighting on sprites yet.</b> It will eat the pipeline gains.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<h2>8. Room you actually have to push</h2>
+<div class="panel">
+  <ul style="margin: 0;">
+    <li><b>Environmental detail.</b> 32×32 tiles can carry a lot. Look at Sea of Stars' interiors — yours can match that without changing any number on this page.</li>
+    <li><b>Lighting via shaders, not sprites.</b> Hearth glow, lantern falloff, cabin warmth — your <code>shaders/</code> folder is the cheap-and-strong direction here. <code>vellum_paper.gdshader</code> and <code>tremor.gdshader</code> are already on this track.</li>
+    <li><b>Camera & framing.</b> Push in for bedside scenes. Pull out for the wolves road. The viewport doesn't have to feel the same in every act.</li>
+    <li><b>Silhouette work.</b> 64-wide gives you room to make every NPC silhouette unique at a glance. Don't waste it on detail; spend it on shape.</li>
+  </ul>
+</div>
+
+<!-- ============================================================== -->
+<h2>9. One sentence to remember</h2>
+<div class="panel" style="border-color: var(--accent);">
+  <p style="margin:0; font-size:16px;">
+    You picked a <b>high-fidelity-but-not-boutique</b> spot on the indie pixel-art map. It's the same spot Sea of Stars and Chained Echoes picked — defensible for a small team, but only if the palette pipeline and animation-count discipline hold.
+  </p>
+</div>
+
+<p class="dim" style="margin-top:32px; font-size:12px;">
+  Generated 2026-05-10 from <code>design_system/v0_9_mercy_rpg_substrate/10-asset-pipeline.md</code>, <code>09-naming-conventions.md</code>, <code>project.godot</code>, and <code>CLAUDE.md</code>. Ephemeral review surface — not canon.
+</p>
+
+</body>
+</html>

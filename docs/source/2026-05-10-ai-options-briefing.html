@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tincture of Mercy — AI Options Briefing</title>
+  <style>
+    :root {
+      --ink: #1c1713;
+      --muted: #665a4f;
+      --paper: #f5ecd9;
+      --paper-2: #fff8e8;
+      --panel: rgba(255, 248, 232, 0.88);
+      --line: #d6c3a0;
+      --blood: #7e2f2c;
+      --moss: #5e7354;
+      --blue: #3f6076;
+      --gold: #b68a37;
+      --violet: #5a4d72;
+      --shadow: 0 18px 45px rgba(55, 38, 20, 0.18);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 15px/1.5 ui-serif, Georgia, Cambria, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(182, 138, 55, .18), transparent 32%),
+        radial-gradient(circle at 88% 18%, rgba(63, 96, 118, .13), transparent 28%),
+        linear-gradient(180deg, var(--paper-2), var(--paper));
+    }
+    a { color: #24536d; text-decoration-thickness: .08em; text-underline-offset: .18em; }
+    .page { max-width: 1180px; margin: 0 auto; padding: 34px 22px 54px; }
+    header {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+    .hero, .card, .source-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero { padding: 28px; position: relative; overflow: hidden; }
+    .hero:after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -90px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(126,47,44,.12), transparent 70%);
+      pointer-events: none;
+    }
+    .kicker { text-transform: uppercase; letter-spacing: .16em; color: var(--blood); font-size: 12px; font-weight: 700; }
+    h1 { margin: 8px 0 10px; font-size: clamp(32px, 5vw, 58px); line-height: .95; letter-spacing: -.035em; }
+    h2 { margin: 0 0 12px; font-size: 22px; line-height: 1.12; }
+    h3 { margin: 0 0 8px; font-size: 17px; }
+    p { margin: 0 0 10px; }
+    .lead { font-size: 18px; max-width: 760px; color: #33291f; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid rgba(102,90,79,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.45);
+      color: var(--muted);
+      font-size: 12px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    .scorecard { padding: 18px; display: grid; gap: 12px; }
+    .score {
+      border-left: 4px solid var(--moss);
+      padding: 12px 12px 10px;
+      background: rgba(255,255,255,.42);
+      border-radius: 12px;
+    }
+    .score strong { display: block; font-size: 18px; }
+    .score span { color: var(--muted); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size: 12px; }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 18px; }
+    .card.blue { border-top: 5px solid var(--blue); }
+    .card.green { border-top: 5px solid var(--moss); }
+    .card.gold { border-top: 5px solid var(--gold); }
+    .card.blood { border-top: 5px solid var(--blood); }
+    .card.violet { border-top: 5px solid var(--violet); }
+    .callout {
+      margin: 16px 0;
+      padding: 16px 18px;
+      border: 1px dashed rgba(126,47,44,.35);
+      border-radius: 16px;
+      background: rgba(126,47,44,.055);
+    }
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      font-size: 12px;
+    }
+    .step {
+      min-height: 72px;
+      padding: 10px;
+      border-radius: 13px;
+      border: 1px solid rgba(102,90,79,.25);
+      background: rgba(255,255,255,.48);
+    }
+    .step b { display: block; color: var(--blood); margin-bottom: 4px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size: 13px; }
+    th, td { text-align: left; vertical-align: top; padding: 11px 10px; border-bottom: 1px solid rgba(214,195,160,.75); }
+    th { color: #38291b; background: rgba(214,195,160,.42); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    tr:last-child td { border-bottom: 0; }
+    .tag { display: inline-block; padding: 3px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; margin: 0 4px 4px 0; }
+    .high { background: rgba(94,115,84,.16); color: #354b2e; border: 1px solid rgba(94,115,84,.28); }
+    .med { background: rgba(182,138,55,.18); color: #6c4b10; border: 1px solid rgba(182,138,55,.3); }
+    .low { background: rgba(126,47,44,.14); color: #6f2a27; border: 1px solid rgba(126,47,44,.26); }
+    .idea-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .idea-list li { padding: 11px 12px; border-radius: 13px; background: rgba(255,255,255,.48); border: 1px solid rgba(102,90,79,.16); }
+    .idea-list b { color: var(--blood); }
+    .small { color: var(--muted); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; font-size: 12px; }
+    .source-box { padding: 18px; margin-top: 16px; }
+    .source-grid { columns: 2 360px; margin: 0; padding-left: 20px; }
+    .source-grid li { break-inside: avoid; margin: 0 0 8px; }
+    footer { margin-top: 22px; color: var(--muted); font-size: 12px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; }
+    @media (max-width: 880px) {
+      header, .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 18px; }
+      .hero, .card, .source-box { box-shadow: none; break-inside: avoid; }
+      a { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <section class="hero">
+        <div class="kicker">Research briefing · May 10, 2026</div>
+        <h1>AI options for <em>Tincture of Mercy</em></h1>
+        <p class="lead">The best direction is not “LLMs drive the game.” It is: deterministic game AI owns action, local models add memory, language, texture, accessibility, and tooling where they can be bounded, cached, and verified.</p>
+        <div class="meta">
+          <span class="pill">Godot 4.6 / C#</span>
+          <span class="pill">Headless substrate first</span>
+          <span class="pill">Care + combat share one event stream</span>
+          <span class="pill">Local-first experiments</span>
+        </div>
+      </section>
+      <aside class="scorecard card">
+        <div class="score"><strong>Recommended spine</strong><span>Utility AI + behavior trees + blackboard over the current SimEvent substrate.</span></div>
+        <div class="score"><strong>Best tiny-model bet</strong><span>Embeddings for memory/receptivity, then a constrained local LLM for barks/recaps.</span></div>
+        <div class="score"><strong>Runtime rule</strong><span>AI proposes intents; VerbInvocation and OutcomeResolver remain authoritative.</span></div>
+      </aside>
+    </header>
+
+    <section class="card blue">
+      <h2>How AI should work in our game</h2>
+      <p>Game AI is usually a stack: perception reads world state, decision logic chooses an action, movement/timers execute it, and the simulation validates consequences. For <em>Tincture</em>, that maps cleanly to the substrate already being built: an AI layer should read projections and event history, then submit a normal verb request. It should not mutate resources, death, loot, notebook, or progression directly.</p>
+      <div class="pipeline" aria-label="recommended AI pipeline">
+        <div class="step"><b>1. Perceive</b>Actor state, spatial context, boy position, wounds, noise, prior events.</div>
+        <div class="step"><b>2. Score/plan</b>Utility, behavior tree, or GOAP selects a candidate action.</div>
+        <div class="step"><b>3. Propose</b>AI emits a typed intent: verb, target, urgency, reason key.</div>
+        <div class="step"><b>4. Validate</b>VerbInvocation checks costs, cooldowns, timers, item requirements.</div>
+        <div class="step"><b>5. Resolve</b>ModifierAssembler + OutcomeResolver append authoritative events.</div>
+        <div class="step"><b>6. Project</b>Presenters/notebook/debug views interpret the same event truth.</div>
+      </div>
+      <div class="callout"><strong>Design guardrail:</strong> local models can author or rank suggestions, but the C# substrate decides what happened. This preserves replay, testing, and the shared care/combat substrate.</div>
+    </section>
+
+    <section class="grid three" style="margin-top:16px">
+      <article class="card green">
+        <h2>Industry-standard AI</h2>
+        <p><strong>Finite state machines / HFSM:</strong> simple, reliable phase control for animation, attack windups, recovery, fleeing, and patient bedside states.</p>
+        <p><strong>Behavior trees:</strong> readable authored behaviors for wolves, companions, patients, and scripted teaching encounters.</p>
+        <p><strong>Utility AI:</strong> scores actions by hunger, fear, proximity, wound severity, boy danger, pressure, and opportunity. This is the best fit for emergent care/combat tension.</p>
+      </article>
+      <article class="card gold">
+        <h2>Planning AI</h2>
+        <p><strong>GOAP / HTN:</strong> good for longer action chains: villager routines, pack coordination, pilgrimage logistics, patrols, retreat, call-for-help, or “find safer route then act.”</p>
+        <p>Use later, once B4 has spatial/route primitives. It is powerful but more expensive to author and debug than utility + behavior trees.</p>
+      </article>
+      <article class="card violet">
+        <h2>Model-assisted AI</h2>
+        <p><strong>Embeddings:</strong> cheap local semantic matching for memory, receptivity, hints, barks, and notebook retrieval.</p>
+        <p><strong>Small LLMs:</strong> constrained prose, recap, emotional barks, optional dialogue, and dev tools. Keep outputs schema-limited and non-authoritative.</p>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Options, cost, and feasibility</h2>
+      <table>
+        <thead><tr><th>Option</th><th>Use in Tincture</th><th>Cost profile</th><th>Feasibility</th><th>Risks / notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Utility AI + blackboard</strong></td>
+            <td>Wolf threat, boy danger, patient urgency, companion reactions, dynamic pressure director.</td>
+            <td>$0 runtime. ~1–2 weeks for first useful B4 version; grows with content rows.</td>
+            <td><span class="tag high">High</span></td>
+            <td>Most aligned with deterministic substrate. Needs good debug presenter.</td>
+          </tr>
+          <tr>
+            <td><strong>Behavior trees / HFSM</strong></td>
+            <td>Wolf patrol/aggro/flee/leash, patient bedside phases, inverse boss opening beat, enemy recovery loops.</td>
+            <td>$0 runtime. ~1–3 weeks for in-house simple tree or addon evaluation.</td>
+            <td><span class="tag high">High</span></td>
+            <td>Godot options exist; C# substrate may prefer our own headless tree rows for tests.</td>
+          </tr>
+          <tr>
+            <td><strong>GOAP / HTN planner</strong></td>
+            <td>Pack tactics, NPC routines, pilgrimage route adaptation, “protect boy → retreat → call → flank.”</td>
+            <td>$0 runtime. ~3–6 weeks to make debuggable and data-driven.</td>
+            <td><span class="tag med">Medium</span></td>
+            <td>Do after B4 spatial and route graph. Not needed for first wolf AI.</td>
+          </tr>
+          <tr>
+            <td><strong>Local embeddings</strong></td>
+            <td>Semantic memory, notebook retrieval, hint selection, latent-path/receptivity matching, “what does this NPC remember?”</td>
+            <td>$0 per player. Model ~20–150 MB depending choice; ~1–3 weeks prototype.</td>
+            <td><span class="tag high">High</span></td>
+            <td>Very good first ML feature because output is a score, not free text.</td>
+          </tr>
+          <tr>
+            <td><strong>Tiny local LLM barks</strong></td>
+            <td>Short wolf-pack barks? Better: human barks, bedside micro-lines, Witness recaps, debug summaries.</td>
+            <td>$0 inference. ~300 MB–2 GB model download. ~3–6 weeks including latency/caching/QA.</td>
+            <td><span class="tag med">Medium</span></td>
+            <td>Use Qwen3-0.6B, Gemma 3 270M/1B, or SmolLM2-class models. Keep generated text optional/cached.</td>
+          </tr>
+          <tr>
+            <td><strong>Structured local LLM intent parser</strong></td>
+            <td>Experimental natural-language commands, NPC intent suggestions, designer console.</td>
+            <td>$0 inference; likely 1B–4B model. ~4–8 weeks for robust schema validation.</td>
+            <td><span class="tag med">Medium</span></td>
+            <td>Do not let it bypass VerbInvocation. Best as dev tool or optional mode first.</td>
+          </tr>
+          <tr>
+            <td><strong>Local speech: ASR/TTS</strong></td>
+            <td>Accessibility, spoken notebook, prototype voice commands, internal trailer/demo tools.</td>
+            <td>$0 inference; tens of MB to >1 GB depending voice/STT model. ~2–6 weeks integration.</td>
+            <td><span class="tag med">Medium</span></td>
+            <td>Piper/Whisper-style stacks are mature, but voice can expand scope quickly.</td>
+          </tr>
+          <tr>
+            <td><strong>Cloud LLM fallback</strong></td>
+            <td>Authoring tools, build-time bark generation, remote playtest summaries, optional opt-in online feature.</td>
+            <td>Example GPT-5.4 mini: $0.75/M input + $4.50/M output. A 1k-in/150-out turn is about $0.0014.</td>
+            <td><span class="tag med">Medium</span></td>
+            <td>Great for tools; risky for shipped core runtime due privacy, outages, moderation, and recurring cost.</td>
+          </tr>
+          <tr>
+            <td><strong>AI playtest analyst</strong></td>
+            <td>Reads replay logs and reports confusing pressure spikes, broken affordances, dead-end strategies.</td>
+            <td>Local or cloud. ~1–3 weeks once replay fixtures are rich.</td>
+            <td><span class="tag high">High</span></td>
+            <td>High leverage because it improves development without shipping model risk.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Cost ranges are planning estimates for a small indie build. They exclude existing core substrate work and assume model features are optional, cached, and tested on target hardware.</p>
+    </section>
+
+    <section class="grid two" style="margin-top:16px">
+      <article class="card green">
+        <h2>Innovative low-cost ideas</h2>
+        <ul class="idea-list">
+          <li><b>Witness memory without hallucination:</b> embed important events and retrieve them later for notebook/progression copy; no model decides truth.</li>
+          <li><b>Receptivity shadows:</b> use semantic similarity to choose which path/register framing an NPC is most ready to hear.</li>
+          <li><b>Pressure director:</b> utility system modulates danger, rest windows, and call/flee behavior from event history.</li>
+          <li><b>Boy as attention beacon:</b> simple utility signals make the child tactically meaningful without needing a complex companion brain.</li>
+          <li><b>Constrained local barks:</b> tiny model drafts 1-line reactions, then style/allowlist/filter/cache before display.</li>
+          <li><b>Playtest confessor:</b> dev-only model summarizes replay failures in plain language after test runs.</li>
+        </ul>
+      </article>
+      <article class="card blood">
+        <h2>Recommended adoption path</h2>
+        <ol>
+          <li><strong>B4 now:</strong> build spatial context + threat utility + leash/respawn. No model required.</li>
+          <li><strong>B5d/B6:</strong> add debug presenters so AI decisions are explainable from event truth.</li>
+          <li><strong>Prototype A:</strong> local embeddings for memory/receptivity/hint retrieval.</li>
+          <li><strong>Prototype B:</strong> tiny local LLM for optional cached barks and notebook recap drafts.</li>
+          <li><strong>Tools lane:</strong> cloud or local model reads replay fixtures for design QA.</li>
+        </ol>
+        <div class="callout"><strong>Decision:</strong> start with deterministic AI because it makes combat, care, and replay stronger. Add tiny models at the edges where their uncertainty is useful rather than dangerous.</div>
+      </article>
+    </section>
+
+    <section class="grid two" style="margin-top:16px">
+      <article class="card blue">
+        <h2>Local runtime candidates</h2>
+        <p><strong>llama.cpp / GGUF:</strong> broad hardware support, quantization, local server mode, and C# bindings through LLamaSharp. Best native route for Godot desktop experiments.</p>
+        <p><strong>ONNX Runtime:</strong> good for embeddings/classifiers in C# when the model is small and fixed.</p>
+        <p><strong>WebLLM / Transformers.js:</strong> useful for browser companion tools or web demos; less direct for Godot runtime.</p>
+        <p><strong>Ollama / LM Studio:</strong> fastest development loop, but not ideal as a shipped dependency.</p>
+      </article>
+      <article class="card gold">
+        <h2>Model fit quick take</h2>
+        <p><strong>Embeddings:</strong> all-MiniLM-L6-v2 or similar small embedding model; good for semantic retrieval and clustering.</p>
+        <p><strong>Text tiny:</strong> SmolLM2 360M for very small experiments; Qwen3-0.6B for stronger small dialogue/tool behavior; Gemma 3 270M/1B for Google open-weight line.</p>
+        <p><strong>Text better:</strong> 3B–4B class models can improve quality but raise memory, latency, and packaging burden.</p>
+      </article>
+    </section>
+
+    <section class="source-box">
+      <h2>Research sources</h2>
+      <ol class="source-grid">
+        <li>Game AI standards: <a href="https://gameaibook.org/wp-content/uploads/2024/08/book2.pdf">Artificial Intelligence and Games</a> notes FSMs, behavior trees, and utility AI as dominant game-AI methods.</li>
+        <li>Godot behavior-tree/HFSM ecosystem: <a href="https://limboai.readthedocs.io/_/downloads/en/stable/pdf/">LimboAI 1.0 docs</a>.</li>
+        <li>Godot navigation/avoidance reference: <a href="https://docs.godotengine.org/cs/4.x/classes/class_navigationagent2d.html">NavigationAgent2D docs</a>.</li>
+        <li>Local LLM runtime: <a href="https://raw.githubusercontent.com/ggml-org/llama.cpp/master/README.md">llama.cpp README</a>.</li>
+        <li>Tiny language model: <a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen3-0.6B model card</a>.</li>
+        <li>Open-weight model family: <a href="https://ai.google.dev/gemma/docs/core/model_card_3">Google Gemma 3 model card</a>.</li>
+        <li>Compact model family: <a href="https://huggingface.co/HuggingFaceTB/SmolLM2-360M">SmolLM2-360M model card</a>.</li>
+        <li>Embeddings candidate: <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">all-MiniLM-L6-v2 model card</a>.</li>
+        <li>Browser/on-device LLM research: <a href="https://arxiv.org/abs/2412.15803">WebLLM paper</a>.</li>
+        <li>Cloud cost reference: <a href="https://developers.openai.com/api/docs/models/gpt-5.4-mini">OpenAI GPT-5.4 mini model/pricing page</a>.</li>
+        <li>Local speech-to-text: <a href="https://raw.githubusercontent.com/ggml-org/whisper.cpp/master/README.md">whisper.cpp README</a>.</li>
+        <li>Local text-to-speech: <a href="https://github.com/OHF-Voice/piper1-gpl">Piper local TTS project</a>.</li>
+      </ol>
+    </section>
+
+    <footer>
+      Generated as a non-canonical research briefing. If promoted into the active packet, convert the chosen direction into a PRD/ADR and acceptance rows before implementation.
+    </footer>
+  </main>
+</body>
+</html>

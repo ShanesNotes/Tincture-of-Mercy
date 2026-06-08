@@ -1,0 +1,962 @@
+[
+  {
+    "id": "evt-00000001",
+    "sequence": 1,
+    "tick": 0,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "act.cinematic_two_breaths",
+    "domain": "debug",
+    "source_system": "opening_fixture.v1",
+    "event_type": "opening_snapshot_seed",
+    "fields": {
+      "act_beat": "act.cinematic_two_breaths",
+      "anna_breath_state": "labored",
+      "anna_motif_id": "anna.d_phrygian_solo_female",
+      "camera_focus_target": "wide",
+      "hearth_state": "lit",
+      "iiro_posture": "on_cot",
+      "notebook_focus_page": "66",
+      "notebook_state": "open"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "opening",
+      "sensory",
+      "two_breaths"
+    ]
+  },
+  {
+    "id": "evt-00000002",
+    "sequence": 2,
+    "tick": 1,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "economy.item.receive",
+    "domain": "economy",
+    "source_system": "fixture.item_source",
+    "event_type": "item_received",
+    "fields": {
+      "inventory_delta": "2",
+      "item_id": "water_supply",
+      "source_event_id": "opening.initial_supply"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "inventory",
+      "water_supply"
+    ]
+  },
+  {
+    "id": "evt-00000003",
+    "sequence": 3,
+    "tick": 1,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "economy.item.receive",
+    "domain": "economy",
+    "source_system": "fixture.item_source",
+    "event_type": "item_received",
+    "fields": {
+      "inventory_delta": "1",
+      "item_id": "bread",
+      "source_event_id": "opening.initial_supply"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "inventory"
+    ]
+  },
+  {
+    "id": "evt-00000004",
+    "sequence": 4,
+    "tick": 10,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.observe.anna",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.water",
+      "anna_breath_state": "labored",
+      "audio_cue": "long_morning_start",
+      "camera_focus_target": "anna",
+      "hearth_state": "lit",
+      "invocation_id": "opening-water-observe-anna",
+      "notebook_focus_page": "66",
+      "presenter_key": "opening.care.observe.anna"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "audio_cue",
+      "care",
+      "long_morning",
+      "verb_invocation"
+    ]
+  },
+  {
+    "id": "evt-00000005",
+    "sequence": 5,
+    "tick": 12,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.water.use",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.water",
+      "inventory_delta": "-1",
+      "item_id": "water_supply",
+      "outcome": "water_taken",
+      "person_id": "iiro",
+      "recognition_label": "water received",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "care.water.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "care",
+      "resolved_outcome",
+      "water"
+    ]
+  },
+  {
+    "id": "evt-00000006",
+    "sequence": 6,
+    "tick": 14,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.water.use",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.water",
+      "anna_breath_state": "thin",
+      "item_id": "water_supply",
+      "outcome": "water_glance",
+      "person_id": "anna",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "care.water.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "anna",
+      "care",
+      "glance",
+      "resolved_outcome",
+      "water"
+    ]
+  },
+  {
+    "id": "evt-00000007",
+    "sequence": 7,
+    "tick": 25,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.bread.offer",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.bread",
+      "inventory_delta": "-1",
+      "invocation_id": "opening-bread-offer-iiro",
+      "item_id": "bread",
+      "path_id": "apothecary",
+      "person_id": "iiro",
+      "presenter_key": "opening.care.bread.offer",
+      "receptivity_profile_id": "iiro.hunger_fear.v1",
+      "recognition_label": "bread received",
+      "recognition_seed": "bread_received",
+      "register_match_modifier": "7",
+      "voice_register": "folk"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "care",
+      "recollection_seed",
+      "verb_invocation"
+    ]
+  },
+  {
+    "id": "evt-00000008",
+    "sequence": 8,
+    "tick": 26,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "notebook.ordinary_mercy",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.ordinary_mercy.bread",
+      "notebook_entry_id": "entry.iiro.bread",
+      "notebook_focus_page": "66",
+      "person_id": "iiro",
+      "recognition_label": "bread received",
+      "recognition_seed": "bread_ordinary_mercy",
+      "recognition_seed_kind": "bread",
+      "source_event_id": "evt-00000007"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "bread",
+      "notebook",
+      "person_record"
+    ]
+  },
+  {
+    "id": "evt-00000009",
+    "sequence": 9,
+    "tick": 40,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "craft.tincture.prepare",
+    "domain": "craft",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "inventory_delta": "3",
+      "item_id": "tincture_dose",
+      "modifier_composition": "modifier_composer.additive.v1",
+      "outcome": "tempered_febrifuge",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_fixture_id": "opening.act3.tincture",
+      "table_id": "craft.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "quality": "tempered"
+    },
+    "tags": [
+      "apothecary",
+      "craft",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000010",
+    "sequence": 10,
+    "tick": 43,
+    "actor_id": "kalev",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "inventory_delta": "-1",
+      "item_id": "tincture_dose",
+      "outcome": "tincture_takes_whole",
+      "person_id": "iiro",
+      "recognition_label": "fever eased",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_fixture_id": "opening.act3.iiro_tincture",
+      "table_id": "care.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "3"
+    },
+    "tags": [
+      "care",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000011",
+    "sequence": 11,
+    "tick": 46,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.tincture",
+      "anna_breath_state": "thin",
+      "camera_focus_target": "anna",
+      "inventory_delta": "-1",
+      "item_id": "tincture_dose",
+      "outcome": "tincture_glance",
+      "partial_amplitude": "0.4",
+      "person_id": "anna",
+      "resolver_id": "outcome_resolver.v1",
+      "roll_kind": "scripted",
+      "scripted_entry_id": "glance",
+      "scripted_fixture_id": "opening.act3.anna_glance",
+      "table_id": "care.tincture.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "anna",
+      "care",
+      "glance",
+      "resolved_outcome",
+      "tincture"
+    ]
+  },
+  {
+    "id": "evt-00000012",
+    "sequence": 12,
+    "tick": 47,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "care.tincture.administer",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.tincture",
+      "invocation_id": "opening-tincture-anna",
+      "outcome_key": "tincture_glance",
+      "presenter_key": "opening.care.tincture.administer",
+      "resolver_id": "outcome_resolver.v1",
+      "timer_id": "tincture_administer"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "care",
+      "completed",
+      "tincture",
+      "verb_invocation"
+    ]
+  },
+  {
+    "id": "evt-00000013",
+    "sequence": 13,
+    "tick": 60,
+    "actor_id": "wolf_01",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "encounter.wolves.press",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "aggro_entered",
+    "fields": {
+      "act_beat": "act.wolves_hold_line",
+      "aggressor_role": "wolf",
+      "audio_cue": "yard_holds_start",
+      "camera_focus_target": "yard",
+      "encounter_id": "opening.wolves_yard",
+      "iiro_posture": "fleeing",
+      "spatial_band": "aggro"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "aggro",
+      "audio_cue",
+      "combat",
+      "encounter_ai",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000014",
+    "sequence": 14,
+    "tick": 62,
+    "actor_id": "wolf_01",
+    "target_id": "iiro",
+    "location": null,
+    "verb_id": "encounter.wolves.press",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "threat_target_changed",
+    "fields": {
+      "encounter_id": "opening.wolves_yard",
+      "new_target_id": "iiro",
+      "previous_target_id": "",
+      "threat_reason": "closest_fleeing_iiro"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "combat",
+      "encounter_ai",
+      "threat"
+    ]
+  },
+  {
+    "id": "evt-00000015",
+    "sequence": 15,
+    "tick": 66,
+    "actor_id": "kalev",
+    "target_id": "wolf_01",
+    "location": null,
+    "verb_id": "combat.attack.resolve",
+    "domain": "combat",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "encounter_id": "opening.wolves_yard",
+      "outcome": "cudgel_hit",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "combat.cudgel.v1",
+      "threat_delta": "8"
+    },
+    "costs": {},
+    "results": {
+      "damage": "4"
+    },
+    "tags": [
+      "combat",
+      "damage",
+      "resolved_outcome"
+    ]
+  },
+  {
+    "id": "evt-00000016",
+    "sequence": 16,
+    "tick": 67,
+    "actor_id": "wolf_01",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "encounter.wolves.press",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "threat_target_changed",
+    "fields": {
+      "encounter_id": "opening.wolves_yard",
+      "new_target_id": "kalev",
+      "previous_target_id": "iiro",
+      "threat_reason": "taunt_and_damage"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "combat",
+      "encounter_ai",
+      "threat"
+    ]
+  },
+  {
+    "id": "evt-00000017",
+    "sequence": 17,
+    "tick": 90,
+    "actor_id": "iiro",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "route.iiro.advance",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "route_node_reached",
+    "fields": {
+      "audio_cue": "yard_holds_resolve_safe",
+      "camera_focus_target": "threshold",
+      "encounter_id": "opening.wolves_yard",
+      "node_id": "woodline",
+      "person_id": "iiro",
+      "recognition_label": "protected at woodline",
+      "recognition_seed": "protected_iiro_woodline",
+      "route_id": "iiro.escape"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "audio_cue",
+      "combat",
+      "encounter_ai",
+      "protected",
+      "protection",
+      "route",
+      "safe"
+    ]
+  },
+  {
+    "id": "evt-00000018",
+    "sequence": 18,
+    "tick": 96,
+    "actor_id": "wolf_01",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "combat.wolf.death_or_flee",
+    "domain": "combat",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "wolf_01",
+      "body_eligibility": "recoverable_body",
+      "body_eligibility_reason": "recoverable_body",
+      "body_eligible": "true",
+      "cause": "combat.attack.resolve",
+      "consequence_tags": "opening,wolf,body_recoverable",
+      "death_friction_request_id": "opening-wolf-01-death",
+      "death_kind": "biological_death",
+      "friction_rule_id": "friction.wolf.recoverable.v1",
+      "loot_hook": "loot.opening.wolf_material",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": ""
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "true",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "biological_death",
+      "body_recoverable",
+      "combat",
+      "death",
+      "death_friction",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000019",
+    "sequence": 19,
+    "tick": 97,
+    "actor_id": "kalev",
+    "target_id": "wolf_01",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "loot_eligibility_recorded",
+    "fields": {
+      "eligibility_reason": "recoverable_body",
+      "eligible": "true",
+      "encounter_id": "opening.wolves_yard",
+      "loot_hook": "loot.opening.wolf_material",
+      "loot_table": "loot.opening.wolf_material",
+      "source_actor": "wolf_01",
+      "source_domain": "combat",
+      "source_event_id": "evt-00000018",
+      "source_event_type": "actor_died",
+      "source_system": "death_friction.v1",
+      "source_tick": "96"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "economy",
+      "eligibility",
+      "loot",
+      "recoverable_body"
+    ]
+  },
+  {
+    "id": "evt-00000020",
+    "sequence": 20,
+    "tick": 98,
+    "actor_id": "kalev",
+    "target_id": "wolf_01",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "material_outcome_emitted",
+    "fields": {
+      "eligibility_reason": "recoverable_body",
+      "eligible": "true",
+      "encounter_id": "opening.wolves_yard",
+      "entry_id": "wolf_hide_standard",
+      "item_id": "wolf_hide",
+      "loot_hook": "loot.opening.wolf_material",
+      "loot_table": "loot.opening.wolf_material",
+      "quality": "standard",
+      "quantity": "1",
+      "rarity": "common",
+      "roll_kind": "scripted",
+      "roll_value": "50",
+      "scripted_entry_id": "wolf_hide_standard",
+      "scripted_fixture_id": "opening.wolves.safe.loot",
+      "source_actor": "wolf_01",
+      "source_domain": "combat",
+      "source_event_id": "evt-00000018",
+      "source_event_type": "actor_died",
+      "source_system": "death_friction.v1",
+      "source_tick": "96"
+    },
+    "costs": {},
+    "results": {
+      "item_id": "wolf_hide",
+      "quality": "standard",
+      "quantity": "1",
+      "rarity": "common"
+    },
+    "tags": [
+      "economy",
+      "loot",
+      "material",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000021",
+    "sequence": 21,
+    "tick": 100,
+    "actor_id": "wolf_02",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "encounter.wolves.leash",
+    "domain": "combat",
+    "source_system": "encounter_ai.v1",
+    "event_type": "leash_triggered",
+    "fields": {
+      "encounter_id": "opening.wolves_yard",
+      "leash_reason": "iiro_safe_and_pack_breaks",
+      "source_actor": "wolf_02"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "combat",
+      "encounter_ai",
+      "leash",
+      "wolf"
+    ]
+  },
+  {
+    "id": "evt-00000022",
+    "sequence": 22,
+    "tick": 101,
+    "actor_id": "kalev",
+    "target_id": "wolf_02",
+    "location": null,
+    "verb_id": "economy.loot.resolve",
+    "domain": "economy",
+    "source_system": "economy.v1",
+    "event_type": "loot_eligibility_recorded",
+    "fields": {
+      "eligibility_reason": "source_actor_leashed",
+      "eligible": "false",
+      "encounter_id": "opening.wolves_yard",
+      "loot_hook": "loot.opening.wolf_material",
+      "loot_table": "loot.opening.wolf_material",
+      "source_actor": "wolf_02",
+      "source_domain": "combat",
+      "source_event_id": "evt-00000021",
+      "source_event_type": "leash_triggered",
+      "source_system": "encounter_ai.v1",
+      "source_tick": "100"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "economy",
+      "eligibility",
+      "loot",
+      "source_actor_leashed"
+    ]
+  },
+  {
+    "id": "evt-00000023",
+    "sequence": 23,
+    "tick": 110,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "presence.sit_near",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.mother_witness",
+      "anna_breath_state": "thin",
+      "camera_focus_target": "anna",
+      "path_id": "hesychasm",
+      "person_id": "anna",
+      "recognition_label": "sat near Anna",
+      "recognition_seed": "presence_anna_bedside",
+      "recollection_delta": "1",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "presence.hesychasm.v1",
+      "voice_register": "folk"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "1"
+    },
+    "tags": [
+      "care",
+      "hesychasm",
+      "presence",
+      "resolved_outcome"
+    ]
+  },
+  {
+    "id": "evt-00000024",
+    "sequence": 24,
+    "tick": 112,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "witness.keep_watch",
+    "domain": "witness",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.mother_witness",
+      "anna_breath_state": "thin",
+      "path_id": "hesychasm",
+      "person_id": "anna",
+      "progression_rule_id": "progression.witness_presence.v1",
+      "recognition_label": "kept watch",
+      "recognition_seed": "witness_presence_anna",
+      "recollection_delta": "2",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "witness.keep_watch.v1",
+      "voice_register": "sacred"
+    },
+    "costs": {},
+    "results": {
+      "burden_delta": "2"
+    },
+    "tags": [
+      "hesychasm",
+      "recollection_seed",
+      "resolved_outcome",
+      "witness"
+    ]
+  },
+  {
+    "id": "evt-00000025",
+    "sequence": 25,
+    "tick": 120,
+    "actor_id": "anna",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "witness.anna_fixed_death",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "actor_died",
+    "fields": {
+      "actor": "anna",
+      "anna_breath_state": "stopped",
+      "audio_cue": "long_pour_start",
+      "body_eligibility": "not_applicable",
+      "body_eligible": "false",
+      "camera_focus_target": "anna",
+      "cause": "fixed_story_death",
+      "consequence_tags": "act4,gravity_encounter,anna,witnessed",
+      "copy_text": "Anna\u0027s breath stops with Kalev still beside her.",
+      "death_friction_request_id": "opening-anna-fixed-death",
+      "death_kind": "fixed_death",
+      "friction_rule_id": "friction.anna.fixed_death.v1",
+      "person_id": "anna",
+      "presenter_key": "opening.witness.anna_fixed_death",
+      "recoverable": "false",
+      "target": "kalev",
+      "witness_hook": "witness.kalev"
+    },
+    "costs": {},
+    "results": {
+      "body_eligible": "false",
+      "mortality_state": "dead",
+      "recoverable": "false"
+    },
+    "tags": [
+      "anna",
+      "audio_cue",
+      "death",
+      "death_friction",
+      "fixed_death",
+      "witness",
+      "witnessed"
+    ]
+  },
+  {
+    "id": "evt-00000026",
+    "sequence": 26,
+    "tick": 121,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "witness.kalev",
+    "domain": "witness",
+    "source_system": "death_friction.v1",
+    "event_type": "witness_hook_recorded",
+    "fields": {
+      "burden_delta": "3",
+      "consequence_tags": "act4,anna,witnessed",
+      "person_id": "anna",
+      "recollection_seed": "anna_name_witnessed",
+      "source_event_id": "evt-00000025",
+      "target_actor_id": "anna",
+      "witness_hook": "witness.kalev",
+      "witness_request_id": "opening-anna-witness"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "anna",
+      "burden",
+      "death_friction",
+      "recollection_seed",
+      "witness"
+    ]
+  },
+  {
+    "id": "evt-00000027",
+    "sequence": 27,
+    "tick": 122,
+    "actor_id": "kalev",
+    "target_id": "anna",
+    "location": null,
+    "verb_id": "notebook.write_name",
+    "domain": "notebook",
+    "source_system": "notebook_fixture.v1",
+    "event_type": "notebook_entry_recorded",
+    "fields": {
+      "copy_key": "notebook.write_name.anna",
+      "copy_text": "Anna \u2014 written after breath stopped.",
+      "line": "3",
+      "name": "Anna",
+      "notebook_entry_id": "entry.anna.name",
+      "notebook_focus_page": "66",
+      "person_id": "anna",
+      "recognition_label": "Anna written after breath",
+      "source_event_id": "evt-00000025"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "anna",
+      "name",
+      "notebook",
+      "person_record"
+    ]
+  },
+  {
+    "id": "evt-00000028",
+    "sequence": 28,
+    "tick": 130,
+    "actor_id": "kalev",
+    "target_id": "kalev",
+    "location": null,
+    "verb_id": "care.tincture.self_administer",
+    "domain": "care",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.borrowed_mercy_depart",
+      "burden_delta": "3",
+      "camera_focus_target": "notebook",
+      "inventory_delta": "-1",
+      "item_id": "tincture_dose",
+      "outcome": "self_administer_hit",
+      "person_id": "kalev",
+      "recognition_label": "borrowed mercy",
+      "recognition_seed": "borrowed_mercy_debt",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "care.tincture.self.v1"
+    },
+    "costs": {},
+    "results": {
+      "comfort_delta": "2"
+    },
+    "tags": [
+      "borrowed_mercy",
+      "care",
+      "resolved_outcome",
+      "self_administer"
+    ]
+  },
+  {
+    "id": "evt-00000029",
+    "sequence": 29,
+    "tick": 136,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "iconographic.read_threshold",
+    "domain": "witness",
+    "source_system": "outcome_resolver.v1",
+    "event_type": "outcome_resolved",
+    "fields": {
+      "act_beat": "act.borrowed_mercy_depart",
+      "camera_focus_target": "threshold",
+      "copy_text": "The threshold reads as a leaving, not a rescue.",
+      "notebook_focus_page": "66",
+      "path_id": "iconographic",
+      "recognition_label": "threshold as icon",
+      "recognition_seed": "threshold_read",
+      "recognition_seed_kind": "iconographic",
+      "resolver_id": "outcome_resolver.v1",
+      "table_id": "iconographic.threshold.v1",
+      "voice_register": "sacred"
+    },
+    "costs": {},
+    "results": {
+      "recollection_delta": "1"
+    },
+    "tags": [
+      "iconographic",
+      "resolved_outcome",
+      "threshold"
+    ]
+  },
+  {
+    "id": "evt-00000030",
+    "sequence": 30,
+    "tick": 140,
+    "actor_id": "kalev",
+    "target_id": null,
+    "location": null,
+    "verb_id": "world.cross_threshold",
+    "domain": "care",
+    "source_system": "verb_invocation.v1",
+    "event_type": "verb_invocation_completed",
+    "fields": {
+      "act_beat": "act.borrowed_mercy_depart",
+      "audio_cue": "long_pour_resolve",
+      "camera_focus_target": "threshold",
+      "copy_text": "Page 66 stays open as Kalev crosses the threshold.",
+      "hearth_state": "low",
+      "invocation_id": "opening-threshold-cross",
+      "notebook_focus_page": "66",
+      "presenter_key": "opening.world.cross_threshold"
+    },
+    "costs": {},
+    "results": {},
+    "tags": [
+      "audio_cue",
+      "completed",
+      "threshold",
+      "verb_invocation"
+    ]
+  }
+]

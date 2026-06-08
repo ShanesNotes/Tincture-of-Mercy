@@ -1,0 +1,202 @@
+## PhysicsServer3DExtension <- PhysicsServer3D
+
+This class extends PhysicsServer3D by providing additional virtual methods that can be overridden. When these methods are overridden, they will be called instead of the internal methods of the physics server. Intended for use with GDExtension to create custom implementations of PhysicsServer3D.
+
+**Methods:**
+- AreaAddShape(Rid area, Rid shape, Transform3D transform, bool disabled)
+- AreaAttachObjectInstanceId(Rid area, int id)
+- AreaClearShapes(Rid area)
+- AreaCreate() -> Rid
+- AreaGetCollisionLayer(Rid area) -> int
+- AreaGetCollisionMask(Rid area) -> int
+- AreaGetObjectInstanceId(Rid area) -> int
+- AreaGetParam(Rid area, int param) -> Variant
+- AreaGetShape(Rid area, int shapeIdx) -> Rid
+- AreaGetShapeCount(Rid area) -> int
+- AreaGetShapeTransform(Rid area, int shapeIdx) -> Transform3D
+- AreaGetSpace(Rid area) -> Rid
+- AreaGetTransform(Rid area) -> Transform3D
+- AreaRemoveShape(Rid area, int shapeIdx)
+- AreaSetAreaMonitorCallback(Rid area, Callable callback)
+- AreaSetCollisionLayer(Rid area, int layer)
+- AreaSetCollisionMask(Rid area, int mask)
+- AreaSetMonitorCallback(Rid area, Callable callback)
+- AreaSetMonitorable(Rid area, bool monitorable)
+- AreaSetParam(Rid area, int param, Variant value)
+- AreaSetRayPickable(Rid area, bool enable)
+- AreaSetShape(Rid area, int shapeIdx, Rid shape)
+- AreaSetShapeDisabled(Rid area, int shapeIdx, bool disabled)
+- AreaSetShapeTransform(Rid area, int shapeIdx, Transform3D transform)
+- AreaSetSpace(Rid area, Rid space)
+- AreaSetTransform(Rid area, Transform3D transform)
+- BodyAddCollisionException(Rid body, Rid exceptedBody)
+- BodyAddConstantCentralForce(Rid body, Vector3 force)
+- BodyAddConstantForce(Rid body, Vector3 force, Vector3 position)
+- BodyAddConstantTorque(Rid body, Vector3 torque)
+- BodyAddShape(Rid body, Rid shape, Transform3D transform, bool disabled)
+- BodyApplyCentralForce(Rid body, Vector3 force)
+- BodyApplyCentralImpulse(Rid body, Vector3 impulse)
+- BodyApplyForce(Rid body, Vector3 force, Vector3 position)
+- BodyApplyImpulse(Rid body, Vector3 impulse, Vector3 position)
+- BodyApplyTorque(Rid body, Vector3 torque)
+- BodyApplyTorqueImpulse(Rid body, Vector3 impulse)
+- BodyAttachObjectInstanceId(Rid body, int id)
+- BodyClearShapes(Rid body)
+- BodyCreate() -> Rid
+- BodyGetCollisionExceptions(Rid body) -> RID[]
+- BodyGetCollisionLayer(Rid body) -> int
+- BodyGetCollisionMask(Rid body) -> int
+- BodyGetCollisionPriority(Rid body) -> float
+- BodyGetConstantForce(Rid body) -> Vector3
+- BodyGetConstantTorque(Rid body) -> Vector3
+- BodyGetContactsReportedDepthThreshold(Rid body) -> float
+- BodyGetDirectState(Rid body) -> PhysicsDirectBodyState3D
+- BodyGetMaxContactsReported(Rid body) -> int
+- BodyGetMode(Rid body) -> int
+- BodyGetObjectInstanceId(Rid body) -> int
+- BodyGetParam(Rid body, int param) -> Variant
+- BodyGetShape(Rid body, int shapeIdx) -> Rid
+- BodyGetShapeCount(Rid body) -> int
+- BodyGetShapeTransform(Rid body, int shapeIdx) -> Transform3D
+- BodyGetSpace(Rid body) -> Rid
+- BodyGetState(Rid body, int state) -> Variant
+- BodyGetUserFlags(Rid body) -> int
+- BodyIsAxisLocked(Rid body, int axis) -> bool
+- BodyIsContinuousCollisionDetectionEnabled(Rid body) -> bool
+- BodyIsOmittingForceIntegration(Rid body) -> bool
+- BodyRemoveCollisionException(Rid body, Rid exceptedBody)
+- BodyRemoveShape(Rid body, int shapeIdx)
+- BodyResetMassProperties(Rid body)
+- BodySetAxisLock(Rid body, int axis, bool lock)
+- BodySetAxisVelocity(Rid body, Vector3 axisVelocity)
+- BodySetCollisionLayer(Rid body, int layer)
+- BodySetCollisionMask(Rid body, int mask)
+- BodySetCollisionPriority(Rid body, float priority)
+- BodySetConstantForce(Rid body, Vector3 force)
+- BodySetConstantTorque(Rid body, Vector3 torque)
+- BodySetContactsReportedDepthThreshold(Rid body, float threshold)
+- BodySetEnableContinuousCollisionDetection(Rid body, bool enable)
+- BodySetForceIntegrationCallback(Rid body, Callable callable, Variant userdata)
+- BodySetMaxContactsReported(Rid body, int amount)
+- BodySetMode(Rid body, int mode)
+- BodySetOmitForceIntegration(Rid body, bool enable)
+- BodySetParam(Rid body, int param, Variant value)
+- BodySetRayPickable(Rid body, bool enable)
+- BodySetShape(Rid body, int shapeIdx, Rid shape)
+- BodySetShapeDisabled(Rid body, int shapeIdx, bool disabled)
+- BodySetShapeTransform(Rid body, int shapeIdx, Transform3D transform)
+- BodySetSpace(Rid body, Rid space)
+- BodySetState(Rid body, int state, Variant value)
+- BodySetStateSyncCallback(Rid body, Callable callable)
+- BodySetUserFlags(Rid body, int flags)
+- BodyTestMotion(Rid body, Transform3D from, Vector3 motion, float margin, int maxCollisions, bool collideSeparationRay, bool recoveryAsCollision, PhysicsServer3DExtensionMotionResult* rResult) -> bool
+- BoxShapeCreate() -> Rid
+- CapsuleShapeCreate() -> Rid
+- ConcavePolygonShapeCreate() -> Rid
+- ConeTwistJointGetParam(Rid joint, int param) -> float
+- ConeTwistJointSetParam(Rid joint, int param, float value)
+- ConvexPolygonShapeCreate() -> Rid
+- CustomShapeCreate() -> Rid
+- CylinderShapeCreate() -> Rid
+- EndSync()
+- Finish()
+- FlushQueries()
+- FreeRid(Rid rid)
+- Generic6dofJointGetFlag(Rid joint, int axis, int flag) -> bool
+- Generic6dofJointGetParam(Rid joint, int axis, int param) -> float
+- Generic6dofJointSetFlag(Rid joint, int axis, int flag, bool enable)
+- Generic6dofJointSetParam(Rid joint, int axis, int param, float value)
+- GetProcessInfo(int processInfo) -> int
+- HeightmapShapeCreate() -> Rid
+- HingeJointGetFlag(Rid joint, int flag) -> bool
+- HingeJointGetParam(Rid joint, int param) -> float
+- HingeJointSetFlag(Rid joint, int flag, bool enabled)
+- HingeJointSetParam(Rid joint, int param, float value)
+- Init()
+- IsFlushingQueries() -> bool
+- JointClear(Rid joint)
+- JointCreate() -> Rid
+- JointDisableCollisionsBetweenBodies(Rid joint, bool disable)
+- JointGetSolverPriority(Rid joint) -> int
+- JointGetType(Rid joint) -> int
+- JointIsDisabledCollisionsBetweenBodies(Rid joint) -> bool
+- JointMakeConeTwist(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB)
+- JointMakeGeneric6dof(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB)
+- JointMakeHinge(Rid joint, Rid bodyA, Transform3D hingeA, Rid bodyB, Transform3D hingeB)
+- JointMakeHingeSimple(Rid joint, Rid bodyA, Vector3 pivotA, Vector3 axisA, Rid bodyB, Vector3 pivotB, Vector3 axisB)
+- JointMakePin(Rid joint, Rid bodyA, Vector3 localA, Rid bodyB, Vector3 localB)
+- JointMakeSlider(Rid joint, Rid bodyA, Transform3D localRefA, Rid bodyB, Transform3D localRefB)
+- JointSetSolverPriority(Rid joint, int priority)
+- PinJointGetLocalA(Rid joint) -> Vector3
+- PinJointGetLocalB(Rid joint) -> Vector3
+- PinJointGetParam(Rid joint, int param) -> float
+- PinJointSetLocalA(Rid joint, Vector3 localA)
+- PinJointSetLocalB(Rid joint, Vector3 localB)
+- PinJointSetParam(Rid joint, int param, float value)
+- SeparationRayShapeCreate() -> Rid
+- SetActive(bool active)
+- ShapeGetCustomSolverBias(Rid shape) -> float
+- ShapeGetData(Rid shape) -> Variant
+- ShapeGetMargin(Rid shape) -> float
+- ShapeGetType(Rid shape) -> int
+- ShapeSetCustomSolverBias(Rid shape, float bias)
+- ShapeSetData(Rid shape, Variant data)
+- ShapeSetMargin(Rid shape, float margin)
+- SliderJointGetParam(Rid joint, int param) -> float
+- SliderJointSetParam(Rid joint, int param, float value)
+- SoftBodyAddCollisionException(Rid body, Rid bodyB)
+- SoftBodyApplyCentralForce(Rid body, Vector3 force)
+- SoftBodyApplyCentralImpulse(Rid body, Vector3 impulse)
+- SoftBodyApplyPointForce(Rid body, int pointIndex, Vector3 force)
+- SoftBodyApplyPointImpulse(Rid body, int pointIndex, Vector3 impulse)
+- SoftBodyCreate() -> Rid
+- SoftBodyGetBounds(Rid body) -> Aabb
+- SoftBodyGetCollisionExceptions(Rid body) -> RID[]
+- SoftBodyGetCollisionLayer(Rid body) -> int
+- SoftBodyGetCollisionMask(Rid body) -> int
+- SoftBodyGetDampingCoefficient(Rid body) -> float
+- SoftBodyGetDragCoefficient(Rid body) -> float
+- SoftBodyGetLinearStiffness(Rid body) -> float
+- SoftBodyGetPointGlobalPosition(Rid body, int pointIndex) -> Vector3
+- SoftBodyGetPressureCoefficient(Rid body) -> float
+- SoftBodyGetShrinkingFactor(Rid body) -> float
+- SoftBodyGetSimulationPrecision(Rid body) -> int
+- SoftBodyGetSpace(Rid body) -> Rid
+- SoftBodyGetState(Rid body, int state) -> Variant
+- SoftBodyGetTotalMass(Rid body) -> float
+- SoftBodyIsPointPinned(Rid body, int pointIndex) -> bool
+- SoftBodyMovePoint(Rid body, int pointIndex, Vector3 globalPosition)
+- SoftBodyPinPoint(Rid body, int pointIndex, bool pin)
+- SoftBodyRemoveAllPinnedPoints(Rid body)
+- SoftBodyRemoveCollisionException(Rid body, Rid bodyB)
+- SoftBodySetCollisionLayer(Rid body, int layer)
+- SoftBodySetCollisionMask(Rid body, int mask)
+- SoftBodySetDampingCoefficient(Rid body, float dampingCoefficient)
+- SoftBodySetDragCoefficient(Rid body, float dragCoefficient)
+- SoftBodySetLinearStiffness(Rid body, float linearStiffness)
+- SoftBodySetMesh(Rid body, Rid mesh)
+- SoftBodySetPressureCoefficient(Rid body, float pressureCoefficient)
+- SoftBodySetRayPickable(Rid body, bool enable)
+- SoftBodySetShrinkingFactor(Rid body, float shrinkingFactor)
+- SoftBodySetSimulationPrecision(Rid body, int simulationPrecision)
+- SoftBodySetSpace(Rid body, Rid space)
+- SoftBodySetState(Rid body, int state, Variant variant)
+- SoftBodySetTotalMass(Rid body, float totalMass)
+- SoftBodySetTransform(Rid body, Transform3D transform)
+- SoftBodyUpdateRenderingServer(Rid body, PhysicsServer3DRenderingServerHandler renderingServerHandler)
+- SpaceCreate() -> Rid
+- SpaceGetContactCount(Rid space) -> int
+- SpaceGetContacts(Rid space) -> Vector3[]
+- SpaceGetDirectState(Rid space) -> PhysicsDirectSpaceState3D
+- SpaceGetParam(Rid space, int param) -> float
+- SpaceIsActive(Rid space) -> bool
+- SpaceSetActive(Rid space, bool active)
+- SpaceSetDebugContacts(Rid space, int maxContacts)
+- SpaceSetParam(Rid space, int param, float value)
+- SphereShapeCreate() -> Rid
+- Step(float step)
+- Sync()
+- WorldBoundaryShapeCreate() -> Rid
+- BodyTestMotionIsExcludingBody(Rid body) -> bool
+- BodyTestMotionIsExcludingObject(int object) -> bool
+

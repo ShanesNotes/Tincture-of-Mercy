@@ -20,8 +20,12 @@ res://
 ├── art/
 │   ├── characters/<character>/
 │   │   ├── <character>_design_asset.png      (concept reference; not runtime)
-│   │   └── sheets/
-│   │       └── <character>_<purpose>_<canvas>.png   (runtime sprite sheets)
+│   │   ├── source/                            (pre-pipeline raw inputs — see slice 10)
+│   │   │   └── <character>_<purpose>_source.png
+│   │   ├── sheets/                            (runtime sprite sheets — Godot-droppable)
+│   │   │   └── <character>_<purpose>_<canvas>.png
+│   │   └── aseprite/                          (manual cleanup working files)
+│   │       └── <character>_<purpose>.aseprite
 │   ├── environment/
 │   │   └── tilesets/<biome>/<tileset>.png
 │   ├── icon_panels/
@@ -56,8 +60,10 @@ res://
 | Artifact | Pattern | Example |
 |---|---|---|
 | Folder | `lowercase_snake` | `art/characters/kalev/`, `data/loot_tables/` |
-| Sprite sheet | `<character>_<purpose>_<canvas>.png` | `kalev_locomotion_64x96.png`, `wolf_full_sheet_96x64.png` |
-| Concept reference | `<character>_design_asset.png` | `kalev_design_asset.png` (do not edit; not runtime) |
+| Source sheet (pre-pipeline) | `<character>/source/<character>_<purpose>_source.png` | `kalev/source/kalev_idle_front_source.png` (any size, any colors; see slice 10) |
+| Runtime sprite sheet | `<character>/sheets/<character>_<purpose>_<canvas>.png` | `kalev/sheets/kalev_locomotion_64x96.png`, `wolf/sheets/wolf_full_sheet_96x64.png` (Godot-droppable; output of `tools/sprites/make_runtime_sprite.py`) |
+| Aseprite working file | `<character>/aseprite/<character>_<purpose>.aseprite` | `kalev/aseprite/kalev_locomotion.aseprite` (manual cleanup) |
+| Concept reference | `<character>/<character>_design_asset.png` | `kalev_design_asset.png` (do not edit; not runtime) |
 | Tileset | `<biome>_tileset.png` | `cabin_tileset.png`, `ironwood_tileset.png` |
 | Prop | `<prop>.png` or `<prop>_<state>.png` | `notebook.png`, `kettle_whistling.png` |
 | UI element | `<surface>_<element>.png` | `pouch_slot.png`, `wheel_ring.png` |

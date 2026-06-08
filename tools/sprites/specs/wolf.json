@@ -1,0 +1,45 @@
+{
+  "name": "wolf",
+  "palette": "wolf",
+  "default_frame_w": 96,
+  "default_frame_h": 64,
+  "default_baseline_y": 60,
+  "passes": {
+    "full_sheet": {
+      "description": "Wolf combat sheet \u2014 idle, walk\u00d74dir, pack_call, lunge+bite, hit/flee/death; 37 frames in 5\u00d78.",
+      "source_frames": 37,
+      "source_cols": 5,
+      "source_rows": 8,
+      "target_cols": 5,
+      "target_rows": 8,
+      "animation_keys": [
+        "idle",
+        "walk_down",
+        "walk_left",
+        "walk_up",
+        "walk_right",
+        "pack_call",
+        "lunge",
+        "hurt_flee_death"
+      ]
+    },
+    "locomotion": {
+      "description": "Wolf 96x64 idle/walk 4-direction locomotion for PixelLab dog-template generation.",
+      "source_frames": 40,
+      "source_cols": 5,
+      "source_rows": 8,
+      "target_cols": 5,
+      "target_rows": 8,
+      "animation_keys": [
+        "idle_down",
+        "walk_down",
+        "idle_left",
+        "walk_left",
+        "idle_up",
+        "walk_up",
+        "idle_right",
+        "walk_right"
+      ]
+    }
+  }
+}

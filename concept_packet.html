@@ -1,0 +1,1519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tincture of Mercy — Concept Packet</title>
+<link rel="stylesheet" href="design_system/colors_and_type.css" />
+<style>
+  /* ----- packet-specific layout ----- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--serif-body);
+    background: var(--vellum-warm);
+    color: var(--ink);
+    line-height: var(--lh-body);
+    font-feature-settings: "onum", "kern", "liga";
+  }
+
+  /* layout shell */
+  .shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100vh; }
+  @media (max-width: 880px) { .shell { grid-template-columns: 1fr; } }
+
+  /* sticky nav */
+  nav.toc {
+    position: sticky; top: 0; align-self: start;
+    height: 100vh; overflow-y: auto;
+    background: var(--candle-white);
+    border-right: 1px solid var(--rule);
+    padding: var(--s-6) var(--s-5);
+    font-family: var(--serif-body);
+  }
+  nav.toc .toc-title {
+    font-family: var(--serif-icon);
+    font-size: var(--t-overline);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    color: var(--damp-ash);
+    margin: 0 0 var(--s-4) 0;
+  }
+  nav.toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; margin: 0; }
+  nav.toc a {
+    display: block;
+    padding: var(--s-2) 0;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-bottom: 1px dashed transparent;
+  }
+  nav.toc a:hover { color: var(--ink); border-bottom-color: var(--rule); }
+  nav.toc a::before { content: counter(toc, decimal-leading-zero) " · "; color: var(--damp-ash); font-feature-settings: "tnum"; }
+  nav.toc .toc-foot { margin-top: var(--s-6); font-size: var(--t-caption); color: var(--damp-ash); font-style: italic; }
+  @media (max-width: 880px) { nav.toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); } }
+
+  /* main content */
+  main { padding: var(--s-8) clamp(var(--s-5), 5vw, var(--s-9)); max-width: 1100px; }
+  section { padding: var(--s-8) 0; border-top: 1px solid var(--rule); scroll-margin-top: var(--s-4); }
+  section:first-of-type { border-top: 0; padding-top: var(--s-5); }
+  h2.section-title {
+    font-family: var(--serif-display);
+    font-size: var(--t-h1);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tr-tight);
+    color: var(--ink);
+    margin: 0 0 var(--s-2) 0;
+    font-weight: 400;
+  }
+  .section-overline {
+    font-family: var(--serif-icon);
+    font-size: var(--t-overline);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    color: var(--damp-ash);
+    margin: 0 0 var(--s-2) 0;
+    display: block;
+  }
+  h3 { font-family: var(--serif-body); font-size: var(--t-h3); font-weight: 600; color: var(--ink); margin: var(--s-6) 0 var(--s-3); }
+  h4 { font-family: var(--serif-body); font-size: var(--t-h4); font-weight: 600; color: var(--ink); margin: var(--s-5) 0 var(--s-2); }
+  p { color: var(--ink-soft); margin: var(--s-3) 0; }
+  ul, ol { color: var(--ink-soft); }
+  li { margin: var(--s-2) 0; }
+  strong { color: var(--ink); }
+  em { color: var(--ink-soft); }
+
+  /* Hero */
+  .hero {
+    background:
+      radial-gradient(1100px 360px at 18% 0%, rgba(255,255,255,0.55), transparent 60%),
+      radial-gradient(900px 320px at 95% 100%, rgba(74,58,38,0.18), transparent 60%),
+      var(--vellum-warm);
+    border-bottom: 2px solid var(--ink);
+    padding: var(--s-9) clamp(var(--s-5), 5vw, var(--s-9)) var(--s-8);
+    margin: calc(-1 * var(--s-8)) calc(-1 * clamp(var(--s-5), 5vw, var(--s-9))) 0;
+  }
+  .hero-overline {
+    font-family: var(--serif-icon);
+    letter-spacing: var(--tr-overline);
+    text-transform: uppercase;
+    color: var(--icon-gold);
+    font-size: var(--t-overline);
+  }
+  .hero h1 {
+    font-family: var(--serif-display);
+    font-size: clamp(2.6rem, 6vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: var(--tr-tight);
+    color: var(--ink);
+    margin: var(--s-3) 0 var(--s-5);
+    font-weight: 400;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .hero-sub {
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    line-height: var(--lh-loose);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .hero-meta {
+    margin-top: var(--s-6);
+    display: flex; gap: var(--s-6); flex-wrap: wrap;
+    font-family: var(--mono-witte);
+    font-size: 0.78rem;
+    letter-spacing: var(--tr-wide);
+    color: var(--damp-ash);
+    text-transform: uppercase;
+  }
+  .hero-meta span { display: inline-flex; align-items: baseline; gap: var(--s-2); }
+  .hero-meta b { color: var(--ink); font-weight: 500; }
+
+  /* Thesis quote */
+  .thesis-quote {
+    border-left: 3px solid var(--icon-gold);
+    padding: var(--s-3) var(--s-5);
+    background: var(--candle-white);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 1.18rem;
+    line-height: var(--lh-loose);
+    box-shadow: var(--shadow-paper);
+    margin: var(--s-5) 0;
+  }
+  .thesis-quote.cold { border-left-color: var(--lake-deep); }
+  .thesis-quote.fire { border-left-color: var(--ember-red); }
+  .thesis-quote.heal { border-left-color: var(--pale-heal); }
+  .thesis-quote.gold { border-left-color: var(--icon-gold); }
+
+  /* Pillar list */
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-4); margin: var(--s-5) 0; }
+  .pillar {
+    background: var(--candle-white);
+    border: 1px solid var(--rule);
+    padding: var(--s-4) var(--s-5);
+    box-shadow: var(--shadow-paper);
+  }
+  .pillar .num {
+    font-family: var(--serif-icon);
+    font-size: var(--t-overline);
+    letter-spacing: var(--tr-overline);
+    color: var(--icon-gold);
+    text-transform: uppercase;
+  }
+  .pillar h4 { margin: var(--s-2) 0 var(--s-2); font-size: 1.05rem; }
+  .pillar p { font-size: 0.95rem; margin: 0; color: var(--ink-soft); }
+
+  /* Cast cards */
+  .cast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--s-5);
+    margin: var(--s-5) 0;
+  }
+  .card {
+    background: var(--candle-white);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .card .portrait {
+    aspect-ratio: 1 / 1;
+    background: var(--vellum-bone) center/contain no-repeat;
+    border-bottom: 1px solid var(--rule);
+    image-rendering: auto;
+  }
+  .card .body { padding: var(--s-4) var(--s-5) var(--s-5); }
+  .card h4 { margin: 0 0 var(--s-1); font-family: var(--serif-display); font-size: 1.4rem; font-weight: 400; }
+  .card .role { font-family: var(--serif-icon); text-transform: uppercase; letter-spacing: var(--tr-overline); font-size: var(--t-overline); color: var(--damp-ash); }
+  .card .lock { margin-top: var(--s-3); font-size: 0.92rem; color: var(--ink-soft); }
+  .card .canvas { margin-top: var(--s-3); font-family: var(--mono-witte); font-size: 0.7rem; letter-spacing: var(--tr-wide); color: var(--lake-slate); text-transform: uppercase; }
+
+  /* Loop block */
+  .loop-block {
+    background: var(--vellum-bone);
+    border: 1px solid var(--rule-strong);
+    padding: var(--s-5) var(--s-6);
+    margin: var(--s-5) 0;
+    text-align: center;
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .loop-block .arrow { color: var(--icon-gold); margin: 0 0.4em; }
+
+  /* Mechanics grid */
+  .mech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-5); margin: var(--s-5) 0; }
+  .mech {
+    background: var(--candle-white);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--cedar-brown);
+    padding: var(--s-5);
+    box-shadow: var(--shadow-paper);
+  }
+  .mech.pouch    { border-top-color: var(--cedar-brown); }
+  .mech.wheel    { border-top-color: var(--pale-heal); }
+  .mech.panel    { border-top-color: var(--lake-slate); }
+  .mech.notebook { border-top-color: var(--ink); }
+  .mech.body     { border-top-color: var(--dragon-red); }
+  .mech.ember    { border-top-color: var(--ember-red); }
+  .mech h4 { margin-top: 0; }
+
+  /* Body-state meters */
+  .meters { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-4); margin: var(--s-4) 0; }
+  .meter {
+    background: var(--vellum-bone);
+    border: 1px solid var(--rule);
+    padding: var(--s-4);
+  }
+  .meter .label { font-family: var(--serif-icon); font-size: var(--t-overline); letter-spacing: var(--tr-overline); text-transform: uppercase; color: var(--damp-ash); }
+  .meter .name  { font-family: var(--serif-display); font-size: 1.5rem; color: var(--ink); margin: var(--s-1) 0 var(--s-2); }
+  .meter .rail  { height: 6px; background: var(--rule-soft); border-radius: var(--r-pill); overflow: hidden; }
+  .meter .fill  { height: 100%; width: 60%; }
+  .meter.burden    .fill { background: var(--cedar-brown); }
+  .meter.pressure  .fill { background: var(--dragon-red); }
+  .meter.numbness  .fill { background: var(--lake-slate); }
+  .status-banner { margin: 0 auto var(--s-6); max-width: 86ch; padding: var(--s-4); border: 1px solid var(--rule-strong); background: rgba(242,239,230,0.72); color: var(--ink-soft); font-family: var(--serif-body); font-size: 0.95rem; line-height: 1.45; }
+  .status-banner strong { color: var(--ink); }
+  .meter .scale { display: flex; justify-content: space-between; margin-top: var(--s-2); font-family: var(--serif-body); font-style: italic; font-size: 0.82rem; color: var(--damp-ash); }
+
+  /* Regime tiles */
+  .regimes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-5); margin: var(--s-5) 0; }
+  .regime { padding: var(--s-6); border: 1px solid var(--rule); }
+  .regime-ironwood   { background: var(--vellum-warm); }
+  .regime-wittehaven { background: var(--witte-white); border-color: var(--witte-cool); }
+  .regime-paradise   { background: var(--candle-white); border-color: var(--icon-gold); box-shadow: var(--shadow-halo); }
+  .regime h3 { margin-top: 0; font-family: var(--serif-display); font-size: 1.6rem; font-weight: 400; }
+  .regime .palette-strip { display: flex; height: 36px; margin: var(--s-3) 0; border: 1px solid var(--rule); }
+  .regime .palette-strip span { flex: 1; }
+  .regime .tone { font-style: italic; color: var(--ink-soft); }
+  .regime-wittehaven h3 { font-family: var(--mono-witte); text-transform: uppercase; letter-spacing: var(--tr-wide); font-size: 1.05rem; }
+  .regime-wittehaven .tone, .regime-wittehaven p { color: var(--lake-slate); }
+  .regime-paradise h3 { color: var(--ink); }
+  .regime-paradise .tone { color: var(--cedar-brown); }
+
+  /* Color swatches */
+  .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); margin: var(--s-4) 0; }
+  .swatch { background: var(--candle-white); border: 1px solid var(--rule); padding: 0; overflow: hidden; }
+  .swatch .chip { height: 64px; }
+  .swatch .info { padding: var(--s-2) var(--s-3); }
+  .swatch .name { font-family: var(--serif-body); font-weight: 600; font-size: 0.9rem; color: var(--ink); margin: 0; }
+  .swatch .hex  { font-family: var(--mono-witte); font-size: 0.7rem; color: var(--damp-ash); letter-spacing: var(--tr-wide); }
+  .palette-section h4 { margin-bottom: var(--s-2); }
+
+  /* Type specimens */
+  .type-specimen { background: var(--candle-white); border: 1px solid var(--rule); padding: var(--s-5); margin: var(--s-3) 0; box-shadow: var(--shadow-paper); }
+  .type-specimen .label { font-family: var(--mono-witte); font-size: 0.7rem; letter-spacing: var(--tr-wide); color: var(--damp-ash); text-transform: uppercase; margin-bottom: var(--s-2); }
+  .type-specimen .sample { color: var(--ink); }
+  .ts-display { font-family: var(--serif-display); font-size: 2.4rem; line-height: 1; }
+  .ts-body    { font-family: var(--serif-body); font-size: 1.05rem; line-height: var(--lh-body); }
+  .ts-icon    { font-family: var(--serif-icon); font-size: 1.1rem; letter-spacing: var(--tr-overline); text-transform: uppercase; }
+  .ts-hand    { font-family: var(--hand-script); font-size: 1.8rem; }
+  .ts-mono    { font-family: var(--mono-witte); font-size: 0.9rem; letter-spacing: var(--tr-wide); text-transform: uppercase; color: var(--lake-deep); }
+
+  /* Sprite scale diagram */
+  .scale-diagram {
+    background: var(--vellum-bone);
+    border: 1px solid var(--rule);
+    padding: var(--s-5);
+    margin: var(--s-4) 0;
+    overflow-x: auto;
+  }
+  .scale-row { display: flex; align-items: flex-end; gap: var(--s-7); padding: var(--s-4) 0; min-width: 600px; }
+  .canvas-bar {
+    background: var(--cedar-brown);
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+  .canvas-bar .label {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: -36px; white-space: nowrap;
+    font-family: var(--serif-body); font-size: 0.82rem; color: var(--ink);
+  }
+  .canvas-bar .label small { display: block; font-family: var(--mono-witte); font-size: 0.66rem; color: var(--damp-ash); letter-spacing: var(--tr-wide); }
+
+  /* Slice scenes */
+  .scene {
+    background: var(--candle-white);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--cedar-brown);
+    padding: var(--s-5) var(--s-6);
+    margin: var(--s-4) 0;
+    box-shadow: var(--shadow-paper);
+  }
+  .scene h4 { margin-top: 0; font-family: var(--serif-display); font-weight: 400; font-size: 1.5rem; }
+  .scene ol { padding-left: var(--s-5); }
+  .scene li { margin: var(--s-3) 0; }
+  .scene .beat-name { font-weight: 600; color: var(--ink); }
+  .scene.cabin   { border-left-color: var(--cedar-brown); }
+  .scene.ironwood{ border-left-color: var(--pine-shadow); }
+  .scene.bethany { border-left-color: var(--pale-heal); }
+
+  /* Phases */
+  .phase-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-4); margin: var(--s-5) 0; }
+  .phase {
+    background: var(--candle-white);
+    border: 1px solid var(--rule);
+    padding: var(--s-5);
+    position: relative;
+  }
+  .phase .num { font-family: var(--serif-icon); font-size: var(--t-overline); letter-spacing: var(--tr-overline); color: var(--damp-ash); text-transform: uppercase; }
+  .phase h4 { font-family: var(--serif-display); font-weight: 400; font-size: 1.3rem; margin: var(--s-1) 0 var(--s-2); }
+  .phase.p1 { border-top: 3px solid var(--cedar-brown); }
+  .phase.p2 { border-top: 3px solid var(--witte-cool); }
+  .phase.p3 { border-top: 3px solid var(--lake-deep); }
+  .phase.p4 { border-top: 3px solid var(--icon-gold); }
+
+  /* Locks */
+  .locks { background: var(--candle-white); border: 1px solid var(--ink); padding: var(--s-5) var(--s-6); margin: var(--s-4) 0; }
+  .locks h4 { margin-top: var(--s-4); font-family: var(--serif-icon); font-size: var(--t-overline); letter-spacing: var(--tr-overline); text-transform: uppercase; color: var(--damp-ash); }
+  .locks h4:first-child { margin-top: 0; }
+  .locks ul { margin: var(--s-2) 0; padding-left: var(--s-5); }
+  .locks li { font-size: 0.94rem; }
+  .locks code { font-family: var(--mono-witte); font-size: 0.82rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule); }
+
+  /* Symbols */
+  .symbols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--s-3); margin: var(--s-4) 0; }
+  .symbol { background: var(--vellum-bone); border: 1px solid var(--rule); padding: var(--s-3) var(--s-4); }
+  .symbol .name { font-family: var(--serif-display); font-size: 1.15rem; color: var(--ink); }
+  .symbol .meaning { font-size: 0.9rem; color: var(--ink-soft); margin-top: var(--s-1); font-style: italic; }
+
+  /* Doc map */
+  .docmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-4); margin: var(--s-4) 0; }
+  .docmap .doc { background: var(--candle-white); border: 1px solid var(--rule); padding: var(--s-4) var(--s-5); }
+  .docmap .doc a { color: var(--ink); text-decoration: none; border-bottom: 1px dashed var(--rule-strong); }
+  .docmap .doc a:hover { color: var(--icon-gold); border-bottom-color: var(--icon-gold); }
+  .docmap .doc .step { font-family: var(--serif-icon); font-size: var(--t-overline); letter-spacing: var(--tr-overline); text-transform: uppercase; color: var(--icon-gold); display: block; margin-bottom: var(--s-1); }
+  .docmap .doc .why { font-size: 0.88rem; color: var(--ink-soft); font-style: italic; margin-top: var(--s-2); }
+
+  /* Animations */
+  .anims { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--s-4); margin: var(--s-4) 0; }
+  .anim {
+    background: var(--vellum-bone);
+    border: 1px solid var(--rule);
+    padding: var(--s-2);
+    text-align: center;
+  }
+  .anim .strip {
+    width: 100%; height: 96px;
+    background: var(--candle-white) center/contain no-repeat;
+    image-rendering: pixelated;
+    border: 1px solid var(--rule);
+  }
+  .anim .name { font-family: var(--serif-icon); font-size: var(--t-overline); letter-spacing: var(--tr-overline); text-transform: uppercase; color: var(--damp-ash); margin-top: var(--s-2); }
+
+  /* Footer */
+  footer { padding: var(--s-7) 0 var(--s-9); text-align: center; color: var(--damp-ash); font-style: italic; font-size: var(--t-small); border-top: 1px solid var(--rule); margin-top: var(--s-7); }
+  footer .glyph { color: var(--icon-gold); font-family: var(--serif-icon); letter-spacing: var(--tr-overline); }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="toc" aria-label="Packet contents">
+    <p class="toc-title">Concept Packet</p>
+    <ol>
+      <li><a href="#thesis">The Thesis</a></li>
+      <li><a href="#shift">v0.8.1 → v0.9 Shift</a></li>
+      <li><a href="#pillars">The Pillars</a></li>
+      <li><a href="#cast">The Cast</a></li>
+      <li><a href="#loop">The Core Loop</a></li>
+      <li><a href="#resources">Six Resources</a></li>
+      <li><a href="#substrate">Substrate Primitives</a></li>
+      <li><a href="#paths">Latent Paths</a></li>
+      <li><a href="#symbols">Micro-Symbols</a></li>
+      <li><a href="#regimes">Three Regimes</a></li>
+      <li><a href="#palette">Color &amp; Type</a></li>
+      <li><a href="#sprite-scale">Sprite Scale</a></li>
+      <li><a href="#kalev-anims">Kalev — Animations</a></li>
+      <li><a href="#opening">Five-Act Opening</a></li>
+      <li><a href="#economy">RPG Economy</a></li>
+      <li><a href="#milestones">Milestones</a></li>
+      <li><a href="#locks">Active Locks</a></li>
+      <li><a href="#docs">Document Map</a></li>
+    </ol>
+    <p class="toc-foot">v0.9 · mercy RPG substrate · generated review · not canon</p>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="thesis">
+      <span class="hero-overline">Tincture of Mercy &nbsp;·&nbsp; Active Direction Packet · v0.9 · Mercy RPG Substrate</span>
+      <h1>The Garments of Skin</h1>
+      <div class="status-banner"><strong>Status:</strong> generated-review surface, not independent canon. Active execution authority lives in <code>design_system/v0_9_mercy_rpg_substrate/</code> (INDEX, PRD, ACCEPTANCE, ISSUE_SLICES, slice docs <code>01</code>–<code>07</code>) and <code>docs/adr/0001</code>–<code>0011</code>. Resolved language lives in <code>CONTEXT.md</code>. <code>design_system/v0_8_1/</code> is scoped P0 provenance for tone, naming, visual language, and the Godot/C# scaffold — it does not gate the v0.9 combat-capable slice.</div>
+      <p class="hero-sub">A combat-capable mercy RPG vertical slice in post-Turn Michigan. Kalev Ward tends, fights, flees, crafts, witnesses, records, remembers, and bears consequence — and care, combat, craft, witness, economy, notebook, and aftermath all resolve through one shared simulation substrate.</p>
+      <div class="hero-meta">
+        <span><b>Engine</b> Godot 4.6 · C# · Forward+</span>
+        <span><b>Opening</b> Water · Bread · Tincture · Mother death · Wolves</span>
+        <span><b>View</b> 640×360 logical · 32×32 tiles · 1× zoom</span>
+        <span><b>Style</b> Michigan icon-manuscript pixel art</span>
+      </div>
+
+      <div class="thesis-quote gold" style="margin-top: var(--s-7);">
+        <strong>One event truth.</strong> Care, combat, craft, witness, economy, notebook, and aftermath are projections over the same <code style="font-family: var(--mono-witte); font-size: 0.92rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">SimEvent</code> stream. <code style="font-family: var(--mono-witte); font-size: 0.92rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">OutcomeResolver</code> and combat tables share one path; outcome truth does not fork.
+      </div>
+
+      <div class="thesis-quote cold">
+        <strong>Substrate before content.</strong> Core mechanics ship and pass tests before opening act implementation begins. Epic C is <code style="font-family: var(--mono-witte); font-size: 0.92rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">blocked_by: [B0]</code> until B1–B6 substrate acceptance passes.
+      </div>
+
+      <div class="thesis-quote fire">
+        <strong>Combat is first-class.</strong> Wolves can harm Kalev or the boy. The encounter objective is the boy reaching safety; loot/material consequence follows from grounded events, not from doctrine.
+      </div>
+
+      <div class="thesis-quote heal">
+        <strong>Bethany payoff is recognition.</strong> The boy remembers Kalev's presence, not a corrected recipe. Apothecary learning is real and subordinate.
+      </div>
+    </section>
+
+    <!-- DIRECTION SHIFT -->
+    <section id="shift">
+      <span class="section-overline">§ 1 · What Changed</span>
+      <h2 class="section-title">v0.8.1 → v0.9 — The Direction Shift</h2>
+      <p>v0.8.1 hardened a care-only P0 prototype with combat deferred. v0.9 keeps the bedside discipline as scoped provenance and reframes the first playable as a combat-capable mercy RPG vertical slice on one shared substrate. v0.8.1 P0 limits do not become project-wide doctrine; they remain useful where active v0.9 docs do not contradict them.</p>
+      <div class="pillars" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Care-only P0; combat deferred</h4><p style="font-style: italic;">→ v0.9: combat is first-class in the opening slice. Wolves are real, lethal, and lootable when grounded.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Care engine; combat would be its own thing</h4><p style="font-style: italic;">→ v0.9: one shared substrate. <code style="font-family: var(--mono-witte); font-size: 0.78rem;">SimEvent</code> + <code style="font-family: var(--mono-witte); font-size: 0.78rem;">OutcomeResolver</code> resolve every domain.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>"Pastoral" register</h4><p style="font-style: italic;">→ v0.9: <strong>Hesychasm</strong> is the active path name. Pastoral is a historical/source alias only.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Porridge beat in opening</h4><p style="font-style: italic;">→ v0.9: <strong>bread</strong> beat — ordinary mercy under constraint, not a recipe puzzle.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Three meters: Burden, Pressure, Numbness</h4><p style="font-style: italic;">→ v0.9: six resources — <strong>Health, Spirit, Steady, Burden, Pressure, Numbness</strong>. Combat needs Health; presence needs Spirit; hands need Steady.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Bethany via corrected recipe?</h4><p style="font-style: italic;">→ v0.9: Bethany payoff is <strong>recognition / presence</strong>. Corrected recipe is subordinate Apothecary learning.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>"No XP / level / loot / quest"</h4><p style="font-style: italic;">→ v0.9: tuning levers, not moral bans. Witness, Recollection, Vocation/path points, item quality, loot tables — all event-derived; player surfaces map to register-fitting language.</p></div>
+        <div class="pillar"><div class="num">v0.8.1 (provenance)</div><h4>Cabin / Ironwood / Bethany triage</h4><p style="font-style: italic;">→ v0.9: opening slice is <strong>Water → Bread → Tincture → Mother death/Witness → Wolves/boy/combat</strong>. Bethany is later recognition.</p></div>
+      </div>
+    </section>
+
+    <!-- PILLARS -->
+    <section id="pillars">
+      <span class="section-overline">§ 2 · Foundation</span>
+      <h2 class="section-title">The Ten Pillars · v0.9</h2>
+      <p>Non-negotiable. If a proposed feature contradicts a pillar, it is not built. The pillars are the ceiling, not the floor.</p>
+      <div class="pillars">
+        <div class="pillar"><div class="num">Pillar 01</div><h4>One event truth</h4><p>Care, combat, craft, witness, economy, notebook, and aftermath are projections over the same <code style="font-family: var(--mono-witte); font-size: 0.78rem;">SimEvent</code> stream. Presenters can hide or rename fields; they do not own outcome state.</p></div>
+        <div class="pillar"><div class="num">Pillar 02</div><h4>One resolver family</h4><p><code style="font-family: var(--mono-witte); font-size: 0.78rem;">OutcomeResolver</code> and combat tables share one path. Combat is data, not a second engine. Care and combat fixtures use the same resolver assertion.</p></div>
+        <div class="pillar"><div class="num">Pillar 03</div><h4>Substrate before content</h4><p>M1 core mechanics pass headless tests before M3 opening acts begin. Epic C carries <code style="font-family: var(--mono-witte); font-size: 0.78rem;">blocked_by: [B0]</code> until B1–B6 land.</p></div>
+        <div class="pillar"><div class="num">Pillar 04</div><h4>Combat is first-class</h4><p>Wolves are real. They can harm Kalev or the boy. Threat, damage, cooldowns, loot/material consequence, and progression hooks all carry acceptance criteria — not symbolic flavor.</p></div>
+        <div class="pillar"><div class="num">Pillar 05</div><h4>Care remains embodied</h4><p>Water, bread, tincture, presence, and witness are actions under time, resource, and attention pressure. Bedside vocabulary stays tactile and person-specific.</p></div>
+        <div class="pillar"><div class="num">Pillar 06</div><h4>Death has gravity</h4><p>Act 4 mother death is a fixed-outcome teaching encounter. The player acts meaningfully; the substrate learns; death cannot be converted into control.</p></div>
+        <div class="pillar"><div class="num">Pillar 07</div><h4>Names over scoreboards</h4><p>The notebook records persons, page, line, and consequence. XP-style accounting can exist as internal/debug projection; player-facing surfaces stay register-appropriate.</p></div>
+        <div class="pillar"><div class="num">Pillar 08</div><h4>Recognition, not recipe victory</h4><p>The boy remembers Kalev's presence. Corrected recipe is Apothecary learning that may improve later practice but does not cause the Bethany payoff.</p></div>
+        <div class="pillar"><div class="num">Pillar 09</div><h4>Tuning levers, not moral bans</h4><p>Scarcity, diminishing returns, danger, route risk, and pacing shape farming. No active rule erases loot/material reward from violent combat as doctrine.</p></div>
+        <div class="pillar"><div class="num">Pillar 10</div><h4>Godot 4.6 · C# · Forward+</h4><p>Engine constraints stay. Implementation remains small, readable, data-driven, replayable, headlessly testable.</p></div>
+      </div>
+    </section>
+
+    <!-- CAST -->
+    <section id="cast">
+      <span class="section-overline">§ 3 · The Named</span>
+      <h2 class="section-title">The Cast</h2>
+      <p>The notebook records persons. The world does not.</p>
+
+      <h3 style="margin-top: var(--s-6);">Opening five-act cast · active in Acts 1–5</h3>
+      <div class="cast">
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/kalev/kalev_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Player Character · all acts</div>
+            <h4>Kalev Ward</h4>
+            <p class="lock">Burdened healer-apothecary. Carries Health, Spirit, Steady, Burden, Pressure, Numbness. Coat to mid-thigh, pouch on right hip, notebook in left hand, cedar dog charm, restrained tincture vial. He tends, treats, witnesses, and protects.</p>
+            <p class="canvas">Runtime canvas · 64 × 96</p>
+          </div>
+        </article>
+
+        <article class="card" style="opacity: 0.92;">
+          <div class="portrait" style="background: var(--vellum-bone) center/cover no-repeat; display: flex; align-items: center; justify-content: center;">
+            <span style="color: var(--damp-ash); font-family: var(--hand-script); font-size: 1.6rem; font-style: italic;">mother — to be authored</span>
+          </div>
+          <div class="body">
+            <div class="role">Patient · Acts 1, 2, 3, 4 (gravity death)</div>
+            <h4>Mother</h4>
+            <p class="lock">Dying patient at the cabin. Comfort, recognition seed, and witnessed status respond to ordered care. Act 4 death is fixed-outcome; player actions affect comfort tags, child fear/trust, Kalev's Burden/Recollection, and notebook prose.</p>
+            <p class="canvas">Bedside canvas · 96 × 48</p>
+          </div>
+        </article>
+
+        <article class="card" style="opacity: 0.92;">
+          <div class="portrait" style="background: var(--vellum-bone) center/cover no-repeat; display: flex; align-items: center; justify-content: center;">
+            <span style="color: var(--damp-ash); font-family: var(--hand-script); font-size: 1.6rem; font-style: italic;">boy — to be authored</span>
+          </div>
+          <div class="body">
+            <div class="role">Protected · Acts 2, 4, 5 · later Bethany seed</div>
+            <h4>The Boy / Child</h4>
+            <p class="lock">The protected person. Fear, trust, hunger, route, and recognition seed all live in the substrate. Act 5 objective: the boy reaches safety. Earlier bread, name, witness, and protection events feed the future Bethany recognition payoff.</p>
+            <p class="canvas">Runtime canvas · 48 × 64</p>
+          </div>
+        </article>
+
+        <article class="card" style="opacity: 0.92;">
+          <div class="portrait" style="background: var(--vellum-bone) center/cover no-repeat; display: flex; align-items: center; justify-content: center;">
+            <span style="color: var(--damp-ash); font-family: var(--hand-script); font-size: 1.6rem; font-style: italic;">wolves — to be authored</span>
+          </div>
+          <div class="body">
+            <div class="role">Hostile encounter · Act 5</div>
+            <h4>Wolf Pack</h4>
+            <p class="lock">First-class combat actors. Health, threat, aggro/call/flee radius, leash, route, attack tables, loot/material eligibility. Pack calls escalate; flee/leash can resolve the encounter without every wolf dying. Killed wolves can produce hide, sinew, tooth/claw, meat, blood — per tuning.</p>
+            <p class="canvas">Combat canvas · TBD</p>
+          </div>
+        </article>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Future recognition cast · post-opening · v0.8.1 art retained as provenance</h3>
+      <p style="font-size: 0.95rem; color: var(--ink-soft); font-style: italic;">These portraits and bedside characters carry forward from the v0.8.1 P0 work. They are not in the v0.9 opening five-act slice; they live in later phases (Bethany recognition, Wittehaven, Mackinac/Arvon, Paradise) where v0.8.1 visual language stays useful.</p>
+      <div class="cast">
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/elena/elena_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Companion · later Bethany</div>
+            <h4>Lena Hart</h4>
+            <p class="lock">Enters during Bethany triage in later phases. Presence over instruction. Does not carry the tincture. Recognition target for boy-protected events from Act 5 onward.</p>
+            <p class="canvas">Runtime canvas · 64 × 96</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/birdie/birdie_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Companion · later</div>
+            <h4>Birdie / Ruth</h4>
+            <p class="lock">The apple refusal. v0.8.1 cast member. True name future-only. Recognition seed candidate when Phase II–IV content is authored.</p>
+            <p class="canvas">Runtime canvas · 48 × 64</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/dr_amos/dr_amos_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Patient · later Bethany</div>
+            <h4>Dr. Amos Bell</h4>
+            <p class="lock">Village doctor; the tincture-cost dilemma in v0.8.1 triage. Scoped to later phases under v0.9 routing.</p>
+            <p class="canvas">Bedside canvas · 96 × 48</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/miriam_toll/miriam_toll_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Patient · later Bethany</div>
+            <h4>Miriam Toll</h4>
+            <p class="lock">Elder. Provenance from v0.8.1; the manner-of-dying study survives as a reference for later death-friction tuning.</p>
+            <p class="canvas">Bedside canvas · 96 × 48</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="portrait" style="background-image:url('art/characters/nora_finch/nora_finch_design_asset.png');"></div>
+          <div class="body">
+            <div class="role">Patient · later Bethany</div>
+            <h4>Nora Finch</h4>
+            <p class="lock">Recoverable patient from v0.8.1 triage study. Scoped to later phases. Useful for future receptivity-profile authoring.</p>
+            <p class="canvas">Bedside canvas · 96 × 48</p>
+          </div>
+        </article>
+
+        <article class="card" style="opacity: 0.85;">
+          <div class="portrait" style="background: var(--vellum-bone) center/cover no-repeat; display: flex; align-items: center; justify-content: center;">
+            <span class="tom-hand-name" style="color: var(--damp-ash); font-style: italic;">Eli Keene</span>
+          </div>
+          <div class="body">
+            <div class="role">v0.8.1 cabin patient · provenance</div>
+            <h4>Eli Keene</h4>
+            <p class="lock">v0.8.1 cabin seed scene. <em>Page 66, line 7.</em> The named-page lock is provenance under v0.9; the active opening uses an unnamed mother and boy and resolves names via notebook events at runtime.</p>
+            <p class="canvas">Bedside canvas · 96 × 48</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- LOOP -->
+    <section id="loop">
+      <span class="section-overline">§ 4 · The Verb</span>
+      <h2 class="section-title">The Core Loop</h2>
+      <p>Two things at once: the playable sentence the opening slice teaches, and the architectural sentence every system obeys.</p>
+
+      <h3 style="margin-top: var(--s-5);">Opening playable spine · Acts 1–5</h3>
+      <div class="loop-block">
+        Tend <span class="arrow">→</span> Sustain <span class="arrow">→</span> Treat <span class="arrow">→</span> Witness <span class="arrow">→</span> Protect<br/>
+        <span style="color: var(--damp-ash); font-style: italic; font-size: 1rem;">water · bread · tincture · mother death · wolves &amp; the boy</span><br/>
+        Bear consequence <span class="arrow">→</span> Write the name <span class="arrow">→</span> Aftermath
+      </div>
+
+      <h3 style="margin-top: var(--s-6);">Architectural spine · one event truth</h3>
+      <div class="loop-block" style="font-size: 1.15rem;">
+        Player verb <span class="arrow">→</span> <code style="font-family: var(--mono-witte); font-size: 1rem; background: var(--vellum-bone); padding: 2px 8px; border: 1px solid var(--rule);">VerbDef</code> <span class="arrow">→</span> <code style="font-family: var(--mono-witte); font-size: 1rem; background: var(--vellum-bone); padding: 2px 8px; border: 1px solid var(--rule);">OutcomeResolver</code><br/>
+        <span style="color: var(--damp-ash); font-style: italic; font-size: 0.95rem;">care, craft, combat, witness, path/receptivity — one resolver family</span><br/>
+        <span class="arrow">→</span> <code style="font-family: var(--mono-witte); font-size: 1rem; background: var(--vellum-bone); padding: 2px 8px; border: 1px solid var(--rule);">SimEvent</code> stream <span class="arrow">→</span> presenters<br/>
+        <span style="color: var(--damp-ash); font-style: italic; font-size: 0.95rem;">notebook · bedside · combat · economy · debug</span>
+      </div>
+
+      <p>Every consequential action emits a <code style="font-family: var(--mono-witte); font-size: 0.9rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">SimEvent</code> with actor, target, verb, domain, cost, result, and tags. Progression, notebook, loot, recognition seeds, and burdens are <em>projections</em> over that stream — never scene-local truth.</p>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="resources">
+      <span class="section-overline">§ 5 · Inside Kalev</span>
+      <h2 class="section-title">The Six Resources</h2>
+      <p>v0.9 broadens the v0.8.1 three-meter model. Combat needs Health and Steady; presence needs Spirit; bedside still tracks Burden, Pressure, Numbness. Every change is event-derived; player-facing surfaces map raw values to register-fitting language where required.</p>
+
+      <div class="meters">
+        <div class="meter" style="border-top: 3px solid var(--dragon-red);">
+          <div class="label">Bodily survival</div>
+          <div class="name">Health</div>
+          <div class="rail"><div class="fill" style="width:78%; background: var(--dragon-red);"></div></div>
+          <div class="scale"><span>whole</span><span>down</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">Wolf damage, wound aftermath, recovery. Combat surfaces can show danger directly; bedside surfaces map to tactile state.</p>
+        </div>
+
+        <div class="meter" style="border-top: 3px solid var(--icon-gold);">
+          <div class="label">Capacity for attention</div>
+          <div class="name">Spirit</div>
+          <div class="rail"><div class="fill" style="width:64%; background: var(--icon-gold);"></div></div>
+          <div class="scale"><span>watchful</span><span>spent</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">Costs presence acts, prayerful steadiness, Witness aftermath, FSR/Vigil self-use. Avoid generic mana framing in care surfaces.</p>
+        </div>
+
+        <div class="meter" style="border-top: 3px solid var(--pale-heal-deep);">
+          <div class="label">Hand &amp; nerve</div>
+          <div class="name">Steady</div>
+          <div class="rail"><div class="fill" style="width:52%; background: var(--pale-heal-deep);"></div></div>
+          <div class="scale"><span>still</span><span>shaking</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">Reliability under pressure. Useful for both bedside (washing, tincture) and combat (weapon handling, panic).</p>
+        </div>
+
+        <div class="meter burden">
+          <div class="label">Carried weight</div>
+          <div class="name">Burden</div>
+          <div class="rail"><div class="fill" style="width:55%"></div></div>
+          <div class="scale"><span>light</span><span>breaking</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">Witness, failed protection, death, hard choices. <strong>Cannot be cured.</strong> Notebook prose and posture project it.</p>
+        </div>
+
+        <div class="meter pressure">
+          <div class="label">Reactive strain</div>
+          <div class="name">Pressure</div>
+          <div class="rail"><div class="fill" style="width:72%"></div></div>
+          <div class="scale"><span>calm</span><span>near panic</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">Fading patient, wolf threat, child danger. Drives urgency without raw numbers in care UI; impairs Steady at extremes.</p>
+        </div>
+
+        <div class="meter numbness">
+          <div class="label">Drift into detachment</div>
+          <div class="name">Numbness</div>
+          <div class="rail"><div class="fill" style="width:38%"></div></div>
+          <div class="scale"><span>fully present</span><span>case-language dominates</span></div>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); margin: var(--s-3) 0 0;">FSR/Vigil self-use, repeated trauma, Wittehaven pressure. Steadier hands, blurred names; affects register and path perception.</p>
+        </div>
+      </div>
+
+      <div class="thesis-quote fire">
+        Self-use of <strong>FSR/Vigil</strong> trades immediate Pressure for Numbness, with cooldown and aftermath. The temptation persists: <em>I could resolve this faster if I administered to myself.</em>
+      </div>
+    </section>
+
+    <!-- SUBSTRATE -->
+    <section id="substrate">
+      <span class="section-overline">§ 6 · The Foundation</span>
+      <h2 class="section-title">Substrate Primitives</h2>
+      <p>The seventeen contracts that ship and pass headless tests <strong>before</strong> opening act content. Build order is strict: clock → events → resolver → state → encounter math → timers → data → loot → death → progression → presenters. Each primitive is event-derived and replayable.</p>
+
+      <div class="mech-grid">
+        <div class="mech" style="border-top-color: var(--lake-deep);">
+          <h4>1 · SimClock</h4>
+          <p>Fixed-tick scheduler. Pause, resume, time scale, seed. Deterministic replay foundation.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">tick · time_scale · seed · phase</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--ink);">
+          <h4>2 · SimEvent stream</h4>
+          <p>Append-only ring buffer. The authoritative record. Every system reads here; presenters do not own outcome state.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">id · tick · actor · target · verb · domain · cost · result · tags</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--icon-gold);">
+          <h4>3 · OutcomeResolver</h4>
+          <p>One resolver family for care, craft, combat, witness, path/receptivity. <code style="font-family: var(--mono-witte); font-size: 0.78rem;">CombatTable.Resolve()</code> is data, not a parallel engine. Scripted fixtures and seeded rolls supported.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">roll_kind · table_id · modifiers · outcome</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--pale-heal);">
+          <h4>4 · AuraSystem</h4>
+          <p>Add / refresh / stack / expire. Used by tinctures, wolf wounds, Witness aftermath.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">aura_id · target · duration_ticks · modifier_ids</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--cedar-brown);">
+          <h4>5 · ActorState / StatBlock / DerivedStats</h4>
+          <p>Actor model with derived stats from base + equipment + auras + burdens. Health, Spirit, Steady, Burden, Pressure, Numbness all flow through here.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">stat_key · old_value · new_value · reason</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--lake-slate);">
+          <h4>6 · DisparityService</h4>
+          <p>Encounter and care mismatch math. Contributes risk modifiers; does not own outcomes.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">disparity_kind · source · target · modifier</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--dragon-red);">
+          <h4>7 · AttentionThreatTable</h4>
+          <p>Care &amp; combat threat. Wolf target choice between Kalev and the boy: proximity, attacks, wounds, noise, care focus.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">threat_actor · delta · reason · current_target</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--rot-brown);">
+          <h4>8 · AggroCallFleeRadius</h4>
+          <p>Encounter AI radii. Aggro enter/exit, pack call escalation, flee route, leash return.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">radius_id · trigger · target · route_id</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--ember-red);">
+          <h4>9 · Timer suite</h4>
+          <p>GCD, work / cast / channel, swing, rite pulse. Start, tick, complete, interrupted — all observable events.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">timer_kind · duration_ticks · interrupted_by</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--pale-heal-deep);">
+          <h4>10 · Resource profiles</h4>
+          <p>Health / Spirit / Steady / Burden / Pressure / Numbness costs and consequences, all event-derived.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">resource_key · delta · cause</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--ember-glow);">
+          <h4>11 · FSR / Vigil cooldown</h4>
+          <p>Kalev self-administration. Tactical benefit (Pressure relief, Steady) vs. cost (Numbness, Burden, cooldown debt).</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">cooldown_id · started_tick · ready_tick · benefit · cost</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--old-ochre);">
+          <h4>12 · AbilityDef / VerbDef</h4>
+          <p>Verb data rows: tags, costs, timer, resolver table, presenter key. All acts use the same shape.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">verb_id · cost_keys · timer_id · table_id · presenter_key</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--cedar-brown);">
+          <h4>13 · ItemDef / quality / loot hooks</h4>
+          <p>Item defs, loot tables, quality budget, source-actor binding. Bread, tincture ingredients, wolf material — same accounting.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">item_id · quality · rarity · loot_table · source_actor</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--pine-shadow);">
+          <h4>14 · Leash / route / respawn</h4>
+          <p>Encounter route graph, leash radius, reset rules, death/down state. Wolves can flee/leash without dying.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">route_id · node · leash_state · reset_reason</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--ink);">
+          <h4>15 · Death / friction / moral death</h4>
+          <p>Mother fixed-outcome death. Kalev down/death per tuning. Wolf death enables loot eligibility. Recovery friction is a knob, not a moral.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">death_kind · cause_event · recoverable · witness_hook</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--icon-gold-warm);">
+          <h4>16 · Progression state</h4>
+          <p>Witness, Recollection, Vocation/path points. XP-style projection where scoped, internal/debug-first. All event-derived.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">progression_key · delta · source_event · path</p>
+        </div>
+
+        <div class="mech" style="border-top-color: var(--ink);">
+          <h4>17 · Notebook + domain presenters</h4>
+          <p>Read-only views. Notebook, bedside, combat, economy, debug. Presenters can hide or rename fields; they project events, never own them.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">presenter_id · source_event_ids · surface · copy_key</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Illustrative shape</h3>
+      <pre style="background: var(--candle-white); border: 1px solid var(--rule); padding: var(--s-4) var(--s-5); font-family: var(--mono-witte); font-size: 0.82rem; color: var(--ink); overflow-x: auto; box-shadow: var(--shadow-paper); line-height: 1.5;">public enum SimDomain
+{
+    Care, Craft, Combat, Witness, Economy, Progression, Notebook, Debug
+}
+
+public readonly record struct SimEvent(
+    long Id, int Tick,
+    string ActorId, string? TargetId,
+    string VerbId, SimDomain Domain, string SourceSystem,
+    IReadOnlyDictionary&lt;string, string&gt; Fields,
+    IReadOnlyList&lt;string&gt; Tags
+);
+
+public interface IOutcomeResolver
+{
+    ResolvedOutcome Resolve(OutcomeRequest request);
+}
+
+public readonly record struct OutcomeRequest(
+    string ActorId, string? TargetId,
+    string VerbId, string TableId, SimDomain Domain,
+    int Tick,
+    IReadOnlyDictionary&lt;string, int&gt; Modifiers,
+    string? ScriptedFixtureId
+);</pre>
+      <p style="font-size: 0.92rem; color: var(--ink-soft); font-style: italic;">Shape guidance, not final code. Combat tables are resolver data; care fixtures and wolf-attack fixtures both flow through this contract.</p>
+    </section>
+
+    <!-- v0.8.1 surfaces (provenance) -->
+    <section id="surfaces" style="background: var(--vellum-bone); padding: var(--s-6) var(--s-6); border: 1px solid var(--rule); margin: var(--s-6) 0;">
+      <span class="section-overline">§ 6.5 · Provenance · v0.8.1 player-facing surfaces</span>
+      <h3 style="margin-top: var(--s-2); font-family: var(--serif-display); font-weight: 400; font-size: 1.6rem;">Pouch · Tincture Wheel · Patient Panel · Notebook</h3>
+      <p style="margin: var(--s-3) 0;">v0.8.1 specified four player-facing surfaces in detail. They remain useful as visual / interaction provenance. Active v0.9 work routes them through the substrate above:</p>
+      <ul style="margin: var(--s-2) 0;">
+        <li><strong>Pouch</strong> — 8×2 inventory grid; cedar-dog presence in slot 1; tincture vial in slot 16. Reads <code style="font-family: var(--mono-witte); font-size: 0.82rem;">ItemDef</code> and inventory events.</li>
+        <li><strong>Tincture Wheel</strong> — four-axis craft surface (Relief / Warmth / Stability / Risk). Reads Steady, Pressure, Numbness from <code style="font-family: var(--mono-witte); font-size: 0.82rem;">ActorState</code>; emits resolver fixtures via <code style="font-family: var(--mono-witte); font-size: 0.82rem;">craft.tincture.prepare</code>.</li>
+        <li><strong>Patient Panel</strong> — bedside surface during Observe / Sit / Administer / Write. Tactile symptom words (<em>thin, cold, quiet, fading</em>). Wittehaven inverts the same atoms into clinical readout (later phase).</li>
+        <li><strong>Notebook</strong> — append-only, persistent, person-specific. Reads <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.*</code> events; never a quest log or card collection. Page/line locks from v0.8.1 are provenance under v0.9 routing.</li>
+      </ul>
+    </section>
+
+    <!-- LATENT PATHS -->
+    <section id="paths">
+      <span class="section-overline">§ 7 · The Three Attentions</span>
+      <h2 class="section-title">Latent Paths &amp; Receptivity</h2>
+      <p>Three growth disciplines, distinct from voice registers. Paths shape what Kalev <em>notices</em>; registers shape what surfaces and speakers <em>say</em>. Hesychasm is the active path name; Pastoral is a historical/source alias only.</p>
+
+      <div class="regimes">
+        <div class="regime" style="background: var(--candle-white); border-color: var(--cedar-brown);">
+          <h3 style="font-family: var(--serif-display); font-weight: 400;">Apothecary</h3>
+          <div class="palette-strip">
+            <span style="background: var(--cedar-brown)"></span>
+            <span style="background: var(--rot-brown)"></span>
+            <span style="background: var(--old-ochre)"></span>
+            <span style="background: var(--pale-heal)"></span>
+          </div>
+          <p class="tone"><em>Bodies, ingredients, dosing, pressure, practical sequence.</em></p>
+          <p><strong>Verbs:</strong> observe symptoms · wash · warm · prepare/administer tincture · bind · ration · break/offer bread.</p>
+          <p><strong>Costs:</strong> technical tunnel vision, missed presence cue, over-trusting treatment.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">events: craft.* · care.* · resolver metadata</p>
+        </div>
+
+        <div class="regime" style="background: var(--candle-white); border-color: var(--icon-gold);">
+          <h3 style="font-family: var(--serif-display); font-weight: 400;">Hesychasm</h3>
+          <div class="palette-strip">
+            <span style="background: var(--vellum-warm)"></span>
+            <span style="background: var(--icon-gold)"></span>
+            <span style="background: var(--candle-white)"></span>
+            <span style="background: var(--ink)"></span>
+          </div>
+          <p class="tone"><em>Watchfulness, prayerful presence, breath, fear, bearing witness.</em></p>
+          <p><strong>Verbs:</strong> sit near · keep watch · speak name · pray · wait for breath · hold hand · witness.</p>
+          <p><strong>Costs:</strong> time, Spirit, vulnerability during danger, carried Burden.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">events: presence.* · witness.* · recognition seed</p>
+        </div>
+
+        <div class="regime" style="background: var(--candle-white); border-color: var(--lake-deep);">
+          <h3 style="font-family: var(--serif-display); font-weight: 400;">Iconographic</h3>
+          <div class="palette-strip">
+            <span style="background: var(--lake-deep)"></span>
+            <span style="background: var(--vellum-bone)"></span>
+            <span style="background: var(--icon-gold-warm)"></span>
+            <span style="background: var(--ink)"></span>
+          </div>
+          <p class="tone"><em>Image, pattern, symbol, composition, sacred disclosure through matter.</em></p>
+          <p><strong>Verbs:</strong> notice image · arrange object · trace sign · mark page · read threshold · recognize.</p>
+          <p><strong>Costs:</strong> misreading symbol, distraction from bodily need, over-interpretation.</p>
+          <p style="font-family: var(--mono-witte); font-size: 0.78rem; color: var(--ink-soft);">events: iconographic.* · notebook.mark_image · recollection hook</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Receptivity contract</h3>
+      <p><code style="font-family: var(--mono-witte); font-size: 0.92rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">ReceptivityProfile</code> describes what a person can receive at a given moment. <code style="font-family: var(--mono-witte); font-size: 0.92rem; background: var(--vellum-bone); padding: 1px 6px; border: 1px solid var(--rule);">register_match_modifier</code> is the resolver-facing score derived from action register, target receptivity, path state, and context. The same atoms drive bedside fit, recognition seeds, and Bethany payoff.</p>
+
+      <pre style="background: var(--candle-white); border: 1px solid var(--rule); padding: var(--s-4) var(--s-5); font-family: var(--mono-witte); font-size: 0.82rem; color: var(--ink); overflow-x: auto; box-shadow: var(--shadow-paper); line-height: 1.5;">{
+  "domain": "Care",
+  "verb_id": "care.bread.offer",
+  "path_id": "apothecary",
+  "voice_register": "folk",
+  "receptivity_profile_id": "child.after_water_fearful",
+  "register_match_modifier": 2,
+  "fit_tags": ["hungry", "quiet", "ordinary_mercy"],
+  "recognition_hooks": ["bread_received"]
+}</pre>
+
+      <h3 style="margin-top: var(--s-6);">Voice registers ≠ latent paths</h3>
+      <div class="symbols">
+        <div class="symbol"><div class="name">folk register</div><div class="meaning">Hand-script, sentence case, tactile bedside words. Not a latent path.</div></div>
+        <div class="symbol"><div class="name">sanctioned register</div><div class="meaning">Wittehaven mono case-IDs and dosing. Surface tone; not a path.</div></div>
+        <div class="symbol"><div class="name">sacred register</div><div class="meaning">Cinzel display; halos; threshold disclosure. Surface tone; not a path.</div></div>
+        <div class="symbol"><div class="name">Apothecary path</div><div class="meaning">Growth in bodily care attention. Not a register.</div></div>
+        <div class="symbol"><div class="name">Hesychasm path</div><div class="meaning">Growth in watchful presence. Not a register. <em>Pastoral is historical alias.</em></div></div>
+        <div class="symbol"><div class="name">Iconographic path</div><div class="meaning">Growth in image / threshold / pattern attention. Not a register.</div></div>
+      </div>
+    </section>
+
+    <!-- SYMBOLS -->
+    <section id="symbols">
+      <span class="section-overline">§ 8 · The Grammar</span>
+      <h2 class="section-title">Micro-Symbols &amp; Iconography</h2>
+      <p>The world's vocabulary, smaller than a tile. Carried forward from v0.8.1 — the grammar still holds.</p>
+      <div class="symbols">
+        <div class="symbol"><div class="name">Cedar dog</div><div class="meaning">The son. Presence. Unburnt fire.</div></div>
+        <div class="symbol"><div class="name">Tincture vial</div><div class="meaning">Effective bypass. Mercy or Strange Fire depending on intention and use.</div></div>
+        <div class="symbol"><div class="name">Apple refusal</div><div class="meaning">The first refusal that does not fit the world's rules.</div></div>
+        <div class="symbol"><div class="name">Leather notebook</div><div class="meaning">Memory under cold. The thing the world cannot take.</div></div>
+        <div class="symbol"><div class="name">Repaired gloves</div><div class="meaning">Skill maintained without ceremony. (Lena.)</div></div>
+        <div class="symbol"><div class="name">Chipped cups</div><div class="meaning">Every vessel has been used.</div></div>
+        <div class="symbol"><div class="name">Wolf tooth / hide</div><div class="meaning">Material consequence of protection. Not a trophy; a record of the cost.</div></div>
+        <div class="symbol"><div class="name">Bread broken</div><div class="meaning">Ordinary mercy under constraint. Receptivity meets timing.</div></div>
+      </div>
+    </section>
+
+    <!-- REGIMES -->
+    <section id="regimes">
+      <span class="section-overline">§ 9 · Three Worlds</span>
+      <h2 class="section-title">The Three Regimes</h2>
+      <p>The same UI atoms render under three grammars — the visual law from v0.8.1 stays active under v0.9. The geometry does not move; the grammar inverts. The opening five-act slice lives in the Ironwood register; Wittehaven and Paradise are scoped to later phases.</p>
+
+      <div class="regimes">
+        <div class="regime regime-ironwood">
+          <h3>Ironwood &nbsp;·&nbsp; Folk Mercy</h3>
+          <div class="palette-strip">
+            <span style="background: var(--vellum-warm)"></span>
+            <span style="background: var(--cedar-brown)"></span>
+            <span style="background: var(--damp-ash)"></span>
+            <span style="background: var(--pale-heal)"></span>
+            <span style="background: var(--ink)"></span>
+          </div>
+          <p class="tone"><em>Rough, damp, dignified; every surface worn but readable.</em></p>
+          <p>Hand-script labels. Notebook hand. Tactile symptom words: <em>thin, cold, quiet, fading.</em> Names in IM Fell English. The Tincture Wheel is hand-drawn and humble. Earth tones; one ember-red glint when the vial is out.</p>
+        </div>
+
+        <div class="regime regime-wittehaven">
+          <h3>Wittehaven · Sanctioned Mercy</h3>
+          <div class="palette-strip">
+            <span style="background: var(--witte-white)"></span>
+            <span style="background: var(--witte-blue)"></span>
+            <span style="background: var(--witte-cool)"></span>
+            <span style="background: var(--lake-slate)"></span>
+            <span style="background: var(--lake-deep)"></span>
+          </div>
+          <p class="tone"><em>The relief of clean grids and clear answers — the seduction that becomes control.</em></p>
+          <p>ALL-CAPS case IDs in IBM Plex Mono. Patients become stages, dosing, radiation levels. The Wheel becomes clean, exact, protocol-scored. Zero corner radius. Sharp shadows. <em>Foreshadow only in P0.</em></p>
+        </div>
+
+        <div class="regime regime-paradise">
+          <h3>Paradise · Sacred Mercy</h3>
+          <div class="palette-strip">
+            <span style="background: var(--candle-white)"></span>
+            <span style="background: var(--cedar-brown)"></span>
+            <span style="background: var(--ink)"></span>
+            <span style="background: var(--icon-gold)"></span>
+            <span style="background: var(--icon-gold-warm)"></span>
+          </div>
+          <p class="tone"><em>Recognition, not reward. Names already known. The practice that survives.</em></p>
+          <p>Cinzel sacred display. Gold halo on the cedar dog. Names on the wall. Kalev's name written by another hand. <strong>P2 reserved</strong> — IC XC NIKA, halos, narthex are not in the prototype.</p>
+        </div>
+      </div>
+
+      <div class="thesis-quote cold">
+        Gold appears only when something <strong>eternal presses through</strong>. Red appears only when fire is live, dangerous, or accusatory. The grammar inverts; the geometry does not.
+      </div>
+    </section>
+
+    <!-- COLOR & TYPE -->
+    <section id="palette">
+      <span class="section-overline">§ 10 · The Visual Substrate</span>
+      <h2 class="section-title">Color &amp; Type</h2>
+      <p class="tom-lede">A damaged sacred manuscript rendered in cold Michigan light. Most surfaces are muted and cold. Gold and red are EARNED.</p>
+
+      <div class="palette-section">
+        <h4>Ink &amp; paper — the manuscript substrate</h4>
+        <div class="palette">
+          <div class="swatch"><div class="chip" style="background: #1a1612"></div><div class="info"><p class="name">ink</p><p class="hex">#1A1612</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #2b2520"></div><div class="info"><p class="name">ink-soft</p><p class="hex">#2B2520</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #6b6358"></div><div class="info"><p class="name">damp-ash</p><p class="hex">#6B6358</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #e8dfc9"></div><div class="info"><p class="name">vellum-bone</p><p class="hex">#E8DFC9</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #efe6d0"></div><div class="info"><p class="name">vellum-warm</p><p class="hex">#EFE6D0</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #f6f1e0"></div><div class="info"><p class="name">candle-white</p><p class="hex">#F6F1E0</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #fbf7eb"></div><div class="info"><p class="name">candle-pure</p><p class="hex">#FBF7EB</p></div></div>
+        </div>
+      </div>
+
+      <div class="palette-section">
+        <h4>Cold Michigan world</h4>
+        <div class="palette">
+          <div class="swatch"><div class="chip" style="background: #5b6770"></div><div class="info"><p class="name">lake-slate</p><p class="hex">#5B6770</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #2c3540"></div><div class="info"><p class="name">lake-deep</p><p class="hex">#2C3540</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #2a3329"></div><div class="info"><p class="name">pine-shadow</p><p class="hex">#2A3329</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #4a3a26"></div><div class="info"><p class="name">rot-brown</p><p class="hex">#4A3A26</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #6b4a2c"></div><div class="info"><p class="name">cedar-brown</p><p class="hex">#6B4A2C</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #b08a4a"></div><div class="info"><p class="name">old-ochre</p><p class="hex">#B08A4A</p></div></div>
+        </div>
+      </div>
+
+      <div class="palette-section">
+        <h4>Healing &amp; relief</h4>
+        <div class="palette">
+          <div class="swatch"><div class="chip" style="background: #7a8c5e"></div><div class="info"><p class="name">pale-heal</p><p class="hex">#7A8C5E</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #5a6b48"></div><div class="info"><p class="name">pale-heal-deep</p><p class="hex">#5A6B48</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #6e8a7c"></div><div class="info"><p class="name">verdigris</p><p class="hex">#6E8A7C</p></div></div>
+        </div>
+      </div>
+
+      <div class="palette-section">
+        <h4>Earned colors — gold &amp; red appear sparingly</h4>
+        <div class="palette">
+          <div class="swatch"><div class="chip" style="background: #c79a3a"></div><div class="info"><p class="name">icon-gold</p><p class="hex">#C79A3A</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #d9b057"></div><div class="info"><p class="name">icon-gold-warm</p><p class="hex">#D9B057</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #8a2018"></div><div class="info"><p class="name">dragon-red</p><p class="hex">#8A2018</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #c63e1f"></div><div class="info"><p class="name">ember-red</p><p class="hex">#C63E1F</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #e26a3a"></div><div class="info"><p class="name">ember-glow</p><p class="hex">#E26A3A</p></div></div>
+        </div>
+      </div>
+
+      <div class="palette-section">
+        <h4>Wittehaven — institutional, seductive</h4>
+        <div class="palette">
+          <div class="swatch"><div class="chip" style="background: #f4f6f7"></div><div class="info"><p class="name">witte-white</p><p class="hex">#F4F6F7</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #d5dee4"></div><div class="info"><p class="name">witte-blue</p><p class="hex">#D5DEE4</p></div></div>
+          <div class="swatch"><div class="chip" style="background: #8fa3b0"></div><div class="info"><p class="name">witte-cool</p><p class="hex">#8FA3B0</p></div></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">The Five Hands</h3>
+      <div class="type-specimen">
+        <div class="label">Display Serif · IM Fell English · titles, openers</div>
+        <div class="sample ts-display">The Garments of Skin</div>
+      </div>
+      <div class="type-specimen">
+        <div class="label">Body Serif · EB Garamond · prose</div>
+        <div class="sample ts-body">The notebook records persons, not outcomes. Wittehaven later records cases, not persons.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="label">Sacred Display · Cinzel · IC XC, NIKA, Paradise plates (P2 only)</div>
+        <div class="sample ts-icon">Earn every halo · Earn every flame</div>
+      </div>
+      <div class="type-specimen">
+        <div class="label">Notebook Hand · Caveat · graphite on damp paper</div>
+        <div class="sample ts-hand">Eli Keene. The breath left before the name did.</div>
+      </div>
+      <div class="type-specimen">
+        <div class="label">Wittehaven Mono · IBM Plex Mono · case IDs, dosing, charts</div>
+        <div class="sample ts-mono">CASE W-0044 · STAGE III · DOSE PROTOCOL ENGAGED</div>
+      </div>
+    </section>
+
+    <!-- SPRITE SCALE -->
+    <section id="sprite-scale">
+      <span class="section-overline">§ 11 · The Pixel Law</span>
+      <h2 class="section-title">Sprite Scale Policy</h2>
+      <p>The v0.8.1 high-fidelity sprite scale carries forward unchanged in v0.9. Premium large-pixel runtime sprites; 32×32 environment tiles. Authored at native canvas size with nearest-neighbor presentation — <strong>never as a downscale of concept art</strong>. Wolves and the boy will be authored to this canvas scale.</p>
+
+      <div class="scale-diagram">
+        <div class="scale-row">
+          <div class="canvas-bar" style="width: 64px; height: 96px; background: var(--cedar-brown);">
+            <div class="label">Kalev<small>64 × 96</small></div>
+          </div>
+          <div class="canvas-bar" style="width: 64px; height: 96px; background: var(--pale-heal-deep);">
+            <div class="label">Lena<small>64 × 96</small></div>
+          </div>
+          <div class="canvas-bar" style="width: 48px; height: 72px; background: var(--rot-brown);">
+            <div class="label">Minor adult<small>48 × 72</small></div>
+          </div>
+          <div class="canvas-bar" style="width: 48px; height: 64px; background: var(--old-ochre);">
+            <div class="label">Birdie<small>48 × 64</small></div>
+          </div>
+          <div class="canvas-bar" style="width: 96px; height: 48px; background: var(--lake-slate);">
+            <div class="label">Bedside patient<small>96 × 48</small></div>
+          </div>
+          <div class="canvas-bar" style="width: 32px; height: 32px; background: var(--damp-ash);">
+            <div class="label">Tile<small>32 × 32</small></div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: var(--s-6);"><strong>Why it changed:</strong> the 32×48 placeholder scale is acceptable for movement tests but too small for Kalev's identity — heavy coat, scarf/collar, medicine pouch, notebook, cedar dog charm, Ember vial, gloves, tired face, burdened posture. The game remains <em>Michigan icon-manuscript pixel art</em>. This is a medium art-scope increase, not a genre change.</p>
+    </section>
+
+    <!-- KALEV ANIMATIONS -->
+    <section id="kalev-anims">
+      <span class="section-overline">§ 12 · Kalev — Production In Flight</span>
+      <h2 class="section-title">Kalev — Concept &amp; Animation Passes</h2>
+      <p>The standalone Kalev concept is the current visual reference. v0.9 keeps the silhouette law from v0.8.1 and extends the animation set to cover combat, flight, and protection verbs once Act 5 is in graybox. The five sheets below are early iteration passes — they predate the 64×96 decision and will need to be redrawn at native size before they ship.</p>
+
+      <div style="display: grid; grid-template-columns: minmax(220px, 320px) 1fr; gap: var(--s-6); margin-top: var(--s-5); align-items: start;">
+        <div>
+          <div style="background: var(--vellum-bone) center/contain no-repeat; background-image: url('art/characters/kalev/kalev_design_asset.png'); aspect-ratio: 1/1; border: 1px solid var(--rule-strong); box-shadow: var(--shadow-card);"></div>
+          <p class="tom-caption" style="margin-top: var(--s-2); text-align: center;">Canonical concept reference<br/><code style="font-family: var(--mono-witte); font-size: 0.7rem;">art/characters/kalev/kalev_design_asset.png</code></p>
+        </div>
+        <div>
+          <h4>Kalev's silhouette laws</h4>
+          <ul>
+            <li><strong>Long weathered coat</strong> to mid-thigh — cedar-brown wool.</li>
+            <li><strong>Scarf / collar</strong> mass framing the tired face.</li>
+            <li><strong>Medicine pouch</strong> on the right hip — rot-brown leather.</li>
+            <li><strong>Notebook</strong> in the left hand on idle — visible at 1×.</li>
+            <li><strong>Cedar dog charm</strong> — small; visible at 2×.</li>
+            <li><strong>Ember vial</strong> — small dangerous red accent, restrained.</li>
+            <li><strong>Practical boots and gloves.</strong></li>
+            <li><strong>Burdened shoulders</strong> — former critical-care competence, never fantasy hero posture.</li>
+          </ul>
+          <p style="font-size: 0.92rem; color: var(--ink-soft); font-style: italic;">Silhouette test: identifiable by the pouch on the right hip and the notebook in the left hand. Single ember-red glint visible only when the vial is actively out.</p>
+        </div>
+      </div>
+
+      <h4 style="margin-top: var(--s-7);">Animation passes (early — to be redrawn at 64 × 96)</h4>
+      <div class="anims">
+        <div class="anim"><div class="strip" style="background-image:url('art/characters/kalev/animations/kalev_idle_animation.png');"></div><div class="name">Idle</div></div>
+        <div class="anim"><div class="strip" style="background-image:url('art/characters/kalev/animations/kalev_walking_animation.png');"></div><div class="name">Walking</div></div>
+        <div class="anim"><div class="strip" style="background-image:url('art/characters/kalev/animations/kalev_notebook_animation.png');"></div><div class="name">Notebook</div></div>
+        <div class="anim"><div class="strip" style="background-image:url('art/characters/kalev/animations/kalev_treating_animation.png');"></div><div class="name">Treating</div></div>
+        <div class="anim"><div class="strip" style="background-image:url('art/characters/kalev/animations/kalev_tincture_animation.png');"></div><div class="name">Tincture</div></div>
+      </div>
+    </section>
+
+    <!-- FIVE-ACT OPENING -->
+    <section id="opening">
+      <span class="section-overline">§ 13 · The Vertical Slice</span>
+      <h2 class="section-title">The Five-Act Opening</h2>
+      <p>The opening proves the substrate in play. Each act names the primitives it teaches, the events it must record, and the debug-acceptance that proves it. Implementation is <code style="font-family: var(--mono-witte); font-size: 0.82rem;">blocked_by: [B0]</code> until M1 substrate core lands.</p>
+
+      <div class="scene" style="border-left-color: var(--lake-slate);">
+        <h4>Act 1 · Water</h4>
+        <p style="font-style: italic; color: var(--ink-soft); margin-top: 0;">Embodied care as action under time and state pressure.</p>
+        <ul>
+          <li><strong>Verbs:</strong> observe · fetch water · wash face/hands · cool cloth · warm hands / stoke fire · sit near · write name seed.</li>
+          <li><strong>Taught primitives:</strong> SimClock · SimEvent · ActorState · resource profiles (Pressure / Burden / Steady) · work timer · notebook presenter.</li>
+          <li><strong>Authored events:</strong> <code style="font-family: var(--mono-witte); font-size: 0.82rem;">act1.enter_cabin</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.observe.mother</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.water.use</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.warmth.adjust</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.name_seed</code>.</li>
+          <li><strong>Outcomes:</strong> ordered care eases mother comfort and child trust seed; Kalev Steady stabilizes. No hard fail by itself — the act teaches consequence, not a fail screen.</li>
+          <li><strong>Debug acceptance:</strong> replay fixture shows observe → water-use in tick order; comfort/trust projections derive from events; no scene-local variable owns the final state.</li>
+        </ul>
+      </div>
+
+      <div class="scene" style="border-left-color: var(--cedar-brown);">
+        <h4>Act 2 · Bread</h4>
+        <p style="font-style: italic; color: var(--ink-soft); margin-top: 0;">Ordinary mercy under constraint — food, timing, receptivity, consequence. Not a recipe puzzle. <strong>Bread</strong>, not porridge.</p>
+        <ul>
+          <li><strong>Verbs:</strong> check food · break bread · offer (to child or mother) · moisten · wait for breath · save for later.</li>
+          <li><strong>Taught primitives:</strong> ItemDef · work/channel timer · ReceptivityProfile · register_match_modifier · economy event · notebook presenter for ordinary care.</li>
+          <li><strong>Authored events:</strong> <code style="font-family: var(--mono-witte); font-size: 0.82rem;">item.bread.inspect</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.bread.break</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.bread.offer</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">state.receptivity.shift</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.ordinary_mercy</code>.</li>
+          <li><strong>Outcomes:</strong> fitting offer improves receptivity, eases pressure, strengthens child trust seed (a Bethany recognition hook). Poor timing wastes scarce food.</li>
+          <li><strong>Debug acceptance:</strong> bread inventory only changes through <code style="font-family: var(--mono-witte); font-size: 0.82rem;">item.bread.*</code> / <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.bread.*</code>; receptivity shifts cite their source event; act data and UI use bread.</li>
+        </ul>
+      </div>
+
+      <div class="scene" style="border-left-color: var(--ember-red);">
+        <h4>Act 3 · Tincture</h4>
+        <p style="font-style: italic; color: var(--ink-soft); margin-top: 0;">The shared resolver becomes visible. Medicine is real and costly without becoming the final meaning of care.</p>
+        <ul>
+          <li><strong>Verbs:</strong> inspect · grind / steep / measure · administer · hold back · self-administer (FSR / Vigil) · record preparation.</li>
+          <li><strong>Taught primitives:</strong> OutcomeResolver (scripted fixture + seeded roll) · AbilityDef / VerbDef · AuraSystem · FSR/Vigil cooldown · DisparityService · resource profiles (Spirit / Steady / Numbness / Pressure).</li>
+          <li><strong>Authored events:</strong> <code style="font-family: var(--mono-witte); font-size: 0.82rem;">craft.tincture.prepare</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">resolver.tincture.roll</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.tincture.administer</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">aura.tincture.apply</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">fsr_vigil.self_use</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.tincture_record</code>.</li>
+          <li><strong>Outcomes:</strong> clean prep / admin = clearer state and good debug trace. Rough = pressure / burden cost. Self-use = tactical benefit + later cost (Numbness rises, Recollection consequence).</li>
+          <li><strong>Debug acceptance:</strong> resolver event includes table id, modifiers, roll/fixture metadata, outcome. Care + later combat fixtures share the same resolver family. Self-use emits both benefit and consequence.</li>
+        </ul>
+      </div>
+
+      <div class="scene" style="border-left-color: var(--ink);">
+        <h4>Act 4 · Mother death / Witness gravity encounter</h4>
+        <p style="font-style: italic; color: var(--ink-soft); margin-top: 0;">Inverse first-boss shape. Player acts meaningfully, learns mechanics, and cannot convert care into control over death. The outcome is fixed; the mechanics are real.</p>
+        <ul>
+          <li><strong>Verbs:</strong> observe breath · administer (if remains) · sit near / hold hand · speak name (Hesychasm) · pray / keep watch · draw sign / notice image (Iconographic) · witness · write name.</li>
+          <li><strong>Taught primitives:</strong> death / friction / moral death · Witness &amp; Recollection progression · path / receptivity hooks · resolver fixture with fixed outcome · notebook presenter.</li>
+          <li><strong>Authored events:</strong> <code style="font-family: var(--mono-witte); font-size: 0.82rem;">care.last_actions</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">resolver.death_fixture</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">death.mother</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">witness.kalev</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.write_name</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">progression.recollection_seed</code>.</li>
+          <li><strong>Outcomes:</strong> mother dies in the authored event. Player actions affect comfort tags, child fear/trust and recognition seed, Kalev Burden &amp; Witness, notebook prose, Numbness drift.</li>
+          <li><strong>Debug acceptance:</strong> death event carries fixed-outcome metadata; player actions affect ≥3 projections (comfort, Kalev resources, child seed, notebook/progression); the act is not a non-interactive cutscene.</li>
+        </ul>
+      </div>
+
+      <div class="scene" style="border-left-color: var(--dragon-red);">
+        <h4>Act 5 · Wolves / Boy flight / Combat</h4>
+        <p style="font-style: italic; color: var(--ink-soft); margin-top: 0;">First-class combat under the shared substrate. Real danger, threat, violence, cost, possible loot. Encounter objective: the boy reaches safety.</p>
+        <ul>
+          <li><strong>Verbs:</strong> move / place self between · call to boy · guard / shove / strike / attack · dodge / retreat / draw threat · use item / tincture / self-administer · loot wolf / gather material · write aftermath.</li>
+          <li><strong>Taught primitives:</strong> AttentionThreatTable · AggroCallFleeRadius · GCD / swing / work timers · Health / damage / death · AbilityDef · ItemDef + loot hooks (quality / material) · Leash / route / flee · progression / notebook projections.</li>
+          <li><strong>Authored events:</strong> <code style="font-family: var(--mono-witte); font-size: 0.82rem;">encounter.wolves.start</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">threat.target.shift</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">combat.attack.resolve</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">combat.damage.apply</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">route.boy.advance</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">combat.wolf.death_or_flee</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">loot.wolf.material</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">progression.protection</code> · <code style="font-family: var(--mono-witte); font-size: 0.82rem;">notebook.aftermath</code>.</li>
+          <li><strong>Outcomes:</strong> boy safety resolves the encounter. Kalev can be hurt / downed / die per tuning. Killed wolves may produce loot/material consequence (hide, sinew, tooth, meat, blood-risk). Fled / leashed wolves resolve combat without every wolf dying.</li>
+          <li><strong>Debug acceptance:</strong> fixture proves wolf targets boy → Kalev draws threat → boy reaches safety. Fixture proves Kalev can take damage and event stream records cost. Fixture proves killed wolf can produce loot/material event when eligible. Objective is child safety, not kill count. All combat events flow through SimEvent + OutcomeResolver / combat table contracts.</li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Cross-act notebook &amp; progression seeds</h3>
+      <ul>
+        <li><strong>Child trust / recognition</strong> — Water · Bread · Witness · Wolves → Bethany recognition / presence payoff.</li>
+        <li><strong>Mother name / Witness</strong> — Water · Witness → Recollection and Burden.</li>
+        <li><strong>Bread ordinary mercy</strong> — Bread → mercy through small acts under scarcity.</li>
+        <li><strong>Tincture cost</strong> — Tincture · Witness → Apothecary learning + self-use consequence.</li>
+        <li><strong>Protection</strong> — Wolves → combat, risk, and mercy coexist without splitting systems.</li>
+      </ul>
+    </section>
+
+    <!-- RPG ECONOMY -->
+    <section id="economy">
+      <span class="section-overline">§ 14 · The Reward Surface</span>
+      <h2 class="section-title">RPG Economy &amp; Progression</h2>
+      <p>Combat is real, so reward is real. The economy principle: <strong>encounter objective</strong> and <strong>material consequence</strong> are separate. The boy reaching safety resolves the wolf encounter; loot follows from the event stream, not from doctrine. Tuning is allowed; moralized bans are not.</p>
+
+      <h3>Reward channels</h3>
+      <div class="pillars">
+        <div class="pillar"><div class="num">channel 01</div><h4>Loot / material</h4><p><code style="font-family: var(--mono-witte); font-size: 0.78rem;">loot.*</code> + <code style="font-family: var(--mono-witte); font-size: 0.78rem;">combat.wolf.death_or_flee</code> + gather events. Wolf hide, sinew, tooth/claw, meat, blood-risk per tuning.</p></div>
+        <div class="pillar"><div class="num">channel 02</div><h4>Equipment</h4><p>Item/equip events with quality tags. Later build expression and survival preparation: protective wrap, knife, tool hooks if scoped.</p></div>
+        <div class="pillar"><div class="num">channel 03</div><h4>Witness</h4><p>Death / protection / presence events. Carried consequence and theological/narrative memory. Can be reward and burden.</p></div>
+        <div class="pillar"><div class="num">channel 04</div><h4>Recollection</h4><p>Notebook / witness / path events. Bethany recognition seeds. Names, page, line, prior protection.</p></div>
+        <div class="pillar"><div class="num">channel 05</div><h4>Vocation / path points</h4><p>Apothecary, Hesychasm, Iconographic growth from path-tagged events. Unlocks readings, lowers costs, changes receptivity fit.</p></div>
+        <div class="pillar"><div class="num">channel 06</div><h4>XP-style projection</h4><p>Internal / debug-facing where scoped. Player-facing copy uses register-fitting words: notebook, recollection, vocation, practice, wound, named memory.</p></div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Item quality &amp; rarity</h3>
+      <p>Internal architecture term → tactile player-facing mapping:</p>
+      <div class="symbols">
+        <div class="symbol"><div class="name">poor</div><div class="meaning">torn · fouled · cracked. Useful for gritty salvage.</div></div>
+        <div class="symbol"><div class="name">rough</div><div class="meaning">rough · usable · smoke-stained. Default for opening wolf material.</div></div>
+        <div class="symbol"><div class="name">sound</div><div class="meaning">sound · clean · kept. Strong ordinary quality.</div></div>
+        <div class="symbol"><div class="name">fine</div><div class="meaning">well-cut · steady · close-grained. Earned, not flashy.</div></div>
+        <div class="symbol"><div class="name">rare</div><div class="meaning">uncommon · hard-won · marked. Use carefully on world surfaces.</div></div>
+        <div class="symbol"><div class="name">legendary</div><div class="meaning">named relic · remembered thing · singular piece. Architecture concept; presentation must fit the game.</div></div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Tuning levers, not moral bans</h3>
+      <ul>
+        <li><strong>Avoid shallow farming dominance:</strong> diminishing returns · scarcity · danger · time pressure · patrol changes. <em>"This route's wolves stop producing useful hide after the body is spoiled or the pack scatters."</em></li>
+        <li><strong>Keep protection objective central:</strong> objective reward separate from loot. <em>"Boy safety resolves the encounter; loot is a material consequence."</em></li>
+        <li><strong>Prevent infinite safety:</strong> wounds · cooldowns · pressure · route risk · leash/call behavior. <em>"Repeated fighting raises danger and cost."</em></li>
+        <li><strong>Keep care meaningful:</strong> attention/resource opportunity costs. <em>"Time spent looting may affect the next bedside beat."</em></li>
+        <li><strong>Preserve notebook tone:</strong> presenter mapping. <em>"Debug may show XP; notebook records names and burdens."</em></li>
+      </ul>
+
+      <div class="thesis-quote heal" style="margin-top: var(--s-6);">
+        Looting takes time and attention. Materials enable later care or survival. Combat wounds create care needs. Bread, water, tincture, and wolf materials all use the same inventory and event accounting. The economy <strong>intensifies</strong> care; it does not replace it.
+      </div>
+    </section>
+
+    <!-- MILESTONES -->
+    <section id="milestones">
+      <span class="section-overline">§ 15 · The Build Order</span>
+      <h2 class="section-title">Milestones</h2>
+      <p>Substrate-first execution. Documentation lands first; primitives second; presenters and data third; opening graybox fourth; vertical-slice verification last. Epic C is <code style="font-family: var(--mono-witte); font-size: 0.82rem;">blocked_by: [B0]</code> until B1–B6 substrate acceptance passes.</p>
+
+      <div class="phase-list" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="phase p1">
+          <div class="num">M0 · in flight</div>
+          <h4>Active packet &amp; canon routing</h4>
+          <p>This packet, ADRs 0001–0011, issue slices, acceptance, anti-drift vocabulary. Routing docs converge on v0.9 active packet.</p>
+        </div>
+        <div class="phase p2">
+          <div class="num">M1 · gate</div>
+          <h4>Substrate core mechanics</h4>
+          <p>SimClock, SimEvent, OutcomeResolver, AuraSystem, ActorState, Disparity, Threat, Aggro, Timers, Resources, FSR/Vigil, AbilityDef, ItemDef, Leash, Death/friction, Progression, Notebook presenter. Headless tests pass.</p>
+        </div>
+        <div class="phase p3">
+          <div class="num">M2</div>
+          <h4>Data &amp; presenters</h4>
+          <p>Domain presenters for bedside / combat / notebook / debug / economy. Data definitions for actors, abilities, items, loot tables, path / receptivity profiles, act beats. Presenters read events; they do not own truth.</p>
+        </div>
+        <div class="phase p4">
+          <div class="num">M3</div>
+          <h4>Opening act graybox</h4>
+          <p>Water · Bread · Tincture · Mother death / Witness · Wolves / boy / combat. Each act proves named substrate primitives; each writes notebook and debug events.</p>
+        </div>
+        <div class="phase p4" style="border-top: 3px solid var(--dragon-red);">
+          <div class="num">M4</div>
+          <h4>Vertical-slice verification</h4>
+          <p>Acceptance tests, stale-claim checks, anti-drift pass, manual read-through. Acceptance passes or lists explicit open risks. ISSUE_SLICES becomes the implementation backlog.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Issue spine</h3>
+      <ul>
+        <li><strong>Epic A · Active canon packet &amp; PRD</strong> — A1 INDEX, A2 PRD, A3 ACCEPTANCE, A4 routing contract.</li>
+        <li><strong>Epic B · Substrate core</strong> — B0 gate · B1 SimClock+SimEvent · B2 Resolver+rolls · B3 Auras+state+resources · B4 Disparity+threat+aggro · B5 Timers+ability/item+presenters · B6 Progression+notebook truth.</li>
+        <li><strong>Epic C · Opening acts</strong> — C1 Water · C2 Bread · C3 Tincture · C4 Gravity encounter · C5 Wolves+flight+combat+loot. <em>All blocked_by [B0].</em></li>
+        <li><strong>Epic D · Paths &amp; receptivity</strong> — D1 path vocabulary · D2 ReceptivityProfile schema · D3 Bethany payoff (recognition / presence).</li>
+        <li><strong>Epic E · Economy &amp; progression</strong> — E1 loot/material/equipment quality · E2 Witness/Recollection/Vocation accounting · E3 tuning levers, not moral bans.</li>
+        <li><strong>Epic F · Canon registry &amp; migration</strong> — F1 surface registry · F2 root/design/agent docs update · F3 stale plans/source migration.</li>
+        <li><strong>Epic G · Anti-drift &amp; vocabulary</strong> — G1 vocabulary matrix · G2 allowlist/lint updates · G3 verification.</li>
+      </ul>
+
+      <h3 style="margin-top: var(--s-7);">The larger arc — beyond the opening</h3>
+      <p>The opening five-act slice lives within Phase I (Ironwood / pre-Bethany). Later phases stay on the map; their content is post-vertical-slice work, not project doctrine.</p>
+      <div class="phase-list">
+        <div class="phase p1">
+          <div class="num">Phase I · opening &amp; beyond</div>
+          <h4>Ironwood / Bethany</h4>
+          <p>Opening five acts (active). Bethany triage and Lena's recognition payoff (later). Road bends toward Wittehaven.</p>
+        </div>
+        <div class="phase p2">
+          <div class="num">Phase II · later</div>
+          <h4>Wittehaven</h4>
+          <p>Sanctioned register first. Protocol integration. Hospital UI seduction. Iron Ledger trial. Exile.</p>
+        </div>
+        <div class="phase p3">
+          <div class="num">Phase III · later</div>
+          <h4>Straits / Mackinac / Arvon</h4>
+          <p>The vial nearly empty. Pivotal self-administration choice. Notebook lost on the bridge. Rafe Carver at Mount Arvon.</p>
+        </div>
+        <div class="phase p4">
+          <div class="num">Phase IV · later</div>
+          <h4>Paradise</h4>
+          <p>Names already known. Kalev's name written by another hand. The wife's name written. Recognition.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCKS -->
+    <section id="locks">
+      <span class="section-overline">§ 16 · The Strict</span>
+      <h2 class="section-title">Active Locks · v0.9</h2>
+      <p>The cheat-sheet. Full active text in <a href="design_system/v0_9_mercy_rpg_substrate/INDEX.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">v0.9 INDEX.md</a>, <a href="design_system/v0_9_mercy_rpg_substrate/PRD.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">PRD.md</a>, and <a href="design_system/v0_9_mercy_rpg_substrate/ACCEPTANCE.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">ACCEPTANCE.md</a>. v0.8.1 strict locks survive as scoped P0 provenance for the visual / naming / Godot scaffold layer.</p>
+
+      <div class="locks">
+        <h4>Substrate</h4>
+        <ul>
+          <li>One event truth: <code>SimEvent</code> is the authoritative record for every consequential action.</li>
+          <li>One resolver family: <code>OutcomeResolver</code> + <code>CombatTable.Resolve()</code>. No separate care/combat resolver.</li>
+          <li>Substrate before content: M1 core mechanics tested before M3 opening acts. Epic C carries <code>blocked_by: [B0]</code>.</li>
+          <li>Domain presenters read events; they do not own outcome state.</li>
+        </ul>
+
+        <h4>Combat</h4>
+        <ul>
+          <li>First-class. Wolves can harm Kalev or the boy. Threat, damage, cooldowns, loot/material consequence, progression hooks all carry acceptance.</li>
+          <li>Encounter objective: child safety. Loot is grounded consequence, not victory condition.</li>
+          <li>Scoped vocabulary in active docs and debug: combat · damage · threat · aggro · attack table · GCD · swing/cast/channel timer · loot · loot table · material · rarity · quality · equipment · XP-style accounting · boss/gravity encounter · death/friction.</li>
+        </ul>
+
+        <h4>Care</h4>
+        <ul>
+          <li>Bedside vocabulary stays tactile and person-specific: warm · dry · steady · carried · fading · write name.</li>
+          <li>Notebook is append-only, persistent, person-specific. Not a card collection. Not a quest log.</li>
+          <li>Bethany payoff = recognition / presence. Corrected recipe is subordinate Apothecary learning, never the salvific cause.</li>
+        </ul>
+
+        <h4>Resources</h4>
+        <ul>
+          <li>Six event-derived: Health · Spirit · Steady · Burden · Pressure · Numbness.</li>
+          <li>Player-facing surfaces map raw values to register-fitting language; debug surfaces show numbers directly.</li>
+          <li>FSR/Vigil self-use trades Pressure for Numbness with cooldown and aftermath cost.</li>
+        </ul>
+
+        <h4>Paths</h4>
+        <ul>
+          <li>Three latent paths: <strong>Apothecary · Hesychasm · Iconographic</strong>.</li>
+          <li><strong>Hesychasm</strong> is the active name. <em>Pastoral</em> is a historical/source alias only.</li>
+          <li>Use <strong>paths</strong>, not skills.</li>
+          <li>Voice registers (folk · sanctioned · sacred) ≠ latent paths. Registers govern copy; paths govern attention/practice.</li>
+          <li>Receptivity is data: <code>ReceptivityProfile</code> + <code>register_match_modifier</code> feed the resolver.</li>
+        </ul>
+
+        <h4>Opening five-act slice</h4>
+        <ul>
+          <li>Acts: Water → Bread → Tincture → Mother death / Witness → Wolves / boy flight / combat.</li>
+          <li>Act 2 uses <strong>bread</strong>. <em>porridge</em> is older source wording.</li>
+          <li>Act 4 is a fixed-outcome <strong>gravity encounter</strong>. Player actions affect comfort, recognition, Burden, notebook prose.</li>
+          <li>Act 5 is real combat — lethal, lootable when grounded; objective is the boy reaching safety.</li>
+        </ul>
+
+        <h4>Engine</h4>
+        <ul>
+          <li>Godot 4.6 · C# / .NET · Forward+. Engine stack stays unless a later accepted PRD changes it.</li>
+          <li>Tile 32 × 32. Logical viewport 640 × 360. Composition grid 640 × 360. 1× zoom. Nearest filter, mipmaps off.</li>
+          <li>Sprite canvases: Kalev / principal adults <code>64×96</code> · child <code>48×64</code> · minor adults <code>48×72</code> · bedside patients <code>96×48</code> (or <code>128×64</code>).</li>
+          <li>Type: Display <em>IM Fell English</em> · Body <em>EB Garamond</em> · Sacred <em>Cinzel</em> (Phase IV only) · Hand <em>Caveat</em> · Mono <em>IBM Plex Mono</em>.</li>
+        </ul>
+
+        <h4>Drift gate · scoped</h4>
+        <ul>
+          <li>v0.8.1 P0 vocabulary restrictions are <strong>scoped to player-facing care surfaces</strong>. They do not become project-wide doctrine.</li>
+          <li>v0.9 active docs and debug/dev surfaces may use combat/RPG vocabulary. Player-facing care surfaces still prefer tactile, person-specific words.</li>
+          <li>Stale-claim flags: <code>combat ... post-P0</code> · <code>combat ... subordinate</code> · <code>no loot reward from violence</code> · <code>v0.8.1 ... current canon hub</code> · <code>Pastoral</code> · <code>porridge</code>. Allowed when labeled <em>historical / source / provenance / scoped / sanctioned</em>.</li>
+          <li>Validate: <code>python3 design_system/tools/anti_drift.py --mode all --root design_system</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DOC MAP -->
+    <section id="docs">
+      <span class="section-overline">§ 17 · Where Everything Lives</span>
+      <h2 class="section-title">Document Map &amp; Canon Registry</h2>
+      <p>Active read path — agents start here:</p>
+      <ol style="margin: var(--s-3) 0 var(--s-5) var(--s-5);">
+        <li><a href="CONTEXT.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">CONTEXT.md</a> — resolved glossary and language conflicts.</li>
+        <li><a href="docs/adr/" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">docs/adr/</a> — accepted decisions and rationale.</li>
+        <li><a href="design_system/v0_9_mercy_rpg_substrate/INDEX.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">v0.9 active packet INDEX</a>.</li>
+        <li><a href="design_system/v0_9_mercy_rpg_substrate/PRD.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">PRD.md</a>.</li>
+        <li><a href="design_system/v0_9_mercy_rpg_substrate/ISSUE_SLICES.md" style="color: var(--ink); border-bottom: 1px dashed var(--rule-strong);">ISSUE_SLICES.md</a>.</li>
+        <li>Assigned slice doc.</li>
+        <li>Provenance / source docs only when evidence or legacy constraints are needed.</li>
+      </ol>
+
+      <h3 style="margin-top: var(--s-6);">Active · v0.9 mercy RPG substrate packet</h3>
+      <div class="docmap">
+        <div class="doc">
+          <span class="step">Hub</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/INDEX.md">INDEX.md</a>
+          <p class="why">Routing hub, source hierarchy, milestone order, packet map.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Product contract</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/PRD.md">PRD.md</a>
+          <p class="why">Product promise, player/engineering goals, milestones, functional requirements.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Acceptance</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/ACCEPTANCE.md">ACCEPTANCE.md</a>
+          <p class="why">Cross-slice matrix, substrate &amp; opening-act gates, validation commands.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Backlog</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/ISSUE_SLICES.md">ISSUE_SLICES.md</a>
+          <p class="why">Issue-ready epics A–G with dependencies. Epic C blocked_by [B0].</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 01</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/01-active-packet.md">01-active-packet.md</a>
+          <p class="why">Routing contract, context hygiene rules, agent read path.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 02</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/02-substrate-primitives.md">02-substrate-primitives.md</a>
+          <p class="why">17 primitives, build order, event/resolver shapes, headless test plan.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 03</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/03-opening-act-bible.md">03-opening-act-bible.md</a>
+          <p class="why">Five-act bible: water · bread · tincture · mother death / witness · wolves.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 04</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/04-latent-paths-receptivity.md">04-latent-paths-receptivity.md</a>
+          <p class="why">Apothecary · Hesychasm · Iconographic. ReceptivityProfile and register_match_modifier.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 05</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/05-rpg-economy-progression.md">05-rpg-economy-progression.md</a>
+          <p class="why">Loot, item quality/rarity, equipment, Witness/Recollection/Vocation, tuning levers.</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 06</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/06-canon-surface-registry.md">06-canon-surface-registry.md</a>
+          <p class="why">Authority labels (active / active-support / provenance / source / generated-review / archive / stale).</p>
+        </div>
+        <div class="doc">
+          <span class="step">Slice 07</span>
+          <a href="design_system/v0_9_mercy_rpg_substrate/07-anti-drift-vocabulary.md">07-anti-drift-vocabulary.md</a>
+          <p class="why">Vocabulary scopes, sanctioned v0.9 terms, validation commands.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Active · Architecture Decision Records</h3>
+      <div class="docmap">
+        <div class="doc"><span class="step">ADR 0001</span><a href="docs/adr/0001-combat-first-class-shared-substrate.md">Combat first-class · shared substrate</a><p class="why">Combat is a first-class system that resolves through the same substrate as care.</p></div>
+        <div class="doc"><span class="step">ADR 0002</span><a href="docs/adr/0002-active-canon-routing.md">Active canon routing</a><p class="why">Routes future agents through CONTEXT.md → ADRs → v0.9 active packet.</p></div>
+        <div class="doc"><span class="step">ADR 0003</span><a href="docs/adr/0003-separate-source-intake-from-active-packet.md">Source intake separated</a><p class="why">Raw handoff materials are evidence; active packet is the contract.</p></div>
+        <div class="doc"><span class="step">ADR 0004</span><a href="docs/adr/0004-hesychasm-replaces-pastoral.md">Hesychasm replaces Pastoral</a><p class="why">Pastoral is historical/source alias only.</p></div>
+        <div class="doc"><span class="step">ADR 0005</span><a href="docs/adr/0005-distinguish-voice-registers-and-latent-paths.md">Voice registers ≠ latent paths</a><p class="why">Folk/sanctioned/sacred are surface tone; Apothecary/Hesychasm/Iconographic are growth.</p></div>
+        <div class="doc"><span class="step">ADR 0006</span><a href="docs/adr/0006-bread-replaces-porridge-as-ordinary-mercy.md">Bread replaces porridge</a><p class="why">Active Act 2 is bread. Porridge is older source wording.</p></div>
+        <div class="doc"><span class="step">ADR 0007</span><a href="docs/adr/0007-mother-death-is-a-gravity-encounter.md">Mother death · gravity encounter</a><p class="why">Fixed-outcome teaching encounter with meaningful mechanics.</p></div>
+        <div class="doc"><span class="step">ADR 0008</span><a href="docs/adr/0008-wolf-combat-is-violent-and-lootable.md">Wolf combat · violent &amp; lootable</a><p class="why">Real combat with grounded loot/material consequence.</p></div>
+        <div class="doc"><span class="step">ADR 0009</span><a href="docs/adr/0009-wow-substrate-primitives-are-active.md">WoW substrate primitives active</a><p class="why">Threat, aggro, timers, attack tables, resources, item quality, loot tables.</p></div>
+        <div class="doc"><span class="step">ADR 0010</span><a href="docs/adr/0010-full-substrate-before-opening-slice.md">Full substrate before opening slice</a><p class="why">M1 core mechanics ship and pass tests before M3 opening acts begin.</p></div>
+        <div class="doc"><span class="step">ADR 0011</span><a href="docs/adr/0011-full-rpg-mechanics-allowed-with-shared-substrate.md">Full RPG mechanics allowed</a><p class="why">Risk/reward, loot, equipment, progression hooks, tuning levers, all under shared substrate.</p></div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Active-support · routing</h3>
+      <div class="docmap">
+        <div class="doc"><span class="step">root</span><a href="CLAUDE.md">CLAUDE.md</a><p class="why">Claude-compatible agent guide. Mirrors active routing.</p></div>
+        <div class="doc"><span class="step">root</span><a href="AGENTS.md">AGENTS.md</a><p class="why">Agent read path and behavior.</p></div>
+        <div class="doc"><span class="step">root</span><a href="README.md">README.md</a><p class="why">Repo map and canon spine.</p></div>
+        <div class="doc"><span class="step">design</span><a href="design_system/README.md">design_system/README.md</a><p class="why">Design-system map. Routes design work to v0.9 active packet first.</p></div>
+        <div class="doc"><span class="step">design</span><a href="design_system/SKILL.md">design_system/SKILL.md</a><p class="why">Portable design-system skill manifest. Routes to v0.9, not v0.8.1.</p></div>
+        <div class="doc"><span class="step">tools</span><a href="design_system/tools/anti_drift.py">anti_drift.py</a><p class="why">Drift gate. Scoped P0 vocabulary plus sanctioned v0.9 terminology.</p></div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Provenance · v0.8.1 (scoped P0)</h3>
+      <p style="font-style: italic; color: var(--ink-soft);">v0.8.1 remains useful for tone, naming, visual language, and Godot/C# scaffold constraints where active v0.9 docs do not contradict it. Conflicting combat/economy limits are older slice scope, not project-wide doctrine.</p>
+      <div class="docmap">
+        <div class="doc"><span class="step">v0.8.1 hub</span><a href="design_system/v0_8_1/INDEX.md">v0.8.1 INDEX.md</a><p class="why">Scoped P0 packet hub. Provenance for tone/naming/visual.</p></div>
+        <div class="doc"><span class="step">v0.8.1 strict</span><a href="design_system/v0_8_1/canonical_locks_v0_8_1.md">canonical_locks_v0_8_1.md</a><p class="why">P0 strict locks. Visual/Godot scaffold survives; combat-deferred clauses are scoped.</p></div>
+        <div class="doc"><span class="step">v0.8.1 visual</span><a href="design_system/v0_8_1/aesthetic_bible_v0_8_1.md">aesthetic_bible_v0_8_1.md</a><p class="why">Three regimes · north-star thesis · visual manifesto. Active.</p></div>
+        <div class="doc"><span class="step">v0.8.1 UI</span><a href="design_system/v0_8_1/ui_regime_system_v0_8_1.md">ui_regime_system_v0_8_1.md</a><p class="why">Pouch · Wheel · Patient Panel · Notebook · register lookup. Provenance.</p></div>
+        <div class="doc"><span class="step">v0.8.1 scenes</span><a href="design_system/v0_8_1/scene_composition_bible_v0_8_1.md">scene_composition_bible_v0_8_1.md</a><p class="why">Cabin / Ironwood / Bethany beat detail. Provenance for later phase content.</p></div>
+        <div class="doc"><span class="step">v0.8.1 manifest</span><a href="design_system/v0_8_1/godot_asset_manifest_v0_8_1.md">godot_asset_manifest_v0_8_1.md</a><p class="why">Asset manifest; high-fidelity 64×96 carries forward.</p></div>
+      </div>
+
+      <h3 style="margin-top: var(--s-7);">Source intake · evidence only</h3>
+      <p style="font-style: italic; color: var(--ink-soft); font-size: 0.95rem;">Raw handoff materials. Cite and distill before implementation; never use as the active execution contract.</p>
+      <ul>
+        <li><code style="font-family: var(--mono-witte); font-size: 0.82rem;">docs/source/2026-05-09-tincture-codex-handoff/</code> — substrate handoff intake.</li>
+        <li><code style="font-family: var(--mono-witte); font-size: 0.82rem;">docs/lore/</code> — voice, theology, cast, symbolism. Active docs and ADRs arbitrate conflicts.</li>
+      </ul>
+
+      <h3 style="margin-top: var(--s-5);">Generated review &amp; archive</h3>
+      <ul>
+        <li><code style="font-family: var(--mono-witte); font-size: 0.82rem;">concept_packet.html</code> (this file) — generated review surface, not independent canon.</li>
+        <li><code style="font-family: var(--mono-witte); font-size: 0.82rem;">_archive/superseded/**</code> — historical provenance.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p><span class="glyph">·  ·  ·</span></p>
+      <p>Tincture of Mercy · concept review packet · v0.9 mercy RPG substrate<br/>Generated-review packet, not independent canon. Active execution lives in <code>design_system/v0_9_mercy_rpg_substrate/</code> and <code>docs/adr/</code>. v0.8.1 is scoped P0 provenance.</p>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+name: Tincture Godot CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-build-test-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_NOLOGO: true
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Godot 4.6.2 .NET
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.2
+          use-dotnet: true
+          include-templates: true
+
+      - name: Install Python verification dependencies
+        run: python3 -m pip install --upgrade pillow pytest
+
+      - name: Import and validate Godot project
+        run: python3 scripts/godot/validate_project.py --project .
+
+      - name: Generate Godot .NET bindings
+        run: godot --headless --build-solutions --quit || true
+
+      - name: Build Godot C# project
+        run: dotnet build Tincture-of-Mercy.csproj
+
+      - name: Run substrate tests
+        run: dotnet test Tincture.Tests/Tincture.Tests.csproj
+
+      - name: Run sprite tool regression tests
+        run: python3 -m unittest discover -s tests -p 'test_sprite_tools.py'
+
+      - name: Validate sprite runtime sheets
+        run: ./tools/sprite health
+
+      - name: Verify TileSet custom data
+        run: godot --headless --path . -s res://scripts/verify_ironwood_tileset.gd
+
+      - name: Run Cabin graybox scene smoke
+        run: godot --headless --path . -s res://test/cabin_graybox_scene_smoke.gd
+
+      - name: Run GdUnit4 suites when addon is installed
+        run: |
+          if [ -f addons/gdUnit4/bin/GdUnitCmdTool.gd ]; then
+            python3 scripts/godot/run_tests.py --project . --report reports/gdunit --verbose
+            python3 scripts/godot/parse_results.py reports/gdunit --format markdown >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "GdUnit4 addon not installed; scene smoke and substrate tests ran instead."
+          fi
+
+      - name: Run optional PlayGodot E2E scaffold
+        run: |
+          if [ "${PLAYGODOT_ENABLED:-}" = "1" ] && [ -n "${GODOT_PATH:-}" ]; then
+            python3 -m pip install --upgrade playgodot
+            python3 -m pytest tests/playgodot -q
+          else
+            echo "PlayGodot disabled; set PLAYGODOT_ENABLED=1 and GODOT_PATH to run E2E automation."
+          fi
+
+      - name: Export Linux desktop build
+        run: python3 scripts/godot/export_build.py --project . --preset "Linux/X11" --output build/linux/tincture-of-mercy.x86_64 --verbose
+
+      - name: Upload Linux build
+        uses: actions/upload-artifact@v4
+        with:
+          name: tincture-linux
+          path: build/linux/

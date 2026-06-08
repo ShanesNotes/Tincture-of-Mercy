@@ -1,0 +1,107 @@
+
+pixellab generate  kalev · locomotion
+─────────────────────────────────────
+  animation keys: 8
+  supported:      8
+  job count:      8 (8 new)
+  character_id: c210b143-9001-4842-ba4c-5b7d3f114332
+  templates:    breathing-idle, walking
+  color_image:  tools/sprites/palettes/kalev_swatch.png
+  [breathing-idle] firing dirs=['south', 'west', 'north', 'east']
+    south: cbd788d5-da7e-45d1-8fbb-8c295c941b51
+    west: 581abe4c-7bbb-4b78-9f3d-86762994dd51
+    north: cc2ab9b7-7ce8-43ec-a581-71dbb6776f5d
+    east: e5066dbf-e9e2-434e-96dd-bdf61008d9d1
+  [walking] firing dirs=['south', 'west', 'north', 'east']
+    south: 8ed20a56-e25a-45ac-845c-4469aa040b4a
+    west: 212ea681-db50-4724-ab1f-020d3952e56d
+    north: f2359a0b-9de4-40bd-ac4d-c30647e0cfcc
+    east: fcd32555-6751-4fc8-b1c2-ad3280b60ec4
+  polling 8 job(s); timeout 1800s each
+    · breathing-idle/south processing
+    · breathing-idle/west processing
+    · breathing-idle/north processing
+    · breathing-idle/east processing
+    · walking/south processing
+    · walking/west processing
+    · walking/north processing
+    · walking/east processing
+    · breathing-idle/south processing
+    · breathing-idle/west processing
+    · breathing-idle/north processing
+    · breathing-idle/east processing
+    · walking/south processing
+    · walking/west processing
+    · walking/north processing
+    · walking/east processing
+    ✓ breathing-idle/south
+    ✓ breathing-idle/west
+    ✓ breathing-idle/north
+    ✓ breathing-idle/east
+    · walking/south processing
+    · walking/west processing
+    · walking/north processing
+    · walking/east processing
+    · walking/south processing
+    · walking/west processing
+    · walking/north processing
+    · walking/east processing
+    · walking/south processing
+    · walking/west processing
+    ✓ walking/north
+    ✓ walking/east
+    · walking/south processing
+    ✓ walking/west
+    · walking/south processing
+    · walking/south processing
+    ✓ walking/south
+  fetching character detail for frame URLs…
+    idle_down: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_left: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_up: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    idle_right: 4 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_down: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_left: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_up: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+    walk_right: 6 frames
+    fetch failed col 0: HTTP Error 403: Forbidden
+    fetch failed col 1: HTTP Error 403: Forbidden
+    fetch failed col 2: HTTP Error 403: Forbidden
+    fetch failed col 3: HTTP Error 403: Forbidden
+    fetch failed col 4: HTTP Error 403: Forbidden
+  runtime: art/characters/kalev/sheets/kalev_locomotion_64x96.png
