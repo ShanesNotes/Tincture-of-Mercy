@@ -21,8 +21,10 @@ Use this short path before engine or content work:
    _Use for tone, names, visual language, and Godot/C# scaffold constraints where not contradicted by active direction._
 7. **Raw source intake, when evidence is needed** → `docs/source/`
    _Vendored handoff/source materials. Provenance only; distill decisions into active packet docs before implementation._
-8. **Lore sources, when nuance is needed** → `docs/lore/tincture_of_mercy_v0_3.md`, `docs/lore/tincture_of_mercy_packet_v0_6.md`, `docs/lore/tincture_of_mercy_godot_design_handoff_v0_7.md`
-   _Rich source leaves. They preserve voice, theology, and history; active direction and ADRs arbitrate conflicts._
+8. **Lore consolidation, when narrative arc is needed** → `docs/lore/INDEX.md`, then `docs/lore/CONSOLIDATED_LORE_SURFACE.md`
+   _Distilled arc, cast, themes, iteration history, and asset/mechanic boundaries. Deep ore: `docs/lore/tincture_of_mercy_v0_3.md` and sibling packets._
+9. **Story production artifacts** → `docs/story/` (ore map, storyboard bible, ten-scene deck)
+   _Support for narrative visualization; does not override active canon._
 
 `concept_packet.html` is a generated review surface for humans, not an independent canon source. `_archive/**` is provenance only.
 

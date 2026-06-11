@@ -1,18 +1,37 @@
-# Narrative Storyboard Deck v0.1 — Ten-Scene Spine + Candidate Prologue
+# Narrative Storyboard Deck v0.2 — Opening Spine + Candidate Prologue
 
-Status: first production storyboard deck  
+Status: production storyboard deck (runtime-synced)  
 Owner lane: narrative/storyboard + AI image/video production  
 Authority: support artifact; compare with council-agent alternatives before locking  
-Created: 2026-05-13  
-Companion docs: `docs/story/STORYBOARD_BIBLE.md`, `docs/story/SOURCE_ORE_MAP.md`
+Created: 2026-05-13 · **v0.2 sync: 2026-06-11** (Phase 3 — matches `opening_act_cabin_prologue_events.json`)  
+Companion docs: `docs/story/STORYBOARD_BIBLE.md`, `docs/story/SOURCE_ORE_MAP.md`, `docs/story/NARRATIVE_STORYBOARD_DECK_V0_2_LONG_ARC.md`
 
 ## Deck premise
 
-This ten-scene deck turns the existing game/lore project into a short-film/storyboard spine. It starts in the cabin because the core image is already strongest there: a named person fading in a cold room, a healer with medicine that works but cannot redeem, and a notebook that remembers what success cannot.
+This opening deck turns the game/lore project into a short-film/storyboard spine. It starts in the cabin because the core image is already strongest there: a named person fading in a cold room, a healer with medicine that works but cannot redeem, and a notebook that remembers what success cannot.
 
 Council integration adds a **candidate prologue** from v0.7/v0.8.1: Eli Keene at page 66 line 7. Use it when the storyboard needs a precedent death and first self-Ember wound before Anna. Omit it when the first public piece needs a lean active-v0.9 opening.
 
 Default continuity choice: active v0.9 names and terms (`Anna`, `Iiro`, `Hesychasm`, bread). Older `Eli Keene` remains a supported prologue/provenance thread, not a forced replacement for Iiro.
+
+## Canonical replay order (runtime truth)
+
+**Narrative weight** (importance): Water → Bread → Tincture → Anna Witness → Wolves → Borrowed Mercy.
+
+**Replay chronology** (Epic C fixture + `data/opening/opening_act_cabin_prologue_events.json`):
+
+| Order | Card | Act beat | Notes |
+|---|---|---|---|
+| 0 | 00 | (optional prologue) | Eli Keene / page 66 — not in runtime fixture |
+| 1 | 01 | `act.cinematic_two_breaths` + bedside | Anna labored; Iiro on cot; notebook page 66 open |
+| 2 | 02 | `act.water` | Water to Iiro; glance on Anna |
+| 3 | 03 | `act.bread` | Bread ordinary mercy; notebook seed |
+| 4 | 04 | `act.tincture` | Iiro fever eased; Anna tincture glance only |
+| 5 | **05** | **`act.wolves_hold_line`** | **Anna still alive (breath thin) on cot** |
+| 6 | **06** | **`act.mother_witness`** | **After Iiro at woodline** |
+| 7 | 07 | `act.borrowed_mercy_depart` | Self-dose; threshold crossing |
+
+Cards 05 and 06 below follow **replay order**, not narrative-weight order.
 
 ## Global still-image style prefix
 
@@ -159,45 +178,19 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
 
 ---
 
-## 05 — Anna Death / Witness
+## 05 — Wolves / Iiro Flight *(replay: before Anna witness)*
 
-- **Narrative beat:** The tincture helps and is not enough while danger begins outside. In the stronger cross-cut version, the first wolf pressure intrudes before Anna's final breath; the gravity encounter still lands in silence.
-- **Emotional wound:** Kalev learns the unbearable distinction between easing suffering and defeating death.
-- **Visible action:** Anna's breath changes. A distant wolf sound pulls the room tight. Kalev sits close instead of doing one more procedure. The notebook receives her name.
-- **Source ore:** `03-opening-act-bible.md` Act 4; `docs/adr/0007-mother-death-is-a-gravity-encounter.md`; audio workflow Act 4.
-- **Characters:** Anna, Kalev, Iiro.
-- **Location:** Cabin bedside, evening, with wolf pressure beginning outside.
-- **Light noun:** The hearth dimming toward the receding light.
-- **HOLD:** Final exhale plus 1.4s bed-only disclosure; if cross-cutting with wolves, let the combat bed drop out for the disclosure.
-- **Visual anchor:** Anna bedside sheets; Kalev care/write sheets; notebook visual grammar.
-- **Image prompt:** Global style prefix + `Anna's final breath in the Ironwood cabin, Kalev seated beside her holding her hand, Iiro small and still near the cot, leather notebook open in foreground with a graphite name beginning, hearth and candle continue after breath stops, no dramatic light beam, no gore, no victory, fixed manuscript composition with wide margins and unbearable quiet.`
-- **Video prompt:** Global video prefix + `12 seconds. Breath animation slows: labored, brief stillness, distant wolf pressure, final exhale. All outside sound drops for the disclosure hold. Hearth continues. Notebook page turns slightly. End on pencil touching paper.`
-- **Voice-over seed:**
-  ```text
-  The dose took.
-  Her hand warmed under mine.
-  Then the room kept going without her.
-  I wrote her name because I could not keep her breath.
-  ```
-- **Sound cue:** 15-second breath transition shortened for animatic; first wolf pressure can enter before the final breath, then drops away for hearth/clock/pencil silence. No sting, no chord.
-- **Continuity notes:** This is a gravity encounter, not a non-interactive cutscene and not a recipe failure. Cross-cutting with wolves is allowed only if it intensifies, not erases, the witnessed death.
-- **Council comparison notes:** Key comparison card. Alternate pass may lean more hospital/COVID; this pass keeps the death in-world but structurally bedside-real.
-
----
-
-## 06 — Wolves / Iiro Flight
-
-- **Narrative beat:** Death and danger overlap. Wolves arrive as Iiro must run. Kalev buys the boy's escape by drawing the wolf gaze onto himself.
-- **Emotional wound:** Care becomes violence without ceasing to be care.
-- **Visible action:** Kalev places himself between wolves and the fleeing boy. The lead wolf's gaze visibly snaps from Iiro to Kalev; Kalev becomes the door.
-- **Source ore:** `03-opening-act-bible.md` Act 5; `docs/adr/0008-wolf-combat-is-violent-and-lootable.md`; audio workflow wolves/combat.
-- **Characters:** Kalev, Iiro, wolves.
+- **Narrative beat:** Wolves press the yard while Anna still breathes thin on the cot inside. Iiro must run. Kalev buys the boy's escape by drawing the wolf gaze onto himself — care becomes violence without ceasing to be care.
+- **Emotional wound:** The body must become a door before the heart can become a witness.
+- **Visible action:** Kalev places himself between wolves and the fleeing boy. Threat snaps from Iiro to Kalev after the cudgel hit. Iiro reaches the woodline; one wolf may die with recoverable hide; a second may leash when the boy is safe.
+- **Source ore:** `03-opening-act-bible.md` Act 5; `data/opening/opening_act_cabin_prologue_events.json` (`act.wolves_hold_line`); `docs/adr/0008-wolf-combat-is-violent-and-lootable.md`.
+- **Characters:** Kalev, Iiro, wolves (`wolf_01`–`wolf_03`). Anna implied inside (still alive).
 - **Location:** Cabin yard / Ironwood road edge at night.
 - **Light noun:** The receding light outside; hearth spill from the door.
 - **HOLD:** 600ms on the wolf gaze snapping from Iiro to Kalev.
 - **Visual anchor:** `art/characters/wolf/sheets/wolf_full_sheet_96x64.png`, `art/characters/kalev/sheets/kalev_combat_64x96.png`, `art/environment/source/downloads_20260510_first_drafts/yard-combat-slice.png`.
-- **Image prompt:** Global style prefix + `night cabin yard, Kalev with cudgel braced between snarling wolves and Iiro fleeing toward the dark woodline, snow and road salt underfoot, cabin door open behind with candle light, wolves dangerous and bodily not demonic, composition shows the boy's route as the true objective, no kill-count framing, no heroic power pose.`
-- **Video prompt:** Global video prefix + `10 seconds. Iiro runs from cabin light toward the back/north treeline while wolves press from the east. One wolf turns toward him; Kalev steps into the line and draws the gaze back. Snow crosses the frame. End with wolf eyes locked on Kalev.`
+- **Image prompt:** Global style prefix + `night cabin yard, Kalev with cudgel braced between snarling wolves and Iiro fleeing toward the dark woodline, snow and road salt underfoot, cabin door open behind with candle light and Anna's cot barely visible inside, wolves dangerous and bodily not demonic, composition shows the boy's route as the true objective, no kill-count framing, no heroic power pose.`
+- **Video prompt:** Global video prefix + `10 seconds. Iiro runs from cabin light toward the back/north treeline while wolves press from the east. One wolf turns toward him; Kalev steps into the line and draws the gaze back. Snow crosses the frame. End with wolf eyes locked on Kalev and Iiro clearing the woodline.`
 - **Voice-over seed:**
   ```text
   The boy did not need me gentle then.
@@ -205,9 +198,35 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
   I made my body the door.
   The wolves understood doors.
   ```
-- **Sound cue:** First howl, claw scrape, boy running, cudgel swing, growl, no victory music.
-- **Continuity notes:** Combat is first-class and dangerous. Objective is Iiro safety, not wolf kill count. The threat-table shift should be visible as gaze and body placement, not UI.
-- **Council comparison notes:** Compare whether other pass softens combat. This pass keeps protection violent and costly.
+- **Sound cue:** `yard_holds_start`; howl, claw scrape, boy running, cudgel swing, growl; no victory music.
+- **Continuity notes:** Runtime fixture runs this **before** Anna's fixed death. Anna breath state remains `thin`, not `stopped`. Loot (wolf hide) only when body recoverable; leashed wolf withholds loot.
+- **Council comparison notes:** Compare whether other pass softens combat or places wolves after death. Runtime and v0.2 deck place wolves first.
+
+---
+
+## 06 — Anna Death / Witness *(replay: after Iiro safe)*
+
+- **Narrative beat:** Iiro is safe at the woodline. Kalev returns to the cot. Anna's breath is thin. He sits near, keeps watch (Hesychasm), and her breath stops with him still beside her — a gravity encounter, not a recipe failure.
+- **Emotional wound:** Kalev learns the unbearable distinction between easing suffering and defeating death.
+- **Visible action:** Kalev sits close instead of doing one more procedure. Sacred register keep-watch. Fixed death: *"Anna's breath stops with Kalev still beside her."* Notebook receives her name on page 66.
+- **Source ore:** `03-opening-act-bible.md` Act 4; `data/opening/opening_act_cabin_prologue_events.json` (`act.mother_witness`); `docs/adr/0007-mother-death-is-a-gravity-encounter.md`.
+- **Characters:** Anna, Kalev. Iiro absent (fled).
+- **Location:** Cabin bedside, night, after yard combat.
+- **Light noun:** The hearth dimming toward the receding light.
+- **HOLD:** Final exhale plus 1.4s bed-only disclosure (`long_pour_start` audio cue).
+- **Visual anchor:** Anna bedside sheets; Kalev care sheets; notebook visual grammar.
+- **Image prompt:** Global style prefix + `Anna's final breath in the Ironwood cabin after the yard fight, Kalev seated beside her holding her hand, empty doorway where the boy fled, leather notebook open with graphite name beginning, hearth and candle continue after breath stops, no dramatic light beam, no gore, no victory, fixed manuscript composition with wide margins and unbearable quiet.`
+- **Video prompt:** Global video prefix + `12 seconds. Kalev sits near. Breath animation slows: thin, brief stillness, final exhale. All outside sound drops for the disclosure hold. Hearth continues. Notebook receives Anna's name. End on pencil line 3, page 66.`
+- **Voice-over seed:**
+  ```text
+  The boy was gone.
+  I came back with blood on my coat and nothing left to sequence.
+  Her breath stopped with me still beside her.
+  I wrote her name because I could not keep her breath.
+  ```
+- **Sound cue:** `long_pour_start`; breath stop; hearth/clock/pencil only after disclosure. No sting, no chord.
+- **Continuity notes:** Gravity encounter — fixed `death_kind=fixed_death`. Player verbs `presence.sit_near`, `witness.keep_watch` matter for seeds; death is not avoidable. **Not** a cross-cut with wolves; wolves already resolved in card 05.
+- **Council comparison notes:** Key comparison card. Runtime order makes witness a return beat, not simultaneous combat.
 
 ---
 

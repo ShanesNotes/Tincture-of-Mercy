@@ -185,12 +185,14 @@ Goal: compare council outputs and discover the strongest narrative order.
 2. Water.
 3. Bread.
 4. Tincture.
-5. Anna death / Witness, optionally cross-cut with first wolf pressure.
-6. Wolves / Iiro flight.
+5. **Wolves / Iiro flight** *(runtime: before Anna witness)*.
+6. **Anna death / Witness** *(runtime: after Iiro at woodline)*.
 7. Borrowed Mercy.
 8. Wittehaven relief.
 9. Iron Ledger / exile.
 10. Paradise / notebook returned.
+
+**Runtime sync (v0.2):** see `NARRATIVE_STORYBOARD_DECK_V0_1.md` § Canonical replay order and `data/opening/opening_act_cabin_prologue_events.json`.
 
 ### Pass 2 — Opening episode board
 
@@ -198,7 +200,7 @@ Expand cards 1–7 into 30–60 shots, or 00–7 if the Eli prologue is selected
 
 ### Pass 3 — Pilgrimage proof board
 
-Expand cards 8–10 into Wittehaven, Mackinac, Rafe/Mount Arvon, Paradise, with Birdie and Lena continuity.
+Use `NARRATIVE_STORYBOARD_DECK_V0_2_LONG_ARC.md` cards 11–22: Ironwood/Birdie, Bethany/Lena/Father Ilarion, Wittehaven capture, exile, Mackinac, Rafe, Paradise expanded. Memoir boundaries: `MEMOIR_TRANSMUTATION_BOUNDARIES.md`.
 
 ## 11. Production pipeline
 

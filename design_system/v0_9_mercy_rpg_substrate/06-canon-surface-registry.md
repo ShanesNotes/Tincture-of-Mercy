@@ -65,7 +65,16 @@ Validation gate: future agents can identify which document wins without reading 
 | `design_system/v0_8_1/` | provenance | Tone, names, visual language, Godot/C# scaffold constraints, scoped P0 care surfaces. | Conflicting combat/economy limits are older slice scope. |
 | `design_system/v0_9_combat_rpg_layer/INDEX.md` | provenance | Earlier combat/RPG packet stub and research direction. | Superseded by v0.9 mercy RPG substrate packet. |
 | `docs/source/2026-05-09-tincture-codex-handoff/` | source | Raw handoff/source evidence. | Cite and distill; do not execute directly from conflicts. |
-| `docs/lore/*.md` | provenance | Rich voice, theology, cast, and symbolism. | Active docs/ADRs arbitrate conflicts. |
+| `docs/lore/INDEX.md` | active-support | Lore consolidation hub and read path. | Start here for narrative arc work. |
+| `docs/lore/CONSOLIDATED_LORE_SURFACE.md` | active-support | Distilled lore: arc, cast, themes, iterations, asset/mechanic boundaries. | Does not override CONTEXT/ADRs for implementation. |
+| `docs/lore/CAST_BIBLE.md` | active-support | Cast roster, aliases, Father Ilarion, long-arc figures. | Narrative reference. |
+| `docs/lore/ARCHIVE_RECOVERY_REPORT.md` | provenance | Recovered `_archive/superseded/` narrative deltas. | Archive not active canon. |
+| `docs/story/NARRATIVE_STORYBOARD_DECK_V0_2_LONG_ARC.md` | active-support | Long-arc scene cards 11–22. | Production artifact. |
+| `docs/story/MEMOIR_TRANSMUTATION_BOUNDARIES.md` | active-support | Per-scene memoir vs mythic boundaries. | Ethical guardrails for production. |
+| `docs/lore/tincture_of_mercy_v0_3.md` | provenance | Rich voice, theology, cast, and symbolism (deep ore). | Active docs/ADRs arbitrate conflicts. |
+| `docs/lore/tincture_of_mercy_packet_v0_6.md` | provenance | v0.6 prototype packet lore. | Historical. |
+| `docs/lore/tincture_of_mercy_godot_design_handoff_v0_7.md` | provenance | v0.7 production handoff lore. | Historical. |
+| `docs/story/` | active-support | Storyboard and AI production artifacts. | Support only; see SOURCE_ORE_MAP.md. |
 | `docs/story/` | provenance | Narrative source leaves. | Active direction/ADRs arbitrate conflicts. |
 | `concept_packet.html` | generated-review | Human review surface. | Not independent canon. |
 | `art_direction_review.html` | generated-review | Art-direction review surface. | Not independent canon. |

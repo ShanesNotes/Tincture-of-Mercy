@@ -9,6 +9,8 @@ Created: 2026-05-13
 
 This map identifies the strongest existing project material to mine for a narrative storyboard, AI scene concept art, AI video, and narrative voice-over. It treats game implementation docs as ore: images, motifs, conflicts, scene grammar, sound, and character pressure. It does not treat every source as current canon.
 
+For a distilled narrative arc, cast bible, iteration history, and lore/mechanic/asset boundaries, start at [`docs/lore/CONSOLIDATED_LORE_SURFACE.md`](../lore/CONSOLIDATED_LORE_SURFACE.md) (hub: [`docs/lore/INDEX.md`](../lore/INDEX.md)). Long-arc scene cards: [`NARRATIVE_STORYBOARD_DECK_V0_2_LONG_ARC.md`](NARRATIVE_STORYBOARD_DECK_V0_2_LONG_ARC.md). Memoir boundaries: [`MEMOIR_TRANSMUTATION_BOUNDARIES.md`](MEMOIR_TRANSMUTATION_BOUNDARIES.md).
+
 ## Authority order for story work
 
 1. `CONTEXT.md` — active glossary and conflict resolutions.
