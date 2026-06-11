@@ -59,6 +59,8 @@ Authority: **lore and narrative arc** for human review; does not override `CONTE
 | **Phase 5 — Archive recovery** | Complete (2026-06-11) | `ARCHIVE_RECOVERY_REPORT.md`; local `_archive/` read |
 | **Phase 6 — Cast bible** | Complete (2026-06-11) | `CAST_BIBLE.md` incl. Father Ilarion + long-arc |
 | **Phase 7 — Memoir boundaries** | Complete (2026-06-11) | `MEMOIR_TRANSMUTATION_BOUNDARIES.md` per-scene table |
+| **Phase 8 — Storyboard scaffold** | Complete (2026-06-11) | `art/storyboard/v0_1/` cards 00–07; `AI_PRODUCTION_PIPELINE.md` priority sync |
+| **Phase 9 — Review surface labels** | Complete (2026-06-11) | `concept_packet.html` Anna/Iiro + runtime replay order |
 
 ## Long-horizon maintenance
 

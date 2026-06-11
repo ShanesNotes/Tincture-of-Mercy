@@ -500,13 +500,14 @@ Every lore-bearing surface discovered in Phase 1 audit (2026-06-11). Tier = sugg
 | **5 — Archive recovery** | Complete | `docs/lore/ARCHIVE_RECOVERY_REPORT.md` |
 | **6 — Cast bible** | Complete | `docs/lore/CAST_BIBLE.md` |
 | **7 — Memoir boundaries** | Complete | `docs/story/MEMOIR_TRANSMUTATION_BOUNDARIES.md` |
+| **8 — Storyboard scaffold** | Complete | `art/storyboard/v0_1/` cards 00–07 (references + prompts; no stills yet) |
+| **9 — Review surface labels** | Complete | `concept_packet.html` Anna/Iiro + replay order |
 
 ### Next optional passes
 
 | Pass | Goal |
 |---|---|
-| **8** | Generate `art/storyboard/` stills from cards 00–07 per `AI_PRODUCTION_PIPELINE.md` |
-| **9** | Sync `concept_packet.html` cast labels (Mother → Anna) |
+| **8b** | Generate first still batch for cards 00, 01, 05, 06, 07 per `AI_PRODUCTION_PIPELINE.md` |
 | **10** | Father Ilarion Godot NPC — engine scope, not lore |
 
 *Maintainers: update § Iteration ledger when narrative claims change; link ADR numbers.*

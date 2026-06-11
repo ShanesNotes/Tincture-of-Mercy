@@ -350,7 +350,7 @@ Use after reviewing the other agent's deck.
 
 ## Immediate next production pass
 
-1. Generate three still concepts each for cards 00, 01, 05, 07, 08, and 10, then decide whether 00 belongs in the public cut.
+1. Generate three still concepts each for cards 00, 01, 05, 06, 07, 08, and 10 (scaffold at `art/storyboard/v0_1/`), then decide whether 00 belongs in the public cut.
 2. Assemble a contact sheet beside existing pixel-art references.
 3. Record temporary VO for those six candidate cards only.
 4. Build a 60–90 second animatic before expanding to all ten.

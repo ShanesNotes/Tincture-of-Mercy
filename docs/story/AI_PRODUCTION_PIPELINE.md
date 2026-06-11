@@ -164,22 +164,25 @@ Source: `docs/source/tincture_of_mercy_audio_generation_workflow.md`.
 
 ## Priority batch
 
-First image/video batch for comparison with the other council agent:
+First image/video batch for comparison with the other council agent. **Replay order** (runtime fixture): 00 (optional) → 01 → 02–04 → **05 Wolves** → **06 Anna Witness** → 07.
 
 0. **00 Candidate Prologue: Eli Keene / Page 66** — tests whether precedent death strengthens or over-frontloads the opening.
 1. **01 Bedside Before Explanation** — locks story truth and visual language.
-2. **05 Anna Death / Witness** — proves gravity encounter and restraint.
-3. **07 Borrowed Mercy** — tests addiction/despair transmutation.
-4. **08 Wittehaven Relief** — tests institution as seductive relief.
-5. **10 Paradise / Notebook Returned** — tests recognition/presence payoff.
+2. **05 Wolves / Iiro Flight** — proves violent protection and restraint before witness.
+3. **06 Anna Death / Witness** — proves gravity encounter after Iiro is safe.
+4. **07 Borrowed Mercy** — tests addiction/despair transmutation.
+5. **08 Wittehaven Relief** — tests institution as seductive relief.
+6. **10 Paradise / Notebook Returned** — tests recognition/presence payoff.
+
+Scaffold (no stills yet): `art/storyboard/v0_1/` cards 00–07.
 
 ## Continuity anchor index
 
 | Subject | Anchor paths |
 |---|---|
 | Kalev | `art/characters/kalev/kalev_design_asset.png`, `art/characters/kalev/portraits/`, `art/characters/kalev/sheets/kalev_locomotion_64x96.png`, `art/characters/kalev/sheets/kalev_care_64x96.png`, `art/characters/kalev/sheets/kalev_tincture_64x96.png`, `art/characters/kalev/sheets/kalev_combat_64x96.png` |
-| Anna/Mother | `art/characters/anna/anna_reference.png`, `art/characters/anna/sheets/anna_bedside_96x48.png`, `art/characters/mother/sheets/mother_bedside_96x48.png` |
-| Iiro/Boy | `art/characters/iiro/iiro_reference.png`, `art/characters/iiro/sheets/iiro_locomotion_48x64.png`, `art/characters/boy/sheets/boy_locomotion_48x64.png` |
+| Anna (active; Mother = engine alias) | `art/characters/anna/anna_reference.png`, `art/characters/anna/sheets/anna_bedside_96x48.png` |
+| Iiro (active; boy/child = engine alias) | `art/characters/iiro/iiro_reference.png`, `art/characters/iiro/sheets/iiro_locomotion_48x64.png` |
 | Lena | `art/characters/lena/lena_v1_idle.png`, `art/characters/lena/sheets/lena_locomotion_64x96.png` |
 | Birdie | `art/characters/birdie/birdie_design_asset.png`, `art/characters/birdie/sheets/birdie_character_idle_48x64.png` |
 | Wolf | `art/characters/wolf/sheets/wolf_full_sheet_96x64.png`, `art/characters/wolf/sheets/wolf_locomotion_96x64.png`, `art/characters/wolf/sheets/wolf_reference.png` |

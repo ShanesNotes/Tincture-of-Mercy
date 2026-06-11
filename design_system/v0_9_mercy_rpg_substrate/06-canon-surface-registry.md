@@ -75,6 +75,7 @@ Validation gate: future agents can identify which document wins without reading 
 | `docs/lore/tincture_of_mercy_packet_v0_6.md` | provenance | v0.6 prototype packet lore. | Historical. |
 | `docs/lore/tincture_of_mercy_godot_design_handoff_v0_7.md` | provenance | v0.7 production handoff lore. | Historical. |
 | `docs/story/` | active-support | Storyboard and AI production artifacts. | Support only; see SOURCE_ORE_MAP.md. |
+| `art/storyboard/` | active-support | AI storyboard production scaffold (references, prompts, stills intake). | Not runtime game assets until sprite pipeline promotes. |
 | `docs/story/` | provenance | Narrative source leaves. | Active direction/ADRs arbitrate conflicts. |
 | `concept_packet.html` | generated-review | Human review surface. | Not independent canon. |
 | `art_direction_review.html` | generated-review | Art-direction review surface. | Not independent canon. |
