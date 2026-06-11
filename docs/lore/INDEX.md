@@ -9,6 +9,7 @@ Authority: **lore and narrative arc** for human review; does not override `CONTE
 | Read first | Purpose |
 |---|---|
 | [`CONSOLIDATED_LORE_SURFACE.md`](CONSOLIDATED_LORE_SURFACE.md) | **Single lore entry point** — story thesis, full arc, cast, themes, symbols, iteration ledger, open questions |
+| [`STORY_RESCUE_PLAN.md`](STORY_RESCUE_PLAN.md) | **Accepted rescue direction** — extraction tiers, prose-first buildout, execution checklist |
 | [`CAST_BIBLE.md`](CAST_BIBLE.md) | Cast roster with aliases, Father Ilarion, long-arc figures |
 | [`ARCHIVE_RECOVERY_REPORT.md`](ARCHIVE_RECOVERY_REPORT.md) | Phase 5 — `_archive/superseded/` narrative deltas |
 | [`../story/MEMOIR_TRANSMUTATION_BOUNDARIES.md`](../story/MEMOIR_TRANSMUTATION_BOUNDARIES.md) | Phase 7 — per-scene memoir vs mythic boundaries |
