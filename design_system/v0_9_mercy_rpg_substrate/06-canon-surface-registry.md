@@ -37,6 +37,8 @@ Validation gate: future agents can identify which document wins without reading 
 | `design_system/v0_9_mercy_rpg_substrate/05-rpg-economy-progression.md` | active | RPG economy/progression architecture. | Normal risk/reward, loot/material, progression hooks. |
 | `design_system/v0_9_mercy_rpg_substrate/06-canon-surface-registry.md` | active | This registry. | Authority labels and migration notes. |
 | `design_system/v0_9_mercy_rpg_substrate/07-anti-drift-vocabulary.md` | active | Scoped vocabulary/drift policy. | Created in Slice 7. |
+| `Tincture.Substrate/` | active | Headless mercy RPG substrate implementation. | Plain C# library; referenced by Godot project. |
+| `Tincture.Tests/` | active | Substrate regression suite. | xUnit; run before opening-content changes. |
 
 ## Active-support surfaces
 
@@ -49,6 +51,10 @@ Validation gate: future agents can identify which document wins without reading 
 | `design_system/SKILL.md` | active-support | Portable design-system skill manifest. | Must not identify v0.8.1 as the active hub. |
 | `design_system/tools/anti_drift.py` | active-support | Drift gate. | Scoped P0 vocabulary plus sanctioned active v0.9 terminology. |
 | `design_system/tools/anti_drift_allowlist.json` | active-support | Documented exceptions. | Update only when validation requires it. |
+| `Tincture.AiMock/` | active-support | Standalone LLM character-runtime mock. | Excluded from Godot export; see `Tincture.AiMock/README.md`. |
+| `design_system/v0_9_mercy_rpg_substrate/B0_SUBSTRATE_ACCEPTANCE_REPORT.md` | active-support | B0 gate acceptance evidence. | Not a substitute for `ACCEPTANCE.md`. |
+| `design_system/v0_9_mercy_rpg_substrate/EPIC_C_*_REPORT.md` | active-support | Epic C progress reports. | Generated evidence; active slice specs win. |
+| `design_system/v0_9_mercy_rpg_substrate/ARCHITECTURE_DEEPENING_PRELUDE_REPORT.md` | active-support | Prelude architecture report. | Planning evidence only. |
 | `.omx/plans/deepen-7-mercy-rpg-slices-consensus-plan.md` | active-support | Planning provenance for this packet. | Use as rationale; active docs win for execution. |
 | `.omx/ultragoal/goals.json` and ledger | active-support | Durable workflow audit. | Not design canon. |
 
@@ -60,7 +66,9 @@ Validation gate: future agents can identify which document wins without reading 
 | `design_system/v0_9_combat_rpg_layer/INDEX.md` | provenance | Earlier combat/RPG packet stub and research direction. | Superseded by v0.9 mercy RPG substrate packet. |
 | `docs/source/2026-05-09-tincture-codex-handoff/` | source | Raw handoff/source evidence. | Cite and distill; do not execute directly from conflicts. |
 | `docs/lore/*.md` | provenance | Rich voice, theology, cast, and symbolism. | Active docs/ADRs arbitrate conflicts. |
+| `docs/story/` | provenance | Narrative source leaves. | Active direction/ADRs arbitrate conflicts. |
 | `concept_packet.html` | generated-review | Human review surface. | Not independent canon. |
+| `art_direction_review.html` | generated-review | Art-direction review surface. | Not independent canon. |
 | `_archive/superseded/**` | archive | Historical provenance. | Not active implementation authority. |
 
 ## Migration notes

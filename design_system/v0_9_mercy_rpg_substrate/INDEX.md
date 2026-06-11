@@ -27,17 +27,21 @@ Use this order when a document conflicts:
 | `ACCEPTANCE.md` | Cross-slice acceptance matrix and verification gates. | Active |
 | `ISSUE_SLICES.md` | Issue-ready backlog with dependencies and validation. | Active |
 | `01-active-packet.md` | Routing contract, doc ownership, and context hygiene rules. | Active |
-| `02-substrate-primitives.md` | Core substrate primitive catalog and build order. | Active once authored |
-| `03-opening-act-bible.md` | Five-act opening slice bible: water, bread, tincture, Witness, wolves. | Active once authored |
-| `04-latent-paths-receptivity.md` | Apothecary, Hesychasm, Iconographic paths and receptivity mechanics. | Active once authored |
-| `05-rpg-economy-progression.md` | Risk/reward, loot, progression, itemization, and tuning levers. | Active once authored |
-| `06-canon-surface-registry.md` | Authority labels for major doc surfaces and migration notes. | Active once authored |
-| `07-anti-drift-vocabulary.md` | Scoped vocabulary and drift-gate policy for v0.9 RPG language. | Active once authored |
+| `02-substrate-primitives.md` | Core substrate primitive catalog and build order. | Active |
+| `03-opening-act-bible.md` | Five-act opening slice bible: water, bread, tincture, Witness, wolves. | Active |
+| `04-latent-paths-receptivity.md` | Apothecary, Hesychasm, Iconographic paths and receptivity mechanics. | Active |
+| `05-rpg-economy-progression.md` | Risk/reward, loot, progression, itemization, and tuning levers. | Active |
+| `06-canon-surface-registry.md` | Authority labels for major doc surfaces and migration notes. | Active |
+| `07-anti-drift-vocabulary.md` | Scoped vocabulary and drift-gate policy for v0.9 RPG language. | Active |
 | `08-epic-b-substrate-pipeline-plan.md` | Pipeline-shaped Epic B execution graph for B-prep through B0, including B1/B2 anti-fracture seams. | Active implementation handoff |
 | `09-naming-conventions.md` | Godot artifact naming canon: filesystem layout, code identifiers, animation keys, verb/item/encounter IDs, blocked legacy patterns, validation. | Active |
 | `10-asset-pipeline.md` | Source → runtime sprite asset pipeline: source/sheets/aseprite folder split, `tools/sprites/` deterministic conversion, Aseprite vs LibreSprite, project-spec amendment. | Active |
-| `prompts/` | Sprite-sheet authoring prompts (master template + Kalev pass-sliced production plan + Lena/Mother/Boy/Wolf full sheets) and the `06-name-an-artifact.md` template for naming new Godot artifacts. | Active |
+| `prompts/` | Sprite-sheet authoring prompts (master template + Kalev pass-sliced production plan + Lena/Mother/Boy/Wolf full sheets) and the `prompts/06-name-an-artifact.md` template for naming new Godot artifacts. | Active |
 | `tools/sprites/` (project root) | Asset-pipeline scripts: `make_runtime_sprite.py`, `validate_sprite.py`, `palette.py`, `palettes/*.gpl`. Required gate before any runtime sheet enters Godot. | Active |
+| `B0_SUBSTRATE_ACCEPTANCE_REPORT.md` | B0 substrate gate acceptance evidence. | Active-support |
+| `ARCHITECTURE_DEEPENING_PRELUDE_REPORT.md` | Prelude architecture deepening report. | Active-support |
+| `EPIC_C_OPENING_ACT_REPORT.md` | Epic C opening-act progress report. | Active-support |
+| `EPIC_C_C6_GRAYBOX_REPORT.md` | Epic C graybox (C6) progress report. | Active-support |
 
 ## Product direction
 

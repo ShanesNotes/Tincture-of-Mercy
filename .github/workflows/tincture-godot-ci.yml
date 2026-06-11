@@ -40,11 +40,17 @@ jobs:
       - name: Install Python verification dependencies
         run: python3 -m pip install --upgrade pillow pytest
 
+      - name: Run design-system topology gate
+        run: python3 design_system/tools/check_topology.py
+
+      - name: Run scoped anti-drift gate
+        run: python3 design_system/tools/anti_drift.py --mode all --root design_system
+
       - name: Import and validate Godot project
         run: python3 scripts/godot/validate_project.py --project .
 
       - name: Generate Godot .NET bindings
-        run: godot --headless --build-solutions --quit || true
+        run: godot --headless --build-solutions --quit
 
       - name: Build Godot C# project
         run: dotnet build Tincture-of-Mercy.csproj

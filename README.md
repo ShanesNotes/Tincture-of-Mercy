@@ -1,19 +1,19 @@
 # Tincture of Mercy
 
-Godot 4.6 (C#, Forward+) project. 2D top-down narrative survival-care game.
+Godot 4.6 (C#, Forward+) project. 2D top-down combat-capable mercy RPG.
 This README is the single entry point — everything else is reachable from here.
 
 ## Canon spine and read path
 
 Use this short path before engine or content work:
 
-1. **Agent/context guide** → `AGENTS.md`, then `CONTEXT.md`
+1. **Context and agent guide** → `CONTEXT.md`, then `AGENTS.md`
    _Start here. These files prevent older P0 scope limits from becoming project-wide doctrine._
 2. **Decision records** → `docs/adr/`
    _Read accepted routing and design decisions before treating older packets as active canon._
 3. **Active v0.9 packet hub** → `design_system/v0_9_mercy_rpg_substrate/INDEX.md`
    _Current combat-capable mercy RPG substrate packet and source hierarchy._
-4. **Active requirements and backlog** → `design_system/v0_9_mercy_rpg_substrate/PRD.md`, `ACCEPTANCE.md`, and `ISSUE_SLICES.md`
+4. **Active requirements and backlog** → `design_system/v0_9_mercy_rpg_substrate/PRD.md`, `design_system/v0_9_mercy_rpg_substrate/ACCEPTANCE.md`, and `design_system/v0_9_mercy_rpg_substrate/ISSUE_SLICES.md`
    _Use these for substrate-first requirements, acceptance, and implementation issue dependencies._
 5. **Active registry and assigned slice** → `design_system/v0_9_mercy_rpg_substrate/06-canon-surface-registry.md`, then the assigned slice doc.
    _The registry labels active, support, provenance, source, generated-review, archive, and stale surfaces._
@@ -34,57 +34,75 @@ are intentionally non-runtime surfaces.
 
 ```
 .
-├── project.godot           # Godot 4.6, C#/.NET, Forward+
+├── project.godot              # Godot 4.6, C#/.NET, Forward+
+├── Tincture-of-Mercy.csproj   # Godot game assembly (references Substrate)
 ├── icon.svg
-├── .godot/                 # generated engine cache (gitignored)
+├── .godot/                    # generated engine cache (gitignored)
 │
-├── scenes/                 # future runtime scenes; scene-domain folders
-│   ├── main.tscn
-│   ├── cabin/cabin.tscn
-│   ├── ironwood_road/ironwood_road.tscn
-│   ├── bethany/bethany.tscn
-│   ├── characters/{kalev,birdie,lena}.tscn
-│   └── ui/{pouch,tincture_wheel,notebook,patient_panel,kalev_state_overlay,dialogue_box,manuscript_intercut}.tscn
+├── Tincture.Substrate/        # headless mercy RPG substrate library (plain C#)
+├── Tincture.Tests/            # xUnit substrate regression suite
+├── Tincture.AiMock/           # standalone LLM character-runtime mock (see its README)
 │
-├── scripts/                # future reusable/global C# code
-│   ├── autoloads/          # GameEvents, KalevState, RegisterLookup, etc.
-│   ├── resources/          # typed C# Resource classes
-│   └── components/         # reusable Node/Control helpers only
-│   # scene-specific C# scripts live beside their .tscn files in scenes/**
+├── scenes/                    # runtime scenes; scene-specific C# lives beside .tscn
+│   ├── main.tscn + Main.cs    # boots world_lab/ironwood_world_lab.tscn
+│   ├── cabin/cabin_graybox.tscn
+│   ├── world_lab/             # ironwood_world_lab + regime scaffolds
+│   ├── sprite_lab/kalev_locomotion_test.tscn
+│   ├── characters/            # (planned) kalev, birdie, lena
+│   ├── ironwood_road/         # (planned)
+│   ├── bethany/               # (planned)
+│   └── ui/                    # (planned) pouch, tincture_wheel, notebook, etc.
 │
-├── data/                   # future runtime .tres resources
-│   ├── ingredients/
-│   ├── recipes/
-│   ├── patients/
-│   ├── register_lexicons/
-│   ├── tincture/wheel_axes.tres
-│   └── captions.tres
+├── scripts/
+│   ├── autoloads/             # (planned) GameEvents, KalevState, RegisterLookup
+│   ├── resources/             # (planned) typed C# Resource classes
+│   ├── components/            # reusable C# helpers (e.g. OpeningActGrayboxKeys)
+│   ├── godot/                 # validate, export, test runner Python tools
+│   ├── build_ironwood_tileset.gd
+│   └── verify_ironwood_tileset.gd
 │
-├── themes/                 # theme_ironwood.tres, theme_wittehaven.tres, theme_paradise.tres
-├── audio/                  # bed/, mark/, ui/
+├── data/
+│   ├── opening/opening_act_cabin_prologue_events.json
+│   ├── tilesets/
+│   ├── ingredients/           # (planned)
+│   ├── recipes/               # (planned)
+│   ├── patients/              # (planned)
+│   ├── register_lexicons/     # (planned)
+│   └── tincture/              # (planned) wheel_axes.tres, captions.tres
 │
-├── art/                    # runtime art Godot imports as res://art/...
-│   ├── characters/         # runtime sheets plus documented design-only concept exceptions
-│   │   ├── kalev/kalev_design_asset.png        # CANONICAL concept reference, not runtime sheet
-│   │   └── kalev/animations/                   # pre-64×96 sheets; must be redrawn before shipping
-│   ├── environment/        # runtime tiles/backgrounds/scene environment assets
-│   ├── props/
-│   ├── ui/
-│   ├── icon_panels/
-│   ├── vfx/
-│   └── reference/          # concept/reference only; .gdignore
+├── themes/ironwood_folk.tres  # active; wittehaven/paradise themes planned
+├── audio/                     # bed/, mark/, ui/; music/ holds draft source (non-P0)
+├── fonts/
+├── shaders/
 │
-├── docs/                   # source intake, lore/provenance, ADRs; .gdignore
-│   ├── adr/                # decision records
-│   ├── source/             # raw source intake; not active implementation contract
-│   └── lore/               # rich sources; active direction/ADRs arbitrate conflicts
-├── design_system/          # visual + system canon; .gdignore
-│   ├── v0_9_mercy_rpg_substrate/ # ACTIVE PACKET — read INDEX.md, PRD.md, ISSUE_SLICES.md
-│   ├── v0_8_1/             # provenance + scoped P0 locks
-│   └── tools/              # anti_drift.py + check_topology.py gates
-├── concept_packet.html     # generated review surface; not independent canon
+├── art/                       # runtime art Godot imports as res://art/...
+│   ├── characters/
+│   │   ├── kalev/kalev_design_asset.png   # CANONICAL concept reference
+│   │   ├── kalev/sheets/                  # 64×96 runtime sheets
+│   │   └── kalev/animations/              # legacy pre-64×96 concept sheets
+│   ├── environment/
+│   ├── props/, ui/, icon_panels/, vfx/
+│   └── reference/             # concept/reference only; .gdignore
 │
-└── _archive/               # provenance only; gitignored
+├── tools/sprites/             # deterministic sprite pipeline (see 10-asset-pipeline.md)
+├── test/                      # Godot headless smoke (cabin_graybox_scene_smoke.gd)
+├── tests/                     # Python sprite-tool + optional PlayGodot E2E tests
+│
+├── docs/                      # source intake, lore/provenance, ADRs; .gdignore
+│   ├── adr/
+│   ├── source/                # raw source intake; not active implementation contract
+│   ├── lore/
+│   └── story/                 # narrative provenance; active direction/ADRs arbitrate
+├── design_system/             # visual + system canon; .gdignore
+│   ├── v0_9_mercy_rpg_substrate/  # ACTIVE PACKET
+│   ├── v0_8_1/                    # provenance + scoped P0 locks
+│   ├── v0_9_combat_rpg_layer/     # superseded research stub (provenance only)
+│   └── tools/                     # anti_drift.py + check_topology.py gates
+├── concept_packet.html        # generated review surface; not independent canon
+├── art_direction_review.html  # generated review surface; not independent canon
+│
+├── .github/workflows/         # Godot CI: validate, build, test, export
+└── _archive/                  # provenance only; gitignored
     └── superseded/
 ```
 
@@ -113,17 +131,25 @@ scope, not a project-wide rule.
 
 Full strict list: `design_system/v0_8_1/canonical_locks_v0_8_1.md`.
 
+## Engine and verification quick start
+
+```bash
+# Design-system gates (run before doc commits)
+python3 design_system/tools/check_topology.py
+python3 design_system/tools/anti_drift.py --mode all --root design_system
+
+# Substrate + Godot smoke
+dotnet test Tincture.Tests/Tincture.Tests.csproj
+python3 scripts/godot/validate_project.py --project .
+godot --headless --path . -s res://test/cabin_graybox_scene_smoke.gd
+```
+
+CI runs the same gates on push to `main` (see `.github/workflows/tincture-godot-ci.yml`).
+Local Linux export needs Godot 4.6.2 mono export templates installed.
+
 ## Notes for the next session
 
-- Character `.png.import` files at the project root were removed when assets
-  were relocated under `art/`. Godot will regenerate them at the new paths
-  on next editor open.
-- C#/.NET is the canonical Godot implementation language. The `.csproj`
-  appears when the first C# script is added through the editor or scaffold.
-- Items moved to `_archive/superseded/` are kept for provenance and are
-  gitignored. Do not delete/export archive history without a separate
-  explicit decision.
-- The five existing Kalev animation sheets in
-  `art/characters/kalev/animations/` predate the 64×96 decision. Per
-  v0.8.1 they will need to be redrawn at 64×96 native (not downscaled
-  from the concept) before they can ship as runtime sprites.
+- **Projects:** `Tincture-of-Mercy.csproj` (Godot), `Tincture.Substrate/`, `Tincture.Tests/`, and `Tincture.AiMock/` (standalone mock, excluded from Godot export).
+- **Scaffold state:** substrate core and opening graybox exist; autoloads, most UI scenes, and `.tres` data paths are still planned placeholders.
+- **Kalev art:** canonical 64×96 runtime sheets live in `art/characters/kalev/sheets/`. Legacy concept sheets in `animations/` predate the 64×96 decision and must not ship as runtime sprites.
+- **Archive:** items under `_archive/superseded/` are provenance only and gitignored.

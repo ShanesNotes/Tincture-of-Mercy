@@ -22,3 +22,22 @@ __pycache__/
 
 # Bootstrapped Godot API doc source (regenerate via ensure_doc_api.sh)
 .claude/skills/godot-api/doc_source/godot/
+
+# Python test cache
+.pytest_cache/
+
+# Local agent workflow and secrets (not shared canon)
+.omx/
+.secrets/
+omx_wiki/
+
+# Visual capture outputs (regenerate via scripts/capture_*.sh)
+screenshots/
+
+# CI / local build outputs
+build/
+reports/
+.nuget/
+
+# Machine-local capture config
+.capture/env

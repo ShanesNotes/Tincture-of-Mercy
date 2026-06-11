@@ -17,7 +17,7 @@ This repo is in an early canon-routing transition. Optimize for clean future age
 
 The next implementation target is a combat-capable mercy RPG vertical slice. Combat is first-class in design and player-facing language, while care, combat, witness, recollection, economy, notebook, and aftermath follow the shared substrate/event-truth design.
 
-Full substrate core mechanics are specified and built before opening-slice content. Opening acts prove the substrate after the B0 gate in `ISSUE_SLICES.md` passes.
+Full substrate core mechanics are specified and built before opening-slice content. Opening acts prove the substrate after the B0 gate in `design_system/v0_9_mercy_rpg_substrate/ISSUE_SLICES.md` passes.
 
 When Bethany or later payoff language conflicts, follow the `latent_paths` direction: recognition and presence are the payoff; corrected recipes are Apothecary-layer learning, not the salvific cause.
 

@@ -23,12 +23,12 @@ talent flow). Not the surface; the engine.
 
 ## Source-of-truth ordering for this packet
 
-1. `canonical_locks_v0_8_1.md` §17 — the post-P0 expansion clause that
+1. `../v0_8_1/canonical_locks_v0_8_1.md` §17 — the post-P0 expansion clause that
    sanctions this packet's existence. *Read first.*
 2. `research/` — three research dossiers (encyclopedia, primitives,
    synthesis). *Land them here.*
-3. `SCOPE.md` — once research is in, this defines the v0.9 packet's
-   sanctioned vocabulary surface, scope boundaries, and pillar
+3. `SCOPE.md` — **not yet authored.** Once research is in, this will define
+   the packet's sanctioned vocabulary surface, scope boundaries, and pillar
    inheritance from v0.8.1.
 4. `primitives/` — one file per substrate primitive (combat-state-machine,
    swing-timer, gcd, aura, attack-table, threat, etc.). Engine spec.
