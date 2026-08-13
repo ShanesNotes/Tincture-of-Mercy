@@ -1,0 +1,77 @@
+# v1.0 Council Decisions — three.js souls-like adaptation
+
+Ruled 2026-08-13 by four-model council (Codex xhigh · Grok · Kimi · Opus 5), chaired by Fable. Full seat verdicts: `.scratch/orchestrate/resurrect-3js/` (session artifacts). These rulings are binding for all v1.0 slices. Authority: this packet sits below `CONTEXT.md` and `docs/adr/` and above all other v1.0 docs.
+
+## D1 — Repo & toolchain (4-0)
+`game/` top-level directory inside this repo; own `package.json`, own CI lane (never shares a job with the Godot lane). Stack: Node ≥22 ESM, Vite 6, TypeScript 5.7 strict, Vitest, Playwright, ESLint. Runtime deps: `three@0.185.1` (exact pin; upgrades require WebGPU + forced-WebGL2 + screenshot + skinning + BVH compatibility probes) and `three-mesh-bvh` (the only other runtime dep for the slice). WebGPURenderer + TSL primary; WebGL2 fallback functional and register-gated (60fps bar applies to WebGPU only). Canonical verify: `npm --prefix game run verify`. `design_system/tools/anti_drift.py` never walks `game/` (its P0 scope stays `design_system`). No imports, names, or code ported from the Godot/C# substrate — it is provenance. `game/README.md` and root README carry a one-line banner saying so.
+
+## D2 — Camera & the flat-stage law (4-0 on shape; law set merged)
+Free souls third-person camera for all traversal and combat — no fixed cameras, no combat-mode switching. Staged frontal plate-framing ONLY in no-damage moments: Hearth rest, Anna gravity encounter, item revelation, boss introduction, Birdie coda. Camera releases to free orbit the instant verbs are combat verbs. Compressed vertical FOV 38–48°, no camera roll. Arenas are authored as shallow frontal bowls with colonnade framing so the free camera naturally composes like a plate ("stage the world, not the camera" — Opus).
+
+The renderer law set (each law machine-checkable where possible; see GATES.md):
+- **L1** No DoF/bokeh, no continuous fog, no motion blur, no lens flare, **no camera shake or FOV punch** (canon register law — impact is carried by hitstop + border/ink pulse + audio, never shake).
+- **L2** Palette covenant: all material albedo within declared ΔE of the 7 tokens (#f8f1e5 #211b17 #7e2531 #a87a2e #365a49 #263d5e #b07a83) + declared value ramps.
+- **L3** 2–3 stop stepped shading ramp; ink outline on silhouettes; PBR gloss reserved for gold/glass/vial jewel accents only.
+- **L4** Emblem light: every light is a visible diegetic emitter registered with a named verb (candle=vigil, hearth=warm, lantern=guide, moon=hide); sun/moon/lamps render as flat disks/scalloped halos/ray fans; no volumetrics, no generic glow.
+- **L5** Depth as planes with **quantized depth bands**: distance reads as 3–4 stepped value/desaturation bands toward muted blue + progressively flatter, more patterned silhouette planes. Never continuous haze. Far field is painted backdrop, not a physical sky.
+- **L6** Pattern over texture: surface detail is authored flat pattern (hatching, scale-work, line-work grain); photoreal normal/roughness maps banned; one pattern atlas per biome.
+- **L7** Scale by authority: per-scene scale table; bosses/verdict objects exceed camera realism; witnesses (birds, cups, the dog) run small.
+- **L8** Red precision: oxblood ≤5% frame coverage outside declared red-field states, always on a named carrier.
+- **L9** Gold morally assigned: gold pixels belong to named objects (lantern, halo, thread, relic); no victory-glow, no premium-UI gold.
+- **L10** Border verdict: HUD is a diegetic manuscript border with enumerable states that change with world state (Hearth lit/unlit, Turn advance, boss phase).
+- **L11** Material memory: damage/restoration keeps seams, scars, dulled gold; repaired ≠ new.
+- **L12** No-post baseline: the frame must pass the art gate with all post disabled.
+- Reverse-Z depth buffer (souls near/far spans a room and a horizon).
+
+## D3 — Simulation architecture (4-0)
+Odyssey lineage adopted as an action-game variant: pure deterministic 60Hz fixed-tick sim, zero outbound imports (arrows-check enforced), seeded RNG, Presenter contract, golden replays. New machinery this genre demands (Odyssey has none of it):
+- **Input contract**: per-render-frame sampling, edge-latched into a tick-synchronized queue; tick-stamped ordered edges; single-slot buffer consumed at first actionable tick, dropped when stale (windows in TUNING_V0.md); no key-repeat actions; move stick ≠ camera stick.
+- **Animation = sim-owned phase clocks**: integer frame counters per action, sliced from the frame-data table. The view seeks clip time from `actionTick + alpha` and NEVER calls `AnimationMixer.update(realDt)`. Odyssey's tick-quantized pose-swap grammar is rejected for combat; clips play smooth.
+- **Hitstop = sim-owned per-actor clock freeze**: on confirmed hit, involved actors' combat clocks hold N ticks deterministically (input-buffer age freezes with them); the global tick never freezes; the view adds no unowned timing.
+- Root motion never comes from GLB playback: displacement is authored per-tick curves in sim data; collision-corrected displacement stays sim-authoritative.
+- Display loop: accumulator with 4–5 tick catch-up clamp, `alpha` interpolation for high-refresh displays (pose interpolation included, i-frame state always rendered from sim, never inferred from pose). Explicit frame-pacing strategy + test for rAF drift at 60/120/144Hz.
+- **Browser lifecycle**: visibility loss pauses before enemies advance; stall debt discarded; resume requires input; no post-suspension damage bursts.
+- Determinism scope: byte-stable same-engine (V8) — golden replays scoped accordingly and versioned; every frame-data retune bumps the replay-format version with a regeneration policy. Lint rule bans `performance.now()`/`Date.now()`/`Math.random()` inside `sim/`.
+
+## D4 — Character art & animation pipeline (4-0, gated)
+Option (b): first-party Blender-authored rigs and clips. GLB is a **build artifact** (in-house, never vendored third-party content — Odyssey's "no GLB" was local law, retired here; "no third-party assets" stands). Mixamo/CC0 animation **banned** for Kalev, Anna, Iiro, Birdie, wolves, the Warden (blocking-in reference only).
+- Character art bible + proportion sheet legislated BEFORE rigging: elongated ~1:7.5–8 head:body adults, long hands, role readable from pure-ink silhouette, restrained faces (no blendshape expression sheets, no glowing eyes; expression displaced to hands/gaze/posture/state marks), garment modes per the grammar.
+- Scripted exporter: `.blend` sources retained; hashed GLB (geometry/skin/clips) + **sidecar JSON** sampled at 60Hz: frame counts, root-XZ displacement curves, weapon base/tip sockets, hurtbox capsules, foot contacts, event markers (hitbox on/off, SFX cues). Sim consumes sidecar only; view loads GLB for skinning (TSL `computeSkinning` for packs). Imported materials stripped and rebound to project TSL register (build-time material audit).
+- CI gate: clip authored length must equal startup+active+recovery in the frame-data table; sampled-socket + clip-hash comparison; drift fails the build.
+- **Pipeline-proof gate (blocking)**: ONE wolf + Kalev's 4-attack set (light/heavy/roll-attack/guard) through Blender→GLB→sim→feel-gate before mass clip production. If it misses Elden-weight readability, council re-opens with evidence.
+- Deaths are authored directional crumple clips (≥4 directions per enemy class); ragdoll never writes locomotion; carved figures fall, they do not flop.
+- Environment: Blender blockout → baked collision BVH; dressed via TSL/procedural bake+cache with ornament instancing; concept plates are style anchor + judging target.
+
+## D5 — Combat parameterization (4-0)
+Frame-data-as-data ratified: every startup/active/recovery, cancel window, tracking window, turn rate, root delta, re-hit lockout, stamina cost, poise value, hitstop duration lives in one validated, hot-reloadable data table (`game/data/`). v0 numbers in TUNING_V0.md (Opus souls-calibrated baseline; feel gate is the authority, table freezes between gauntlet rounds).
+Collision ownership: `three-mesh-bvh` for **static world** queries (ground, walls, camera, LOS) behind an injected read-only `CollisionWorld` adapter; **dynamic actor combat** (weapon sweeps vs hurtbox capsules, 3 sub-steps/tick) uses analytic swept-capsule math + a deterministic uniform-grid broadphase. No THREE objects inside sim state. Per-attack **tracking windows** (rotation-toward-target until commit tick) are first-class table columns — the primary difficulty dial. Attacker hyperarmor windows on heavy/charged actives. Unlocked (camera-relative) combat is first-class alongside Attend.
+
+## D6 — Lore naming (chair merge of four proposals; all terms canon-derived)
+| System | Player-facing (folk) | Church register | State register |
+|---|---|---|---|
+| Currency / XP | **Names** (witnessed, not yet written) | the uncommemorated | unfiled outcomes |
+| Death drop | **the Open Page** — loose unwritten leaves scattered where you fell; one recovery; second death loses them ("lost to the spreadsheet") | the unnamed | lapsed entries |
+| Rest point | **the Hearth**; the act performed there is **keeping vigil** (save = Vigil Save). Leveling = writing Names into the notebook | the lamp | Warming Station |
+| Attributes | **Pulse** (HP) · **Breath** (stamina) · **Hands** (weapon force + craft) · **Steady** (poise + guard stability) · **Spirit** (Tincture potency + Wither resist) · **Sight** (discovery + Attend range) | — | Form 9 indices |
+| Equip load | **Burden** (derived from gear + story; bands gate the dodge — "bearing it is the work") | the weight | accumulated load |
+| Lock-on | **Attend** / attending | keep them in sight | case focus |
+| Status meter | **the Turn** (buildup renders as the manuscript margin narrowing, never a green bar); at cap an actor is **Turned** | the Withering | affect flattening |
+| Flask | **the Tincture**, counted in doses. **The flask IS Anna's medicine** — doses prepared for her in the prologue become the player's healing charges after her death; every heal is borrowed mercy, renewed at each Hearth | mercy you can carry | E-3 stabilizer |
+| Flask variants (Tincture Wheel, 15-item pouch) | Pulseleaf Draught (instant Pulse) · Honeyed Draw (over-time) · Salt Wash (cleanse Turn) · Cedar-Wool Compress (Breath surge + brief Steady) · Bitter Phrine (large heal, deferred instability) | — | — |
+| Ember | **Ember** — full restore + Turn cleanse + 20s surge; 2 doses in the slice; non-craftable; usable in the boss fight | Strange Fire | E-7 |
+| Talisman slot | **charms** (Cedar Dog is slot 1); later legs: **icons** (Rafe) | — | — |
+
+**Ember's cost (core system, not polish)**: each use adds a permanent **Numbness** stack — −8% Tincture healing, +25% Turn buildup rate, and the game's text degrades one register step toward State language (NPC names collapse to roles, item cards lose folk names) until partially restored at a Hearth. The polyphonic text system renders the cost: the player watches the world's language die as they use it. Canon law holds: if players do not want to use Ember, the design has failed — Ember must be genuinely wanted.
+Latent paths (Apothecary / Hesychasm / Iconographic) are vocation scaling axes with hooks in the slice, full trees deferred. Pressure and the Grey Stone remain narrative devices, not HUD meters. Attributes are spent from banked Names at Hearths.
+
+## D7 — Slice scope: Ironwood (4-0; boss merged from three convergent proposals)
+Play order: cabin prologue (~8 min: move/interact/Attend taught through three care interactions — Water, Bread, and dosing Anna, which IS the flask tutorial) → doorway 1v1 wolf → yard 3-wolf with chokepoint → forest with two shortcut loops (one drop-down, one unlockable gate) + road ambush with Iiro's scripted flight route (soft failure only — never a babysat escort) → return to cabin: **Anna gravity encounter** (staged-camera, non-combat presence-verb scene; canon-locked; hearth dims ~18%; her remaining doses become the vial) → Kalev takes the **hearth iron** (opening weapon) → road → boss → **Birdie apple-refusal coda** (non-combat threshold, ADR-locked) toward Bethany.
+**Wolf pack grammar**: real wolves (no glowing eyes, no fantasy scale), lootable as consequence (hide/sinew/tooth/meat), zero Turn application. Three roles — Baiter (circles, feints), Lunger (long-telegraph pounce), Harrier (fast flank). Hard rule: one attack token per 3.5m ring; token releases 45 ticks after resolution; howl escalates by one; leash 25m; <25% Pulse flees. Deterministic nav: baked walk graph, stable A* tie-breaks, pack slots, bounded avoidance, crowd-failure handling.
+**Boss: the Warden of the Ironwood** — a Continuance forest warden who kept his line after the asking died. Apathy, not monster: deliberate, partly right, speaks role-fragments ("Line's mine." / "Off the line." / "Tagged."). Phase 1: lantern + felling axe, deliberate arcs. At ~55%: **the ceremony** — he hangs the lantern and self-administers E-7 (90 ticks invulnerable, deals no damage; the register wants ceremony) — Phase 2: two-handed axe, faster and steadier as his speech narrows; "the quiet" Wither pulse; lantern-fire arc only if the player hugs the ring. The boss diegetically performs the Ember temptation the player carries. Arena: old-growth pine cathedral clearing (colonnade framing satisfies D2 by geometry) ringed by his snare line strung with tin tags — a Living Boundary and Beautiful Hazard (rolling into it roots 45 ticks; the tags chime). No title card; after victory his tag bears a name the player may write into the notebook — Recollection, Turn cleanse, and the arc's first mercy-after-violence. Movesets: TUNING_V0.md.
+Cut from slice: Lena, Ilarion, Bethany content, parry (guard-break→riposte only), any second boss.
+
+## D8 — Physics (4-0)
+No physics engine. Custom deterministic kinematic capsule controller + combat kernel. Player capsule r=0.35 h=1.7–1.8 (visuals taller — deliberate), skin 0.02, step 0.35, slope limit 45–50° (tune), ground snap 0.15, ≤4 sweep/slide contacts/tick, gravity ~20m/s², jump ~1.2m (jump + at least one drop-down shortcut are required — and a jump attack or an explicit deferral), fall damage from 6m. Collision mesh baked separately, vertices quantized 1mm, triangle order stabilized, hash recorded in saves/replays. Wolves: body + head capsules. Property tests on stairs/ledges/45° slopes from the first controller ticket; a nasty-geometry test level ships with the controller. Moving platforms, rigidbodies, cloth truth, ragdoll-driven movement: explicit non-goals (revisit by ADR only).
+
+## D9 — Gauntlet protocol (4-0)
+Per-wave adversarial audit (blind finders, confirmed-defect-only, cross-seat, never the author) + the **Feel Gate** and **Art Gate** in GATES.md. Machine rows must exit 0 before any panel convenes; panels judge evidence against 4 fixed reference plates and cite rubric rows, never adjectives. Instrumentation is authoritative; panel judgment is a complementary veto. Two consecutive clean rounds of ALL gates to pass; scenario set and tuning table frozen between rounds; both renderer backends sit the gates. Gamepad is the feel-reference device. The scripted Playwright scenarios dump frame-numbered sequences + input overlay + i-frame debug so a panel can fail "roll started, i-frames lie."
