@@ -150,7 +150,7 @@
     "numb3": "Exertion tolerance restored."
   },
   "item.tincture.cedar_wool_compress.lore": {
-    "folk": "Cedar lasts. Somebody told him that once and he never checked.",
+    "folk": "The oldest medicine in the pouch is a warm thing held against a cold one.",
     "church": null,
     "state": null,
     "numb1": "",
@@ -377,7 +377,7 @@
     "numb3": "CEDAR. Packing material."
   },
   "item.pouch.cedar.lore": {
-    "folk": "Cedar lasts. His son knew that before he did.",
+    "folk": "His wife's hope chest was cedar. So is the dog.",
     "church": "It outlasts the hand that shaped it.",
     "state": null,
     "numb2": "",
@@ -621,7 +621,7 @@
     "numb3": "Personal effect. No classification."
   },
   "item.charm.cedar_dog.lore": {
-    "folk": "Pine, he told the boy. The boy insisted on cedar, because cedar lasts.",
+    "folk": "Pine, he told the boy. The boy insisted on cedar — because his father had said once that cedar lasts.",
     "church": "A companion given for a journey no one explained.",
     "state": null,
     "numb1": "Pine, he told the boy. The boy insisted on cedar.",

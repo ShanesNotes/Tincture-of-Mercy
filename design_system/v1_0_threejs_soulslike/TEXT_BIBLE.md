@@ -175,6 +175,8 @@ Slot 1 is the cedar dog and slot 16 is Ember (`CAST_BIBLE` locks). Ember's card 
 
 *Zyl's lore line — "The honest kind of numb: it stops where it says it stops." — is the pouch's one comment on Ember, and it is the only one it gets.*
 
+*Symbol discipline (`CONSOLIDATED_LORE_SURFACE` § Symbol register: **a symbol used twice is used too much**, except notebook, cedar dog, Ember vial, patient panel): **"cedar lasts" is spoken once in the whole slice**, on the cedar dog card, and it must carry the canon transmission exactly — Kalev said it to his son, and the son handed it back to him in the shape of a carving. Cedar's other two cards (the pouch entry, the compress) are forbidden from restating it.*
+
 ### Wolf loot (Church: deliberately silent)
 
 | folk | State | Description (folk) |
@@ -190,7 +192,7 @@ Slot 1 is the cedar dog and slot 16 is Ember (`CAST_BIBLE` locks). Ember's card 
 
 | Item | folk | Church | State |
 |---|---|---|---|
-| **the cedar dog** (charm, slot 1) | "Carved by a smaller hand than his. The ear is uneven and the flank has a knife mark." Lore: *Pine, he told the boy. The boy insisted on cedar, because cedar lasts.* | the dog that went with them — "It walked out and it walked back, and no one wrote down why." *(Tobit frame)* | **—** |
+| **the cedar dog** (charm, slot 1) | "Carved by a smaller hand than his. The ear is uneven and the flank has a knife mark." Lore: *Pine, he told the boy. The boy insisted on cedar — because his father had said once that cedar lasts.* | the dog that went with them — "It walked out and it walked back, and no one wrote down why." *(Tobit frame)* | **—** |
 | **the notebook** | "Leather, swollen with damp. Names in graphite, one to a line." Lore: *The virus could take the breath. It could not plunder the name.* | the diptych — "The commemoration, carried on the body." | unauthorized record — "Names recorded without case reference." |
 | **the Open Page** | "Loose unwritten leaves, scattered where you fell. Go back for them." Lore: *Die again on the way and they are lost to the spreadsheet.* | the unnamed — "What you witnessed and did not write waits at the place." | lapsed entries — "One retrieval permitted." |
 | **the hasp pin** (gate shortcut) | "A bent iron pin off a warden's gate. It opens the road back the short way." | — | access hardware, post road |
@@ -397,14 +399,15 @@ Noted, not edited — no packet file was changed by this slice.
 1. **Register vocabulary collision (ADR 0005 vs D6).** ADR 0005 reserves *folk / sanctioned / sacred*. D6 legislates *folk / Church / State* for the same axis. Both are canon; nothing contradicts, but two vocabularies for one system will confuse a cold worker. Mapping is fixed in §1. **Recommend** a one-line amendment in D6 or a new ADR recording the mapping, owner's call.
 2. **Anna's last line is an open canon question.** `STORY_RESCUE_PLAN` lists "Anna's last line; the notebook line after her death" among the questions to close *before drafting*. **"Did the boy eat?"** is authored here as a candidate and marked PROPOSED: it puts her last words on the Bread beat (ADR 0006), keeps her a mother rather than an oracle, and refuses a benediction. **Not owner-ratified.** The notebook entry choices are likewise proposals.
 3. **She does not give permission.** No Anna line grants Kalev the leftover doses. Canon's borrowed mercy (`v0_3` §VII: *I took his death. I earn the life*) depends on him taking them. A gift would repair the theology and ruin the arc. Flagged in case a later writer is tempted.
-4. **Tincture-variant Church/State cells.** D6's table leaves both blank ("—") for the five variants. Authored here: State codes built from the canon abbreviation set (v0.3 §V — LOL, PHRINE, etc.), Church left deliberately `null` except Salt Wash ("the washing"). This **extends** an empty cell; it does not override a filled one.
-5. **Church names for liturgical pouch materials.** v0.3 §V marks only Pulseleaf "(no church name)" and leaves the rest blank. Church names authored for honey, cedar, wool, cotton, salt, myrrh, oil under the rule in §1. Extension, flagged.
-6. **Non-drug State codes.** Honey/Cedar/Wool/Cotton/Salt/Myrrh/Oil have no canon abbreviation, so the State register uppercases the folk word — the same thing canon does for PHRINE, CILLIN, FUROS. No invention.
-7. **Hearth restore shape.** D6 says "partially restored at a Hearth" and no more. One step, lost at first hostile contact, stat penalties permanent (§2) is authored. It belongs in `TUNING_V0.md` once ratified; it is stated here because the ladder cannot be written without it.
-8. **`Form 9` index names.** D6 gives State the phrase "Form 9 indices" with no contents. Six index names authored (§5). Extension.
-9. **Wolf-loot salvage classes.** "biological salvage, class I–III" is authored State vocabulary. No canon term exists; the pattern follows the Office of Continuance's habit of classing what it cannot name.
-10. **`_meta` key in the JSON.** The file's first entry is `_meta`, carrying the schema note. It satisfies the `folk` invariant so validators pass; consumers should skip keys with a leading underscore.
-11. **Not written, deliberately.** Kalev's own dialogue (not in scope); legs 2–6; Lena, Ilarion, Bethany, Halloway (cut from slice per D7); Ruth; anything on page 77.
+4. **The notebook's folk name.** v0.3 §V records the notebook's folk register as "(no name aloud)" — Kalev never names it in speech. D6 does not mention the notebook at all, so it is unresolved whether that rule binds a **UI label**. Authored position: it does not (a card is not speech), so `item.key.notebook.name.folk` = "the notebook", and no character ever says the word. If the owner rules the other way, set that one field to `null` and let the card render Church/State only — everything else stands. Raised by the canon-check pass on this slice.
+5. **Tincture-variant Church/State cells.** D6's table leaves both blank ("—") for the five variants. Authored here: State codes built from the canon abbreviation set (v0.3 §V — LOL, PHRINE, etc.), Church left deliberately `null` except Salt Wash ("the washing"). This **extends** an empty cell; it does not override a filled one.
+6. **Church names for liturgical pouch materials.** v0.3 §V marks only Pulseleaf "(no church name)" and leaves the rest blank. Church names authored for honey, cedar, wool, cotton, salt, myrrh, oil under the rule in §1. Extension, flagged.
+7. **Non-drug State codes.** Honey/Cedar/Wool/Cotton/Salt/Myrrh/Oil have no canon abbreviation, so the State register uppercases the folk word — the same thing canon does for PHRINE, CILLIN, FUROS. No invention.
+8. **Hearth restore shape.** D6 says "partially restored at a Hearth" and no more. One step, lost at first hostile contact, stat penalties permanent (§2) is authored. It belongs in `TUNING_V0.md` once ratified; it is stated here because the ladder cannot be written without it.
+9. **`Form 9` index names.** D6 gives State the phrase "Form 9 indices" with no contents. Six index names authored (§5). Extension.
+10. **Wolf-loot salvage classes.** "biological salvage, class I–III" is authored State vocabulary. No canon term exists; the pattern follows the Office of Continuance's habit of classing what it cannot name.
+11. **`_meta` key in the JSON.** The file's first entry is `_meta`, carrying the schema note. It satisfies the `folk` invariant so validators pass; consumers should skip keys with a leading underscore.
+12. **Not written, deliberately.** Kalev's own dialogue (not in scope); legs 2–6; Lena, Ilarion, Bethany, Halloway (cut from slice per D7); Ruth; anything on page 77.
 
 ---
 
