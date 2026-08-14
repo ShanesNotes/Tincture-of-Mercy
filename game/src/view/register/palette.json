@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "comment": "L2 palette covenant: the 7 tokens + declared value ramps (L3, 2-3 stops) + declared L5 depth-band blue-shift weights. Executable source of truth: game/src/view/register/palette.ts (PALETTE_LAW); palette.test.ts asserts this file cannot drift from it. Gate A1 measures pixels within ΔE 6 of tokens + stops + depth-shifted stops.",
+  "deltaETolerance": 6,
+  "rampMinStepDeltaE": 8,
+  "tokens": {
+    "parchment": "#f8f1e5",
+    "ink": "#211b17",
+    "oxblood": "#7e2531",
+    "gold": "#a87a2e",
+    "green": "#365a49",
+    "blue": "#263d5e",
+    "rose": "#b07a83"
+  },
+  "families": [
+    { "name": "parchment", "token": "parchment", "stops": ["#8a7f6b", "#c2b8a6", "#f8f1e5"], "flatCarrier": false },
+    { "name": "ink", "token": "ink", "stops": ["#211b17", "#5d564e"], "flatCarrier": false },
+    { "name": "green", "token": "green", "stops": ["#22332b", "#365a49"], "flatCarrier": false },
+    { "name": "blue", "token": "blue", "stops": ["#182637", "#263d5e"], "flatCarrier": false },
+    { "name": "muted", "token": "ink", "stops": ["#443f38", "#6b6156"], "flatCarrier": false },
+    { "name": "gold", "token": "gold", "stops": ["#6d4d1e", "#a87a2e"], "flatCarrier": false },
+    { "name": "rose", "token": "rose", "stops": ["#6e4b52", "#b07a83"], "flatCarrier": false },
+    { "name": "oxblood", "token": "oxblood", "stops": ["#7e2531"], "flatCarrier": true }
+  ],
+  "depthBandBlueShift": [0, 0.3, 0.55, 0.75]
+}
