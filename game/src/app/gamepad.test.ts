@@ -83,7 +83,9 @@ describe("gamepad params", () => {
 
   it("binds the whole souls action set through the remap table", () => {
     const bound = new Set(GAMEPAD_PARAMS.buttons.values());
-    expect(bound).toEqual(new Set(["attack", "heavy", "roll", "sprint", "jump", "flask", "attend"]));
+    expect(bound).toEqual(
+      new Set(["attack", "heavy", "roll", "sprint", "jump", "flask", "attend", "interact"]),
+    );
   });
 
   it("cites its source", () => {
@@ -165,13 +167,17 @@ describe("edge latching", () => {
     pad.press(0);
     pad.press(2);
     pad.press(3);
+    pad.press(4);
     pad.press(11);
     source.poll();
 
     expect(source.drainLatchedEdges()).toEqual([
       { action: "roll", pressed: true },
       { action: "flask", pressed: true },
+      { action: "jump", pressed: true },
+      { action: "interact", pressed: true },
       { action: "attack", pressed: true },
+      { action: "attend", pressed: true },
     ]);
     expect(source.drainActionEdges()).toEqual([]);
   });

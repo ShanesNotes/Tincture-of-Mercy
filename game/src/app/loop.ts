@@ -8,6 +8,9 @@ export interface LoopCallbacks {
   readonly render: (alpha: number) => void;
   readonly sampleInput: () => void;
   readonly step: () => void;
+  /** Polled while visibly paused so a gamepad edge can resume the loop. */
+  readonly pollResumeInput?: () => boolean;
+  readonly onPauseChange?: (paused: boolean) => void;
 }
 
 export interface FramePacingCounters {
@@ -83,15 +86,22 @@ export class FixedTickLoop {
     this.accumulatorMs = 0;
     if (hidden) {
       this.hidden = true;
-      this.paused = true;
+      this.setPaused(true);
       this.awaitingInput = false;
       return;
     }
 
     if (this.hidden) {
       this.hidden = false;
-      this.paused = true;
+      this.setPaused(true);
       this.awaitingInput = true;
+    }
+  }
+
+  /** Check non-DOM input sources without advancing time while paused. */
+  public pollForResumeInput(): void {
+    if (this.awaitingInput && this.callbacks.pollResumeInput?.() === true) {
+      this.resumeFromInput();
     }
   }
 
@@ -101,13 +111,21 @@ export class FixedTickLoop {
     }
     this.accumulatorMs = 0;
     this.awaitingInput = false;
-    this.paused = false;
+    this.setPaused(false);
   }
 
   public pauseUntilInput(): void {
     this.accumulatorMs = 0;
     this.awaitingInput = true;
-    this.paused = true;
+    this.setPaused(true);
+  }
+
+  private setPaused(paused: boolean): void {
+    if (this.paused === paused) {
+      return;
+    }
+    this.paused = paused;
+    this.callbacks.onPauseChange?.(paused);
   }
 }
 
@@ -122,6 +140,9 @@ export const startAnimationLoop = (loop: FixedTickLoop): AnimationLoopHandle => 
   const frame = (timestamp: number): void => {
     if (loop.isPaused) {
       lastTimestamp = undefined;
+      if (!document.hidden) {
+        loop.pollForResumeInput();
+      }
     } else if (lastTimestamp === undefined) {
       lastTimestamp = timestamp;
       loop.advance(0);
