@@ -1,0 +1,825 @@
+{
+  "rows": [
+    {
+      "id": "A1",
+      "title": "Palette covenant: ≥92% of pixels within ΔE 6 of tokens + declared ramps",
+      "pass": true,
+      "detail": "threshold 92% coverage at ΔE 6",
+      "measurements": [
+        {
+          "capture": "webgpu/plate/post-on",
+          "value": 0.977872299382716,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-on",
+          "value": 0.9988908179012346,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-on",
+          "value": 0.9656442901234568,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-on",
+          "value": 0.97640625,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-on",
+          "value": 0.9781828703703703,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-on",
+          "value": 0.9988792438271605,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-on",
+          "value": 0.9656558641975309,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-on",
+          "value": 0.9765065586419753,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Renderer law asserts: no fog/DoF/blur/shake flags; lights registered; materials bound",
+      "pass": true,
+      "detail": "no renderer-law violations on any backend",
+      "measurements": [
+        {
+          "capture": "webgpu",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2",
+          "value": 0,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "title": "Red precision: oxblood mask ≤5% frame coverage",
+      "pass": true,
+      "detail": "threshold ≤5% coverage",
+      "measurements": [
+        {
+          "capture": "webgpu/plate/post-on",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-on",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-on",
+          "value": 0.00015046296296296297,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-on",
+          "value": 0.000005787037037037037,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-on",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-on",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-on",
+          "value": 0.00015239197530864197,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-on",
+          "value": 0.000003858024691358025,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "A4",
+      "title": "Grayscale survival: contrast bands readable in value-only conversion",
+      "pass": true,
+      "detail": "threshold ≥4 bands and σ≥20",
+      "measurements": [
+        {
+          "capture": "webgpu/plate/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-on",
+          "value": 5,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-on",
+          "value": 5,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "A6",
+      "title": "Ink outline present on character silhouettes (edge-density band)",
+      "pass": true,
+      "detail": "threshold edge density within [0.004, 0.2]",
+      "measurements": [
+        {
+          "capture": "webgpu/wolf-silhouette/post-on",
+          "value": 0.09649112654320988,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-on",
+          "value": 0.09644675925925926,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "A7",
+      "title": "No-post baseline: A1/A3/A4 re-pass with all post disabled (L12)",
+      "pass": true,
+      "detail": "24/24 no-post sub-rows pass",
+      "measurements": [
+        {
+          "capture": "webgpu/plate/post-off",
+          "value": 0.9680189043209877,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/plate/post-off",
+          "value": 0.0001408179012345679,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/plate/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 0.9764795524691358,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-off",
+          "value": 0.9723688271604938,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-off",
+          "value": 0.0009529320987654321,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-off",
+          "value": 0.968539737654321,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-off",
+          "value": 0.00014660493827160494,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-off",
+          "value": 0.9680343364197531,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-off",
+          "value": 0.0001408179012345679,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 0.9765219907407408,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-off",
+          "value": 0.9723842592592593,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-off",
+          "value": 0.0009529320987654321,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-off",
+          "value": 0.9684934413580247,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-off",
+          "value": 0.00014660493827160494,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/depth-bands/post-off",
+          "value": 6,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "pass": true,
+  "captures": 16,
+  "backends": [
+    "webgpu",
+    "webgl2"
+  ],
+  "generatedAt": "2026-08-14T01:44:37.566Z",
+  "budgets": {
+    "webgpu": {
+      "frame": 3,
+      "gold": {
+        "meshes": 4,
+        "triangles": 18
+      },
+      "red": {
+        "meshes": 1,
+        "triangles": 2
+      }
+    },
+    "webgl2": {
+      "frame": 3,
+      "gold": {
+        "meshes": 4,
+        "triangles": 18
+      },
+      "red": {
+        "meshes": 1,
+        "triangles": 2
+      }
+    }
+  },
+  "shots": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "backendsAttempted": [
+    "auto",
+    "webgl2"
+  ],
+  "captureStats": [
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "plate",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.977872299382716,
+        "meanDeltaE": 0.7714799039593683,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0.0018152006172839506,
+        "familyShares": {
+          "parchment": 0.2011766975308642,
+          "ink": 0.2903954475308642,
+          "green": 0.20757908950617285,
+          "blue": 0.016672453703703703,
+          "gold": 0.0023881172839506173,
+          "muted": 0.2817881944444444
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 23.22788681901732,
+        "inkEdgeDensity": 0.12942708333333333
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "wolf-silhouette",
+        "post": true,
+        "silhouette": true
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9988908179012346,
+        "meanDeltaE": 0.6465650711507165,
+        "p99DeltaE": 4.027631084496158,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0,
+        "familyShares": {
+          "blue": 0.06293016975308642,
+          "ink": 0.2773090277777778,
+          "parchment": 0.21769290123456791,
+          "green": 0.08560185185185185,
+          "muted": 0.35646604938271603
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 22.96712638388656,
+        "inkEdgeDensity": 0.09649112654320988
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "emblems",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9656442901234568,
+        "meanDeltaE": 0.9259732869224313,
+        "p99DeltaE": 6.0409995516630905,
+        "oxbloodCoverage": 0.00015046296296296297,
+        "goldCoverage": 0.006111111111111111,
+        "familyShares": {
+          "ink": 0.2723533950617284,
+          "green": 0.2745949074074074,
+          "blue": 0.02437307098765432,
+          "parchment": 0.15153163580246914,
+          "gold": 0.0094945987654321,
+          "muted": 0.26750192901234565,
+          "oxblood": 0.00015046296296296297
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 24.111396939031682,
+        "inkEdgeDensity": 0.1133641975308642
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "depth-bands",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.97640625,
+        "meanDeltaE": 0.7909718809344769,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.000005787037037037037,
+        "goldCoverage": 0.003487654320987654,
+        "familyShares": {
+          "parchment": 0.24291280864197531,
+          "ink": 0.27145640432098767,
+          "green": 0.23262345679012345,
+          "blue": 0.020306712962962964,
+          "gold": 0.003927469135802469,
+          "muted": 0.22876736111111112,
+          "oxblood": 0.000005787037037037037
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 23.64860101127406,
+        "inkEdgeDensity": 0.1161670524691358
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "plate",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9680189043209877,
+        "meanDeltaE": 1.2260201791788197,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.0001408179012345679,
+        "goldCoverage": 0.004664351851851852,
+        "familyShares": {
+          "parchment": 0.21860725308641976,
+          "green": 0.285264274691358,
+          "blue": 0.012251157407407407,
+          "ink": 0.12228395061728395,
+          "gold": 0.004664351851851852,
+          "muted": 0.35678819444444443,
+          "oxblood": 0.0001408179012345679
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 42.030138558196406,
+        "inkEdgeDensity": 0.08461612654320988
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "wolf-silhouette",
+        "post": false,
+        "silhouette": true
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9764795524691358,
+        "meanDeltaE": 1.081067807917221,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0,
+        "familyShares": {
+          "blue": 0.04722800925925926,
+          "parchment": 0.2305324074074074,
+          "green": 0.14182677469135802,
+          "ink": 0.14795717592592592,
+          "muted": 0.43245563271604937
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 41.311401451357135,
+        "inkEdgeDensity": 0.06112461419753087
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "emblems",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9723688271604938,
+        "meanDeltaE": 1.3099477537510489,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.0009529320987654321,
+        "goldCoverage": 0.018584104938271603,
+        "familyShares": {
+          "green": 0.349789737654321,
+          "parchment": 0.16633873456790124,
+          "blue": 0.01865162037037037,
+          "ink": 0.12129822530864197,
+          "gold": 0.018584104938271603,
+          "muted": 0.32438464506172837,
+          "oxblood": 0.0009529320987654321
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 40.2880987299061,
+        "inkEdgeDensity": 0.06353587962962963
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgpu",
+        "shot": "depth-bands",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.968539737654321,
+        "meanDeltaE": 1.2820653285590733,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.00014660493827160494,
+        "goldCoverage": 0.006141975308641976,
+        "familyShares": {
+          "parchment": 0.2591994598765432,
+          "green": 0.30299382716049383,
+          "blue": 0.017939814814814815,
+          "ink": 0.09864390432098766,
+          "muted": 0.31493441358024693,
+          "gold": 0.006141975308641976,
+          "oxblood": 0.00014660493827160494
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 44.775021896204066,
+        "inkEdgeDensity": 0.07141203703703704
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "plate",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9781828703703703,
+        "meanDeltaE": 0.7778549987430474,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0.0018942901234567902,
+        "familyShares": {
+          "ink": 0.28637345679012344,
+          "muted": 0.28271990740740743,
+          "green": 0.2093113425925926,
+          "blue": 0.016458333333333332,
+          "gold": 0.002642746913580247,
+          "parchment": 0.20249421296296297
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 22.997505043639332,
+        "inkEdgeDensity": 0.13316358024691358
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "wolf-silhouette",
+        "post": true,
+        "silhouette": true
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9988792438271605,
+        "meanDeltaE": 0.6420196171768479,
+        "p99DeltaE": 4.027631084496158,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0,
+        "familyShares": {
+          "ink": 0.2772685185185185,
+          "muted": 0.3536053240740741,
+          "green": 0.08743634259259259,
+          "blue": 0.0630787037037037,
+          "parchment": 0.21861111111111112
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 23.017608743190838,
+        "inkEdgeDensity": 0.09644675925925926
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "emblems",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9656558641975309,
+        "meanDeltaE": 0.9125061633455217,
+        "p99DeltaE": 6.0409995516630905,
+        "oxbloodCoverage": 0.00015239197530864197,
+        "goldCoverage": 0.006431327160493827,
+        "familyShares": {
+          "ink": 0.26820408950617286,
+          "green": 0.27580439814814817,
+          "muted": 0.2696875,
+          "oxblood": 0.00015046296296296297,
+          "blue": 0.02456983024691358,
+          "gold": 0.009375,
+          "parchment": 0.15220871913580247
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 24.092437769415355,
+        "inkEdgeDensity": 0.11080054012345679
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "depth-bands",
+        "post": true,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9765065586419753,
+        "meanDeltaE": 0.8088371032497249,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.000003858024691358025,
+        "goldCoverage": 0.0038734567901234566,
+        "familyShares": {
+          "ink": 0.26109953703703703,
+          "muted": 0.23619598765432098,
+          "green": 0.23445794753086419,
+          "blue": 0.020657793209876544,
+          "oxblood": 0.000003858024691358025,
+          "gold": 0.003971836419753087,
+          "parchment": 0.2436130401234568
+        },
+        "grayscaleBands": 5,
+        "grayscaleStdDev": 23.431691712624286,
+        "inkEdgeDensity": 0.12140625
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "plate",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9680343364197531,
+        "meanDeltaE": 1.2260094000433728,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.0001408179012345679,
+        "goldCoverage": 0.004664351851851852,
+        "familyShares": {
+          "muted": 0.35678819444444443,
+          "ink": 0.12228395061728395,
+          "green": 0.285264274691358,
+          "blue": 0.012251157407407407,
+          "oxblood": 0.0001408179012345679,
+          "gold": 0.004664351851851852,
+          "parchment": 0.21860725308641976
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 42.0301288133842,
+        "inkEdgeDensity": 0.08461612654320988
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "wolf-silhouette",
+        "post": false,
+        "silhouette": true
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9765219907407408,
+        "meanDeltaE": 1.0810391904333199,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0,
+        "goldCoverage": 0,
+        "familyShares": {
+          "ink": 0.14795717592592592,
+          "muted": 0.43245563271604937,
+          "green": 0.14182677469135802,
+          "blue": 0.04722800925925926,
+          "parchment": 0.2305324074074074
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 41.31135711998937,
+        "inkEdgeDensity": 0.06112461419753087
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "emblems",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9723842592592593,
+        "meanDeltaE": 1.3099393306245801,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.0009529320987654321,
+        "goldCoverage": 0.018584104938271603,
+        "familyShares": {
+          "muted": 0.32438464506172837,
+          "green": 0.349789737654321,
+          "ink": 0.12129822530864197,
+          "oxblood": 0.0009529320987654321,
+          "blue": 0.01865162037037037,
+          "gold": 0.018584104938271603,
+          "parchment": 0.16633873456790124
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 40.28809059890288,
+        "inkEdgeDensity": 0.06353587962962963
+      }
+    },
+    {
+      "meta": {
+        "backend": "webgl2",
+        "shot": "depth-bands",
+        "post": false,
+        "silhouette": false
+      },
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "totalPixels": 518400,
+        "covenantCoverage": 0.9684934413580247,
+        "meanDeltaE": 1.2821013593137316,
+        "p99DeltaE": 6.638105436427968,
+        "oxbloodCoverage": 0.00014660493827160494,
+        "goldCoverage": 0.006141975308641976,
+        "familyShares": {
+          "muted": 0.31493441358024693,
+          "ink": 0.09864390432098766,
+          "green": 0.30299382716049383,
+          "blue": 0.017939814814814815,
+          "oxblood": 0.00014660493827160494,
+          "gold": 0.006141975308641976,
+          "parchment": 0.2591994598765432
+        },
+        "grayscaleBands": 6,
+        "grayscaleStdDev": 44.775076992747316,
+        "inkEdgeDensity": 0.07141203703703704
+      }
+    }
+  ]
+}
