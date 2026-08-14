@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 
 import { compileCombatData } from "./data";
 import {
-  WEAPON_SWEEP_SUBSTEPS,
   UniformCapsuleGrid,
   capsuleBounds,
   capsulesIntersect,
@@ -38,6 +37,10 @@ const combatData = compileCombatData(
   json("../../data/frame_data.json"),
   json("../../data/combat_params.json"),
 );
+const sweepConfig = {
+  epsilonMeters: combatData.params.collision.epsilonMeters,
+  substepsPerTick: combatData.params.collision.substepsPerTick,
+};
 
 describe("capsule geometry", () => {
   it("finds the analytic closest distance for crossing and degenerate segments", () => {
@@ -75,8 +78,7 @@ describe("capsule geometry", () => {
 
     expect(capsulesIntersect(previous, hurtbox)).toBe(false);
     expect(capsulesIntersect(current, hurtbox)).toBe(false);
-    expect(sweepWeaponCapsule(previous, current, hurtbox)).not.toBeNull();
-    expect(WEAPON_SWEEP_SUBSTEPS).toBe(3);
+    expect(sweepWeaponCapsule(previous, current, hurtbox, sweepConfig)).not.toBeNull();
   });
 
   it("does not tunnel a long rotating weapon at the fastest plausible authored cap", () => {
@@ -119,10 +121,7 @@ describe("capsule geometry", () => {
       );
 
       expect(
-        sweepWeaponCapsule(previous, current, hurtbox, {
-          epsilonMeters: combatData.params.collision.epsilonMeters,
-          substepsPerTick: combatData.params.collision.substepsPerTick,
-        }),
+        sweepWeaponCapsule(previous, current, hurtbox, sweepConfig),
       ).not.toBeNull();
     }
   });

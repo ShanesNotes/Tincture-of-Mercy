@@ -42,7 +42,6 @@ export type {
   SwingContact,
 } from "./detection";
 export {
-  WEAPON_SWEEP_SUBSTEPS,
   UniformCapsuleGrid,
   capsuleBounds,
   capsulesIntersect,

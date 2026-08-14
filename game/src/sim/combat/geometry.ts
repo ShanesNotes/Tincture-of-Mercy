@@ -31,8 +31,6 @@ export interface WeaponSweepConfig {
   readonly substepsPerTick: number;
 }
 
-export const WEAPON_SWEEP_SUBSTEPS = 3 as const;
-
 // Floating-point degeneracy tolerance only. Gameplay contact tolerance is the
 // data-owned epsilonMeters passed to sweepWeaponCapsule.
 const EPSILON = 1e-12;
@@ -407,10 +405,7 @@ export const sweepWeaponCapsule = (
   previous: Capsule,
   current: Capsule,
   hurtbox: Capsule,
-  config: WeaponSweepConfig = {
-    epsilonMeters: 0,
-    substepsPerTick: WEAPON_SWEEP_SUBSTEPS,
-  },
+  config: WeaponSweepConfig,
 ): WeaponSweepHit | null => {
   assertCapsule(previous, "previous weapon capsule");
   assertCapsule(current, "current weapon capsule");
