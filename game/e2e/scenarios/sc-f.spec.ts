@@ -43,10 +43,21 @@ const RECOVERY_BOUNDARY_TICK = 1;
 const WATCH_TICKS = 5_000;
 /**
  * The stance the punish row provokes from. At 2.0 m every committed P1 move is
- * inside its authored range gate; at contact none of them are, which is why a
- * hugged Warden stops attacking altogether.
+ * inside its authored range gate, which is the widest choice his table offers
+ * and therefore the fullest rotation to punish. Contact range is no longer a
+ * hiding place — `warden_p1_stomp_snare_kick` now reaches from 0.0 m — but it
+ * narrows him to that one row, so the tour still opens from the standoff.
  */
 const PUNISH_STANDOFF_METERS = 2;
+/**
+ * The rows below demand the whole authored table, not the two heaviest moves.
+ * The pack measured three distinct P1 moves in this window before the selection
+ * score stopped letting weight outrank readiness; the headless watch in
+ * `src/sim/boss/spacing.test.ts` now measures six at every standoff.
+ */
+const MIN_DISTINCT_P1_MOVES = 5;
+/** Never selected in any scripted run before the range table reached inside 0.8 m. */
+const HUG_ANSWER_MOVE_ID = "warden_p1_stomp_snare_kick";
 /** The arena mesh runs out with the 9.2 m snare ring on (0, -136). */
 const ARENA_GUARD = { x: 0, z: -136, radiusMeters: 8.6 } as const;
 
@@ -170,7 +181,11 @@ test("SC-F: the P1 rotation is table-legal and every move opens a punishable rec
   expect(
     observed.length,
     `only ${String(observed.length)} distinct P1 moves in ${String(WATCH_TICKS)} ticks: ${observed.join(", ")}`,
-  ).toBeGreaterThanOrEqual(5);
+  ).toBeGreaterThanOrEqual(MIN_DISTINCT_P1_MOVES);
+  expect(
+    observed,
+    `the hug answer must appear in the rotation, not only at contact: ${observed.join(", ")}`,
+  ).toContain(HUG_ANSWER_MOVE_ID);
 
   expect(
     short.map((entry) => `${entry.moveId}=${String(entry.recoveryTicks)}t`),
@@ -191,9 +206,9 @@ test("SC-F: a scripted punish lands inside a real P1 recovery window", async ({ 
   await run.capture("the ring is crossed with the lock held");
 
   await run.startRecorder();
-  // The dance the range table forces. Kalev's reach is 0.65 m and every P1 move
-  // is gated at 0.8 m and out, so a stance that can be hit from is a stance the
-  // Warden will not attack out of. The driver therefore holds the 2.0 m
+  // The dance the range table forces. Kalev's reach is 0.65 m; inside it the
+  // Warden now answers, but only with the stomp, so a punish tour fought at
+  // contact would only ever see one row. The driver therefore holds the 2.0 m
   // standoff where all five committed moves are legal, closes to 0.55 m the
   // moment he commits, and swings only while the FSM is in `recovery`.
   const tour = await run.driveDuel({

@@ -5,7 +5,14 @@
   "provenance": {
     "kind": "tuning_with_authored_defaults",
     "reference": "TUNING_V0 The Warden of the Ironwood; ENCOUNTERS The Warden of the Ironwood; GATES F3/F5/F6",
-    "authoredReason": "Tick tables, phase threshold, ceremony hold, snare root, quiet Wither/radius and gate bars are verbatim law. Per-move engagement ranges, selection weights, cooldowns, and the Warden's authored per-tick displacement rates are absent from every source document and ship here as explicit v0 authored baselines."
+    "authoredReason": "Tick tables, phase threshold, ceremony hold, snare root, quiet Wither/radius and gate bars are verbatim law. Per-move engagement ranges, selection weights, cooldowns, and the Warden's authored per-tick displacement rates are absent from every source document and ship here as explicit v0 authored baselines.",
+    "roundOneFixes": [
+      "selection.weightScoreScale 1000 -> 20: at 1000 the authored weight outranked every readiness bonus (cap 600), so the two heaviest legal rows alternated forever and the table below them was unreachable — the scenario pack measured only three distinct P1 moves in 5000 ticks. At 20 the whole P1 weight spread (30-20) costs 400 score, less than the 600-tick readiness cap, so a row he has left alone outscores a heavier row he just used and no authored move can be starved out of the rotation. Weight still decides between two equally rested moves.",
+      "selection.stepBackRangeMeters 5.5 -> 4.5: the step-back stance is the bait's only key, and the bait's authored range opens at 4.5 m. At 5.5 the stance gate sat half a metre outside the range gate, which left 4.0-5.5 m with no legal action at all. The two now open together.",
+      "phases.p1.warden_p1_stomp_snare_kick.minRangeMeters 0.8 -> 0.0: no P1 row reached inside 0.8 m, so standing at contact was total defence — the pack killed all 720 Pulse without being touched. The stomp is the answer to a hugger: there is no distance too close to stomp.",
+      "phases.p1.warden_p1_two_step_chop.maxRangeMeters 4.0 -> 5.0: the chop steps in twice before it lands, so it is the deepest P1 reach; extending it closes the 4.0-4.5 m dead zone that sat between the last attack range and the bait's range.",
+      "phases.p2.warden_p2_wide_fell.minRangeMeters 1.0 -> 0.0: the same hug hole in Phase 2, where only the zero-damage quiet reached inside 1.0 m. The wide fell is the answer chosen rather than the three-string sweep because it lands once (reHitLockoutTicks 81 covers its whole clip) behind a 36-tick heavy tell, where the sweep's three active windows clear its 10-tick lockout and would land 3x105 Pulse on a 300-Pulse player from a stance he never has to leave."
+    ]
   },
   "ceremony": {
     "pulsePercent": 55,
@@ -42,10 +49,10 @@
     "sameMoveMaxConsecutive": 2,
     "engageRangeMeters": 12.0,
     "preferredRangeMeters": 2.0,
-    "stepBackRangeMeters": 5.5,
+    "stepBackRangeMeters": 4.5,
     "neutralCooldownTicks": 24,
     "cooldownScoreCapTicks": 600,
-    "weightScoreScale": 1000
+    "weightScoreScale": 20
   },
   "motion": {
     "approachMetersPerTick": 0.075,
@@ -137,7 +144,7 @@
           "weight": 22,
           "cooldownTicks": 180,
           "minRangeMeters": 1.2,
-          "maxRangeMeters": 4.0,
+          "maxRangeMeters": 5.0,
           "requiresStance": null,
           "requiresRingHug": false
         },
@@ -150,7 +157,7 @@
           "contactTicksPerWindow": null,
           "weight": 20,
           "cooldownTicks": 120,
-          "minRangeMeters": 0.8,
+          "minRangeMeters": 0.0,
           "maxRangeMeters": 2.6,
           "requiresStance": null,
           "requiresRingHug": false
@@ -185,7 +192,7 @@
           "contactTicksPerWindow": null,
           "weight": 24,
           "cooldownTicks": 160,
-          "minRangeMeters": 1.0,
+          "minRangeMeters": 0.0,
           "maxRangeMeters": 4.0,
           "requiresStance": null,
           "requiresRingHug": false

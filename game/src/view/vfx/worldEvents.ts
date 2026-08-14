@@ -15,10 +15,11 @@
  *   `riposteUntilClock` window, which is an opening, not a landed riposte — so
  *   `VfxRiposteEvent` is never produced from a world stream.
  * - `hitstopTicks` is read from a `hitstop` combat event for the same target on
- *   the same tick when the stream carries one, else 0. s11 computes hitstop but
- *   does not currently emit that presenter event, and `classifyHitstop` rejects
- *   a 0t freeze (the TUNING_V0 table is closed), so the caller must supply the
- *   freeze before applying. The table is not duplicated here.
+ *   the same tick when the stream carries one, else 0. s11 now emits that
+ *   presenter event on every confirmed hit, so a live stream carries the real
+ *   freeze; the 0 stays as the honest floor for a stream that does not, and
+ *   `classifyHitstop` rejects a 0t freeze (the TUNING_V0 table is closed). The
+ *   table is not duplicated here.
  * - `wither-pulse-applied` carries no duration, so `durationTicks` is omitted
  *   and the controller's authored default applies.
  * - Meta events carry no actor of their own; the actor comes from the world

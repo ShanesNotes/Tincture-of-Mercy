@@ -37,6 +37,7 @@ const damage = (tick: number, targetId: string): WorldEvent =>
 const hitstop = (tick: number, targetId: string, durationTicks: number): WorldEvent =>
   worldEvent("combat", tick, {
     actorId: "kalev",
+    contact: { x: 0, y: 0, z: 0 },
     durationTicks,
     kind: "hitstop",
     sequence: 2,
