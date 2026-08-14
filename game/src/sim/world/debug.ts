@@ -3,7 +3,7 @@ import { zoneAt } from "./assembly";
 import { hashWorldState } from "./hash";
 import { isWorldPackActive } from "./scheduler";
 import { actorHurtboxes } from "./sidecars";
-import { actorWeapon } from "./sidecars";
+import { actorWeapon, actorWeaponRadius } from "./sidecars";
 import type {
   WorldDebugBoss,
   WorldDebugSnapshot,
@@ -90,7 +90,7 @@ export const createWorldDebugSnapshot = (
             move !== undefined &&
             move.activeWindows.some(([start, end]) => action.tick >= start && action.tick < end);
           const weapon = active
-            ? actorWeapon(state, definition, definitionActor.id, 0, 0)
+            ? actorWeapon(state, definition, definitionActor.id, 0, actorWeaponRadius(definition, definitionActor.id))
             : null;
           return weapon === null
             ? []

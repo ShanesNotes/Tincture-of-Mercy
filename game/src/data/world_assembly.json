@@ -119,7 +119,8 @@
         "asset": "D4 gates the authored Warden model and clip set (s21/s23) on the feel gate passing with blocking assets. Until then he wears the Kalev blocking rig: hurtbox and weapon capsules are sampled from Kalev's authored sidecars, frame_data.json remains authoritative for every tick and every damage number.",
         "warden_p2_snare_toss": "no projectile rig in the blocking pipeline; the release samples the light1 weapon capsule at its single active tick",
         "warden_p2_the_quiet": "no swing: resolved as an area Wither pulse by the world, never through the weapon path"
-      }
+      },
+      "weaponRadiusMeters": 0.55
     },
     "wolf": {
       "assetBase": "/assets/build/",

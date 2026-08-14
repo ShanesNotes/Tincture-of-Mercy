@@ -16,6 +16,15 @@ import type {
 const assetKey = (actor: WorldActorDefinition): WorldAssetKey =>
   actor.kind === "player" ? "kalev" : actor.kind === "warden" ? "warden" : "wolf";
 
+/** Authored sweep inflation for an actor wearing a borrowed blocking rig. */
+export const actorWeaponRadius = (
+  definition: WorldDefinition,
+  actorId: string,
+): number => {
+  const actor = definition.actors[actorId];
+  return actor === undefined ? 0 : definition.actorAssets[assetKey(actor)].weaponRadiusMeters;
+};
+
 export const sidecarForAction = (
   definition: WorldDefinition,
   actor: WorldActorDefinition,

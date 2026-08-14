@@ -34,6 +34,7 @@ import {
 import {
   arenaOnDeath,
   awardNames,
+  beginEmberUse,
   beginTinctureUse,
   bossDefeated,
   bossIsDown,
@@ -63,7 +64,7 @@ import {
 } from "../scenes";
 import { createWorldState } from "./create";
 import { isWorldPackActive } from "./scheduler";
-import { actorHurtboxes, actorWeapon, rootClipForAction } from "./sidecars";
+import { actorHurtboxes, actorWeapon, actorWeaponRadius, rootClipForAction } from "./sidecars";
 import { applySceneEffects, interactVerb, sceneToEnter } from "./scenes";
 import { createWorldWardenState, stepWorldWarden, wardenSwingIsLive } from "./warden";
 import { zoneAt } from "./assembly";
@@ -487,8 +488,9 @@ const swingFrames = (
     ) {
       continue;
     }
-    const currentWeapon = actorWeapon(state, queries.definition, actorId, 0, 0);
-    const previousWeapon = actorWeapon(state, queries.definition, actorId, -1, 0);
+    const weaponRadius = actorWeaponRadius(queries.definition, actorId);
+    const currentWeapon = actorWeapon(state, queries.definition, actorId, 0, weaponRadius);
+    const previousWeapon = actorWeapon(state, queries.definition, actorId, -1, weaponRadius);
     if (currentWeapon === null || previousWeapon === null) continue;
     const attackerIsPlayer = attackerKind === "player";
     const targets = Object.values(queries.definition.actors)
@@ -874,7 +876,7 @@ export const stepWorld = (
         event.actionId === "flask_drink",
     )
   ) {
-    meta = beginTinctureUse(meta);
+    meta = input.useEmber === true ? beginEmberUse(meta) : beginTinctureUse(meta);
   }
 
   // Capture combat knockback as next-tick motion input, then immediately restore motion positions.
@@ -1021,14 +1023,18 @@ export const stepWorld = (
     }
   }
 
-  // The arena run state is s15's. The FSM only reports the crossings.
+  // The arena run state is s15's strict ladder; the FSM only reports crossings,
+  // and it reports them in its own order. He commits the moment the player is
+  // inside his engage range, which is wider than the ring, so "engage" can
+  // arrive before "enter" — and a dropped rung would leave the encounter stuck
+  // one short of `inFight` forever. Engagement implies entry.
   for (const transition of wardenTick?.arenaTransitions ?? []) {
     meta = transition === "enter"
       ? enterArena(meta)
       : transition === "engage"
-        ? engageBoss(meta)
+        ? engageBoss(enterArena(meta))
         : transition === "defeated"
-          ? bossDefeated(meta)
+          ? bossDefeated(engageBoss(enterArena(meta)))
           : arenaOnDeath(meta);
   }
 

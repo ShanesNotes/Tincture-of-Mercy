@@ -110,6 +110,9 @@ const WORLD_ACTION_KEYS: Readonly<Record<string, InputAction>> = {
   KeyE: "interact",
 };
 
+/** Held while drinking to spend an Ember instead of a Tincture dose. */
+const EMBER_MODIFIER_CODE = "KeyG";
+
 class WorldKeyboardInput {
   readonly #codes = new Set<string>();
   readonly #edges: SampledInputEdge[] = [];
@@ -118,6 +121,10 @@ class WorldKeyboardInput {
     window.addEventListener("keydown", this.#onKeyDown);
     window.addEventListener("keyup", this.#onKeyUp);
     window.addEventListener("blur", this.#onBlur);
+  }
+
+  public get emberHeld(): boolean {
+    return this.#codes.has(EMBER_MODIFIER_CODE);
   }
 
   public get move(): Readonly<{ x: number; z: number }> {
@@ -263,10 +270,17 @@ const bootIronwoodPlay = async (
     hud.openMenu(next === "none" ? null : next);
     loop.setMenuPaused(next === "pause" || next === "death");
   };
+  // The Hearth menu's Rest verb is the same act as pressing interact at the
+  // Hearth, so it takes the same path into the world. Refill, respawn and
+  // banking all ride inside that rest; levelling is s15 progression and has no
+  // world seam yet, so it is acknowledged and dropped rather than faked.
+  let pendingHearthRest = false;
   const onHudIntent = (event: Event): void => {
     const intent = (event as CustomEvent<{ readonly type: string }>).detail;
     if (intent.type === "resume" || intent.type === "death-acknowledged") {
       menuPauseRequested = false;
+    } else if (intent.type === "hearth-rest" || intent.type === "refill" || intent.type === "respawn") {
+      pendingHearthRest = true;
     }
   };
   const onMenuKey = (event: KeyboardEvent): void => {
@@ -380,7 +394,10 @@ const bootIronwoodPlay = async (
         deathPage: vfx.deathPage !== null,
       });
       document.body.dataset.simTick = String(state.tick);
-      document.body.dataset.vfxEmberDesat = emberDesatLevel(vfx, VFX_PARAMS).toFixed(3);
+      const desat = emberDesatLevel(vfx, VFX_PARAMS).toFixed(3);
+      if (desat !== document.body.dataset.vfxEmberDesat) {
+        document.body.dataset.vfxEmberDesat = desat;
+      }
       recordDuration(renderSamples, startedAt);
     },
     sampleInput,
@@ -388,12 +405,23 @@ const bootIronwoodPlay = async (
       const startedAt = performance.now();
       previousPresentation = presentation;
       const reducerStartedAt = performance.now();
+      const drained = queue.drain(state.tick);
+      const restEdges = pendingHearthRest
+        ? [{
+            action: "interact" as const,
+            pressed: true,
+            sequence: Math.max(-1, ...drained.map((edge) => edge.sequence)) + 1,
+            tick: state.tick,
+          }]
+        : [];
+      pendingHearthRest = false;
       const stepped = stepWorld(state, {
         ...EMPTY_WORLD_INPUT,
-        edges: queue.drain(state.tick),
+        edges: [...drained, ...restEdges],
         moveX,
         moveZ,
         attendStick: { x: attendX, y: attendY },
+        useEmber: keyboard.emberHeld,
       }, queries);
       recordDuration(reducerSamples, reducerStartedAt);
       state = stepped.state;
@@ -457,6 +485,18 @@ const bootIronwoodPlay = async (
       };
     },
     stop,
+    /**
+     * s19: frame time on a developer box is environment-sensitive, so the floor
+     * test measures N windows and takes the median. Re-running the whole replay
+     * per window costs minutes; clearing the samples costs nothing.
+     */
+    resetPerf: (): void => {
+      worldView.resetPerformanceSamples();
+      renderSamples.length = 0;
+      simStepSamples.length = 0;
+      reducerSamples.length = 0;
+      snapshotSamples.length = 0;
+    },
     perfSnapshot: () => {
       const perf = worldView.debugSnapshot();
       return {

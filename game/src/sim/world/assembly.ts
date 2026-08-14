@@ -170,6 +170,9 @@ const actorAsset = (
 ): WorldActorAssetDefinition => {
   const source = record(value, path);
   const result: WorldActorAssetDefinition = {
+    weaponRadiusMeters: source.weaponRadiusMeters === undefined
+      ? 0
+      : number(source, "weaponRadiusMeters", path),
     assetBase: string(source, "assetBase", path),
     manifest: string(source, "manifest", path),
     neutralSidecar: string(source, "neutralSidecar", path),

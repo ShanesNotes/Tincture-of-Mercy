@@ -74,6 +74,12 @@ export interface WorldZoneDefinition {
 }
 
 export interface WorldActorAssetDefinition {
+  /**
+   * Extra capsule radius on this actor's weapon sweep, in metres. It exists for
+   * one reason: an actor wearing another actor's blocking rig inherits that
+   * rig's reach. Zero for anyone whose own clips are authored.
+   */
+  readonly weaponRadiusMeters: number;
   readonly assetBase: string;
   readonly manifest: string;
   readonly neutralSidecar: string;
@@ -180,6 +186,12 @@ export interface WorldInputFrame {
   readonly moveX: number;
   readonly moveZ: number;
   readonly attendStick: { readonly x: number; readonly y: number };
+  /**
+   * Turns the next started drink into an Ember dose. The vial and the Ember
+   * share one authored clip (`flask_drink`), so they share one input edge and
+   * differ only in what the commit spends.
+   */
+  readonly useEmber?: boolean;
   readonly viewer?: AttendViewer;
   /** Optional staged-scene seam used by deterministic scripts; ordinary interaction uses InputAction.interact. */
   readonly scene?: {
