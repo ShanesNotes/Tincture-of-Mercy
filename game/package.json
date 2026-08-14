@@ -11,6 +11,7 @@
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
+    "replay:regen": "UPDATE_COMBAT_REPLAY=1 vitest run src/sim/combat/replay.test.ts",
     "test": "vitest run",
     "e2e": "playwright test",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
