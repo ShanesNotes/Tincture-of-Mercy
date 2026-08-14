@@ -68,7 +68,7 @@ import { actorHurtboxes, actorWeapon, actorWeaponRadius, rootClipForAction } fro
 import { applySceneEffects, interactVerb, sceneToEnter } from "./scenes";
 import { createWorldWardenState, stepWorldWarden, wardenSwingIsLive } from "./warden";
 import { zoneAt } from "./assembly";
-import { resolveRingContact } from "../boss";
+import { clampToRing, distanceFromRingCenter, resolveRingContact } from "../boss";
 import type {
   WorldActorState,
   WorldEvent,
@@ -1036,6 +1036,38 @@ export const stepWorld = (
         : transition === "defeated"
           ? bossDefeated(engageBoss(enterArena(meta)))
           : arenaOnDeath(meta);
+  }
+
+  // The leash IS the arena bound, so being outside it is a broken state, not a
+  // behaviour. A shove can land him past the ring on ground the bake does not
+  // cover, and from there collision refuses his return step: the FSM asks to
+  // walk home every tick, motion declines every tick, and he stands there
+  // forever. Composition puts him back on the line and lets him fight.
+  if (wardenDefinition !== null && wardenTick !== null) {
+    const wardenActor = actorsAfterCombat[wardenDefinition.actorId];
+    const ring = wardenDefinition.ring;
+    if (
+      wardenActor !== undefined &&
+      distanceFromRingCenter(ring, wardenActor.motion.position.x, wardenActor.motion.position.z) >
+        ring.radiusMeters + wardenDefinition.params.leash.marginMeters
+    ) {
+      const clamped = clampToRing(ring, wardenActor.motion.position.x, wardenActor.motion.position.z);
+      actorsAfterCombat[wardenDefinition.actorId] = {
+        ...wardenActor,
+        motion: {
+          ...wardenActor.motion,
+          // Ground-probe from the authored arena floor, not from wherever he
+          // fell to: a probe started below the floor finds nothing.
+          position: hearthSpawnPosition(
+            { x: clamped.x, y: wardenDefinition.spawnPosition.y, z: clamped.z },
+            queries,
+          ),
+          velocity: { x: 0, y: 0, z: 0 },
+          displacement: null,
+        },
+        pendingCombatDisplacement: null,
+      };
+    }
   }
 
   // s10 owns his position, s11 owns his Pulse; the FSM reads both back.

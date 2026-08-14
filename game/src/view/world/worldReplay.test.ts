@@ -131,8 +131,8 @@ describe("world golden replay", () => {
       { tick: 1_977, stateHash: "66ebec55" },
       { tick: 6_753, stateHash: "72509099" },
       { tick: 22_140, stateHash: "4c59da5a" },
-      { tick: 22_348, stateHash: "6f592bc0" },
-      { tick: 23_776, stateHash: "8ec63ec5" },
+      { tick: 22_348, stateHash: "174728b4" },
+      { tick: 23_776, stateHash: "86086ec6" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

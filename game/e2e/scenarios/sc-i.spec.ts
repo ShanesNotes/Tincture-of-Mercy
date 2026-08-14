@@ -13,7 +13,7 @@ import { buildScript, Gauntlet, playerOf } from "./harness";
 
 const GOLDEN_TICKS = 41_413;
 /** See SC-D: the hash `e2e/world.spec.ts` pins for the same golden script. */
-const WORLD_SPEC_FROZEN_HASH = "13ae38a3";
+const WORLD_SPEC_FROZEN_HASH = "3d7799d7";
 
 /** The SC-A opening, authored once and replayed on both backends. */
 const SC_A_OPENING = buildScript(

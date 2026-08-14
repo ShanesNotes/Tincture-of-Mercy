@@ -454,6 +454,37 @@ describe("the Warden, bound into the world", () => {
     expect(actorOf(freed, playerId).motion.position.z).not.toBeCloseTo(before.z, 6);
   });
 
+  it("puts him back on the line when a shove leaves him outside his own leash", () => {
+    // A punish can shove him past the ring onto ground the bake does not cover,
+    // and collision then refuses his return step every tick. Left alone he
+    // stands there forever, so composition clamps him home.
+    const fresh = createWorldState(queries);
+    const wardenActor = fresh.actors[warden.actorId];
+    if (wardenActor === undefined) throw new Error("no Warden actor");
+    const stranded = ring.radiusMeters + 6;
+    const state = stepWorld({
+      ...fresh,
+      actors: {
+        ...fresh.actors,
+        [warden.actorId]: {
+          ...wardenActor,
+          motion: {
+            ...wardenActor.motion,
+            position: { x: ring.centerX, y: -4, z: ring.centerZ + stranded },
+          },
+        },
+      },
+    }, EMPTY_WORLD_INPUT, queries).state;
+
+    const home = state.actors[warden.actorId]?.motion.position;
+    if (home === undefined) throw new Error("no Warden actor");
+    expect(Math.hypot(home.x - ring.centerX, home.z - ring.centerZ)).toBeLessThanOrEqual(
+      ring.radiusMeters + warden.params.leash.marginMeters + 1e-6,
+    );
+    expect(fsmOf(state).x).toBeCloseTo(home.x, 12);
+    expect(fsmOf(state).z).toBeCloseTo(home.z, 12);
+  });
+
   it("roots once per approach, so the line is a hazard and not a wall", () => {
     // Standing in the contact band re-arms the FSM every `rootTicks`; a player
     // frozen inside the band can never leave it, so only a fresh crossing roots.

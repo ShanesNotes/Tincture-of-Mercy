@@ -5,18 +5,30 @@ import { Gauntlet, playerOf, wardenOf } from "./harness";
 /**
  * SC-G — the Warden's ceremony and the P2 kill run.
  *
- * The kill run is not scriptable in this build (see the fixme). What is real,
- * and what this row pins, is the state the ceremony is measured against: the
- * arena gate fires, the Warden stands at his full authored 720 Pulse, the
- * ceremony has not begun, and the 55% threshold he must be driven under is
- * 396 Pulse of scripted damage away.
+ * Two rows, both live on the shipped page. The first pins the state the
+ * ceremony is measured against: the arena gate fires, the Warden stands at his
+ * full authored 720 Pulse, and the 55% threshold is 396 Pulse of scripted
+ * damage away. The second drives the whole fight — 720 to 0, through the
+ * ceremony, into P2, to `victoryNoRespawn`.
  */
 
 const CEREMONY_PULSE_PERCENT = 55;
-/** Contact stance: close to this before standing and swinging. */
-const CONTACT_HOLD_METERS = 0.15;
+/**
+ * The duel stance, measured. Every landed swing in this pack connected inside
+ * 0.65 m centre to centre, so the driver holds contact — but not *through* him:
+ * driving Kalev into the Warden's own capsule shoves him past his authored ring
+ * clamp, and the arena mesh stops at the ring. 0.55 m lands and leaves him
+ * standing.
+ */
+const CONTACT_HOLD_METERS = 0.55;
 /** Swing whenever the Warden is inside this, measured centre to centre. */
 const CONTACT_SWING_RANGE_METERS = 1;
+/**
+ * The snare ring is a 9.2 m circle on (0, -136) and the level mesh runs out
+ * with it. Kalev is kept inside 8.6 m of the middle so a chase along the rim
+ * cannot walk him off the world.
+ */
+const ARENA_GUARD = { x: 0, z: -136, radiusMeters: 8.6 } as const;
 
 test("SC-G: the ceremony precondition is reachable and the threshold is sim truth", async ({
   page,
@@ -26,10 +38,12 @@ test("SC-G: the ceremony precondition is reachable and the threshold is sim trut
   const run = await Gauntlet.boot(page, "sc-g", { debug: true });
 
   await run.capture("boot: the arena is cold");
-  // The lock has to be taken before the ring: Attend's 34-degree acquisition
-  // cone is measured from Kalev's eye and the Warden's capsule centre sits
-  // about 1.06 m below it, so at 0.5 m of separation he is 65 degrees down and
-  // there is no candidate at all. Twelve metres out he is 5 degrees down.
+  // The lock is taken before the ring. Attend's 34-degree acquisition cone is
+  // measured from Kalev's eye — `capsule.height - capsule.radius`, 1.40 m — to
+  // the Warden's capsule centre at `capsule.height / 2`, 0.88 m, so on level
+  // ground the target sits about 0.53 m below the eye line: 46 degrees down at
+  // half a metre, and inside the cone only past about 0.8 m. Twelve metres out
+  // he is 2.5 degrees down, which is as clean an acquisition as the cone gives.
   const locked = await run.lockOntoWardenAtRange(12);
   expect(locked.targetId, "Attend must take the Warden from outside his ring").toBe("warden");
   await run.capture("attend: the lock is taken at 12 m, outside the ring");
@@ -68,23 +82,6 @@ test("SC-G: the ceremony precondition is reachable and the threshold is sim trut
 
   await run.capture("held: 720 Pulse, no ceremony, no aftermath");
 
-  // RECORDED, NOT ASSERTED — the reproduction the fixme below is written from.
-  // A scripted contact duel, Attend held, Kalev standing inside the Warden's
-  // own capsule, swinging every time his action clock frees. `liveSwingFrames`
-  // is the dump that explains the result: Kalev's light capsule spans roughly
-  // y 0.50 down to y -0.01 with radius 0, and the Warden's lowest hurtbox is a
-  // 0.14 m capsule centred at y 0.91. They cannot overlap.
-  const contact = await run.driveDuel({
-    holdMeters: CONTACT_HOLD_METERS,
-    swingRangeMeters: CONTACT_SWING_RANGE_METERS,
-    maxTicks: 2_000,
-    attack: true,
-  });
-  await run.capture(
-    `scripted contact: ${String(contact.swings)} swings, Warden at ${String(contact.bossPulseEnd)}`,
-  );
-  run.writeReplayEvidence("scripted-contact", contact);
-
   run.writeReplayEvidence("ceremony-precondition", {
     ceremonyPulse,
     boss: arrived.boss,
@@ -97,35 +94,77 @@ test("SC-G: the ceremony precondition is reachable and the threshold is sim trut
   expect(run.errors).toEqual([]);
 });
 
-test.fixme("SC-G: ceremony at 55% then a full P2 kill run", async ({ page }) => {
-  // Blocked, and no longer on any of the three reasons this row used to give.
-  // Attend does take the Warden (from 12 m, outside his ring — see the row
-  // above), the snare no longer pins Kalev, and the Hearth overlay no longer
-  // kills the frame. What blocks the row now is that Kalev cannot hit him.
-  //
-  // The `scripted-contact` evidence this file writes is the measurement. With
-  // the lock held for every frame of a 2 000-tick duel and Kalev standing
-  // 0.02-0.09 m from the Warden — inside his capsule — his light capsule is
-  // published as a zero-radius segment running from about y 0.50 down to
-  // y -0.01, while the Warden's three hurtboxes are capsules centred at
-  // y 0.91 (r 0.14), y 1.04-1.36 (r 0.16) and y 1.70-1.94 (r 0.11). The lowest
-  // point of the Warden's lowest hurtbox is y 0.77; the highest point of
-  // Kalev's weapon is y 0.50. There is a ~0.27 m vertical gap and the two can
-  // never overlap, so the swing is a miss by construction.
-  //
-  // Measured on the shipped page, all with the lock held:
-  //   * 21-30 swings at 0.02-0.09 m over ~1 000 ticks: Warden 720/720;
-  //   * 160 swings at up to 3 m over 6 000 ticks: Warden 720/720;
-  //   * 132 swings at 0.7 m over 6 000 ticks: Warden 692/720 — a single hit,
-  //     landed during one of his own lowered animation frames.
-  // The same driver against a flat-plane ground probe (`probeGround` returning
-  // y = 0 everywhere, which drops the Warden's rig ~0.5 m relative to Kalev's)
-  // takes him from 720 to 0 in about 2 400 ticks with 67 swings. So the
-  // headless "first blood at tick 251" measurement is an artefact of the flat
-  // probe, not evidence that the assembled world is winnable.
-  //
-  // The fix belongs in the rigs, not in this pack: either Kalev's authored
-  // weapon capsule needs a real radius and a height that reaches a standing
-  // opponent, or the Warden's hurtboxes need to descend to his own feet.
-  void page;
+test("SC-G: ceremony at 55% then a full P2 kill run", async ({ page }) => {
+  test.setTimeout(900_000);
+  test.slow();
+  const run = await Gauntlet.boot(page, "sc-g/kill", { debug: true });
+  const startedAt = Date.now();
+
+  const locked = await run.lockOntoWardenAtRange(12);
+  expect(locked.targetId, "Attend must take the Warden from outside his ring").toBe("warden");
+  const arrived = await run.walkToArenaRing();
+  expect(arrived.boss.enteredArena, "the arena gate must fire before the fight").toBe(true);
+  expect(arrived.boss.pulse).toBe(720);
+  await run.capture("the ring is crossed at 720 Pulse, phase p1");
+
+  await run.startRecorder();
+  const duelStartedAt = Date.now();
+  const kill = await run.driveDuel({
+    holdMeters: CONTACT_HOLD_METERS,
+    swingRangeMeters: CONTACT_SWING_RANGE_METERS,
+    maxTicks: 12_000,
+    attack: true,
+    relockFromMeters: 1,
+    stopWhenDefeated: true,
+    abortBelowY: -2,
+    traceEveryTicks: 200,
+    flaskBelowPulseRatio: 0.5,
+    arenaCentre: ARENA_GUARD,
+  });
+  const duelMs = Date.now() - duelStartedAt;
+  await run.capture(
+    `defeated: ${String(kill.swings)} swings, ${String(kill.hits.length)} landed, Warden at ${String(kill.bossPulseEnd)}`,
+  );
+
+  const settled = await run.snapshot();
+  run.writeReplayEvidence("kill-run", {
+    duelMs,
+    totalMs: Date.now() - startedAt,
+    ticks: kill.endTick - kill.startTick,
+    startTick: kill.startTick,
+    endTick: kill.endTick,
+    reason: kill.reason,
+    swings: kill.swings,
+    hits: kill.hits,
+    ceremonyTick: kill.ceremonyTick,
+    ceremonyBossPulse: kill.ceremonyBossPulse,
+    defeatTick: kill.defeatTick,
+    minPlayerPulse: kill.minPlayerPulse,
+    flasks: kill.flasks,
+    belowFloor: kill.belowFloor,
+    trace: kill.trace,
+    boss: settled.boss,
+  });
+  run.finish({
+    scenario: "SC-G Warden kill run",
+    ticks: kill.endTick - kill.startTick,
+    duelMs,
+    ceremonyBossPulse: kill.ceremonyBossPulse,
+  });
+
+  expect(kill.belowFloor, "neither fighter may leave the level mesh").toBeNull();
+  expect(kill.reason, "the duel must end because the Warden fell, not on a budget").toBe(
+    "defeated",
+  );
+  expect(kill.ceremonyTick, "the ceremony must fire during the run").not.toBeNull();
+  expect(
+    kill.ceremonyBossPulse,
+    `the ceremony is a ${String(CEREMONY_PULSE_PERCENT)}% gate, so it cannot fire above 396 Pulse`,
+  ).toBeLessThanOrEqual((720 * CEREMONY_PULSE_PERCENT) / 100);
+  expect(kill.defeatTick, "the Warden must actually be defeated").not.toBeNull();
+  expect(kill.phaseAtEnd, "the kill must land in P2, on the far side of the ceremony").toBe("p2");
+  expect(kill.bossPulseEnd).toBe(0);
+  expect(settled.boss.defeated).toBe(true);
+  expect(settled.boss.arena, "the arena gate must close on victory").toBe("victoryNoRespawn");
+  expect(run.errors).toEqual([]);
 });

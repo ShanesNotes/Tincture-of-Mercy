@@ -657,7 +657,7 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
   definitionFingerprint: "5c4c5456",
   inputHash: "06c274c0",
-  stateHash: "8ec63ec5",
+  stateHash: "86086ec6",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */

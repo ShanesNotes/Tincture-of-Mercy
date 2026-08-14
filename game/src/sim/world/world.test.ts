@@ -410,7 +410,7 @@ describe("world assembly", () => {
     expect(WORLD_GOLDEN_EXPECTED).toEqual({
       definitionFingerprint: "5c4c5456",
       inputHash: "06c274c0",
-      stateHash: "8ec63ec5",
+      stateHash: "86086ec6",
     });
     expect(hashCanonical(WORLD_GOLDEN_REPLAY)).toBe(WORLD_GOLDEN_EXPECTED.inputHash);
     expect(WORLD_GOLDEN_REPLAY.durationTicks).toBe(23_776);
@@ -438,11 +438,11 @@ describe("world assembly", () => {
       frames: WORLD_GOLDEN_REPLAY.frames.filter(({ tick }) => tick < durationTicks),
       checkpointTicks: [1, 1327, durationTicks],
     });
-    expect(prefix.stateHash).toBe("b361161f");
+    expect(prefix.stateHash).toBe("273db5f2");
     expect(prefix.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
       { tick: 1, stateHash: "dcb86abc" },
-      { tick: 1327, stateHash: "8e7a314e" },
-      { tick: 1370, stateHash: "b361161f" },
+      { tick: 1327, stateHash: "9181409a" },
+      { tick: 1370, stateHash: "273db5f2" },
     ]);
     expect(prefix.checkpoints.every((entry) => entry.moduleClocksAligned)).toBe(true);
     expect(prefix.summary).toMatchObject({

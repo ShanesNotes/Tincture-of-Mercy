@@ -200,9 +200,9 @@ interface FacadeWindow {
  */
 export interface DuelPlan {
   /**
-   * Metres to close to before the driver stops pushing. Kalev's authored reach
-   * only bites at contact: headless sweeps land 720 Pulse of damage when the
-   * closest approach is under about 0.05 m and almost none past 0.4 m.
+   * Metres the driver holds off the Warden. Kalev's reach only bites at
+   * contact: measured on the shipped page, every landed swing was inside
+   * 0.63 m centre to centre.
    */
   readonly holdMeters: number;
   /** Swing whenever the action clock is free and the Warden is this close. */
@@ -221,6 +221,43 @@ export interface DuelPlan {
   readonly stopOnRespawn?: boolean;
   /** Drink when Pulse falls under this fraction of the pool, while doses last. */
   readonly flaskBelowPulseRatio?: number;
+  /**
+   * Punish discipline: only swing while the Warden's FSM is in `recovery`.
+   * This is what SC-F's tour needs — a hit landed anywhere else is not a punish.
+   */
+  readonly punishOnly?: boolean;
+  /**
+   * Stance to collapse to while punishing. Not zero: driving Kalev *through*
+   * the Warden shoves him past his own ring clamp, and the level mesh stops at
+   * the ring — he either freezes there or falls out of the world. 0.55 m is the
+   * stance the SC-G kill run is measured on: close enough to land, gentle
+   * enough to leave him standing.
+   */
+  readonly punishCloseMeters?: number;
+  /**
+   * Range from which a lost Attend lock is re-taken. The acquisition cone is
+   * measured from Kalev's eye (1.40 m) to the Warden's capsule centre (0.84 m),
+   * so from inside about 0.8 m he is below the 34-degree cone and no press can
+   * select him. Default 1.8 m.
+   */
+  readonly relockFromMeters?: number;
+  /** Stop the moment either fighter's `y` falls below this. */
+  readonly abortBelowY?: number;
+  /** Sample the position/phase trace every this many sim ticks. */
+  readonly traceEveryTicks?: number;
+  /** Keep Kalev inside this disc whatever the Warden does. */
+  readonly arenaCentre?: { readonly x: number; readonly z: number; readonly radiusMeters: number };
+}
+
+/** One tick on which the Warden's Pulse actually fell, with its cause. */
+export interface DuelHit {
+  readonly tick: number;
+  readonly damage: number;
+  readonly bossFsm: string | null;
+  readonly bossAction: string | null;
+  readonly bossActionTick: number | null;
+  readonly bossPulseAfter: number;
+  readonly distanceMeters: number;
 }
 
 export interface DuelReport {
@@ -262,6 +299,29 @@ export interface DuelReport {
     readonly wardenHurtboxes: readonly WorldCapsule[];
     readonly wardenInvulnerable: boolean;
   }[];
+  /** Every tick the Warden's Pulse fell, and what he was doing when it did. */
+  readonly hits: readonly DuelHit[];
+  /**
+   * Periodic ground truth for the duel: where both fighters were, what the FSM
+   * was doing, and whether the floor was still under them.
+   */
+  readonly trace: readonly {
+    readonly tick: number;
+    readonly player: Vec3;
+    readonly warden: Vec3;
+    readonly bossPulse: number;
+    readonly fsm: string | null;
+    readonly phase: string | null;
+    readonly bossAction: string | null;
+    readonly targetId: string | null;
+  }[];
+  /** First tick either fighter fell through the level mesh, if either did. */
+  readonly belowFloor: {
+    readonly tick: number;
+    readonly playerY: number;
+    readonly wardenY: number;
+    readonly playerXZ: Vec3;
+  } | null;
   readonly ceremonyTick: number | null;
   readonly ceremonyBossPulse: number | null;
   readonly defeatTick: number | null;
@@ -598,6 +658,31 @@ export class Gauntlet {
   }
 
   /**
+   * Walk to a sim-space point on the cardinal keys, re-reading the snapshot
+   * each step so a slow box changes the number of steps and nothing else.
+   *
+   * SC-F and SC-G both use this to drag the fight off the arena rim: the
+   * Warden's own bait stance makes him give ground until the ring clamps him,
+   * and the level mesh runs out before the ring does on the western arc, so a
+   * duel fought at the edge ends with one of the two falling out of the world.
+   */
+  public async walkTo(
+    point: Vec3,
+    toleranceMeters = 1,
+    budget = 200,
+  ): Promise<WorldDebugSnapshot> {
+    for (let step = 0; step < budget; step += 1) {
+      const player = playerOf(await this.snapshot());
+      this.#path.push({ x: player.position.x, y: player.position.y, z: player.position.z });
+      if (distanceXZ(player.position, point) <= toleranceMeters) break;
+      if (player.position.y < -1 || this.#errors.length > 0) break;
+      await this.stepToward(point, 6);
+    }
+    await this.releaseAll();
+    return this.snapshot();
+  }
+
+  /**
    * Fast-travel the live world to the yard. The shipped facade rebases live
    * state on the golden replay's tick-155 yard approach after every
    * `runReplay`, which is the only page hook that repositions the player
@@ -881,11 +966,11 @@ export class Gauntlet {
    * outside his ring.
    *
    * The lock has to be taken at range. Attend's acquisition cone is 34 degrees
-   * around the eye line, and the Warden's capsule centre sits about 1.06 m
-   * *below* Kalev's eye: at 0.5 m of separation he is 65 degrees down, at 1.6 m
-   * he is 33 degrees down, and only past that does he enter the cone at all. So
-   * the lock is taken at about 12 m and retained (22 m retain range) all the way
-   * into contact.
+   * around the eye line; Kalev's eye is 1.40 m up (`capsule.height -
+   * capsule.radius`) and the Warden's Attend point is his capsule centre at
+   * 0.88 m, so on level ground the target sits about 0.53 m below the eye and
+   * only enters the cone past roughly 0.8 m of separation. The lock is taken at
+   * about 12 m and retained (22 m retain range) all the way into contact.
    */
   public async lockOntoWardenAtRange(rangeMeters = 12): Promise<WorldDebugSnapshot> {
     const warden = wardenOf(await this.snapshot());
@@ -947,7 +1032,6 @@ export class Gauntlet {
         let unlockedFrames = 0;
         let attendCooldown = 0;
         let lastEdgeTick = -1000;
-        let pushing = true;
         let firstLockLoss: { tick: number; distanceMeters: number } | null = null;
         let minPlayerPulse = Number.POSITIVE_INFINITY;
         let flasks = 0;
@@ -969,6 +1053,11 @@ export class Gauntlet {
           pulseAfter: number;
         } | null = null;
         let closest = Number.POSITIVE_INFINITY;
+        const hits: DuelHit[] = [];
+        const trace: DuelReport["trace"][number][] = [];
+        let previousBossPulse = -1;
+        let tracedTick = -1_000_000;
+        let belowFloor: DuelReport["belowFloor"] = null;
         let ceremonyTick: number | null = null;
         let ceremonyBossPulse: number | null = null;
         let defeatTick: number | null = null;
@@ -998,6 +1087,9 @@ export class Gauntlet {
             respawn,
             deathMenuFrames,
             liveSwingFrames,
+            hits,
+            trace,
+            belowFloor,
             ceremonyTick,
             ceremonyBossPulse,
             defeatTick,
@@ -1029,6 +1121,58 @@ export class Gauntlet {
             previousPulse = player.pulse;
           }
           if (player.pulse < minPlayerPulse) minPlayerPulse = player.pulse;
+
+          const dx = warden.position.x - player.position.x;
+          const dz = warden.position.z - player.position.z;
+          const distance = Math.hypot(dx, dz);
+          if (distance < closest) closest = distance;
+
+          // A hit is a fall in the Warden's Pulse, attributed to whatever his
+          // FSM was doing on the tick it fell. This is the punish evidence.
+          if (previousBossPulse >= 0 && snapshot.boss.pulse < previousBossPulse) {
+            hits.push({
+              tick: snapshot.tick,
+              damage: previousBossPulse - snapshot.boss.pulse,
+              bossFsm: snapshot.boss.fsm,
+              bossAction: warden.actionId,
+              bossActionTick: warden.actionTick,
+              bossPulseAfter: snapshot.boss.pulse,
+              distanceMeters: distance,
+            });
+          }
+          previousBossPulse = snapshot.boss.pulse;
+
+          const traceEvery = input.traceEveryTicks ?? 0;
+          if (traceEvery > 0 && snapshot.tick - tracedTick >= traceEvery) {
+            tracedTick = snapshot.tick;
+            trace.push({
+              tick: snapshot.tick,
+              player: player.position,
+              warden: warden.position,
+              bossPulse: snapshot.boss.pulse,
+              fsm: snapshot.boss.fsm,
+              phase: snapshot.boss.phase,
+              bossAction: warden.actionId,
+              targetId: snapshot.targetId,
+            });
+          }
+
+          const floor = input.abortBelowY;
+          if (
+            floor !== undefined &&
+            belowFloor === null &&
+            (player.position.y < floor || warden.position.y < floor)
+          ) {
+            belowFloor = {
+              tick: snapshot.tick,
+              playerY: player.position.y,
+              wardenY: warden.position.y,
+              playerXZ: player.position,
+            };
+            finish("belowFloor", snapshot);
+            return;
+          }
+
           if (document.querySelector('[data-testid="hud-menu-death"]') !== null) {
             deathMenuFrames += 1;
           }
@@ -1097,11 +1241,6 @@ export class Gauntlet {
             return;
           }
 
-          const dx = warden.position.x - player.position.x;
-          const dz = warden.position.z - player.position.z;
-          const distance = Math.hypot(dx, dz);
-          if (distance < closest) closest = distance;
-
           // `startAnimationLoop` clears its pacing timestamp on *every* keydown
           // (`onResumeInput`), so the following frame is advanced with 0 ms and
           // the sim clock loses it. A driver that presses something every frame
@@ -1110,14 +1249,43 @@ export class Gauntlet {
           const EDGE_COOLDOWN_TICKS = 2;
           const mayPress = snapshot.tick - lastEdgeTick >= EDGE_COOLDOWN_TICKS;
 
-          // Close, then stand in him. Kalev's authored reach only bites at
-          // contact, so the stance is "push until inside `holdMeters`", with
-          // hysteresis so the key set stops churning the moment he drifts.
-          if (pushing && distance <= input.holdMeters) pushing = false;
-          else if (!pushing && distance > input.holdMeters + 0.4) pushing = true;
+          // The stance. Kalev's reach only bites at contact, so a duel closes to
+          // `holdMeters` and holds there inside a dead band. The punish tour
+          // adds a second gear: the standoff is what provokes a committed move
+          // (his table is range-gated), and the moment the FSM enters recovery
+          // the stance collapses to contact so the punish can actually land.
+          const committed =
+            snapshot.boss.fsm === "recovery" || snapshot.boss.fsm === "committed_move";
+          const holdTarget =
+            input.punishOnly === true && committed
+              ? input.punishCloseMeters ?? 0.55
+              : input.holdMeters;
           const scale = distance === 0 ? 1 : distance;
-          const wantX = pushing ? dx / scale : 0;
-          const wantZ = pushing ? dz / scale : 0;
+          /** Half-width of the stance dead band, in metres. */
+          const DEAD_BAND = 0.3;
+          let wantX = 0;
+          let wantZ = 0;
+          if (distance > holdTarget + DEAD_BAND) {
+            wantX = dx / scale;
+            wantZ = dz / scale;
+          } else if (distance < holdTarget - DEAD_BAND) {
+            wantX = -dx / scale;
+            wantZ = -dz / scale;
+          }
+          // The arena floor mesh stops at the snare ring. Chasing a Warden who
+          // is giving ground for his bait walks Kalev straight off it, so the
+          // ring wins over the stance: outside the leash radius he comes back
+          // to the middle and lets the boss close instead.
+          const centre = input.arenaCentre;
+          if (centre !== undefined) {
+            const outX = player.position.x - centre.x;
+            const outZ = player.position.z - centre.z;
+            const outward = Math.hypot(outX, outZ);
+            if (outward > centre.radiusMeters) {
+              wantX = -outX / (outward === 0 ? 1 : outward);
+              wantZ = -outZ / (outward === 0 ? 1 : outward);
+            }
+          }
           const wanted: Record<string, boolean> = {
             KeyD: wantX > 0.3,
             KeyA: wantX < -0.3,
@@ -1146,9 +1314,14 @@ export class Gauntlet {
             snapshot.meta.doses > 0 &&
             player.pulse < snapshot.meta.maxPulse * input.flaskBelowPulseRatio;
           const wantsSwing =
-            input.attack && player.actionId === null && distance <= input.swingRangeMeters;
+            input.attack &&
+            player.actionId === null &&
+            distance <= input.swingRangeMeters &&
+            (input.punishOnly !== true || snapshot.boss.fsm === "recovery");
           const wantsAttend =
-            snapshot.targetId !== warden.id && attendCooldown <= 0 && distance >= 1.8;
+            snapshot.targetId !== warden.id &&
+            attendCooldown <= 0 &&
+            distance >= (input.relockFromMeters ?? 1.8);
           if (mayPress && wantsFlask) {
             down("KeyR");
             pendingRelease.push("KeyR");
@@ -1161,8 +1334,8 @@ export class Gauntlet {
             pressedThisFrame = true;
           } else if (mayPress && wantsAttend) {
             // Attend's cone cannot see him from inside contact range (the eye
-            // line looks 65 degrees down at 0.5 m), so a re-lock is only ever
-            // attempted from the range where acquisition is legal at all.
+            // line looks 46 degrees down at 0.5 m, past the 34-degree half
+            // cone), so a re-lock is only attempted from a legal range.
             down("KeyQ");
             pendingRelease.push("KeyQ");
             reacquires += 1;
