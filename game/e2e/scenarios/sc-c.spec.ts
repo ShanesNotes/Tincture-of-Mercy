@@ -49,8 +49,9 @@ test("SC-C: the road pack draws blood and the vial is committed under pressure",
   };
 
   for (let exchange = 0; exchange < 45; exchange += 1) {
-    // Never chase past z = -100: the road Hearth sits at (4.2, -116) and
-    // standing in a Hearth radius currently kills the render loop (SC-E).
+    // Never chase past z = -100: the road Hearth sits at (4.2, -116), and a
+    // stray `interact` inside its radius would rest away the pressure this
+    // row is measuring.
     if (playerOf(await run.snapshot()).position.z <= -100) {
       await run.hold(KEY.back);
       await run.advanceTicks(30);

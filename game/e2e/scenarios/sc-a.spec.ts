@@ -69,8 +69,9 @@ test("SC-A: the doorway lunger is locked, traded with, and driven down", async (
 
   const maxPulse = locked.meta.maxPulse;
   for (let exchange = 0; exchange < 60 && !killed; exchange += 1) {
-    // Stay out of the death overlay: it is the menu transition that currently
-    // kills the render loop (see SC-D), and a teach fight has three doses.
+    // Drink before the teach fight can end in a death: a death is a silent
+    // teleport back to the cabin Hearth (see SC-D), which would end the row
+    // 130 m from the lunger it is about.
     const opening = await run.snapshot();
     if (playerOf(opening).pulse <= maxPulse * 0.55 && opening.meta.doses > 0) {
       await run.tap(KEY.flask);

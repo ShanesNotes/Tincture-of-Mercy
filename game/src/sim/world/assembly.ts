@@ -173,6 +173,9 @@ const actorAsset = (
     weaponRadiusMeters: source.weaponRadiusMeters === undefined
       ? 0
       : number(source, "weaponRadiusMeters", path),
+    hurtboxRadiusMeters: source.hurtboxRadiusMeters === undefined
+      ? 0
+      : number(source, "hurtboxRadiusMeters", path),
     assetBase: string(source, "assetBase", path),
     manifest: string(source, "manifest", path),
     neutralSidecar: string(source, "neutralSidecar", path),

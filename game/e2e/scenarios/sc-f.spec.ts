@@ -133,9 +133,10 @@ test("SC-F: the P1 rotation is table-legal and every move opens a punishable rec
   const noRecovery = [
     ...new Set(windows.filter((window) => window.recoveryTicks === 0).map((w) => w.moveId)),
   ];
-  // The whole watch happens at full Pulse on both sides: nothing this pack can
-  // script reaches him, and nothing he throws reaches Kalev. Recorded, not
-  // asserted away — see the fixme below.
+  // This watch is deliberately passive — Kalev stands in the ring and the FSM
+  // rotates — so both sides staying at full Pulse is the expected reading, not
+  // a finding. What a *scripted* contact duel does to his Pulse is measured in
+  // SC-G's `scripted-contact` evidence, and explained in the fixme below.
   const contact = {
     bossPulseRange: [Math.min(...rows.map((row) => row.bossPulse)), rows[0]?.bossPulse ?? 0],
     playerPulseRange: [Math.min(...rows.map((row) => row.playerPulse)), rows[0]?.playerPulse ?? 0],
@@ -169,20 +170,32 @@ test("SC-F: the P1 rotation is table-legal and every move opens a punishable rec
 });
 
 test.fixme("SC-F: land a scripted punish on every P1 move", async ({ page }) => {
-  // Blocked by three src/ facts this pack may not change:
+  // Blocked on three measured facts, none of them the three this row used to
+  // list. Attend does take the Warden now (from 12 m, outside the ring — the
+  // acquisition cone cannot see him closer than about 1.6 m because his
+  // capsule centre sits ~1.06 m below Kalev's eye), and the snare no longer
+  // pins the player.
   //
-  //  1. Attend never acquires the Warden. `snapshot().targetId` stays null in
-  //     the arena no matter how many times `attend` is pressed, so the player's
-  //     attack commands carry no `targetPosition` and never turn to face him.
-  //  2. Kalev wedges on the snare ring. Scripted movement stalls him at about
-  //     (4.41, -0.20, -127.92) from the moment he crosses the ring; from there
-  //     no held direction moves him, and the Warden's preferred range keeps him
-  //     1.8-5.5 m away — outside `light1`'s reach.
-  //  3. Across a 10 000-tick scripted duel neither side lost a point of Pulse:
-  //     720 and 300 at the end, exactly as at the start.
+  //  1. A punish cannot land, because no swing can. Kalev's light capsule is
+  //     published as a zero-radius segment spanning roughly y 0.50 down to
+  //     y -0.01; the Warden's lowest hurtbox is a 0.14 m capsule centred at
+  //     y 0.91, so its lowest point is y 0.77. The ~0.27 m vertical gap means
+  //     the two never overlap. Measured on the shipped page with the lock
+  //     held: 48 swings from inside his capsule over 2 000 ticks removed 28 of
+  //     720 Pulse — one hit, on a lowered animation frame. See SC-G's
+  //     `scripted-contact` evidence for the capsule dump.
+  //  2. The rotation this row would punish disappears under pressure. Standing
+  //     off, the FSM cycles five or six distinct P1 moves (the row above
+  //     asserts that). Hugging him at contact, it collapses to two —
+  //     `warden_p1_lantern_raise_bait` and `warden_p1_side_clear` — so the
+  //     table this row wants to tour is only on offer from a range Kalev
+  //     cannot reach from.
+  //  3. Closing on the tell is not possible either: the punish windows are
+  //     22-30 ticks and his authored standoff is 1.8-5.5 m, which is 1.0-4.7 m
+  //     further than Kalev's reach and about 24 ticks of running.
+  //  4. `warden_p1_lantern_raise_bait` is authored `punishLights: 0` and opens
+  //     no recovery window at all, so "every P1 move" can never include it.
   //
-  // The hook that would make this row scriptable is a target seam for the
-  // Warden in `sim/attend` (or a `WorldInputFrame.viewer` the page exposes),
-  // plus a ring-contact resolution that does not pin the player capsule.
+  // The rig fix in (1) is the one that unblocks everything else.
   void page;
 });

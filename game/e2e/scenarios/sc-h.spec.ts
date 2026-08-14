@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { Gauntlet } from "./harness";
+import { Gauntlet, KEY, playerOf } from "./harness";
 
 /**
  * SC-H — two Embers, and the page's own language going numb.
@@ -11,14 +11,10 @@ import { Gauntlet } from "./harness";
  * live world feeds it — `hudInputFromWorld` hands the border `numbnessStacks`
  * straight off `MetaState` — and proves the degradation is visible.
  *
- * BLOCKER (sim half): nothing in the assembled world can swallow an Ember.
- * `beginEmberUse` (`src/sim/meta/tincture.ts`) has no caller outside its unit
- * tests: `INPUT_BUFFER_WINDOWS` binds no `ember` action, `playerCommands`
- * forwards only attack/heavy/roll/flask, and no scene script in
- * `scene_scripts.json` emits an ember verb. So "Ember use x2" cannot be
- * scripted through any input path, and the two stacks below are set on the
- * HUD directly. A `WorldInputFrame` seam for Ember (or a hearth verb that
- * routes to `beginEmberUse`) would close this row.
+ * The sim half is scripted in the second row below: `WorldInputFrame.useEmber`
+ * turns the next started drink into an Ember dose, and the shipped page binds
+ * it to holding G while pressing R. This first row still drives the HUD
+ * directly, because it is the *apparatus* under test here, not the world.
  */
 
 const BASE_STATE = {
@@ -126,10 +122,72 @@ test("SC-H: two Ember stacks degrade the border's verdict, visibly", async ({ pa
   expect(run.errors).toEqual([]);
 });
 
-test.fixme("SC-H: swallow two Embers through the world's own input path", async ({ page }) => {
-  // Blocked: `beginEmberUse` is unreachable from `stepWorld`. There is no
-  // `ember` InputAction, no scene verb that emits one, and `playerCommands`
-  // forwards only attack / heavy / roll / flask. Until a world-level Ember
-  // seam exists, the Numbness stacks the HUD renders can only be injected.
-  void page;
+/** `tincture_params.json` numbness — two doses, two permanent stacks. */
+const EMBERS_TO_SWALLOW = 2;
+
+test("SC-H: swallow two Embers through the world's own input path", async ({ page }) => {
+  test.setTimeout(300_000);
+  const run = await Gauntlet.boot(page, "sc-h-world", { debug: true });
+  const opening = await run.capture("boot: no Embers swallowed, the register is the Church's");
+  expect(opening.meta.numbnessStacks, "the slice opens with a clean register").toBe(0);
+
+  // The shipped binding: hold G, press R. The modifier is read on the frame the
+  // drink *starts*, so it stays held across the whole swallow.
+  await run.hold(KEY.ember);
+  for (let dose = 0; dose < EMBERS_TO_SWALLOW; dose += 1) {
+    const before = await run.snapshot();
+    await run.tap(KEY.flask);
+    const swallowed = await run.waitFor(
+      `Ember ${String(dose + 1)} reached MetaState`,
+      (snapshot) => snapshot.meta.numbnessStacks > before.meta.numbnessStacks,
+      60_000,
+    );
+    await run.capture(
+      `Ember ${String(dose + 1)}: ${String(swallowed.meta.numbnessStacks)} permanent stacks`,
+    );
+    // Let the drink clip finish before the next edge, the way a player must.
+    await run.waitFor("the drink is finished", (s) => playerOf(s).actionId === null, 60_000);
+  }
+  await run.release(KEY.ember);
+
+  const numbed = await run.snapshot();
+  expect(numbed.meta.numbnessStacks, "two Embers must leave two permanent stacks").toBe(
+    EMBERS_TO_SWALLOW,
+  );
+  // The Ember is not a Tincture dose: it costs the register, not the vial.
+  expect(numbed.meta.doses, "an Ember must not spend a Tincture dose").toBe(numbed.meta.maxDoses);
+
+  // The apparatus is downstream of the same MetaState the reducer just wrote:
+  // the border must be reading the world, not a fixture.
+  await expect
+    .poll(async () => {
+      const raw = await page.locator("body").getAttribute("data-hud-border");
+      return (JSON.parse(raw ?? "{}") as { numbnessStep?: number }).numbnessStep ?? -1;
+    })
+    .toBe(EMBERS_TO_SWALLOW);
+
+  // Plain R, with G released, must still be an ordinary Tincture dose.
+  const beforePlain = await run.snapshot();
+  await run.tap(KEY.flask);
+  const drank = await run.waitFor(
+    "the plain drink committed a dose",
+    (snapshot) => snapshot.meta.doses < beforePlain.meta.doses,
+    60_000,
+  );
+  await run.capture("plain flask: a dose is spent and no stack is added");
+  expect(drank.meta.numbnessStacks, "a Tincture dose must not add a Numbness stack").toBe(
+    EMBERS_TO_SWALLOW,
+  );
+
+  run.writeReplayEvidence("world-ember", {
+    stacks: drank.meta.numbnessStacks,
+    dosesAfterEmbers: numbed.meta.doses,
+    dosesAfterPlainDrink: drank.meta.doses,
+    borderStep: EMBERS_TO_SWALLOW,
+  });
+  run.finish({
+    scenario: "SC-H Ember through the world input path",
+    stacks: drank.meta.numbnessStacks,
+  });
+  expect(run.errors, "the Ember path must not raise a browser error").toEqual([]);
 });

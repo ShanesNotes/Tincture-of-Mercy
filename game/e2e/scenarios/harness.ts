@@ -190,6 +190,92 @@ interface FacadeWindow {
   __TINCTURE_WORLD__?: WorldBrowserFacade;
 }
 
+/**
+ * One scripted Warden duel, driven from inside the page.
+ *
+ * Playwright polls far too coarsely to hold a 0.6 m stance against a boss that
+ * moves every tick, so the control loop lives in the page's own
+ * `requestAnimationFrame` and drives the shipped `WorldKeyboardInput` with real
+ * `KeyboardEvent`s — the same listener a player's keyboard reaches.
+ */
+export interface DuelPlan {
+  /**
+   * Metres to close to before the driver stops pushing. Kalev's authored reach
+   * only bites at contact: headless sweeps land 720 Pulse of damage when the
+   * closest approach is under about 0.05 m and almost none past 0.4 m.
+   */
+  readonly holdMeters: number;
+  /** Swing whenever the action clock is free and the Warden is this close. */
+  readonly swingRangeMeters: number;
+  readonly maxTicks: number;
+  /** Swing whenever the action clock is free and the stance is inside reach. */
+  readonly attack: boolean;
+  /** Stop as soon as the Warden's Pulse falls to or below this. */
+  readonly stopAtBossPulse?: number;
+  readonly stopWhenDefeated?: boolean;
+  /**
+   * Stop the first time the world teleports Kalev to a Hearth. That is what a
+   * death looks like from outside: `stepWorld` records the death and respawns
+   * him inside the same tick, so the only observable is the jump.
+   */
+  readonly stopOnRespawn?: boolean;
+  /** Drink when Pulse falls under this fraction of the pool, while doses last. */
+  readonly flaskBelowPulseRatio?: number;
+}
+
+export interface DuelReport {
+  readonly startTick: number;
+  readonly endTick: number;
+  readonly reason: string;
+  readonly swings: number;
+  readonly reacquires: number;
+  readonly bossPulseStart: number;
+  readonly bossPulseEnd: number;
+  readonly playerPulseEnd: number;
+  readonly playerAlive: boolean;
+  readonly closestApproachMeters: number;
+  readonly lockedFrames: number;
+  readonly unlockedFrames: number;
+  /** Where the Attend lock first broke, if it did. */
+  readonly firstLockLoss: { readonly tick: number; readonly distanceMeters: number } | null;
+  readonly minPlayerPulse: number;
+  readonly flasks: number;
+  /** The tick Kalev was teleported to a Hearth, i.e. the tick he died. */
+  readonly respawn: {
+    readonly tick: number;
+    readonly jumpMeters: number;
+    readonly hearthId: string | null;
+    readonly pulseBefore: number;
+    readonly pulseAfter: number;
+  } | null;
+  /** Frames on which a death overlay was actually mounted in the DOM. */
+  readonly deathMenuFrames: number;
+  /**
+   * The first few frames on which Kalev's weapon capsule was live, with the
+   * Warden's hurtboxes beside it. This is the evidence for why a swing at
+   * contact range does or does not connect.
+   */
+  readonly liveSwingFrames: readonly {
+    readonly tick: number;
+    readonly distanceMeters: number;
+    readonly playerHitboxes: readonly WorldCapsule[];
+    readonly wardenHurtboxes: readonly WorldCapsule[];
+    readonly wardenInvulnerable: boolean;
+  }[];
+  readonly ceremonyTick: number | null;
+  readonly ceremonyBossPulse: number | null;
+  readonly defeatTick: number | null;
+  readonly phaseAtEnd: string | null;
+  /** Why a stall was a stall: what the page itself thought it was doing. */
+  readonly pageState: {
+    readonly bodySimTick: string | null;
+    readonly hidden: boolean;
+    readonly focused: boolean;
+    readonly openMenu: string | null;
+    readonly frames: number;
+  };
+}
+
 /** One sim tick as seen by the in-page recorder (`startRecorder`). */
 export interface RecordedTick {
   readonly tick: number;
@@ -222,6 +308,8 @@ export const KEY = {
   switchTarget: "Tab",
   flask: "KeyR",
   interact: "KeyE",
+  /** Held while drinking to spend an Ember instead of a Tincture dose. */
+  ember: "KeyG",
 } as const;
 
 export type GauntletKey = (typeof KEY)[keyof typeof KEY];
@@ -274,6 +362,8 @@ export class Gauntlet {
   readonly #held = new Set<GauntletKey>();
   readonly #frames: Record<string, unknown>[] = [];
   readonly #errors: string[] = [];
+  /** Ground-truth trace of the last scripted approach, for route evidence. */
+  readonly #path: Vec3[] = [];
   #lastPressed: readonly GauntletKey[] = [];
 
   private constructor(page: Page, scenario: string) {
@@ -344,6 +434,11 @@ export class Gauntlet {
 
   public get scenario(): string {
     return this.#scenario;
+  }
+
+  /** Every position sampled by `walkNorthTo` / `walkToArenaRing`, in order. */
+  public get approachPath(): readonly Vec3[] {
+    return this.#path;
   }
 
   public snapshot(): Promise<WorldDebugSnapshot> {
@@ -445,8 +540,9 @@ export class Gauntlet {
 
   /**
    * Errors raised so far, for scenarios that must run the replay facade and
-   * then keep going: `runReplay` rebases world state without rebasing the VFX
-   * clock, which throws out of the render loop (see SC-D).
+   * then keep going. `runReplay` rebases the live world onto the golden yard
+   * approach; the VFX-clock desync that used to throw out of the render loop
+   * afterwards is fixed, and these lists are what would catch a regression.
    */
   public errorsSince(mark: number): readonly string[] {
     return this.#errors.slice(mark);
@@ -505,7 +601,7 @@ export class Gauntlet {
    * Fast-travel the live world to the yard. The shipped facade rebases live
    * state on the golden replay's tick-155 yard approach after every
    * `runReplay`, which is the only page hook that repositions the player
-   * without wall-clock walking.
+   * without wall-clock walking. Note this also rewinds the sim clock.
    */
   public async fastTravelToYard(): Promise<WorldDebugSnapshot> {
     await this.runReplay({
@@ -710,12 +806,13 @@ export class Gauntlet {
     await this.hold(KEY.forward);
     for (let step = 0; step < budget; step += 1) {
       const player = playerOf(await this.snapshot());
+      this.#path.push({ x: player.position.x, y: player.position.y, z: player.position.z });
       if (player.position.z <= stopZ + 6 || player.position.y < -1 || this.#errors.length > 0) break;
       await this.advanceTicks(20, 60_000);
     }
-    // The last few metres are tap-stepped with the key released between steps.
-    // A held run overshoots by however long a Playwright poll happens to take,
-    // and overshooting into a Hearth radius currently kills the render loop.
+    // The last few metres are tap-stepped with the key released between steps:
+    // a held run overshoots by however long a Playwright poll happens to take,
+    // and a scenario that means to stop short of a mark has to stop short of it.
     await this.release(KEY.forward);
     for (let step = 0; step < 160; step += 1) {
       const player = playerOf(await this.snapshot());
@@ -730,38 +827,376 @@ export class Gauntlet {
   /**
    * The only honest scripted route to the Warden's ring found by this pack.
    *
-   * The centre lane is the sole corridor with continuous floor (see SC-F's
-   * blocker note), and it stops short of `hearth.arena` at (0, -126) because
-   * standing inside any Hearth radius kills the render loop. The eastward
-   * strafe happens on arena floor, past the Hearth, before pushing north.
+   * The centre lane is the sole corridor with continuous floor: `walkNorthTo`
+   * aborts the moment the player's `y` drops below -1, and every other lane
+   * tried fell through. The eastward strafe is a legacy of the two Hearths on
+   * the road (`hearth.road` at (4.2, -116)); it is harmless now that a Hearth
+   * overlay no longer stops the loop, and is kept because this is the route
+   * the pack's route evidence was recorded on.
    */
   public async walkToArenaRing(): Promise<WorldDebugSnapshot> {
-    // Stop a full three metres short of `hearth.arena` at (0, -126): a tap-step
-    // still coasts, and coasting into a 1.5 m Hearth radius kills the loop.
+    // Stop short of the ring rather than coasting into it: a tap-step still
+    // carries, and the strafe below wants to start on open arena floor.
     await this.walkNorthTo(-121.5);
     await this.hold(KEY.right);
     for (let step = 0; step < 60; step += 1) {
       const player = playerOf(await this.snapshot());
+      this.#path.push({ x: player.position.x, y: player.position.y, z: player.position.z });
       if (player.position.x >= 2.6 || player.position.y < -1 || this.#errors.length > 0) break;
       await this.advanceTicks(4, 60_000);
     }
     await this.release(KEY.right);
-    for (let step = 0; step < 120; step += 1) {
+    // Push north until the gate actually fires. The ring is a 9.2 m circle
+    // centred on (0, -136), so how far north its southern edge sits depends on
+    // how far east the strafe above carried: at x = 4.2 the crossing is
+    // z = -127.8, at x = 5.5 it is z = -128.6. A fixed z stop gives up short of
+    // the gate on a loaded box, where each poll carries further.
+    for (let step = 0; step < 300; step += 1) {
       const snapshot = await this.snapshot();
       const player = playerOf(snapshot);
+      this.#path.push({ x: player.position.x, y: player.position.y, z: player.position.z });
       if (
         snapshot.boss.enteredArena ||
-        player.position.z <= -128 ||
+        player.position.z <= -133 ||
         player.position.y < -1 ||
         this.#errors.length > 0
       ) {
         break;
+      }
+      // Drifting east makes the crossing further north for no gain; steer back.
+      if (player.position.x > 5) {
+        await this.hold(KEY.left);
+        await this.advanceTicks(3, 60_000);
+        await this.release(KEY.left);
       }
       await this.hold(KEY.forward);
       await this.advanceTicks(4, 60_000);
       await this.release(KEY.forward);
     }
     return this.snapshot();
+  }
+
+  /**
+   * Walk north up the centre lane and take the Attend lock on the Warden from
+   * outside his ring.
+   *
+   * The lock has to be taken at range. Attend's acquisition cone is 34 degrees
+   * around the eye line, and the Warden's capsule centre sits about 1.06 m
+   * *below* Kalev's eye: at 0.5 m of separation he is 65 degrees down, at 1.6 m
+   * he is 33 degrees down, and only past that does he enter the cone at all. So
+   * the lock is taken at about 12 m and retained (22 m retain range) all the way
+   * into contact.
+   */
+  public async lockOntoWardenAtRange(rangeMeters = 12): Promise<WorldDebugSnapshot> {
+    const warden = wardenOf(await this.snapshot());
+    if (warden === undefined) throw new Error("this world assembles no Warden to lock onto");
+    await this.walkNorthTo(warden.position.z + rangeMeters);
+    for (let tap = 0; tap < 40; tap += 1) {
+      const snapshot = await this.snapshot();
+      if (snapshot.targetId === warden.id) return snapshot;
+      const closing = wardenOf(snapshot);
+      if (closing === undefined) return snapshot;
+      // He walks in while the lock is being taken, and from inside about 1.6 m
+      // he is below the acquisition cone entirely. Give ground rather than
+      // spend the whole budget pressing at a target that cannot be selected.
+      if (distanceXZ(closing.position, playerOf(snapshot).position) < 3) {
+        await this.hold(KEY.back);
+        await this.advanceTicks(12, 60_000);
+        await this.release(KEY.back);
+        continue;
+      }
+      await this.#page.keyboard.press(KEY.attend);
+      await this.advanceTicks(4, 60_000);
+    }
+    return this.snapshot();
+  }
+
+  /**
+   * Fight the Warden from inside the page, one decision per rendered frame.
+   *
+   * Movement is the shipped WASD set, aim is the Attend lock taken before the
+   * ring, and every swing is a real `Space` edge through `WorldKeyboardInput`.
+   * The loop is closed on `snapshot()` truth, so a slow box changes how long the
+   * duel takes and nothing else.
+   */
+  public driveDuel(plan: DuelPlan): Promise<DuelReport> {
+    return this.#page.evaluate(async (input) => {
+      const host = window as unknown as FacadeWindow;
+      const world = host.__TINCTURE_WORLD__;
+      if (world === undefined) throw new Error("window.__TINCTURE_WORLD__ is missing");
+
+      const held = new Set<string>();
+      const down = (code: string): void => {
+        if (held.has(code)) return;
+        held.add(code);
+        window.dispatchEvent(new KeyboardEvent("keydown", { code, bubbles: true }));
+      };
+      const up = (code: string): void => {
+        if (!held.delete(code)) return;
+        window.dispatchEvent(new KeyboardEvent("keyup", { code, bubbles: true }));
+      };
+      return await new Promise<DuelReport>((resolve) => {
+        const pendingRelease: string[] = [];
+        let startTick = -1;
+        let bossPulseStart = 0;
+        let lastTick = -1;
+        let stalledFrames = 0;
+        let swings = 0;
+        let reacquires = 0;
+        let lockedFrames = 0;
+        let unlockedFrames = 0;
+        let attendCooldown = 0;
+        let lastEdgeTick = -1000;
+        let pushing = true;
+        let firstLockLoss: { tick: number; distanceMeters: number } | null = null;
+        let minPlayerPulse = Number.POSITIVE_INFINITY;
+        let flasks = 0;
+        let deathMenuFrames = 0;
+        const liveSwingFrames: {
+          tick: number;
+          distanceMeters: number;
+          playerHitboxes: readonly WorldCapsule[];
+          wardenHurtboxes: readonly WorldCapsule[];
+          wardenInvulnerable: boolean;
+        }[] = [];
+        let previousPosition: Vec3 | null = null;
+        let previousPulse = 0;
+        let respawn: {
+          tick: number;
+          jumpMeters: number;
+          hearthId: string | null;
+          pulseBefore: number;
+          pulseAfter: number;
+        } | null = null;
+        let closest = Number.POSITIVE_INFINITY;
+        let ceremonyTick: number | null = null;
+        let ceremonyBossPulse: number | null = null;
+        let defeatTick: number | null = null;
+        let frame = 0;
+        let frameCount = 0;
+
+        const finish = (reason: string, snapshot: WorldDebugSnapshot): void => {
+          cancelAnimationFrame(frame);
+          for (const code of [...held]) up(code);
+          const player = snapshot.actors.find((actor) => actor.kind === "player");
+          resolve({
+            startTick,
+            endTick: snapshot.tick,
+            reason,
+            swings,
+            reacquires,
+            bossPulseStart,
+            bossPulseEnd: snapshot.boss.pulse,
+            playerPulseEnd: player?.pulse ?? 0,
+            playerAlive: player?.alive ?? false,
+            closestApproachMeters: closest,
+            lockedFrames,
+            unlockedFrames,
+            firstLockLoss,
+            minPlayerPulse: Number.isFinite(minPlayerPulse) ? minPlayerPulse : 0,
+            flasks,
+            respawn,
+            deathMenuFrames,
+            liveSwingFrames,
+            ceremonyTick,
+            ceremonyBossPulse,
+            defeatTick,
+            phaseAtEnd: snapshot.boss.phase,
+            pageState: {
+              bodySimTick: document.body.dataset.simTick ?? null,
+              hidden: document.hidden,
+              focused: document.hasFocus(),
+              openMenu:
+                document.querySelector(".hud-menu")?.getAttribute("data-testid") ?? null,
+              frames: frameCount,
+            },
+          });
+        };
+
+        const tick = (): void => {
+          frameCount += 1;
+          for (const code of pendingRelease.splice(0)) up(code);
+          const snapshot = world.snapshot();
+          const player = snapshot.actors.find((actor) => actor.kind === "player");
+          const warden = snapshot.actors.find((actor) => actor.kind === "warden");
+          if (player === undefined || warden === undefined) {
+            finish("actorsMissing", snapshot);
+            return;
+          }
+          if (startTick < 0) {
+            startTick = snapshot.tick;
+            bossPulseStart = snapshot.boss.pulse;
+            previousPulse = player.pulse;
+          }
+          if (player.pulse < minPlayerPulse) minPlayerPulse = player.pulse;
+          if (document.querySelector('[data-testid="hud-menu-death"]') !== null) {
+            deathMenuFrames += 1;
+          }
+          if (previousPosition !== null && respawn === null) {
+            const jump = Math.hypot(
+              player.position.x - previousPosition.x,
+              player.position.z - previousPosition.z,
+            );
+            if (jump > 20) {
+              respawn = {
+                tick: snapshot.tick,
+                jumpMeters: jump,
+                hearthId: snapshot.meta.lastHearthId,
+                pulseBefore: previousPulse,
+                pulseAfter: player.pulse,
+              };
+            }
+          }
+          previousPosition = player.position;
+          previousPulse = player.pulse;
+          if (input.stopOnRespawn === true && respawn !== null) {
+            finish("respawned", snapshot);
+            return;
+          }
+
+          // A paused loop never steps. Any key edge resumes a focus pause, so a
+          // stall gets the nudge a player would give it before it is called one.
+          if (snapshot.tick === lastTick) {
+            stalledFrames += 1;
+            if (stalledFrames % 90 === 0) {
+              window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyP" }));
+              window.dispatchEvent(new KeyboardEvent("keyup", { code: "KeyP" }));
+            }
+            if (stalledFrames > 900) {
+              finish("stalled", snapshot);
+              return;
+            }
+          } else {
+            stalledFrames = 0;
+            lastTick = snapshot.tick;
+          }
+
+          if (snapshot.boss.ceremonyActive && ceremonyTick === null) {
+            ceremonyTick = snapshot.tick;
+            ceremonyBossPulse = snapshot.boss.pulse;
+          }
+          if (snapshot.boss.defeated && defeatTick === null) defeatTick = snapshot.tick;
+
+          if (!player.alive) {
+            finish("playerDead", snapshot);
+            return;
+          }
+          if (input.stopWhenDefeated === true && snapshot.boss.defeated) {
+            finish("defeated", snapshot);
+            return;
+          }
+          if (
+            input.stopAtBossPulse !== undefined &&
+            snapshot.boss.pulse <= input.stopAtBossPulse
+          ) {
+            finish("bossPulse", snapshot);
+            return;
+          }
+          if (snapshot.tick - startTick >= input.maxTicks) {
+            finish("maxTicks", snapshot);
+            return;
+          }
+
+          const dx = warden.position.x - player.position.x;
+          const dz = warden.position.z - player.position.z;
+          const distance = Math.hypot(dx, dz);
+          if (distance < closest) closest = distance;
+
+          // `startAnimationLoop` clears its pacing timestamp on *every* keydown
+          // (`onResumeInput`), so the following frame is advanced with 0 ms and
+          // the sim clock loses it. A driver that presses something every frame
+          // therefore stops the clock dead. Releases are free; presses are
+          // rationed to one sim tick in `EDGE_COOLDOWN_TICKS`.
+          const EDGE_COOLDOWN_TICKS = 2;
+          const mayPress = snapshot.tick - lastEdgeTick >= EDGE_COOLDOWN_TICKS;
+
+          // Close, then stand in him. Kalev's authored reach only bites at
+          // contact, so the stance is "push until inside `holdMeters`", with
+          // hysteresis so the key set stops churning the moment he drifts.
+          if (pushing && distance <= input.holdMeters) pushing = false;
+          else if (!pushing && distance > input.holdMeters + 0.4) pushing = true;
+          const scale = distance === 0 ? 1 : distance;
+          const wantX = pushing ? dx / scale : 0;
+          const wantZ = pushing ? dz / scale : 0;
+          const wanted: Record<string, boolean> = {
+            KeyD: wantX > 0.3,
+            KeyA: wantX < -0.3,
+            KeyW: wantZ < -0.3,
+            KeyS: wantZ > 0.3,
+          };
+          for (const [code, want] of Object.entries(wanted)) {
+            if (!want) up(code);
+          }
+
+          if (snapshot.targetId === warden.id) lockedFrames += 1;
+          else {
+            unlockedFrames += 1;
+            if (firstLockLoss === null && lockedFrames > 0) {
+              firstLockLoss = { tick: snapshot.tick, distanceMeters: distance };
+            }
+          }
+          attendCooldown -= 1;
+
+          // One press per budgeted tick, and the swing outranks the step: a
+          // driver that spends its budget on footwork never attacks.
+          let pressedThisFrame = false;
+          const wantsFlask =
+            input.flaskBelowPulseRatio !== undefined &&
+            player.actionId === null &&
+            snapshot.meta.doses > 0 &&
+            player.pulse < snapshot.meta.maxPulse * input.flaskBelowPulseRatio;
+          const wantsSwing =
+            input.attack && player.actionId === null && distance <= input.swingRangeMeters;
+          const wantsAttend =
+            snapshot.targetId !== warden.id && attendCooldown <= 0 && distance >= 1.8;
+          if (mayPress && wantsFlask) {
+            down("KeyR");
+            pendingRelease.push("KeyR");
+            flasks += 1;
+            pressedThisFrame = true;
+          } else if (mayPress && wantsSwing) {
+            down("Space");
+            pendingRelease.push("Space");
+            swings += 1;
+            pressedThisFrame = true;
+          } else if (mayPress && wantsAttend) {
+            // Attend's cone cannot see him from inside contact range (the eye
+            // line looks 65 degrees down at 0.5 m), so a re-lock is only ever
+            // attempted from the range where acquisition is legal at all.
+            down("KeyQ");
+            pendingRelease.push("KeyQ");
+            reacquires += 1;
+            attendCooldown = 45;
+            pressedThisFrame = true;
+          } else if (mayPress) {
+            for (const [code, want] of Object.entries(wanted)) {
+              if (want && !held.has(code)) {
+                down(code);
+                pressedThisFrame = true;
+              }
+            }
+          }
+          if (pressedThisFrame) lastEdgeTick = snapshot.tick;
+
+          if (
+            player.hitboxes.length > 0 &&
+            liveSwingFrames.length < 6 &&
+            liveSwingFrames.at(-1)?.tick !== snapshot.tick
+          ) {
+            liveSwingFrames.push({
+              tick: snapshot.tick,
+              distanceMeters: distance,
+              playerHitboxes: player.hitboxes,
+              wardenHurtboxes: warden.hurtboxes,
+              wardenInvulnerable: warden.invulnerable,
+            });
+          }
+
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      });
+    }, plan);
   }
 
   /** Sim-truth evidence for a lane with no rendered frames (replay checkpoints). */

@@ -80,6 +80,12 @@ export interface WorldActorAssetDefinition {
    * rig's reach. Zero for anyone whose own clips are authored.
    */
   readonly weaponRadiusMeters: number;
+  /**
+   * Extra capsule radius on this actor's hurtboxes, in metres. Same reason as
+   * {@link weaponRadiusMeters}, other end of the swing: a borrowed rig gives an
+   * actor the wrong body. Zero for anyone whose own clips are authored.
+   */
+  readonly hurtboxRadiusMeters: number;
   readonly assetBase: string;
   readonly manifest: string;
   readonly neutralSidecar: string;

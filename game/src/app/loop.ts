@@ -174,6 +174,9 @@ export const startAnimationLoop = (loop: FixedTickLoop): AnimationLoopHandle => 
     lastTimestamp = undefined;
   };
   const onResumeInput = (): void => {
+    // Only a resume restarts the frame clock. Clearing it on every key edge let
+    // auto-repeat feed the loop 0 ms frames and halve the sim clock.
+    if (!loop.awaitingResumeInput) return;
     loop.resumeFromInput();
     lastTimestamp = undefined;
   };

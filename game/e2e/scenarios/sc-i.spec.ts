@@ -12,8 +12,8 @@ import { buildScript, Gauntlet, playerOf } from "./harness";
  */
 
 const GOLDEN_TICKS = 41_413;
-/** See SC-D: `e2e/world.spec.ts` pins a hash the reducer no longer produces. */
-const WORLD_SPEC_FROZEN_HASH = "4a8d3191";
+/** See SC-D: the hash `e2e/world.spec.ts` pins for the same golden script. */
+const WORLD_SPEC_FROZEN_HASH = "13ae38a3";
 
 /** The SC-A opening, authored once and replayed on both backends. */
 const SC_A_OPENING = buildScript(
@@ -82,6 +82,9 @@ test("SC-I: the SC-A opening and the SC-D death loop agree across render backend
   expect(deathLoop.checkpoints.openPageDropped).toBe(true);
   expect(deathLoop.checkpoints.openPageRecovered).toBe(true);
   expect(deathLoop.checkpoints.respawnedAtHearth).toBe(true);
+  expect(deathLoop.finalHash, "both backends must still hash to the frozen golden").toBe(
+    WORLD_SPEC_FROZEN_HASH,
+  );
 
   const portableSnapshot = await portable.snapshot();
   const strictSnapshot = await strict.snapshot();
@@ -98,9 +101,9 @@ test("SC-I: the SC-A opening and the SC-D death loop agree across render backend
     frozenHashStillMatches: deathLoop.finalHash === WORLD_SPEC_FROZEN_HASH,
   });
   strict.writeReplayEvidence("parity", { opening: webgpuOpening });
-  // Both lanes raise the same post-replay VFX-clock desync recorded in SC-D;
-  // it is a property of `runReplay`, not of either backend, so it is captured
-  // as evidence here rather than double-reported as a parity failure.
+  // The post-replay VFX-clock desync this row used to record is fixed
+  // (`setLiveState` now rebases `vfx` with `state`); the error lists are still
+  // captured on both lanes so a regression shows up in the evidence.
   portable.finish({
     scenario: "SC-I backend parity (webgl2)",
     finalHash: deathLoop.finalHash,

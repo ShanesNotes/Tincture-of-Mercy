@@ -260,6 +260,12 @@ const bootIronwoodPlay = async (
   let vfx: VfxState = createVfxState();
   let openMenu: ReturnType<typeof hudMenuForWorld> = "none";
   let menuPauseRequested = false;
+  /**
+   * The world records a death and respawns in the same tick, so `meta.life` is
+   * never observably "dead". The page holds the moment open instead: the Open
+   * Page overlay stands until the player closes it.
+   */
+  let deathPending = false;
   const viewport = (): { readonly width: number; readonly height: number } => ({
     width: Math.max(window.innerWidth, 1),
     height: Math.max(window.innerHeight, 1),
@@ -284,15 +290,20 @@ const bootIronwoodPlay = async (
     const intent = (event as CustomEvent<{ readonly type: string }>).detail;
     if (intent.type === "resume" || intent.type === "death-acknowledged") {
       menuPauseRequested = false;
-    } else if (intent.type === "hearth-rest" || intent.type === "refill" || intent.type === "respawn") {
+      if (intent.type === "death-acknowledged") deathPending = false;
+    } else if (
+      intent.type === "hearth-rest-request" ||
+      intent.type === "hearth-refill-request" ||
+      intent.type === "hearth-respawn-request"
+    ) {
       pendingHearthRest = true;
     }
-    applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
+    applyMenu(deathPending ? "death" : hudMenuForWorld(snapshot, menuPauseRequested));
   };
   const onMenuKey = (event: KeyboardEvent): void => {
     if (event.code !== "Escape") return;
     menuPauseRequested = !menuPauseRequested;
-    applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
+    applyMenu(deathPending ? "death" : hudMenuForWorld(snapshot, menuPauseRequested));
   };
   window.addEventListener("hud-intent", onHudIntent);
   window.addEventListener("keydown", onMenuKey);
@@ -437,6 +448,12 @@ const bootIronwoodPlay = async (
       snapshot = createWorldDebugSnapshot(state, definition);
       presentation = presentWorldDebug(snapshot);
       recordDuration(snapshotSamples, snapshotStartedAt);
+      deathPending ||= stepped.events.some(
+        (event) =>
+          event.source === "meta" &&
+          "type" in event.payload &&
+          event.payload.type === "death",
+      );
       worldView.consumeEvents(adaptWorldEvents(stepped.events));
       vfx = applyVfxEvents(
         vfx,
@@ -450,7 +467,7 @@ const bootIronwoodPlay = async (
       music.setState(musicStateFromWorld(snapshot));
       music.syncClock(state.tick);
       hud.setState(hudInputFromWorld(snapshot, playerId));
-      applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
+      applyMenu(deathPending ? "death" : hudMenuForWorld(snapshot, menuPauseRequested));
       recordDuration(simStepSamples, startedAt);
     },
     pollResumeInput: pollGamepad,

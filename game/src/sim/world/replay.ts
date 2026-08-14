@@ -655,9 +655,9 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 
 /** Exact Node real-collision capture; consumers assert these instead of equality alone. */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "f8419c90",
+  definitionFingerprint: "5c4c5456",
   inputHash: "06c274c0",
-  stateHash: "9abf2e0e",
+  stateHash: "8ec63ec5",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
@@ -669,7 +669,7 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 });
 
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "f8419c90",
+  definitionFingerprint: "5c4c5456",
   inputHash: "473705f7",
   stateHash: "707e0b30",
 });

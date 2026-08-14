@@ -70,7 +70,7 @@ const queries: WorldQueries = {
 
 describe("world assembly", () => {
   it("validates the seam config and builds every sorted Ironwood pack", () => {
-    expect(definition.fingerprint).toBe("847ddeb5");
+    expect(definition.fingerprint).toBe("67f550ef");
     expect(definition.player.id).toBe("kalev");
     expect(Object.keys(definition.packs)).toEqual(["den", "doorway", "road", "yard"]);
     expect(definition.packs.yard?.actors).toHaveLength(3);
@@ -408,9 +408,9 @@ describe("world assembly", () => {
 
   it("locks the real-collision golden and replays its headless seam prefix", () => {
     expect(WORLD_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "f8419c90",
+      definitionFingerprint: "5c4c5456",
       inputHash: "06c274c0",
-      stateHash: "9abf2e0e",
+      stateHash: "8ec63ec5",
     });
     expect(hashCanonical(WORLD_GOLDEN_REPLAY)).toBe(WORLD_GOLDEN_EXPECTED.inputHash);
     expect(WORLD_GOLDEN_REPLAY.durationTicks).toBe(23_776);
@@ -418,7 +418,7 @@ describe("world assembly", () => {
       1, 1327, 1370, 1977, 6753, 22140, 22348, 23776,
     ]);
     expect(WORLD_BROWSER_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "f8419c90",
+      definitionFingerprint: "5c4c5456",
       inputHash: "473705f7",
       stateHash: "707e0b30",
     });
@@ -438,11 +438,11 @@ describe("world assembly", () => {
       frames: WORLD_GOLDEN_REPLAY.frames.filter(({ tick }) => tick < durationTicks),
       checkpointTicks: [1, 1327, durationTicks],
     });
-    expect(prefix.stateHash).toBe("4dd23910");
+    expect(prefix.stateHash).toBe("b361161f");
     expect(prefix.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "fcbb4333" },
-      { tick: 1327, stateHash: "385c7bc3" },
-      { tick: 1370, stateHash: "4dd23910" },
+      { tick: 1, stateHash: "dcb86abc" },
+      { tick: 1327, stateHash: "8e7a314e" },
+      { tick: 1370, stateHash: "b361161f" },
     ]);
     expect(prefix.checkpoints.every((entry) => entry.moduleClocksAligned)).toBe(true);
     expect(prefix.summary).toMatchObject({

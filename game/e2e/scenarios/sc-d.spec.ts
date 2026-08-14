@@ -9,28 +9,18 @@ import { Gauntlet, KEY, playerOf } from "./harness";
  * scenario: it dies to the yard pack, drops the Open Page where it fell,
  * respawns at the cabin Hearth, walks back, and recovers the names.
  *
- * BLOCKER (live lane): the same loop cannot be driven through the shipped
- * `?play=ironwood` page. `syncMenu` in `src/app/main.ts` calls
- * `FixedTickLoop.setMenuPaused` from inside `step()`, and `setMenuPaused`
- * unconditionally zeroes `accumulatorMs`; the enclosing `advance()` then runs
- * `accumulatorMs -= TICK_MS`, so `render()` is handed a negative alpha and
- * `WorldPresenter.apply` throws `RangeError: world presentation alpha must be
- * in [0, 1)` out of the rAF callback, which is never re-armed. Any menu
- * transition — death or Hearth — kills the running game permanently. Repro:
- * boot `/?play=ironwood`, hold `S` for one second (walk into the cabin
- * Hearth's 1.5 m radius); the sim clock stops dead. That defect is in `src/`
- * and outside this pack's footprint. See the fixme at the bottom of this file.
+ * The live lane at the bottom of this file stays fixme, but on new grounds:
+ * the loop defect it was frozen on is fixed, and what replaced it is that the
+ * world has no observable death state at all. See the row for the numbers.
  */
 
 const GOLDEN_TICKS = 41_413;
 /**
- * `e2e/world.spec.ts` still pins this hash. On this worktree the same script
- * replays to `a62d4f1d`, so the frozen constant has drifted from the reducer —
- * a repo-level finding this row records rather than duplicates as a second red.
- * SC-D asserts what it can own: the loop is deterministic run-to-run and the
- * authored death/recovery beats all fire.
+ * The hash `e2e/world.spec.ts` pins for the same golden script. It agrees with
+ * the reducer again after the s22 regeneration, so this row anchors on it
+ * rather than merely recording the drift.
  */
-const WORLD_SPEC_FROZEN_HASH = "4a8d3191";
+const WORLD_SPEC_FROZEN_HASH = "13ae38a3";
 /** The three frozen checkpoints that bracket the death loop. */
 const DEATH_LOOP_CHECKPOINT_TICKS = [39_788, 39_996, GOLDEN_TICKS] as const;
 
@@ -60,6 +50,9 @@ test("SC-D: death drops the Open Page, the Hearth takes him back, the walk recov
     "two runs of the death loop must agree at every checkpoint",
   ).toEqual(replay.replayCheckpoints.map(({ tick, stateHash }) => ({ tick, stateHash })));
   expect(replay.finalHash).toMatch(/^[0-9a-f]{8}$/);
+  expect(replay.finalHash, "the death loop must still hash to the frozen golden").toBe(
+    WORLD_SPEC_FROZEN_HASH,
+  );
 
   const { checkpoints } = replay;
   expect(checkpoints.playerDied, "the loop starts with a real death").toBe(true);
@@ -93,11 +86,9 @@ test("SC-D: death drops the Open Page, the Hearth takes him back, the walk recov
   const rebased = await run.snapshot();
   expect(rebased.meta.life, "the rebased live world is alive again").toBe("alive");
 
-  // DEFECT, recorded not asserted: the shipped `runReplay` rebases world state
-  // to the golden yard approach without rebasing the VFX clock, so the next
-  // live step throws "VFX ticks advance monotonically (state at N, got 156)"
-  // out of the render loop and the running game stops. `setLiveState` in
-  // `src/app/main.ts` needs to reset `vfx` alongside `state`.
+  // The VFX-clock desync this row used to record is fixed: `setLiveState` in
+  // `src/app/main.ts` now resets `vfx` alongside `state`. Still captured, so a
+  // regression shows up in the evidence rather than only in a red assertion.
   const afterReplayErrors = run.errorsSince(errorMark);
   run.finish({
     scenario: "SC-D death → Open Page → recover",
@@ -106,17 +97,34 @@ test("SC-D: death drops the Open Page, the Hearth takes him back, the walk recov
   });
 });
 
-test.fixme(
-  "SC-D live lane: the death overlay must not kill the render loop",
-  async ({ page }) => {
-    // Blocked on a src/ defect this pack may not touch. `syncMenu` →
-    // `FixedTickLoop.setMenuPaused` zeroes the loop accumulator from inside
-    // `step()`, so the enclosing `advance()` renders with alpha < 0 and throws
-    // out of requestAnimationFrame. Dying (or standing in any Hearth) freezes
-    // the game at that tick. The one-line fix belongs in `src/app/loop.ts`
-    // (do not reset `accumulatorMs` when the paused flag is unchanged, or
-    // clamp the accumulator to >= 0 before computing alpha). Until then no
-    // scripted input can reach the Open Page overlay through the live page.
-    void page;
-  },
-);
+test.fixme("SC-D live lane: a scripted death through the shipped page", async ({ page }) => {
+  // Unblocked in `src/`, still unscriptable here, and for two different
+  // reasons — neither of them the loop defect this row was frozen on. That
+  // one is fixed and is now covered by the SC-E live row, which opens the
+  // Hearth overlay and the Escape pause over a clock that keeps stepping.
+  //
+  //  1. There is no death overlay to drive. `stepWorld` calls `recordDeath`
+  //     and then `respawnAtHearth` inside the same tick, so `meta.life` is
+  //     never observed as `"dead"` from outside and `hudMenuForWorld` can
+  //     never return `"death"`. Measured: across every live run in this pack a
+  //     death overlay was mounted on 0 frames. From the page's side a death is
+  //     a teleport — Kalev at the cabin Hearth, 132-134 m from where he fell,
+  //     at full Pulse, one tick later.
+  //  2. The only damage source a script can reach is the Warden, and whether
+  //     he lands the kill is not stable run to run. A passive Kalev takes
+  //     nothing: 20 000 ticks standing in the yard pack and 8 000 hugging the
+  //     Warden unlocked both end at 300/300. What does draw damage is hugging
+  //     him *while swinging*, and that outcome is frame-pacing sensitive:
+  //       * hold 0.15 m, swing inside 1 m — 2 of 4 runs died (fight-tick
+  //         ~1 020-1 100, minimum Pulse 10-12), 2 ran the full budget;
+  //       * hold 0.15 m, no swinging — 0 of 2 died, minimum Pulse 216 twice;
+  //       * hold 0.15 m, swing inside 3 m — 0 of 3 died, minimum Pulse 300 in
+  //         all three, 160 swings each.
+  //     A row that dies half the time is not a row.
+  //
+  // What would close this: a world seam that can put Kalev's Pulse where a
+  // scenario needs it (the replay lane already has one — the golden death
+  // script — but it costs 41 413 ticks, which is minutes of browser time), or
+  // a death state that survives its own tick so the overlay can be driven.
+  void page;
+});

@@ -57,15 +57,15 @@ interface WorldBrowserFacade {
 }
 
 const GOLDEN_TICKS = 41_413;
-const GOLDEN_FINAL_HASH = "13ae38a3";
+const GOLDEN_FINAL_HASH = "a38272cc";
 const GOLDEN_CHECKPOINTS = [
-  { tick: 1, stateHash: "bf0b8a47" },
-  { tick: 1_327, stateHash: "c626f63d" },
-  { tick: 1_370, stateHash: "259a0888" },
-  { tick: 1_977, stateHash: "d12ceaff" },
-  { tick: 6_753, stateHash: "fcf8b38c" },
-  { tick: 39_788, stateHash: "0c476636" },
-  { tick: 39_996, stateHash: "3ea54d44" },
+  { tick: 1, stateHash: "8aa967b2" },
+  { tick: 1_327, stateHash: "5da7d8c2" },
+  { tick: 1_370, stateHash: "e1f39b2d" },
+  { tick: 1_977, stateHash: "93c74e2a" },
+  { tick: 6_753, stateHash: "91285795" },
+  { tick: 39_788, stateHash: "d155873d" },
+  { tick: 39_996, stateHash: "6fb6138f" },
   { tick: GOLDEN_TICKS, stateHash: GOLDEN_FINAL_HASH },
 ] as const;
 
