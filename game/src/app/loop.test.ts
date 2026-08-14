@@ -8,6 +8,7 @@ const createLoop = () => {
   let ticks = 0;
   const loop = new FixedTickLoop({
     render: (alpha) => alphas.push(alpha),
+    sampleInput: () => undefined,
     step: () => {
       ticks += 1;
     },
@@ -69,5 +70,18 @@ describe("FixedTickLoop", () => {
     harness.loop.advance(TICK_MS);
 
     expect(harness.ticks()).toBe(2);
+  });
+
+  it("samples input before stepping the next simulation tick", () => {
+    const calls: string[] = [];
+    const loop = new FixedTickLoop({
+      render: () => calls.push("render"),
+      sampleInput: () => calls.push("sample"),
+      step: () => calls.push("step"),
+    });
+
+    loop.advance(TICK_MS);
+
+    expect(calls).toEqual(["sample", "step", "render"]);
   });
 });

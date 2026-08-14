@@ -13,9 +13,10 @@ export interface InputEdge {
   readonly tick: number;
 }
 
-export type InputSnapshot = Readonly<Record<InputAction, boolean>>;
-
-const INPUT_ACTIONS: readonly InputAction[] = ["attack", "flask", "roll"];
+export interface SampledInputEdge {
+  readonly action: InputAction;
+  readonly pressed: boolean;
+}
 
 const assertStamp = (edge: InputEdge): void => {
   if (
@@ -101,22 +102,15 @@ export class InputBuffer {
 }
 
 export class FrameInputSampler {
-  private readonly previous: Record<InputAction, boolean> = {
-    attack: false,
-    flask: false,
-    roll: false,
-  };
   private sequence = 0;
 
-  public sample(tick: number, snapshot: InputSnapshot, queue: TickInputQueue): void {
-    for (const action of INPUT_ACTIONS) {
-      const pressed = snapshot[action];
-      if (pressed === this.previous[action]) {
-        continue;
-      }
-
-      queue.enqueue({ action, pressed, sequence: this.sequence, tick });
-      this.previous[action] = pressed;
+  public sample(
+    tick: number,
+    sampledEdges: readonly SampledInputEdge[],
+    queue: TickInputQueue,
+  ): void {
+    for (const edge of sampledEdges) {
+      queue.enqueue({ ...edge, sequence: this.sequence, tick });
       this.sequence += 1;
     }
   }

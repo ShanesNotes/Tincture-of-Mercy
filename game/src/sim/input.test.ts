@@ -88,19 +88,25 @@ describe("InputBuffer", () => {
 });
 
 describe("FrameInputSampler", () => {
-  it("latches render-frame state changes into tick-stamped edges", () => {
+  it("stamps every latched edge even when a full tap occurs between frames", () => {
     const queue = new TickInputQueue();
     const sampler = new FrameInputSampler();
 
-    sampler.sample(7, { attack: true, flask: false, roll: false }, queue);
-    sampler.sample(7, { attack: true, flask: false, roll: false }, queue);
-    sampler.sample(8, { attack: false, flask: false, roll: true }, queue);
+    sampler.sample(
+      7,
+      [
+        { action: "attack", pressed: true },
+        { action: "attack", pressed: false },
+      ],
+      queue,
+    );
+    sampler.sample(8, [{ action: "roll", pressed: true }], queue);
 
     expect(queue.drain(7)).toEqual([
       { action: "attack", pressed: true, sequence: 0, tick: 7 },
+      { action: "attack", pressed: false, sequence: 1, tick: 7 },
     ]);
     expect(queue.drain(8)).toEqual([
-      { action: "attack", pressed: false, sequence: 1, tick: 8 },
       { action: "roll", pressed: true, sequence: 2, tick: 8 },
     ]);
   });

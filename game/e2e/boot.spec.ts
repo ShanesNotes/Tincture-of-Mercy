@@ -60,3 +60,35 @@ test('pauses on blur and resumes only after input', async ({ page }) => {
     .poll(async () => Number(await body.getAttribute('data-sim-tick')))
     .toBeGreaterThan(Number(pausedTick));
 });
+
+test('accepts a complete input tap latched between render frames', async ({ page }) => {
+  await page.goto('/?renderer=webgl2');
+  const body = page.locator('body');
+  await expect(body).toHaveAttribute('data-boot-status', 'ready');
+  const initialCount = Number(await body.getAttribute('data-sim-input-count'));
+
+  await page.evaluate(() => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' }));
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Space' }));
+  });
+
+  await expect
+    .poll(async () => Number(await body.getAttribute('data-sim-input-count')))
+    .toBe(initialCount + 2);
+
+  await page.evaluate(() => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ShiftLeft' }));
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ShiftRight' }));
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ShiftLeft' }));
+  });
+  await expect
+    .poll(async () => Number(await body.getAttribute('data-sim-input-count')))
+    .toBe(initialCount + 3);
+
+  await page.evaluate(() => {
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ShiftRight' }));
+  });
+  await expect
+    .poll(async () => Number(await body.getAttribute('data-sim-input-count')))
+    .toBe(initialCount + 4);
+});

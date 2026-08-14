@@ -1,4 +1,4 @@
-import type { InputAction, InputSnapshot } from "../sim/input";
+import type { InputAction, SampledInputEdge } from "../sim/input";
 
 const actionForCode = (code: string): InputAction | undefined => {
   switch (code) {
@@ -15,7 +15,8 @@ const actionForCode = (code: string): InputAction | undefined => {
 };
 
 export class BrowserInputSource {
-  private readonly pressed = new Set<InputAction>();
+  private readonly latchedEdges: SampledInputEdge[] = [];
+  private readonly pressedCodes = new Set<string>();
 
   public constructor() {
     window.addEventListener("keydown", this.onKeyDown);
@@ -23,12 +24,8 @@ export class BrowserInputSource {
     window.addEventListener("blur", this.onBlur);
   }
 
-  public snapshot(): InputSnapshot {
-    return {
-      attack: this.pressed.has("attack"),
-      flask: this.pressed.has("flask"),
-      roll: this.pressed.has("roll"),
-    };
+  public drainLatchedEdges(): readonly SampledInputEdge[] {
+    return this.latchedEdges.splice(0);
   }
 
   public dispose(): void {
@@ -38,23 +35,39 @@ export class BrowserInputSource {
   }
 
   private readonly onBlur = (): void => {
-    this.pressed.clear();
+    this.latchedEdges.length = 0;
+    this.pressedCodes.clear();
   };
 
   private readonly onKeyDown = (event: KeyboardEvent): void => {
-    if (event.repeat) {
+    if (event.repeat || this.pressedCodes.has(event.code)) {
       return;
     }
     const action = actionForCode(event.code);
     if (action !== undefined) {
-      this.pressed.add(action);
+      const wasPressed = this.isActionPressed(action);
+      this.pressedCodes.add(event.code);
+      if (!wasPressed) {
+        this.latchedEdges.push({ action, pressed: true });
+      }
     }
   };
 
   private readonly onKeyUp = (event: KeyboardEvent): void => {
     const action = actionForCode(event.code);
-    if (action !== undefined) {
-      this.pressed.delete(action);
+    if (action !== undefined && this.pressedCodes.delete(event.code)) {
+      if (!this.isActionPressed(action)) {
+        this.latchedEdges.push({ action, pressed: false });
+      }
     }
   };
+
+  private isActionPressed(action: InputAction): boolean {
+    for (const code of this.pressedCodes) {
+      if (actionForCode(code) === action) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

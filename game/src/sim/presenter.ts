@@ -1,6 +1,7 @@
 import type { SimState } from "./state";
 
 export interface SimPresentation {
+  readonly acceptedInputCount: number;
   readonly committedTick: number;
   readonly interpolationAlpha: number;
   readonly presentationTick: number;
@@ -16,6 +17,7 @@ export const presentSim = (
   }
 
   return {
+    acceptedInputCount: current.inputCount,
     committedTick: current.tick,
     interpolationAlpha: alpha,
     presentationTick: previous.tick + (current.tick - previous.tick) * alpha,

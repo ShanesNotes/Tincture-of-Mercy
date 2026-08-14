@@ -6,6 +6,7 @@ const FLOAT_EPSILON_MS = 1e-9;
 
 export interface LoopCallbacks {
   readonly render: (alpha: number) => void;
+  readonly sampleInput: () => void;
   readonly step: () => void;
 }
 
@@ -55,6 +56,7 @@ export class FixedTickLoop {
       throw new Error("Frame elapsed time must be a finite non-negative number.");
     }
 
+    this.callbacks.sampleInput();
     const accumulated = this.accumulatorMs + elapsedMs;
     if (accumulated > MAX_ACCUMULATED_MS) {
       this.clampedFrames += 1;

@@ -10,6 +10,7 @@ describe("presentSim", () => {
     const current = stepTick(previous, []);
 
     expect(presentSim(previous, current, 0.25)).toEqual({
+      acceptedInputCount: 0,
       committedTick: 1,
       interpolationAlpha: 0.25,
       presentationTick: 0.25,

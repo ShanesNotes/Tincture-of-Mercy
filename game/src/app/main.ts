@@ -65,11 +65,14 @@ export const bootApp = async (): Promise<void> => {
   const inputSource = new BrowserInputSource();
   const loop = new FixedTickLoop({
     render: (alpha) => {
-      inputSampler.sample(state.tick, inputSource.snapshot(), inputQueue);
       const presentation = presentSim(previousState, state, alpha);
       marker.rotation.y = presentation.presentationTick * 0.01;
       document.body.dataset.simTick = String(presentation.committedTick);
+      document.body.dataset.simInputCount = String(presentation.acceptedInputCount);
       boot.renderer.render(scene, camera);
+    },
+    sampleInput: () => {
+      inputSampler.sample(state.tick, inputSource.drainLatchedEdges(), inputQueue);
     },
     step: () => {
       previousState = state;
@@ -78,6 +81,7 @@ export const bootApp = async (): Promise<void> => {
   });
 
   document.body.dataset.simTick = String(state.tick);
+  document.body.dataset.simInputCount = String(state.inputCount);
   startAnimationLoop(loop);
   document.body.dataset.bootStatus = "ready";
 };
