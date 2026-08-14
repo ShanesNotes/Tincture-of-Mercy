@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { cameraBasis, createCameraState, holdFrame, releaseFrame, stepCamera } from "./state";
+import {
+  cameraBasis,
+  createCameraState,
+  holdFrame,
+  presentCamera,
+  releaseFrame,
+  stepCamera,
+} from "./state";
 import type { CameraState, CameraStepInput, StagedFrameSpec } from "./state";
 import { CAMERA_PARAMS } from "./params";
 import { degreesToRadians, radiansToDegrees, type Vec3 } from "./math";
@@ -278,6 +285,33 @@ describe("staged frames (D2)", () => {
     const staged = holdFrame(fresh(), spec, { damageContext: false });
     expect(releaseFrame(staged).staged).toBeNull();
     expect(releaseFrame(fresh())).toEqual(fresh());
+  });
+});
+
+describe("presentCamera", () => {
+  const previous = fresh();
+  const current = run(fresh(), 30, { orbit: { x: 1, y: -0.5 } });
+
+  it("returns the tick ends at alpha 0 and 1", () => {
+    expect(presentCamera(previous, current, 0).position).toEqual(previous.position);
+    expect(presentCamera(previous, current, 1).position).toEqual(current.position);
+    expect(presentCamera(previous, current, 1).yawRadians).toBeCloseTo(current.yawRadians, 12);
+  });
+
+  it("blends the middle of the tick", () => {
+    const middle = presentCamera(previous, current, 0.5);
+    expect(middle.position.x).toBeCloseTo((previous.position.x + current.position.x) / 2, 12);
+    expect(middle.fovDegrees).toBeCloseTo((previous.fovDegrees + current.fovDegrees) / 2, 12);
+  });
+
+  it("clamps a stray alpha and takes the short way round the yaw seam", () => {
+    expect(presentCamera(previous, current, 4).yawRadians).toBeCloseTo(current.yawRadians, 12);
+    const west = { ...previous, yawRadians: degreesToRadians(179) };
+    const east = { ...current, yawRadians: degreesToRadians(-179) };
+    expect(Math.abs(radiansToDegrees(presentCamera(west, east, 0.5).yawRadians))).toBeCloseTo(
+      180,
+      6,
+    );
   });
 });
 

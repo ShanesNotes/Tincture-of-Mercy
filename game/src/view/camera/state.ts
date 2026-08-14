@@ -461,6 +461,37 @@ const stepAttendCamera = (
   };
 };
 
+/** What the renderer needs from the camera for one presented frame. */
+export interface CameraPresentation {
+  readonly position: Vec3;
+  readonly yawRadians: number;
+  readonly pitchRadians: number;
+  readonly fovDegrees: number;
+}
+
+/**
+ * Interpolate between the last two camera ticks for a display frame. `alpha` is
+ * the loop's tick fraction; yaw takes the short way round so a wrap never spins
+ * the frame the long way.
+ */
+export const presentCamera = (
+  previous: CameraState,
+  current: CameraState,
+  alpha: number,
+): CameraPresentation => {
+  const blend = clamp(alpha, 0, 1);
+  return {
+    position: {
+      x: approach(previous.position.x, current.position.x, blend),
+      y: approach(previous.position.y, current.position.y, blend),
+      z: approach(previous.position.z, current.position.z, blend),
+    },
+    yawRadians: approachAngle(previous.yawRadians, current.yawRadians, blend),
+    pitchRadians: approach(previous.pitchRadians, current.pitchRadians, blend),
+    fovDegrees: approach(previous.fovDegrees, current.fovDegrees, blend),
+  };
+};
+
 /** Distance from the pivot at which the camera currently sits. */
 export const cameraDistanceTo = (state: CameraState): number =>
   length(subtract(state.position, state.pivot));

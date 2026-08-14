@@ -2,7 +2,7 @@ import { PerspectiveCamera } from "three";
 
 import { clamp } from "./math";
 import type { CameraParams, DepthParams } from "./params";
-import type { CameraState } from "./state";
+import type { CameraPresentation } from "./state";
 
 /** The renderer surface the rig needs — kept minimal so it is testable headless. */
 export interface ReversedDepthRenderer {
@@ -62,11 +62,12 @@ export class CameraRig {
     assertReversedDepthRenderer(renderer);
   }
 
-  public apply(state: CameraState): void {
-    this.camera.position.set(state.position.x, state.position.y, state.position.z);
-    this.camera.rotation.set(state.pitchRadians, state.yawRadians, 0, "YXZ");
+  /** Accepts a `CameraState` directly, or an interpolated presentation frame. */
+  public apply(frame: CameraPresentation): void {
+    this.camera.position.set(frame.position.x, frame.position.y, frame.position.z);
+    this.camera.rotation.set(frame.pitchRadians, frame.yawRadians, 0, "YXZ");
 
-    const fov = clamp(state.fovDegrees, this.#params.fov.minDegrees, this.#params.fov.maxDegrees);
+    const fov = clamp(frame.fovDegrees, this.#params.fov.minDegrees, this.#params.fov.maxDegrees);
     if (this.camera.fov !== fov) {
       this.camera.fov = fov;
       this.camera.updateProjectionMatrix();

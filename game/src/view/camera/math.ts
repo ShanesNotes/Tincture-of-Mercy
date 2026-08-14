@@ -87,8 +87,14 @@ export const shortestAngleDelta = (from: number, to: number): number => {
 };
 
 /** Exponential approach; `rate` is the fraction closed per tick. */
-export const approach = (current: number, target: number, rate: number): number =>
-  current + (target - current) * clamp(rate, 0, 1);
+export const approach = (current: number, target: number, rate: number): number => {
+  const closed = clamp(rate, 0, 1);
+  // Land exactly on the ends so a full step (alpha 1) is bit-exact, not near.
+  if (closed === 1) {
+    return target;
+  }
+  return current + (target - current) * closed;
+};
 
 /** Exponential approach along the short way round the circle. */
 export const approachAngle = (current: number, target: number, rate: number): number =>
