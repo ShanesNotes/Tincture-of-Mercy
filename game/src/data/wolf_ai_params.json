@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/ENCOUNTERS.md + TUNING_V0.md Wolves + GATES F3/F10 + DECISIONS D7/D9",
+  "wither": {
+    "appliesWither": false,
+    "source": "ENCOUNTERS wolf pack grammar: zero Wither application"
+  },
+  "token": {
+    "ringRadiusM": 3.5,
+    "releaseTicksAfterResolution": 45,
+    "source": "ENCOUNTERS / TUNING_V0: one attack token per 3.5m ring; release 45t after resolution"
+  },
+  "leash": {
+    "radiusM": 25,
+    "source": "ENCOUNTERS / TUNING_V0: leash 25m"
+  },
+  "flee": {
+    "pulseRatio": 0.25,
+    "returnTicks": 2400,
+    "source": "ENCOUNTERS / TUNING_V0: flee <25% Pulse, return ~40s; 40s × 60Hz = 2400t"
+  },
+  "howl": {
+    "aggressionDelta": 1,
+    "startupTicks": 18,
+    "source": "ENCOUNTERS: a howl escalates the pack by one. startupTicks is authoring (ART_BIBLE howl posture; F3 readable wind-up ≥12t)"
+  },
+  "telegraphs": {
+    "lunge": {
+      "startupTicks": 30,
+      "activeTicks": 8,
+      "recoveryTicks": 22,
+      "source": "TUNING_V0 Lunger pounce 30t startup; active/recovery 8/22 from frame_data_v0 lunge and the s14 contract (30/8/22)"
+    },
+    "harrier": {
+      "startupTicks": 16,
+      "activeTicks": 4,
+      "recoveryTicks": 20,
+      "source": "TUNING_V0 Harrier flank bite 16t (startup). active 4 / recovery 20 are authoring so the clip has a punishable tail; F3 min wind-up is 12t"
+    },
+    "baiterFeint": {
+      "startupTicks": 12,
+      "activeTicks": 0,
+      "recoveryTicks": 8,
+      "source": "ENCOUNTERS Baiter: low commitment. startup 12t is the F3 floor (every wolf active ≥12t readable wind-up). active 0 = no hit. recovery 8 authoring"
+    }
+  },
+  "perception": {
+    "eyeHeightM": 0.8,
+    "targetChestHeightM": 1.2,
+    "sightRangeM": 18,
+    "sightHalfAngleDeg": 75,
+    "losEpsilonM": 0.05,
+    "hearingRadiusM": {
+      "footstep": 8,
+      "attack": 14,
+      "howl": 32
+    },
+    "suspiciousTicks": 90,
+    "suspiciousToAlertTicks": 45,
+    "alertHoldTicks": 180,
+    "source": "authoring — PRD R4 names sight cones + sound events; TUNING_V0 has no wolf sensory table (Attend 15m/34° is the player lock-on, not wolf vision). Ranges sit between Attend acquire (15m) and retain (22m); howl radius exceeds the 25m leash so a distant packmate can escalate"
+  },
+  "roles": {
+    "circleRadiusM": 4.5,
+    "lungeCommitRadiusM": 2.5,
+    "harrierFlankRadiusM": 3.2,
+    "feintInwardRadiusM": 2.8,
+    "feintIntervalTicks": 90,
+    "circleStepRadPerTick": 0.03,
+    "reengageRadiusM": 8,
+    "tokenScore": {
+      "lungeRole": 3000000,
+      "harrierRole": 2000000,
+      "baiterRole": 1000000,
+      "angleWeight": 1,
+      "cooldownWeight": 1
+    },
+    "attackCooldownTicks": 90,
+    "aggression": {
+      "circleShrinkPerTier": 0.12,
+      "minCircleRadiusM": 3.6,
+      "feintIntervalShrinkPerTier": 12,
+      "minFeintIntervalTicks": 42
+    },
+    "source": "authoring geometry around the 3.5m token ring. Token score is integer so grant order is replay-stable (D7/D9). Role assignment: 1=Lunger, 2=Baiter+Lunger, 3=Baiter+Lunger+Harrier, 4+=extra Harriers"
+  },
+  "speeds": {
+    "stalkMps": 2.5,
+    "circleMps": 2.8,
+    "approachMps": 4.2,
+    "harrierMps": 6,
+    "fleeMps": 7,
+    "loiterMps": 1.2,
+    "source": "authoring. Player run is 6m/s (TUNING_V0); Harrier matches it, stalk/circle stay slower, flee slightly faster"
+  },
+  "nav": {
+    "arrivalRadiusM": 0.35,
+    "directSeekRadiusM": 2.5,
+    "avoidanceRadiusM": 1.1,
+    "avoidanceMaxMps": 1.4,
+    "slotInnerRadiusM": 3.2,
+    "slotOuterRadiusM": 6,
+    "loiterRadiusM": 1.25,
+    "loiterStepRadPerTick": 0.04,
+    "source": "D7/D9: baked walk graph, stable A* tie-breaks (lexicographic node id), off-mesh drop links, pack slots, bounded local avoidance, crowd-failure handling. avoidanceMaxMps caps separation so paths stay replayable. arrival 0.35m matches D8 capsule radius"
+  }
+}

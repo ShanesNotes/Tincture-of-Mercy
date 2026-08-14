@@ -14,7 +14,8 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
-    "verify:full": "npm run verify && npm run e2e"
+    "verify:full": "npm run verify && npm run e2e",
+    "replay:regen:ai": "REGEN_AI_GOLDEN=1 vitest run src/sim/ai/yard.test.ts"
   },
   "dependencies": {
     "three": "0.185.1",
