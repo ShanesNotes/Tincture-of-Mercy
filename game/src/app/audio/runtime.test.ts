@@ -6,6 +6,37 @@ import { createAudioRuntime } from "./runtime";
 
 const params = loadCommittedAudioParams();
 
+class DeferredResumeContext extends FakeAudioContext {
+  readonly #resumeGate: Promise<void>;
+  readonly #resumeStarted: Promise<void>;
+  #releaseResume: (() => void) | null = null;
+  #markResumeStarted: (() => void) | null = null;
+
+  public constructor() {
+    super();
+    this.#resumeGate = new Promise((resolve) => {
+      this.#releaseResume = resolve;
+    });
+    this.#resumeStarted = new Promise((resolve) => {
+      this.#markResumeStarted = resolve;
+    });
+  }
+
+  public override resume = async (): Promise<void> => {
+    this.#markResumeStarted?.();
+    await this.#resumeGate;
+    this.state = "running";
+  };
+
+  public waitForResume(): Promise<void> {
+    return this.#resumeStarted;
+  }
+
+  public finishResume(): void {
+    this.#releaseResume?.();
+  }
+}
+
 const unlockedRuntime = async () => {
   const context = new FakeAudioContext();
   const runtime = createAudioRuntime({ params, context });
@@ -68,5 +99,36 @@ describe("audio runtime", () => {
     await runtime.setPaused(true);
     await runtime.setPaused(false);
     expect(context.started.length).toBe(1);
+  });
+
+  it("stops every live source and suspends its owned context on dispose", async () => {
+    const { context, runtime } = await unlockedRuntime();
+    runtime.ingest([
+      { type: "ambience.forest", tick: 0, on: true },
+      { type: "combat.hit", tick: 1, weight: "light" },
+    ]);
+    expect(context.started.length).toBe(3);
+
+    await runtime.dispose();
+
+    expect(context.stopped).toHaveLength(3);
+    expect(context.state).toBe("suspended");
+    expect(runtime.paused).toBe(true);
+    expect(runtime.unlocked).toBe(false);
+  });
+
+  it("keeps disposal final when an audio resume is already in flight", async () => {
+    const context = new DeferredResumeContext();
+    const runtime = createAudioRuntime({ params, context });
+    const unlocking = runtime.unlockFromGesture();
+    await context.waitForResume();
+
+    const disposing = runtime.dispose();
+    context.finishResume();
+    await Promise.all([unlocking, disposing]);
+
+    expect(context.state).toBe("suspended");
+    expect(runtime.paused).toBe(true);
+    expect(runtime.unlocked).toBe(false);
   });
 });

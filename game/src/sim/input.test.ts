@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   FrameInputSampler,
+  INPUT_BUFFER_WINDOWS,
   InputBuffer,
   TickInputQueue,
   type InputEdge,
@@ -109,5 +110,21 @@ describe("FrameInputSampler", () => {
     expect(queue.drain(8)).toEqual([
       { action: "roll", pressed: true, sequence: 2, tick: 8 },
     ]);
+  });
+});
+
+describe("world input vocabulary", () => {
+  it("extends the original action set additively without changing its windows", () => {
+    expect(INPUT_BUFFER_WINDOWS).toEqual({
+      attack: 10,
+      flask: 12,
+      roll: 12,
+      heavy: 10,
+      sprint: 0,
+      jump: 0,
+      attend: 0,
+      switchTarget: 0,
+      interact: 0,
+    });
   });
 });

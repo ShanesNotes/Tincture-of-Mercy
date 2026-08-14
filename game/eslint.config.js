@@ -77,7 +77,14 @@ export default tseslint.config(
   },
   {
     files: ['src/sim/**/*.ts'],
-    ignores: ['src/sim/**/*.test.ts', 'src/sim/**/*.spec.ts'],
+    ignores: [
+      'src/sim/**/*.test.ts',
+      'src/sim/**/*.spec.ts',
+      // sim/world is the deliberate composition boundary between sibling
+      // simulation modules. Its narrower rule below still rejects packages
+      // and paths that escape src/sim.
+      'src/sim/world/**/*.ts',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -91,6 +98,28 @@ export default tseslint.config(
             {
               group: ['../**'],
               message: 'src/sim runtime must not import outside src/sim.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/sim/world/**/*.ts'],
+    ignores: ['src/sim/world/**/*.test.ts', 'src/sim/world/**/*.spec.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            simBoundaryPattern,
+            {
+              regex: '^(?!\\.{1,2}/)',
+              message: 'src/sim runtime must remain dependency-zero.',
+            },
+            {
+              group: ['../../**'],
+              message: 'src/sim/world runtime must not import outside src/sim.',
             },
           ],
         },

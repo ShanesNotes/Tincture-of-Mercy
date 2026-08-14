@@ -116,6 +116,9 @@ const assertInput = (input: MotionInput): void => {
   if (!Number.isFinite(input.moveX) || !Number.isFinite(input.moveZ)) {
     throw new RangeError("motion input move components must be finite");
   }
+  if (input.facingOverride !== undefined && !Number.isFinite(input.facingOverride)) {
+    throw new RangeError("motion input facing override must be finite");
+  }
 };
 
 /** Analog magnitude to a ground speed: a walk band below the threshold, interpolating to run above it. */
@@ -205,7 +208,11 @@ export const stepMotion = (
     if (host !== null) {
       events.push({ type: "displacementEnded", tick, clipId: host.clip.clipId });
     }
-    host = { clip: input.beginDisplacement, tick: 0, facing: state.facing };
+    host = {
+      clip: input.beginDisplacement,
+      tick: 0,
+      facing: wrapAngle(input.facingOverride ?? state.facing),
+    };
     events.push({ type: "displacementStarted", tick, clipId: input.beginDisplacement.clipId });
   }
 
@@ -217,13 +224,15 @@ export const stepMotion = (
   }
 
   // --- intent ---------------------------------------------------------------
+  const turnOnly = input.turnOnly === true;
   const displaced = state.displacement !== null || input.beginDisplacement !== undefined;
-  const committed = state.lagTicks > 0 || displaced;
+  const committed = !turnOnly && (state.lagTicks > 0 || displaced);
   const magnitude = committed ? 0 : clamp(Math.hypot(input.moveX, input.moveZ), 0, 1);
   const hasInput = magnitude > 0;
 
   let breath = state.breath;
   const sprinting =
+    !turnOnly &&
     input.sprint &&
     !committed &&
     state.grounded &&
@@ -238,11 +247,13 @@ export const stepMotion = (
   }
 
   // --- facing ---------------------------------------------------------------
-  const currentSpeed = horizontalLength(state.velocity);
+  const currentSpeed = turnOnly ? 0 : horizontalLength(state.velocity);
   const speedFraction = clamp(currentSpeed / params.speeds.run, 0, 1);
   const authority = state.grounded ? 1 : params.air.controlFactor;
-  let facing = state.facing;
-  if (hasInput) {
+  let facing = input.facingOverride === undefined
+    ? state.facing
+    : wrapAngle(input.facingOverride);
+  if (hasInput && input.facingOverride === undefined) {
     // Yaw 0 faces −Z, so the desired yaw is the stick direction negated.
     const desiredFacing = Math.atan2(-input.moveX, -input.moveZ);
     const turnStep = sampleCurve(params.turnRateCurve, speedFraction) * authority * seconds;
@@ -251,13 +262,15 @@ export const stepMotion = (
   }
 
   // --- horizontal velocity --------------------------------------------------
-  const targetSpeed = targetSpeedFor(params, magnitude, sprinting);
+  const targetSpeed = turnOnly ? 0 : targetSpeedFor(params, magnitude, sprinting);
   const desired: Vec3 = {
     x: -Math.sin(facing) * targetSpeed,
     y: 0,
     z: -Math.cos(facing) * targetSpeed,
   };
-  const horizontal: Vec3 = { x: state.velocity.x, y: 0, z: state.velocity.z };
+  const horizontal: Vec3 = turnOnly
+    ? { x: 0, y: 0, z: 0 }
+    : { x: state.velocity.x, y: 0, z: state.velocity.z };
   const rate = hasInput
     ? sampleCurve(params.acceleration.groundCurve, speedFraction)
     : params.acceleration.groundDeceleration;
@@ -298,9 +311,9 @@ export const stepMotion = (
   // the exact integral of constant acceleration. Plain Euler would undershoot
   // the authored 1.2m apex by several centimetres.
   const displacement: Vec3 = {
-    x: velocity.x * seconds + displacementDelta.x,
+    x: turnOnly ? 0 : velocity.x * seconds + displacementDelta.x,
     y: ((verticalBefore + verticalVelocity) / 2) * seconds + displacementDelta.y,
-    z: velocity.z * seconds + displacementDelta.z,
+    z: turnOnly ? 0 : velocity.z * seconds + displacementDelta.z,
   };
   const move = moveAndSlide(
     queries,

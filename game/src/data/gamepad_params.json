@@ -4,7 +4,7 @@
     "deadzone": "design_system/v1_0_threejs_soulslike/TUNING_V0.md - Input row, verbatim: 'Deadzone defaults per-stick 0.18 radial'.",
     "flickMagnitude": "TUNING_V0.md - Attend row, verbatim: 'switch on stick flick >0.6'.",
     "axes": "W3C Standard Gamepad mapping: 0/1 left stick (move), 2/3 right stick (camera). GATES F1 requires the move stick and the camera stick to stay distinct.",
-    "buttons": "Slice-authored souls layout on the Standard Gamepad mapping; remappable data, not code. Face buttons 0-3, shoulders 4-7, stick clicks 10-11.",
+    "buttons": "Slice-authored souls layout on the Standard Gamepad mapping; remappable data, not code. Face buttons 0-3, shoulders 4-7, stick clicks 10-11. Left bumper interacts.",
     "triggerThreshold": "Slice-authored v0 - analog triggers latch as buttons past half travel."
   },
   "deadzone": {
@@ -25,6 +25,7 @@
     "1": "sprint",
     "2": "flask",
     "3": "jump",
+    "4": "interact",
     "5": "attack",
     "7": "heavy",
     "11": "attend"

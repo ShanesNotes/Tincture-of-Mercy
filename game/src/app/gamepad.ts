@@ -23,6 +23,7 @@ export const GAMEPAD_ACTIONS = [
   "flask",
   "attend",
   "switchTarget",
+  "interact",
 ] as const;
 
 export type GamepadAction = (typeof GAMEPAD_ACTIONS)[number];

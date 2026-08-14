@@ -27,6 +27,7 @@ export interface AudioRuntime {
   setPaused(paused: boolean): Promise<void>;
   setReducedFeedback(enabled: boolean): void;
   bindVisibility(): () => void;
+  dispose(): Promise<void>;
   get unlocked(): boolean;
   get paused(): boolean;
   get currentTime(): number;
@@ -54,6 +55,8 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
   let clock: TickClock = createTickClock(0, 0);
   let unlocked = false;
   let paused = false;
+  let disposed = false;
+  let lifecycle = Promise.resolve();
   let reducedFeedback = options.reducedFeedback ?? false;
 
   const refreshDebug = (): void => {
@@ -121,6 +124,13 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
       }
     }
     live = live.filter((entry) => params.cues[entry.slot.cueId]?.loop === true);
+    debug.clearScheduled();
+  };
+
+  const stopAll = (): void => {
+    for (const entry of [...live]) stopSource(entry.source);
+    live = [];
+    ambienceIntent.clear();
     debug.clearScheduled();
   };
 
@@ -196,6 +206,7 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
   };
 
   const ingest = (events: readonly AudioSourceEvent[]): void => {
+    if (disposed) return;
     for (const event of events) {
       if (isAmbienceToggle(event)) {
         const cueId = AMBIENCE_CUE[event.type];
@@ -229,22 +240,31 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
     refreshDebug();
   };
 
-  return {
-    debug,
-    ingest,
-    syncClock: (committedTick: number, audioTime?: number) => {
-      clock = observeFrame(clock, committedTick, audioTime ?? context.currentTime, params.clock);
-    },
-    unlockFromGesture: async () => {
+  const serializeLifecycle = (operation: () => Promise<void>): Promise<void> => {
+    const scheduled = lifecycle.then(operation, operation);
+    lifecycle = scheduled.catch(() => undefined);
+    return scheduled;
+  };
+
+  const unlockFromGesture = (): Promise<void> => {
+    if (disposed) return Promise.resolve();
+    return serializeLifecycle(async () => {
+      if (disposed) return;
       await context.resume();
+      if (disposed) {
+        await context.suspend();
+        return;
+      }
       unlocked = context.state === "running";
       refreshDebug();
       restartAmbience();
-    },
-    setPaused: async (nextPaused: boolean) => {
-      if (nextPaused === paused) {
-        return;
-      }
+    });
+  };
+
+  const setPaused = (nextPaused: boolean): Promise<void> => {
+    if (disposed) return Promise.resolve();
+    return serializeLifecycle(async () => {
+      if (disposed || nextPaused === paused) return;
       paused = nextPaused;
       if (paused) {
         stopNonLoops();
@@ -253,24 +273,52 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
         clock = createTickClock(clock.originTick, context.currentTime);
         debug.clearScheduled();
         await context.resume();
-        restartAmbience();
       }
+      if (disposed) {
+        await context.suspend();
+        return;
+      }
+      if (!paused) restartAmbience();
       refreshDebug();
+    });
+  };
+
+  const dispose = (): Promise<void> => {
+    if (disposed) return lifecycle;
+    // Flip ownership synchronously so an already-running resume cannot publish
+    // an unlocked state while this final suspend waits in the lifecycle queue.
+    disposed = true;
+    stopAll();
+    paused = true;
+    unlocked = false;
+    return serializeLifecycle(async () => {
+      await context.suspend();
+      paused = true;
+      unlocked = false;
+      refreshDebug();
+    });
+  };
+
+  return {
+    debug,
+    ingest,
+    syncClock: (committedTick: number, audioTime?: number) => {
+      if (disposed) return;
+      clock = observeFrame(clock, committedTick, audioTime ?? context.currentTime, params.clock);
     },
+    unlockFromGesture,
+    setPaused,
     setReducedFeedback: (enabled: boolean) => {
+      if (disposed) return;
       reducedFeedback = enabled;
       applyDucking();
       refreshDebug();
     },
     bindVisibility: () => {
+      if (disposed) return () => undefined;
       const onVisibility = (): void => {
         if (document.hidden) {
-          void (async () => {
-            paused = true;
-            stopNonLoops();
-            await context.suspend();
-            refreshDebug();
-          })();
+          void setPaused(true).catch(() => undefined);
         }
       };
       document.addEventListener("visibilitychange", onVisibility);
@@ -278,6 +326,7 @@ export const createAudioRuntime = (options: AudioRuntimeOptions): AudioRuntime =
         document.removeEventListener("visibilitychange", onVisibility);
       };
     },
+    dispose,
     get unlocked() {
       return unlocked;
     },

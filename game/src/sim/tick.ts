@@ -9,6 +9,12 @@ const ACTION_CODES = {
   attack: 1,
   flask: 2,
   roll: 3,
+  heavy: 4,
+  sprint: 5,
+  jump: 6,
+  attend: 7,
+  switchTarget: 8,
+  interact: 9,
 } as const;
 
 export const stepTick = (state: SimState, inputs: readonly InputEdge[]): SimState => {

@@ -2,6 +2,12 @@ export const INPUT_BUFFER_WINDOWS = {
   attack: 10,
   flask: 12,
   roll: 12,
+  heavy: 10,
+  sprint: 0,
+  jump: 0,
+  attend: 0,
+  switchTarget: 0,
+  interact: 0,
 } as const;
 
 export type InputAction = keyof typeof INPUT_BUFFER_WINDOWS;
