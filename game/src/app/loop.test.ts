@@ -72,6 +72,117 @@ describe("FixedTickLoop", () => {
     expect(harness.ticks()).toBe(2);
   });
 
+  describe("non-pause menu transitions (hearth / death)", () => {
+    // Slice contract: 0 <= acc < TICK_MS at all times; no negative alpha; no
+    // eaten ticks. Hearth and Open Page menus never pause the sim, so their
+    // open/close transitions must leave the accumulator alone.
+    const expectLoopInvariant = (loop: FixedTickLoop, alphas: readonly number[]): void => {
+      for (const alpha of alphas) {
+        expect(alpha).toBeGreaterThanOrEqual(0);
+        expect(alpha).toBeLessThan(1);
+      }
+      expect(loop.counters.alpha).toBeGreaterThanOrEqual(0);
+      expect(loop.counters.alpha).toBeLessThan(1);
+    };
+
+    it("hearth menu opening mid-catch-up eats no ticks and keeps alpha non-negative", () => {
+      const alphas: number[] = [];
+      let ticks = 0;
+      const self: { current?: FixedTickLoop } = {};
+      const loop = new FixedTickLoop({
+        render: (alpha) => alphas.push(alpha),
+        sampleInput: () => undefined,
+        step: () => {
+          ticks += 1;
+          if (ticks === 1) {
+            // Walking into the Hearth fires applyMenu("hearth") mid-step:
+            // setMenuPaused(false) because the Hearth menu does not pause.
+            self.current?.setMenuPaused(false);
+          }
+        },
+      });
+      self.current = loop;
+
+      loop.advance(TICK_MS * 2.5);
+
+      expect(ticks).toBe(2);
+      expectLoopInvariant(loop, alphas);
+
+      // The leftover half tick survives the transition instead of being eaten.
+      loop.advance(TICK_MS / 2);
+      expect(ticks).toBe(3);
+      expectLoopInvariant(loop, alphas);
+    });
+
+    it("hearth menu opening between frames preserves the pending fraction", () => {
+      const alphas: number[] = [];
+      let ticks = 0;
+      const loop = new FixedTickLoop({
+        render: (alpha) => alphas.push(alpha),
+        sampleInput: () => undefined,
+        step: () => {
+          ticks += 1;
+        },
+      });
+
+      loop.advance(TICK_MS / 2);
+      loop.setMenuPaused(false); // hearth menu opens; sim keeps running
+      loop.advance(TICK_MS / 2);
+
+      expect(ticks).toBe(1);
+      expectLoopInvariant(loop, alphas);
+    });
+
+    it("death overlay opening and closing eats no accumulated time", () => {
+      const alphas: number[] = [];
+      let ticks = 0;
+      const loop = new FixedTickLoop({
+        render: (alpha) => alphas.push(alpha),
+        sampleInput: () => undefined,
+        step: () => {
+          ticks += 1;
+        },
+      });
+
+      loop.advance(TICK_MS / 2);
+      // The Open Page stands over a living world, then the player closes it.
+      // Neither edge pauses, so neither may touch the accumulator.
+      loop.setMenuPaused(false); // death overlay opens
+      loop.setMenuPaused(false); // "death-acknowledged" closes it
+      loop.advance(TICK_MS / 2);
+
+      expect(ticks).toBe(1);
+      expectLoopInvariant(loop, alphas);
+    });
+
+    it("a true pause opening mid-catch-up never drives alpha negative", () => {
+      const alphas: number[] = [];
+      let ticks = 0;
+      const self: { current?: FixedTickLoop } = {};
+      const loop = new FixedTickLoop({
+        render: (alpha) => alphas.push(alpha),
+        sampleInput: () => undefined,
+        step: () => {
+          ticks += 1;
+          if (ticks === 1) {
+            self.current?.setMenuPaused(true); // pause menu opens mid-step
+          }
+        },
+      });
+      self.current = loop;
+
+      loop.advance(TICK_MS * 2.5);
+
+      expect(ticks).toBe(1);
+      expectLoopInvariant(loop, alphas);
+
+      loop.setMenuPaused(false);
+      loop.advance(TICK_MS);
+      expect(ticks).toBe(2);
+      expectLoopInvariant(loop, alphas);
+    });
+  });
+
   it("samples input before stepping the next simulation tick", () => {
     const calls: string[] = [];
     const loop = new FixedTickLoop({
