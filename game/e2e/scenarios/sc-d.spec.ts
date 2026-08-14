@@ -147,21 +147,24 @@ test("SC-D live lane: a scripted death through the shipped page", async ({ page 
   expect(respawn.pulseAfter, "the Hearth gives the pool back whole").toBe(middle.meta.maxPulse);
 
   // The world records the death and respawns inside the same tick, so the page
-  // latches it: the Open Page overlay stands until it is dismissed, and while
-  // it stands the sim clock is held.
+  // latches it: the Open Page overlay stands until it is dismissed. It stands
+  // over a living world — it is a notice, not a game over — so the clock keeps
+  // stepping behind it.
   const overlay = page.locator('[data-testid="hud-menu-death"]');
   await expect(overlay, "the Open Page overlay must be standing after the death").toBeVisible();
-  await run.capture("the page falls open: the death overlay, the clock held");
-  const heldAt = await run.tick();
+  await run.capture("the page falls open over a world that keeps going");
+  const openedAt = await run.tick();
   await page.waitForTimeout(750);
-  expect(await run.tick(), "the overlay must hold the sim clock, not merely draw over it").toBe(
-    heldAt,
-  );
+  expect(
+    await run.tick(),
+    "the Open Page is a notice, not a modal: the world keeps its clock",
+  ).toBeGreaterThan(openedAt);
+  await expect(overlay, "and it is still standing while the world runs").toBeVisible();
 
   await page.locator('[data-testid="menu-respawn"]').click();
   await expect(overlay, "acknowledging the death must close the overlay").toHaveCount(0);
   const resumed = await run.advanceTicks(180, 60_000);
-  expect(resumed, "the clock must step again once the page is closed").toBeGreaterThan(heldAt);
+  expect(resumed, "the clock is still stepping once the page is closed").toBeGreaterThan(openedAt);
   const after = await run.snapshot();
   await run.capture(`play resumes at tick ${String(after.tick)}, ${String(after.meta.life)}`);
 
@@ -175,7 +178,7 @@ test("SC-D live lane: a scripted death through the shipped page", async ({ page 
     respawn,
     minPlayerPulse: duel.minPlayerPulse,
     swings: duel.swings,
-    heldTick: heldAt,
+    overlayOpenedTick: openedAt,
     resumedTick: resumed,
     trace: duel.trace,
   });

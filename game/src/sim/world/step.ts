@@ -1,7 +1,13 @@
 /**
  * Deterministic world order (one fixed 60 Hz tick):
- * input latches -> Attend -> AI intents -> collision-correct motion -> combat
- * action/sweeps -> meta stat bridge/death/recovery -> staged scenes -> event wrap.
+ * input latches -> Attend -> AI intents -> Warden intents -> collision-correct
+ * motion -> combat action/sweeps -> the quiet / phase re-seat -> meta stat
+ * bridge/death/recovery -> arena run state -> staged scenes and their payouts
+ * -> event wrap.
+ *
+ * The Warden is stepped beside the pack and before motion, for the same two
+ * reasons: his authored step is hosted by motion this tick, and he reads the
+ * same pre-motion player position the pack does.
  *
  * Combat's monolithic action step discovers a newly-started root clip after the
  * motion stage. That clip is deliberately hosted by motion on the following tick;

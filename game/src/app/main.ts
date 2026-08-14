@@ -263,7 +263,7 @@ const bootIronwoodPlay = async (
   /**
    * The world records a death and respawns in the same tick, so `meta.life` is
    * never observably "dead". The page holds the moment open instead: the Open
-   * Page overlay stands until the player closes it.
+   * Page overlay stands over a living world until the player closes it.
    */
   let deathPending = false;
   const viewport = (): { readonly width: number; readonly height: number } => ({
@@ -279,7 +279,11 @@ const bootIronwoodPlay = async (
     if (next === openMenu) return;
     openMenu = next;
     hud.openMenu(next === "none" ? null : next);
-    loop.setMenuPaused(next === "pause" || next === "death");
+    // Only the pause menu stops the world. The Open Page is a notice, not a
+    // game over: the world has already stood him up at the Hearth in the same
+    // tick, and TEXT_BIBLE forbids a death line that says try again. Holding
+    // the clock behind it would also strand any unattended run behind a click.
+    loop.setMenuPaused(next === "pause");
   };
   // The Hearth menu's Rest verb is the same act as pressing interact at the
   // Hearth, so it takes the same path into the world. Refill, respawn and
