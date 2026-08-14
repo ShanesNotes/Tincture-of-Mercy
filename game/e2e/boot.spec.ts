@@ -42,3 +42,21 @@ test('boots a ticking renderer without browser errors', async ({ page }) => {
 test('boots the explicit WebGL2 fallback without browser errors', async ({ page }) => {
   await expectCleanTickingBoot(page, '/?renderer=webgl2', ['webgl2']);
 });
+
+test('pauses on blur and resumes only after input', async ({ page }) => {
+  await page.goto('/?renderer=webgl2');
+  const body = page.locator('body');
+  await expect(body).toHaveAttribute('data-boot-status', 'ready');
+  await expect(body).toHaveAttribute('data-sim-tick', /^\d+$/);
+
+  await page.evaluate(() => window.dispatchEvent(new Event('blur')));
+  await page.waitForTimeout(100);
+  const pausedTick = await body.getAttribute('data-sim-tick');
+  await page.waitForTimeout(100);
+  await expect(body).toHaveAttribute('data-sim-tick', pausedTick ?? '');
+
+  await page.keyboard.press('Space');
+  await expect
+    .poll(async () => Number(await body.getAttribute('data-sim-tick')))
+    .toBeGreaterThan(Number(pausedTick));
+});

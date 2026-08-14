@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { InputBuffer, TickInputQueue, type InputEdge } from "./input";
+import {
+  FrameInputSampler,
+  InputBuffer,
+  TickInputQueue,
+  type InputEdge,
+} from "./input";
 
 const attackPress = (tick: number, sequence = 0): InputEdge => ({
   action: "attack",
@@ -79,5 +84,24 @@ describe("InputBuffer", () => {
     buffer.capture(attackPress(3, 1));
 
     expect(buffer.consume("attack", 3, true)).toEqual(first);
+  });
+});
+
+describe("FrameInputSampler", () => {
+  it("latches render-frame state changes into tick-stamped edges", () => {
+    const queue = new TickInputQueue();
+    const sampler = new FrameInputSampler();
+
+    sampler.sample(7, { attack: true, flask: false, roll: false }, queue);
+    sampler.sample(7, { attack: true, flask: false, roll: false }, queue);
+    sampler.sample(8, { attack: false, flask: false, roll: true }, queue);
+
+    expect(queue.drain(7)).toEqual([
+      { action: "attack", pressed: true, sequence: 0, tick: 7 },
+    ]);
+    expect(queue.drain(8)).toEqual([
+      { action: "attack", pressed: false, sequence: 1, tick: 8 },
+      { action: "roll", pressed: true, sequence: 2, tick: 8 },
+    ]);
   });
 });

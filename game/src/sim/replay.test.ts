@@ -29,6 +29,10 @@ describe("replay", () => {
     expect(compareGoldenReplay(script, first)).toEqual({ matches: true });
   });
 
+  it("matches the committed golden state hash", () => {
+    expect(playReplay(script).stateHash).toBe("26ecf74c");
+  });
+
   it("reports a golden replay mismatch", () => {
     expect(
       compareGoldenReplay(script, { state: playReplay(script).state, stateHash: "00000000" }),

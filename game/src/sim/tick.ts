@@ -13,15 +13,17 @@ const ACTION_CODES = {
 
 export const stepTick = (state: SimState, inputs: readonly InputEdge[]): SimState => {
   const rng = SeededRng.fromState(state.rng);
-  let entropy = (state.entropy ^ rng.nextUint32()) >>> 0;
+  let deterministicDigest = (state.deterministicDigest ^ rng.nextUint32()) >>> 0;
 
   for (const input of inputs) {
-    entropy = Math.imul(entropy ^ ACTION_CODES[input.action], 0x45d9_f3b) >>> 0;
-    entropy = (entropy ^ input.sequence ^ (input.pressed ? 1 : 0)) >>> 0;
+    deterministicDigest =
+      Math.imul(deterministicDigest ^ ACTION_CODES[input.action], 0x45d9_f3b) >>> 0;
+    deterministicDigest =
+      (deterministicDigest ^ input.sequence ^ (input.pressed ? 1 : 0)) >>> 0;
   }
 
   return {
-    entropy,
+    deterministicDigest,
     inputCount: state.inputCount + inputs.length,
     rng: rng.serialize(),
     tick: state.tick + 1,

@@ -3,7 +3,7 @@ import { SeededRng, type RngState } from "./rng";
 export const SIM_STATE_VERSION = 1 as const;
 
 export interface SimState {
-  readonly entropy: number;
+  readonly deterministicDigest: number;
   readonly inputCount: number;
   readonly rng: RngState;
   readonly tick: number;
@@ -13,7 +13,7 @@ export interface SimState {
 export const createSimState = (seed: number): SimState => {
   const rng = new SeededRng(seed);
   return {
-    entropy: seed >>> 0,
+    deterministicDigest: seed >>> 0,
     inputCount: 0,
     rng: rng.serialize(),
     tick: 0,
@@ -28,7 +28,7 @@ const stableStateJson = (state: SimState): string =>
     state.rng.version,
     state.rng.state,
     state.inputCount,
-    state.entropy,
+    state.deterministicDigest,
   ]);
 
 export const hashSimState = (state: SimState): string => {

@@ -101,6 +101,12 @@ export class FixedTickLoop {
     this.awaitingInput = false;
     this.paused = false;
   }
+
+  public pauseUntilInput(): void {
+    this.accumulatorMs = 0;
+    this.awaitingInput = true;
+    this.paused = true;
+  }
 }
 
 export interface AnimationLoopHandle {
@@ -132,8 +138,13 @@ export const startAnimationLoop = (loop: FixedTickLoop): AnimationLoopHandle => 
     loop.resumeFromInput();
     lastTimestamp = undefined;
   };
+  const onBlur = (): void => {
+    loop.pauseUntilInput();
+    lastTimestamp = undefined;
+  };
 
   document.addEventListener("visibilitychange", onVisibilityChange);
+  window.addEventListener("blur", onBlur);
   window.addEventListener("keydown", onResumeInput);
   window.addEventListener("pointerdown", onResumeInput);
   animationFrame = requestAnimationFrame(frame);
@@ -142,6 +153,7 @@ export const startAnimationLoop = (loop: FixedTickLoop): AnimationLoopHandle => 
     stop: () => {
       cancelAnimationFrame(animationFrame);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("blur", onBlur);
       window.removeEventListener("keydown", onResumeInput);
       window.removeEventListener("pointerdown", onResumeInput);
     },

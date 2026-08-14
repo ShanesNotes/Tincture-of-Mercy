@@ -55,4 +55,19 @@ describe("FixedTickLoop", () => {
     expect(harness.ticks()).toBe(1);
     expect(harness.loop.awaitingResumeInput).toBe(false);
   });
+
+  it("pauses on lifecycle blur until input resumes it", () => {
+    const harness = createLoop();
+    harness.loop.advance(TICK_MS);
+    harness.loop.pauseUntilInput();
+    harness.loop.advance(TICK_MS * 3);
+
+    expect(harness.ticks()).toBe(1);
+    expect(harness.loop.awaitingResumeInput).toBe(true);
+
+    harness.loop.resumeFromInput();
+    harness.loop.advance(TICK_MS);
+
+    expect(harness.ticks()).toBe(2);
+  });
 });

@@ -8,10 +8,13 @@ import {
   TSL,
 } from "three/webgpu";
 
+import { FrameInputSampler, TickInputQueue } from "../sim/input";
+import { presentSim } from "../sim/presenter";
 import { createSimState, type SimState } from "../sim/state";
 import { stepTick } from "../sim/tick";
 import { bootRenderer } from "../view/renderer";
 import { FixedTickLoop, startAnimationLoop } from "./loop";
+import { BrowserInputSource } from "./input";
 
 const makeCanvas = (): HTMLCanvasElement => {
   const canvas = document.createElement("canvas");
@@ -56,14 +59,21 @@ export const bootApp = async (): Promise<void> => {
   window.addEventListener("resize", resize);
 
   let state: SimState = createSimState(0x544f_4d31);
+  let previousState = state;
+  const inputQueue = new TickInputQueue();
+  const inputSampler = new FrameInputSampler();
+  const inputSource = new BrowserInputSource();
   const loop = new FixedTickLoop({
     render: (alpha) => {
-      marker.rotation.y = (state.tick + alpha) * 0.01;
-      document.body.dataset.simTick = String(state.tick);
+      inputSampler.sample(state.tick, inputSource.snapshot(), inputQueue);
+      const presentation = presentSim(previousState, state, alpha);
+      marker.rotation.y = presentation.presentationTick * 0.01;
+      document.body.dataset.simTick = String(presentation.committedTick);
       boot.renderer.render(scene, camera);
     },
     step: () => {
-      state = stepTick(state, []);
+      previousState = state;
+      state = stepTick(state, inputQueue.drain(state.tick));
     },
   });
 

@@ -13,6 +13,10 @@ export interface InputEdge {
   readonly tick: number;
 }
 
+export type InputSnapshot = Readonly<Record<InputAction, boolean>>;
+
+const INPUT_ACTIONS: readonly InputAction[] = ["attack", "flask", "roll"];
+
 const assertStamp = (edge: InputEdge): void => {
   if (
     !Number.isSafeInteger(edge.tick) ||
@@ -93,5 +97,27 @@ export class InputBuffer {
 
     this.slots[action] = undefined;
     return edge;
+  }
+}
+
+export class FrameInputSampler {
+  private readonly previous: Record<InputAction, boolean> = {
+    attack: false,
+    flask: false,
+    roll: false,
+  };
+  private sequence = 0;
+
+  public sample(tick: number, snapshot: InputSnapshot, queue: TickInputQueue): void {
+    for (const action of INPUT_ACTIONS) {
+      const pressed = snapshot[action];
+      if (pressed === this.previous[action]) {
+        continue;
+      }
+
+      queue.enqueue({ action, pressed, sequence: this.sequence, tick });
+      this.previous[action] = pressed;
+      this.sequence += 1;
+    }
   }
 }
