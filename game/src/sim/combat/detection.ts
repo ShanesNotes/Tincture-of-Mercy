@@ -27,11 +27,13 @@ export interface ActiveSwingInput {
   readonly activeWindows: readonly (readonly [number, number])[];
   readonly combatClock: number;
   readonly currentWeapon: Capsule;
-  readonly gridCellSize: number;
+  readonly epsilonMeters: number;
+  readonly gridCellSizeMeters: number;
   readonly previousWeapon: Capsule;
   readonly rehitLedger: readonly RehitEntry[];
   readonly rehitLockoutTicks: number;
   readonly swingId: string;
+  readonly substepsPerTick: number;
   readonly targets: readonly HurtboxActor[];
 }
 
@@ -50,11 +52,15 @@ const segmentLength = (capsule: Capsule): number =>
 // A rotating tip can leave the AABB of its two endpoint poses. Bounding the
 // entire maximum-length sphere around the swept base is conservative and
 // keeps the broad phase incapable of culling a true curved sweep.
-const sweptWeaponBounds = (previous: Capsule, current: Capsule): Aabb => {
+const sweptWeaponBounds = (
+  previous: Capsule,
+  current: Capsule,
+  epsilonMeters: number,
+): Aabb => {
   const reach = Math.max(
     segmentLength(previous) + previous.radius,
     segmentLength(current) + current.radius,
-  );
+  ) + epsilonMeters;
   return {
     min: {
       x: Math.min(previous.a.x, current.a.x) - reach,
@@ -95,8 +101,12 @@ export const detectActiveSwingHits = (input: ActiveSwingInput): ActiveSwingResul
     targetByGridId.set(index, target);
     return { capsules: target.hurtboxes, id: index };
   });
-  const grid = new UniformCapsuleGrid(input.gridCellSize, gridActors);
-  const bounds = sweptWeaponBounds(input.previousWeapon, input.currentWeapon);
+  const grid = new UniformCapsuleGrid(input.gridCellSizeMeters, gridActors);
+  const bounds = sweptWeaponBounds(
+    input.previousWeapon,
+    input.currentWeapon,
+    input.epsilonMeters,
+  );
   const ledger = new Map(input.rehitLedger.map((entry) => [entry.key, entry]));
   const contacts: SwingContact[] = [];
 
@@ -109,7 +119,15 @@ export const detectActiveSwingHits = (input: ActiveSwingInput): ActiveSwingResul
 
     let firstContact: SwingContact | undefined;
     for (const hurtbox of target.hurtboxes) {
-      const hit = sweepWeaponCapsule(input.previousWeapon, input.currentWeapon, hurtbox);
+      const hit = sweepWeaponCapsule(
+        input.previousWeapon,
+        input.currentWeapon,
+        hurtbox,
+        {
+          epsilonMeters: input.epsilonMeters,
+          substepsPerTick: input.substepsPerTick,
+        },
+      );
       if (
         hit !== null &&
         (firstContact === undefined || hit.substep < firstContact.substep)

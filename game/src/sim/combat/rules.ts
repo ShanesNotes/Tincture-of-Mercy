@@ -21,6 +21,9 @@ export const combatRulesFromData = (data: CombatData): CombatRules => {
         move.tags.includes("flask") ||
         move.tags.includes("ember") ||
         move.kind === "reaction",
+      ...(id === "backstab" || id === "riposte"
+        ? { criticalKind: id }
+        : {}),
       hyperarmorPoise: move.hyperarmorPoise,
       ...(move.hyperarmorWindow === null
         ? {}

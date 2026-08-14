@@ -8,8 +8,10 @@ const criticalCommand = (
   actorId: string,
   moveId: "backstab" | "riposte",
   sequence: number,
+  targetId: string,
 ): CombatStepCommand => ({
   actorId,
+  criticalTargetId: targetId,
   edge: {
     action: "attack",
     pressed: true,
@@ -56,7 +58,7 @@ export const requestBackstab = (
   ) {
     return null;
   }
-  return criticalCommand(state, attackerId, "backstab", sequence);
+  return criticalCommand(state, attackerId, "backstab", sequence, targetId);
 };
 
 export const requestRiposte = (
@@ -79,5 +81,5 @@ export const requestRiposte = (
   ) {
     return null;
   }
-  return criticalCommand(state, attackerId, "riposte", sequence);
+  return criticalCommand(state, attackerId, "riposte", sequence, targetId);
 };

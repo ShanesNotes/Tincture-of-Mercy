@@ -118,7 +118,12 @@ describe("capsule geometry", () => {
         0.35,
       );
 
-      expect(sweepWeaponCapsule(previous, current, hurtbox)).not.toBeNull();
+      expect(
+        sweepWeaponCapsule(previous, current, hurtbox, {
+          epsilonMeters: combatData.params.collision.epsilonMeters,
+          substepsPerTick: combatData.params.collision.substepsPerTick,
+        }),
+      ).not.toBeNull();
     }
   });
 });

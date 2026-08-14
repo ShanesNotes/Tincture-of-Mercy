@@ -29,6 +29,7 @@ export interface CombatMoveRules {
   readonly cancelRules?: readonly ActionCancelRule[];
   readonly chargeHoldMaxTicks?: number;
   readonly committed?: boolean;
+  readonly criticalKind?: "backstab" | "riposte";
   readonly hyperarmorPoise?: number;
   readonly hyperarmorWindow?: TickWindow;
   readonly iframeWindow?: TickWindow;
@@ -65,6 +66,8 @@ export interface CombatActorSeed {
 
 export interface CombatActionState {
   readonly chargeHoldTicks: number;
+  readonly charging: boolean;
+  readonly criticalTargetId?: string;
   readonly id: string;
   readonly instanceId: number;
   readonly tick: number;
@@ -83,7 +86,12 @@ export interface CombatActorState {
     Partial<
       Record<
         CombatBufferAction,
-        { readonly chargeHoldTicks: number; readonly moveId: string }
+        {
+          readonly chargeHoldTicks: number;
+          readonly chargeReleased: boolean;
+          readonly criticalTargetId?: string;
+          readonly moveId: string;
+        }
       >
     >
   >;
@@ -101,7 +109,7 @@ export interface CombatState {
 
 export interface CombatStepCommand {
   readonly actorId: string;
-  readonly chargeHoldTicks?: number;
+  readonly criticalTargetId?: string;
   readonly edge?: CombatInputEdge;
   readonly guarding?: boolean;
   readonly moveId?: string;
@@ -237,6 +245,42 @@ export const stepCombat = (
         actor = { ...actor, guarding: command.guarding };
       }
       if (command.edge === undefined) continue;
+      if (!command.edge.pressed) {
+        if (command.edge.action === "attack" && actor.action !== null) {
+          const activeMove = rules.moves[actor.action.id];
+          if ((activeMove?.chargeHoldMaxTicks ?? 0) > 0) {
+            actor = {
+              ...actor,
+              action: { ...actor.action, charging: false },
+            };
+          }
+        }
+        const pending = actor.pendingMoves[command.edge.action];
+        const buffered = actor.buffer.slots[command.edge.action];
+        const pendingRules =
+          pending === undefined ? undefined : rules.moves[pending.moveId];
+        if (
+          pending !== undefined &&
+          buffered !== undefined &&
+          (pendingRules?.chargeHoldMaxTicks ?? 0) > 0
+        ) {
+          actor = {
+            ...actor,
+            pendingMoves: {
+              ...actor.pendingMoves,
+              [command.edge.action]: {
+                ...pending,
+                chargeHoldTicks: Math.min(
+                  actor.buffer.inputClock - buffered.tick,
+                  pendingRules?.chargeHoldMaxTicks ?? 0,
+                ),
+                chargeReleased: true,
+              },
+            },
+          };
+        }
+        continue;
+      }
       const existing = actor.buffer.slots[command.edge.action];
       const buffer = captureCombatInput(actor.buffer, command.edge);
       const moveId =
@@ -248,13 +292,11 @@ export const stepCombat = (
         fallbackMoveFor(command.edge.action);
       const selectedMove = rules.moves[moveId];
       if (selectedMove === undefined) throw new Error(`Unknown combat move: ${moveId}`);
-      const chargeHoldTicks = command.chargeHoldTicks ?? 0;
       if (
-        !Number.isSafeInteger(chargeHoldTicks) ||
-        chargeHoldTicks < 0 ||
-        chargeHoldTicks > (selectedMove.chargeHoldMaxTicks ?? 0)
+        selectedMove.criticalKind !== undefined &&
+        command.criticalTargetId === undefined
       ) {
-        throw new Error(`Invalid charge hold for combat move: ${moveId}`);
+        throw new Error(`Critical combat move requires a bound target: ${moveId}`);
       }
       actor = {
         ...actor,
@@ -265,7 +307,14 @@ export const stepCombat = (
           command.edge.pressed
             ? {
                 ...actor.pendingMoves,
-                [command.edge.action]: { chargeHoldTicks, moveId },
+                [command.edge.action]: {
+                  chargeHoldTicks: 0,
+                  chargeReleased: false,
+                  ...(command.criticalTargetId === undefined
+                    ? {}
+                    : { criticalTargetId: command.criticalTargetId }),
+                  moveId,
+                },
               }
             : actor.pendingMoves,
       };
@@ -308,7 +357,12 @@ export const stepCombat = (
     if (consumed.edge !== undefined) {
       const pendingMove = actor.pendingMoves[consumed.edge.action];
       if (pendingMove === undefined) throw new Error("Consumed combat input has no move binding.");
-      const { chargeHoldTicks, moveId } = pendingMove;
+      const {
+        chargeHoldTicks,
+        chargeReleased,
+        criticalTargetId,
+        moveId,
+      } = pendingMove;
       const move = rules.moves[moveId];
       if (move === undefined) throw new Error(`Unknown combat move: ${moveId}`);
       const spent = trySpendBreath(actor.breath, move.breathCost);
@@ -327,7 +381,12 @@ export const stepCombat = (
       const pendingMoves: Partial<
         Record<
           CombatBufferAction,
-          { readonly chargeHoldTicks: number; readonly moveId: string }
+          {
+            readonly chargeHoldTicks: number;
+            readonly chargeReleased: boolean;
+            readonly criticalTargetId?: string;
+            readonly moveId: string;
+          }
         >
       > = {};
       for (const action of COMBAT_BUFFER_ACTIONS) {
@@ -340,6 +399,10 @@ export const stepCombat = (
         ...actor,
         action: {
           chargeHoldTicks,
+          charging:
+            (move.chargeHoldMaxTicks ?? 0) > chargeHoldTicks &&
+            !chargeReleased,
+          ...(criticalTargetId === undefined ? {} : { criticalTargetId }),
           id: moveId,
           instanceId: nextActionInstance,
           tick: 0,
@@ -380,7 +443,20 @@ export const stepCombat = (
           ),
         };
       }
-      actor = { ...actor, action: { ...currentAction, tick: currentAction.tick + 1 } };
+      const chargeHoldMaxTicks = move.chargeHoldMaxTicks ?? 0;
+      const chargeHoldTicks = currentAction.charging
+        ? Math.min(chargeHoldMaxTicks, currentAction.chargeHoldTicks + 1)
+        : currentAction.chargeHoldTicks;
+      actor = {
+        ...actor,
+        action: {
+          ...currentAction,
+          chargeHoldTicks,
+          charging:
+            currentAction.charging && chargeHoldTicks < chargeHoldMaxTicks,
+          tick: currentAction.tick + 1,
+        },
+      };
     }
 
     actor = {

@@ -26,8 +26,15 @@ export interface WeaponSweepHit {
   readonly tickFractionEnd: number;
 }
 
+export interface WeaponSweepConfig {
+  readonly epsilonMeters: number;
+  readonly substepsPerTick: number;
+}
+
 export const WEAPON_SWEEP_SUBSTEPS = 3 as const;
 
+// Floating-point degeneracy tolerance only. Gameplay contact tolerance is the
+// data-owned epsilonMeters passed to sweepWeaponCapsule.
 const EPSILON = 1e-12;
 
 const add = (left: Vec3, right: Vec3): Vec3 => ({
@@ -373,8 +380,10 @@ const sweptPoseIntersects = (
   start: Capsule,
   end: Capsule,
   hurtbox: Capsule,
+  epsilonMeters: number,
 ): boolean => {
-  const combinedRadius = Math.max(start.radius, end.radius) + hurtbox.radius;
+  const combinedRadius =
+    Math.max(start.radius, end.radius) + hurtbox.radius + epsilonMeters;
   const threshold = combinedRadius * combinedRadius + EPSILON;
   return (
     segmentTriangleDistanceSquared(
@@ -398,17 +407,27 @@ export const sweepWeaponCapsule = (
   previous: Capsule,
   current: Capsule,
   hurtbox: Capsule,
+  config: WeaponSweepConfig = {
+    epsilonMeters: 0,
+    substepsPerTick: WEAPON_SWEEP_SUBSTEPS,
+  },
 ): WeaponSweepHit | null => {
   assertCapsule(previous, "previous weapon capsule");
   assertCapsule(current, "current weapon capsule");
   assertCapsule(hurtbox, "hurtbox capsule");
+  if (!Number.isFinite(config.epsilonMeters) || config.epsilonMeters < 0) {
+    throw new Error("Weapon sweep epsilon must be finite and non-negative.");
+  }
+  if (!Number.isSafeInteger(config.substepsPerTick) || config.substepsPerTick <= 0) {
+    throw new Error("Weapon sweep substeps must be a positive safe integer.");
+  }
 
-  for (let substep = 0; substep < WEAPON_SWEEP_SUBSTEPS; substep += 1) {
-    const tickFractionStart = substep / WEAPON_SWEEP_SUBSTEPS;
-    const tickFractionEnd = (substep + 1) / WEAPON_SWEEP_SUBSTEPS;
+  for (let substep = 0; substep < config.substepsPerTick; substep += 1) {
+    const tickFractionStart = substep / config.substepsPerTick;
+    const tickFractionEnd = (substep + 1) / config.substepsPerTick;
     const start = interpolateWeaponPose(previous, current, tickFractionStart);
     const end = interpolateWeaponPose(previous, current, tickFractionEnd);
-    if (sweptPoseIntersects(start, end, hurtbox)) {
+    if (sweptPoseIntersects(start, end, hurtbox, config.epsilonMeters)) {
       return { substep, tickFractionStart, tickFractionEnd };
     }
   }

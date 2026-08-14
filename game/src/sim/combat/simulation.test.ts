@@ -24,7 +24,6 @@ const collisionSweep = (attackerId: string, targetId: string): CombatSwingFrame 
     b: { x: 2, y: 1.5, z: 0 },
     radius: 0.05,
   },
-  gridCellSize: 1,
   previousWeapon: {
     a: { x: -2, y: 0.5, z: 0 },
     b: { x: -2, y: 1.5, z: 0 },
@@ -127,7 +126,13 @@ describe("combat simulation composition", () => {
           ...state.combat.actors,
           attacker: {
             ...attacker,
-            action: { chargeHoldTicks: 0, id: "heavy", instanceId: 0, tick: 24 },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "heavy",
+              instanceId: 0,
+              tick: 24,
+            },
           },
           guard: {
             ...guard,
@@ -219,11 +224,23 @@ describe("combat simulation composition", () => {
           ...initial.combat.actors,
           attacker: {
             ...attacker,
-            action: { chargeHoldTicks: 0, id: "light1", instanceId: 0, tick: 11 },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "light1",
+              instanceId: 0,
+              tick: 11,
+            },
           },
           target: {
             ...target,
-            action: { chargeHoldTicks: 0, id: "roll_medium", instanceId: 1, tick },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "roll_medium",
+              instanceId: 1,
+              tick,
+            },
           },
         },
         nextActionInstance: 2,
@@ -240,6 +257,16 @@ describe("combat simulation composition", () => {
       swings: [collisionSweep("attacker", "target")],
     });
     expect(finalIframeTick.state.damageActors.target?.pulse).toBe(100);
+    expect(finalIframeTick.state.rehitLedger).toEqual([]);
+    const firstVulnerableTick = stepCombatSimulation(
+      data,
+      finalIframeTick.state,
+      {
+        commands: [],
+        swings: [collisionSweep("attacker", "target")],
+      },
+    );
+    expect(firstVulnerableTick.state.damageActors.target?.pulse).toBe(72);
 
     const atChargedTick = (tick: number) => ({
       ...initial,
@@ -251,6 +278,7 @@ describe("combat simulation composition", () => {
             ...attacker,
             action: {
               chargeHoldTicks: 45,
+              charging: false,
               id: "charged",
               instanceId: 0,
               tick,
@@ -304,11 +332,23 @@ describe("combat simulation composition", () => {
           ...initial.combat.actors,
           attacker: {
             ...attacker,
-            action: { chargeHoldTicks: 0, id: "light1", instanceId: 0, tick: 11 },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "light1",
+              instanceId: 0,
+              tick: 11,
+            },
           },
           target: {
             ...target,
-            action: { chargeHoldTicks: 0, id: "lunge", instanceId: 1, tick: 10 },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "lunge",
+              instanceId: 1,
+              tick: 10,
+            },
           },
         },
         nextActionInstance: 2,
@@ -335,7 +375,13 @@ describe("combat simulation composition", () => {
           ...state.combat.actors,
           target: {
             ...target,
-            action: { chargeHoldTicks: 0, id: "heavy", instanceId: 1, tick: 18 },
+            action: {
+              chargeHoldTicks: 0,
+              charging: false,
+              id: "heavy",
+              instanceId: 1,
+              tick: 18,
+            },
           },
         },
       },

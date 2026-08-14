@@ -50,7 +50,14 @@ export {
   segmentDistanceSquared,
   sweepWeaponCapsule,
 } from "./geometry";
-export type { Aabb, Capsule, GridActor, Vec3, WeaponSweepHit } from "./geometry";
+export type {
+  Aabb,
+  Capsule,
+  GridActor,
+  Vec3,
+  WeaponSweepConfig,
+  WeaponSweepHit,
+} from "./geometry";
 export { acceptSidecar, parseSidecarJson, sampleHurtboxCapsules, sampleSidecar, sampleWeaponCapsule } from "./sidecar";
 export type { SidecarData, SidecarSample, SidecarTransform } from "./sidecar";
 export { resolveHitBatch } from "./resolution";

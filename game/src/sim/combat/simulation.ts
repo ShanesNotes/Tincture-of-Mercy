@@ -10,10 +10,12 @@ import {
   stepCombat,
   type CombatActorSeed,
   type CombatActorState,
+  type CombatRules,
   type CombatState,
   type CombatStepCommand,
 } from "./engine";
 import type { CombatPresenterEvent } from "./events";
+import { isInsideRearCone, isRiposteWindowOpen } from "./defense";
 import { hashCanonical } from "./hash";
 import { isTickInWindow } from "./action";
 import { isHyperarmorActive, tickSteadyReset } from "./resources";
@@ -42,7 +44,6 @@ export interface CombatSimulationState {
 export interface CombatSwingFrame {
   readonly attackerId: string;
   readonly currentWeapon: Capsule;
-  readonly gridCellSize: number;
   readonly previousWeapon: Capsule;
   readonly targets: readonly HurtboxActor[];
 }
@@ -147,6 +148,7 @@ const patchCombatState = (
     const action = reacted
       ? {
           chargeHoldTicks: 0,
+          charging: false,
           id: "flinch",
           instanceId: nextActionInstance,
           tick: 0,
@@ -184,6 +186,46 @@ const isLockedOut = (actor: HitActorSnapshot | undefined): boolean =>
   (actor.pulse <= 0 ||
     (actor.staggerUntilClock !== undefined &&
       actor.combatClock < actor.staggerUntilClock));
+
+const isCriticalCommandAuthorized = (
+  data: CombatData,
+  state: CombatSimulationState,
+  command: CombatStepCommand,
+): boolean => {
+  if (command.moveId !== "backstab" && command.moveId !== "riposte") {
+    return true;
+  }
+  const attacker = state.combat.actors[command.actorId];
+  const targetId = command.criticalTargetId;
+  const target = targetId === undefined ? undefined : state.combat.actors[targetId];
+  const damageTarget =
+    targetId === undefined ? undefined : state.damageActors[targetId];
+  if (
+    attacker === undefined ||
+    target === undefined ||
+    damageTarget === undefined ||
+    damageTarget.pulse <= 0
+  ) {
+    return false;
+  }
+  if (command.moveId === "backstab") {
+    return isInsideRearCone(
+      attacker.position,
+      target.position,
+      target.facingRadians,
+      data.params.defense.backstabRearConeHalfAngleRadians,
+    );
+  }
+  const until = damageTarget.riposteUntilClock;
+  return (
+    until !== undefined &&
+    isRiposteWindowOpen(
+      target.buffer.inputClock,
+      until - data.params.defense.guardBreakRiposteWindowTicks,
+      data.params.defense.guardBreakRiposteWindowTicks,
+    )
+  );
+};
 
 const prepareLockedActors = (
   state: CombatState,
@@ -271,8 +313,28 @@ const authoredHit = (
   };
 };
 
+const isFrameInvulnerable = (
+  rules: CombatRules,
+  state: CombatSimulationState,
+  actionStep: CombatState,
+  actorId: string,
+): boolean => {
+  const action = actionStep.actors[actorId]?.action;
+  const actionTick = actorFrameTick(state, actionStep, actorId);
+  const iframeWindow =
+    action === null || action === undefined
+      ? undefined
+      : rules.moves[action.id]?.iframeWindow;
+  return (
+    actionTick !== undefined &&
+    iframeWindow !== undefined &&
+    isTickInWindow(actionTick, iframeWindow)
+  );
+};
+
 const detectFrameHits = (
   data: CombatData,
+  rules: CombatRules,
   state: CombatSimulationState,
   actionStep: CombatState,
   swings: readonly CombatSwingFrame[],
@@ -316,17 +378,27 @@ const detectFrameHits = (
       }
     }
     const swingId = `${actor.id}:${actor.action.instanceId}`;
+    const eligibleTargets = swing.targets.filter(
+      (target) =>
+        target.id !== actor.id &&
+        (!move.tags.includes("critical") ||
+          target.id === actor.action?.criticalTargetId) &&
+        (state.damageActors[target.id]?.pulse ?? 0) > 0 &&
+        !isFrameInvulnerable(rules, state, actionStep, target.id),
+    );
     const detected = detectActiveSwingHits({
       actionTick,
       activeWindows: activeWindowsFor(move, actor.action.chargeHoldTicks),
       combatClock: state.combat.actors[actor.id]?.buffer.inputClock ?? 0,
       currentWeapon: swing.currentWeapon,
-      gridCellSize: swing.gridCellSize,
+      epsilonMeters: data.params.collision.epsilonMeters,
+      gridCellSizeMeters: data.params.collision.gridCellSizeMeters,
       previousWeapon: swing.previousWeapon,
       rehitLedger,
       rehitLockoutTicks: move.reHitLockoutTicks,
       swingId,
-      targets: swing.targets.filter((target) => target.id !== actor.id),
+      substepsPerTick: data.params.collision.substepsPerTick,
+      targets: eligibleTargets,
     });
     rehitLedger = detected.rehitLedger;
     for (const contact of detected.contacts) {
@@ -353,7 +425,9 @@ export const stepCombatSimulation = (
   const rules = combatRulesFromData(data);
   const preparedCombat = prepareLockedActors(state.combat, state.damageActors);
   const allowedCommands = frame.commands.filter(
-    (command) => !isLockedOut(state.damageActors[command.actorId]),
+    (command) =>
+      !isLockedOut(state.damageActors[command.actorId]) &&
+      isCriticalCommandAuthorized(data, state, command),
   );
   const guardingCommands =
     frame.guarding
@@ -365,6 +439,7 @@ export const stepCombatSimulation = (
   ]);
   const detected = detectFrameHits(
     data,
+    rules,
     state,
     actionStep.state,
     frame.swings ?? [],

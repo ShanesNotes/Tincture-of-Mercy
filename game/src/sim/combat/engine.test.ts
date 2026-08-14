@@ -16,7 +16,7 @@ const rules: CombatRules = {
     charged: {
       action: { active: 1, recovery: 6, startup: 2 },
       breathCost: 10,
-      chargeHoldMaxTicks: 3,
+      chargeHoldMaxTicks: 12,
     },
     flask: {
       action: { active: 10, recovery: 30, startup: 20 },
@@ -238,34 +238,38 @@ describe("combat reducer", () => {
     expect(state.worldTick).toBe(61);
   });
 
-  it("extends a chargeable action clock by the selected bounded hold", () => {
+  it("extends a chargeable action causally from press until release", () => {
     let state = createCombatState(rules, roster);
     state = stepCombat(rules, state, [
       {
         actorId: "kalev",
-        chargeHoldTicks: 3,
         edge: { action: "attack", pressed: true, sequence: 0, tick: 0 },
         moveId: "charged",
       },
     ]).state;
     expect(state.actors.kalev?.action).toMatchObject({
-      chargeHoldTicks: 3,
+      chargeHoldTicks: 1,
+      charging: true,
       id: "charged",
       tick: 1,
+    });
+    for (let tick = 1; tick < 10; tick += 1) {
+      state = stepCombat(rules, state, []).state;
+    }
+    state = stepCombat(rules, state, [
+      {
+        actorId: "kalev",
+        edge: { action: "attack", pressed: false, sequence: 1, tick: 10 },
+      },
+    ]).state;
+    expect(state.actors.kalev?.action).toMatchObject({
+      chargeHoldTicks: 10,
+      charging: false,
+      tick: 11,
     });
     while (state.actors.kalev?.action !== null) {
       state = stepCombat(rules, state, []).state;
     }
-    expect(state.worldTick).toBe(13);
-    expect(() =>
-      stepCombat(rules, createCombatState(rules, roster), [
-        {
-          actorId: "kalev",
-          chargeHoldTicks: 4,
-          edge: { action: "attack", pressed: true, sequence: 1, tick: 0 },
-          moveId: "charged",
-        },
-      ]),
-    ).toThrow(/charge hold/i);
+    expect(state.worldTick).toBe(20);
   });
 });

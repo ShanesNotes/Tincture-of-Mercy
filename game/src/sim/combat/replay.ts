@@ -45,7 +45,6 @@ const collisionSweep = (
       b: { x: 2, y: 1.5, z: 0 },
       radius: 0.05,
     },
-    gridCellSize: 1,
     previousWeapon: {
       a: { x: -2, y: 0.5, z: 0 },
       b: { x: -2, y: 1.5, z: 0 },
