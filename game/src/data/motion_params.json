@@ -1,0 +1,94 @@
+{
+  "schema": "tincture.motion_params.v0",
+  "tickHz": 60,
+  "capsule": {
+    "radius": 0.35,
+    "height": 1.75,
+    "skin": 0.02
+  },
+  "collision": {
+    "stepHeight": 0.35,
+    "slopeLimitDegrees": 45,
+    "groundSnapMeters": 0.15,
+    "maxContacts": 4
+  },
+  "gravity": {
+    "metersPerSecondSquared": 20,
+    "terminalSpeedMetersPerSecond": 55
+  },
+  "jump": {
+    "apexMeters": 1.2,
+    "breathCost": 22
+  },
+  "air": {
+    "controlFactor": 0.35
+  },
+  "fallDamage": {
+    "safeMeters": 6,
+    "lethalMeters": 14,
+    "curve": [
+      [0, 0],
+      [0.25, 0.18],
+      [0.5, 0.42],
+      [0.75, 0.7],
+      [1, 1]
+    ]
+  },
+  "landing": {
+    "softLagTicks": 6,
+    "hardLandingMeters": 3,
+    "hardLagTicks": 14,
+    "fallDamageLagTicks": 30
+  },
+  "speeds": {
+    "walk": 2.2,
+    "run": 6,
+    "sprintMultiplier": 1.45,
+    "walkInputThreshold": 0.45,
+    "idleThreshold": 0.05
+  },
+  "breath": {
+    "sprintDrainPerSecond": 11
+  },
+  "acceleration": {
+    "groundCurve": [
+      [0, 55],
+      [0.5, 42],
+      [1, 30]
+    ],
+    "groundDeceleration": 60
+  },
+  "turnRateCurve": [
+    [0, 20],
+    [0.5, 13],
+    [1, 8]
+  ],
+  "_sources": {
+    "_note": "Keys prefixed with an underscore are provenance comments and are ignored by parseMotionParams. JSON has no comment syntax; this block carries the citations rule 5 of the wave contract requires.",
+    "tickHz": "TUNING_V0.md header — 60Hz ticks.",
+    "capsule.radius": "DECISIONS.md D8 — 'Player capsule r=0.35'.",
+    "capsule.height": "DECISIONS.md D8 gives h=1.7-1.8 (visuals deliberately taller); s10 contract fixes the ship value at 1.75, the midpoint.",
+    "capsule.skin": "DECISIONS.md D8 — 'skin 0.02'.",
+    "collision.stepHeight": "DECISIONS.md D8 — 'step 0.35'.",
+    "collision.slopeLimitDegrees": "DECISIONS.md D8 gives 'slope limit 45-50 (tune)'. SHIPPING 45. The 50 alternative is held here for the F-gate feel rounds and is deliberately NOT the shipped value: raising this key to 50 is the whole change. 44 must walk and 46 must slide at the shipped value.",
+    "collision.groundSnapMeters": "DECISIONS.md D8 — 'ground snap 0.15'.",
+    "collision.maxContacts": "DECISIONS.md D8 — 'at most 4 sweep/slide contacts/tick'.",
+    "gravity.metersPerSecondSquared": "DECISIONS.md D8 — 'gravity ~20m/s^2'.",
+    "gravity.terminalSpeedMetersPerSecond": "DEVIATION: not in TUNING_V0 or D8. v0 placeholder bounding fall speed so a long fall cannot produce an unbounded per-tick sweep. 55 m/s is well past the 14m lethal threshold, so it never affects shipped falls.",
+    "jump.apexMeters": "DECISIONS.md D8 — 'jump ~1.2m'. Launch speed is derived as sqrt(2*g*apex), never stored.",
+    "jump.breathCost": "TUNING_V0.md Movement & defense — 'Jump 22 Breath, ~1.2m'.",
+    "air.controlFactor": "DEVIATION: not in TUNING_V0. v0 placeholder for airborne acceleration and turn authority as a fraction of grounded authority; souls-calibrated low-control default pending the F-gate.",
+    "fallDamage.safeMeters": "DECISIONS.md D8 — 'fall damage from 6m'.",
+    "fallDamage.lethalMeters": "DEVIATION: D8 names the 6m threshold but no ceiling. v0 placeholder: a 14m fall is lethal.",
+    "fallDamage.curve": "DEVIATION: D8 says 'scaling curve' without giving one. Piecewise-linear, sampled on t = (fall - safeMeters) / (lethalMeters - safeMeters) clamped to [0,1], returning damage as a fraction of maximum Pulse. Endpoints are exact by construction: t=0 yields 0 and t=1 yields 1.",
+    "landing": "DEVIATION: not in TUNING_V0. v0 placeholders for landing recovery. softLagTicks applies under hardLandingMeters, hardLagTicks at or above it, fallDamageLagTicks whenever the fall did damage.",
+    "speeds.run": "TUNING_V0.md Movement & defense — 'Locomotion ~6m/s run'.",
+    "speeds.walk": "DEVIATION: not in TUNING_V0. v0 placeholder for the analog walk band.",
+    "speeds.sprintMultiplier": "DEVIATION: TUNING_V0 names the sprint Breath drain but no sprint speed. v0 placeholder multiplier on the run speed (6 * 1.45 = 8.7 m/s).",
+    "speeds.walkInputThreshold": "DEVIATION: v0 placeholder. Analog stick magnitude at or below this maps into the walk band; above it interpolates to the run speed.",
+    "speeds.idleThreshold": "DEVIATION: v0 placeholder. Horizontal speed at or below this reports the idle locomotion state.",
+    "breath.sprintDrainPerSecond": "TUNING_V0.md Movement & defense — 'Sprint drain 11 Breath/s'. Breath regeneration is deliberately absent: the combat economy owns the pool and regen, this module only spends and reports.",
+    "acceleration": "DEVIATION: not in TUNING_V0. v0 placeholder acceleration curve in m/s^2 sampled on speed/run clamped to [0,1], plus a no-input deceleration.",
+    "turnRateCurve": "DEVIATION: not in TUNING_V0. v0 placeholder turn rate in rad/s sampled on speed/run clamped to [0,1] — turning tightens at low speed and widens at sprint."
+  }
+}
