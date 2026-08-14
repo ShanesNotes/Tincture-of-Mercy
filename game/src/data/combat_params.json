@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "replayDataVersion": 1,
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md and DECISIONS.md D3/D5",
+  "rolls": {
+    "lightMaximumLoadRatioExclusive": 0.3,
+    "mediumMaximumLoadRatioInclusive": 0.7,
+    "bands": {
+      "light": { "totalTicks": 40, "iframes": [2, 17], "actionableFromTick": 26, "attackCancelFromTick": 20, "breathCost": 18 },
+      "medium": { "totalTicks": 43, "iframes": [2, 15], "actionableFromTick": 30, "attackCancelFromTick": 22, "breathCost": 22 },
+      "heavy": { "totalTicks": 48, "iframes": [2, 13], "actionableFromTick": 36, "attackCancelFromTick": 26, "breathCost": 27 }
+    },
+    "backstep": { "totalTicks": 22, "iframes": [1, 6] },
+    "provenance": { "kind": "tuning", "reference": "TUNING_V0 Movement & defense; inclusive iframe ranges normalized to half-open windows", "authoredReason": null }
+  },
+  "breath": {
+    "baseMaximum": 100,
+    "costs": {
+      "lightAttack": 14,
+      "heavyAttack": 26,
+      "chargedAttack": 34,
+      "runningAttack": 18,
+      "rollingAttack": 16,
+      "sprintPerSecond": 11,
+      "jump": 22,
+      "roll": { "light": 18, "medium": 22, "heavy": 27 }
+    },
+    "regenPerSecond": 45,
+    "regenDelayTicks": 33,
+    "guardingRegenMultiplier": 0.4,
+    "guardCostIncomingMultiplier": 0.35,
+    "provenance": { "kind": "tuning", "reference": "TUNING_V0 Breath", "authoredReason": null }
+  },
+  "steady": {
+    "cleanResetTicks": 90,
+    "witherPoiseMultiplier": 1.4,
+    "classes": {
+      "kalev": { "base": 20, "flinchThreshold": 10, "staggerThreshold": 20, "knockdownThreshold": 40 },
+      "kalev_wolf_hide": { "base": 35, "flinchThreshold": 18, "staggerThreshold": 35, "knockdownThreshold": 70 },
+      "wolf": { "base": 12, "flinchThreshold": 6, "staggerThreshold": 12, "knockdownThreshold": 24 },
+      "turned_humanoid": { "base": 30, "flinchThreshold": 15, "staggerThreshold": 30, "knockdownThreshold": 60 },
+      "warden_p1": { "base": 65, "flinchThreshold": 33, "staggerThreshold": 65, "knockdownThreshold": 130 },
+      "warden_p2": { "base": 80, "flinchThreshold": 40, "staggerThreshold": 80, "knockdownThreshold": 160 }
+    },
+    "poiseDamage": { "light": 10, "heavy": 24, "charged": 34, "running": 14, "jump": 30 },
+    "heavyHyperarmorWindow": [18, 30],
+    "heavyHyperarmorPoise": 25,
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Steady", "authoredReason": "TUNING_V0 supplies each base/stagger value but says only that flinch/stagger/knockdown use a class table; flinch at half-base and knockdown at twice-base are explicit v0 authored thresholds." }
+  },
+  "hitstop": {
+    "lightTicks": 3,
+    "heavyTicks": 6,
+    "chargedTicks": 8,
+    "blockedTicks": 5,
+    "guardBreakTicks": 9,
+    "criticalTicks": 12,
+    "deathTicks": 12,
+    "provenance": { "kind": "tuning", "reference": "TUNING_V0 Hitstop", "authoredReason": null }
+  },
+  "buffers": {
+    "attackTicks": 10,
+    "rollTicks": 12,
+    "flaskTicks": 12,
+    "capacityPerAction": 1,
+    "recoveryCancelTailTicks": 6,
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Input — one slot per action, attack 10t, roll/flask 12t; GATES F2 recovery−6 cancel law", "authoredReason": "The 6-tick recovery tail is binding in GATES F2 and is stored here so the action engine never carries it as a magic number." }
+  },
+  "defense": {
+    "guardAbsorption": 0.55,
+    "guardCostIncomingMultiplier": 0.35,
+    "guardBreakStaggerTicks": 60,
+    "guardBreakRiposteWindowTicks": 90,
+    "backstabRearConeHalfAngleRadians": 0.5235987755982988,
+    "criticalCommittedTicks": 90,
+    "criticalIframes": [0, 81],
+    "criticalDamageMultiplier": 3,
+    "turnThreshold": 100,
+    "turnedDurationTicks": 300,
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Breath guard cost/guard break; hearth-iron critical commitment; S11 defense contract", "authoredReason": "Guard absorption, 90t riposte eligibility, 30-degree rear half-cone, critical multiplier, Turn threshold, and Turned duration are source gaps explicitly tagged as v0 authored defaults." }
+  },
+  "collision": {
+    "substepsPerTick": 3,
+    "gridCellSizeMeters": 2,
+    "epsilonMeters": 0.000001,
+    "maxAngularRadiansPerTick": 0.2617993877991494,
+    "maxWeaponTipSpeedMetersPerTick": 1.25,
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "DECISIONS D5 requires analytic swept capsules at 3 substeps/tick and deterministic uniform-grid broadphase", "authoredReason": "Grid cell size, collision epsilon, maximum angular rate, and maximum plausible tip speed are explicit v0 authored test/solver bounds absent from TUNING_V0." }
+  },
+  "tracking": {
+    "defaultTurnRateRadiansPerTick": 0.10471975511965977,
+    "minimumTurnRateRadiansPerTick": 0.06981317007977318,
+    "maximumTurnRateRadiansPerTick": 0.2617993877991494,
+    "provenance": { "kind": "authored", "reference": "DECISIONS D5 requires per-attack tracking turn-rate caps but TUNING_V0 gives only tracking commit ticks", "authoredReason": "Four, six, and fifteen degrees per tick are the explicit v0 authored global bounds; each move records its chosen cap." }
+  },
+  "flaskActions": {
+    "drinkMoveId": "flask_drink",
+    "emberMoveId": "ember_use",
+    "inputBufferTicks": 12,
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Tincture; Input flask buffer", "authoredReason": "Move identifiers bind the separately tagged authored committed action rows." }
+  }
+}
