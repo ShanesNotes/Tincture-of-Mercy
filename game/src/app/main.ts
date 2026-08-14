@@ -51,6 +51,14 @@ export const bootApp = async (): Promise<void> => {
     return;
   }
 
+  // s16 manuscript-border HUD: additive DOM overlay on the same canvas;
+  // the default boot path below is untouched for every other URL.
+  if (params.get("scene") === "hud") {
+    const { bootHudScene } = await import("./hud/scene");
+    bootHudScene({ mount, params });
+    return;
+  }
+
   const scene = new Scene();
   scene.background = new Color("#f8f1e5");
   const camera = new PerspectiveCamera(44, 1, 0.1, 1_000);

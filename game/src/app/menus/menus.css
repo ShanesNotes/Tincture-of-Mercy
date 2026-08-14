@@ -1,0 +1,94 @@
+/**
+ * Menus — border-integrated (slice contract: the death overlay is a border
+ * state, not a modal box). All menu surfaces live inside the manuscript
+ * frame's page area; the border apparatus stays awake around them.
+ */
+
+.hud-menu {
+  position: absolute;
+  inset: 0; /* the page area inside .hb-frame (the mount passes the frame's content box) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  pointer-events: auto;
+  background: color-mix(in srgb, #f8f1e5 88%, transparent);
+  color: #211b17;
+  font-family: "EB Garamond", "Palatino Linotype", "Book Antiqua", serif;
+}
+
+.hud-menu-button {
+  appearance: none;
+  background: transparent;
+  border: 1px solid #211b17;
+  padding: 6px 22px;
+  font: inherit;
+  font-family: "Cinzel", "IM Fell English", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  font-size: 16px;
+  color: inherit;
+  cursor: pointer;
+  min-width: 240px;
+  text-align: center;
+}
+
+.hud-menu-button:hover,
+.hud-menu-button:focus-visible {
+  background: color-mix(in srgb, #211b17 8%, transparent);
+  outline: none;
+}
+
+/* The death overlay: the page falls open — lines in the graphite notebook
+   hand (Caveat, HB7) on the open page; the border keeps its verdict state. */
+.hud-menu-death {
+  background: color-mix(in srgb, #f8f1e5 94%, #263d5e);
+}
+
+.hud-death-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.hud-death-line {
+  margin: 0;
+  font-family: "Caveat", "Segoe Script", cursive;
+  font-size: 26px;
+}
+
+.hud-death-line-main {
+  font-size: 34px;
+}
+
+.hud-settings-buses,
+.hud-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hud-settings-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 320px;
+}
+
+.hud-remap-table {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.hud-remap-table td {
+  border-top: 0.5px solid color-mix(in srgb, #211b17 40%, transparent);
+  padding: 3px 10px;
+}
+
+.hud-remap-table .hud-menu-button {
+  min-width: 0;
+  padding: 2px 10px;
+  font-size: 12px;
+}
