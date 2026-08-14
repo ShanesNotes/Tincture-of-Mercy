@@ -1,0 +1,427 @@
+/**
+ * s16 manuscript border — typography per HB7/HB8, palette per L2 tokens.
+ *
+ * Fonts (slice contract fonts note): IM Fell English, EB Garamond and Caveat
+ * ship in `game/assets/fonts/` (copied from repo-root `fonts/`).
+ * ABSENT from the repo set, falling back as permitted by the slice contract:
+ *  - Cinzel           → border labels fall back to IM Fell English small-caps,
+ *                       wide-tracked (font-variant + letter-spacing below).
+ *  - IBM Plex Mono    → State register falls back to the system mono stack;
+ *                       caps + institutional blue #263d5e carry the register.
+ */
+
+@font-face {
+  font-family: "IM Fell English";
+  src: url("../../../assets/fonts/IMFellEnglish-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IM Fell English";
+  src: url("../../../assets/fonts/IMFellEnglish-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../../../assets/fonts/EBGaramond[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../../../assets/fonts/EBGaramond-Italic[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Caveat";
+  src: url("../../../assets/fonts/Caveat[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+.hud-border {
+  --hb-ink: #211b17;
+  --hb-parchment: #f8f1e5;
+  --hb-gold: #a87a2e;
+  --hb-pine: #365a49;
+  --hb-state-blue: #263d5e;
+  --hb-oxblood: #7e2531;
+  --hb-inset: 28px;
+  --hb-pulse-fill: 1;
+  --hb-breath-fill: 1;
+
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  color: var(--hb-ink);
+  font-family: "EB Garamond", "Palatino Linotype", "Book Antiqua", serif;
+}
+
+/* HB2: outer rule line. inset = the Turn narrowing geometry (D6/HB3):
+   all four sides close in together as --hb-inset grows. Stepped only —
+   no transition, the margin jumps by declared stops (HB5). */
+.hb-frame {
+  position: absolute;
+  inset: var(--hb-inset);
+  border: 1.5px solid var(--hb-ink);
+  outline: 0.5px solid color-mix(in srgb, var(--hb-ink) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.hb-corner {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  color: var(--hb-ink);
+}
+
+.hb-corner-nw { top: -4px; left: -4px; }
+.hb-corner-ne { top: -4px; right: -4px; transform: rotate(90deg); }
+.hb-corner-se { bottom: -4px; right: -4px; transform: rotate(180deg); }
+.hb-corner-sw { bottom: -4px; left: -4px; transform: rotate(270deg); }
+
+.hb-corner svg,
+.hb-cell svg,
+.hb-rule-cell svg,
+.hb-seal svg,
+.hb-colophon-mark svg,
+.hb-unwritten svg,
+.hb-drop svg,
+.hb-tallies svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* --- margins ------------------------------------------------------------- */
+
+.hb-margin {
+  position: absolute;
+  top: 26px;
+  bottom: 56px;
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.hb-margin-left { left: 3px; }
+.hb-margin-right { right: 3px; }
+
+.hb-ornaments {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  justify-content: space-evenly;
+}
+
+.hb-cell {
+  width: 14px;
+  height: 22px;
+}
+
+.hud-border[data-zone="wild"] .hb-cell {
+  color: var(--hb-ink);
+}
+
+.hud-border[data-zone="domestic"] .hb-cell {
+  color: var(--hb-pine);
+}
+
+/* HB4/HB5: Pulse — the left margin's lit vellum height, stepped stops. */
+.hb-pulse {
+  position: relative;
+  width: 8px;
+  flex: 0 0 38%;
+  align-self: center;
+  border: 1px solid var(--hb-ink);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 6px, color-mix(in srgb, var(--hb-ink) 14%, transparent) 6px 7px);
+}
+
+.hb-pulse-fill,
+.hb-breath-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    repeating-linear-gradient(45deg, color-mix(in srgb, var(--hb-gold) 70%, var(--hb-parchment)) 0 3px, var(--hb-parchment) 3px 5px);
+  border-top: 1px solid var(--hb-ink);
+}
+
+.hb-pulse-fill { height: calc(var(--hb-pulse-fill) * 100%); }
+
+/* HB4: Breath — the right margin's shorter responding measure. */
+.hb-breath {
+  position: relative;
+  width: 6px;
+  height: 62%; /* HUD_PARAMS.meters.breathMeasureFraction */
+  margin-top: auto;
+  border: 1px solid var(--hb-ink);
+}
+
+.hb-breath-fill { height: calc(var(--hb-breath-fill) * 100%); }
+
+/* --- footer -------------------------------------------------------------- */
+
+.hb-footer {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 4px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* HB4/HB10: doses are countable drop emblems, footer-left. Never a digit. */
+.hb-doses {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 90px;
+}
+
+.hb-drop {
+  width: 13px;
+  height: 17px;
+  color: var(--hb-ink);
+}
+
+.hb-drop-filled {
+  color: var(--hb-oxblood); /* the vial's oxblood-family glass (PR6) */
+}
+
+/* HB2: the footer verdict band. Border labels: Cinzel small-caps wide-tracked
+   per HB7 — Cinzel is absent from the repo font set, so IM Fell English
+   small-caps stands in (slice fonts note fallback). */
+.hb-verdict {
+  flex: 1;
+  text-align: center;
+  font-family: "Cinzel", "IM Fell English", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.22em;
+  font-size: 15px;
+  line-height: 1;
+  min-height: 1em;
+}
+
+/* HB8: State register — mono caps, institutional blue, Numbness-only. */
+.hb-verdict[data-register="state"],
+.hb-state-line {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--hb-state-blue);
+}
+
+.hb-absent {
+  color: color-mix(in srgb, var(--hb-ink) 55%, transparent);
+}
+
+.hb-colophon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 140px;
+  justify-content: flex-end;
+}
+
+/* HB9: the border's only gold — the lit-Hearth vigil seal. */
+.hb-seal {
+  width: 22px;
+  height: 22px;
+  color: var(--hb-gold);
+  visibility: hidden;
+}
+
+.hud-border[data-hearth="lit"] .hb-seal {
+  visibility: visible;
+}
+
+/* HB4: Names — graphite tally marks at the colophon, five-bar groups. */
+.hb-tallies {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: color-mix(in srgb, var(--hb-ink) 78%, transparent);
+}
+
+.hb-tally-group {
+  position: relative;
+  display: inline-flex;
+  gap: 1px;
+  width: 22px;
+  height: 18px;
+}
+
+.hb-tally-group i,
+.hb-tally-loose {
+  display: inline-block;
+  width: 5px;
+  height: 18px;
+}
+
+.hb-tally-slash {
+  position: absolute;
+  inset: 0;
+  width: 22px;
+}
+
+.hb-tally-loose {
+  width: 5px;
+}
+
+.hb-colophon-mark {
+  width: 18px;
+  height: 18px;
+  color: var(--hb-ink);
+}
+
+/* CM40: the unwritten-tag mark — present only while the Warden's name is unwritten. */
+.hb-unwritten {
+  width: 20px;
+  height: 16px;
+  color: var(--hb-ink);
+  visibility: hidden;
+}
+
+.hud-border[data-unwritten-tag="true"] .hb-unwritten {
+  visibility: visible;
+}
+
+.hb-footer-rule {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 46px;
+  height: 8px;
+  display: flex;
+  gap: 4px;
+  color: color-mix(in srgb, var(--hb-ink) 65%, transparent);
+}
+
+.hb-rule-cell {
+  width: 12px;
+  height: 8px;
+}
+
+/* --- verdict states (L10/A5: enumerable, image-diffable) ------------------ */
+
+/* HB3 boss phase: the page closes rank — the outer rule doubles and the
+   corners draw tighter. No title card, ever (CM26). */
+.hud-border[data-boss-phase="phase1"] .hb-frame,
+.hud-border[data-boss-phase="phase2"] .hb-frame,
+.hud-border[data-boss-phase="ceremony"] .hb-frame {
+  border-width: 2.5px;
+  outline-offset: 5px;
+}
+
+.hud-border[data-boss-phase="phase2"] .hb-corner,
+.hud-border[data-boss-phase="ceremony"] .hb-corner {
+  color: var(--hb-pine); /* custody green encloses (CM20) */
+}
+
+/* WR8: the ceremony is a vigil — the margins hold their breath. */
+.hud-border[data-boss-phase="ceremony"] .hb-ornaments {
+  opacity: 0.45;
+}
+
+/* HB6: Turned — border verdict + desaturation, never a flash. */
+.hud-border[data-turned="true"] .hb-frame,
+.hud-border[data-turned="true"] .hb-margin,
+.hud-border[data-turned="true"] .hb-footer {
+  filter: grayscale(0.9);
+}
+
+.hud-border[data-turned="true"] .hb-verdict {
+  color: var(--hb-oxblood);
+}
+
+/* EN7: hearth unlit — the seal sleeps; the rule runs colder. */
+.hud-border[data-hearth="unlit"] .hb-frame {
+  border-color: color-mix(in srgb, var(--hb-ink) 80%, var(--hb-state-blue));
+}
+
+/* --- page area (cards, menus) --------------------------------------------- */
+
+.hud-page {
+  position: absolute;
+  inset: 30px 30px 54px;
+  overflow-y: auto;
+  pointer-events: none;
+}
+
+.hud-page .hud-menu {
+  pointer-events: auto;
+}
+
+/* --- item cards (TEXT_BIBLE §3) -------------------------------------------- */
+
+.hud-card-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px;
+  align-content: flex-start;
+}
+
+.hud-card {
+  width: 240px;
+  border: 1px solid #211b17;
+  outline: 0.5px solid color-mix(in srgb, #211b17 45%, transparent);
+  outline-offset: 2px;
+  padding: 10px 12px 12px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 5px, color-mix(in srgb, #211b17 4%, transparent) 5px 6px),
+    #f8f1e5; /* damp vellum grain (EN6), never pure flat */
+}
+
+.hud-card-name {
+  margin: 0 0 6px;
+  font-family: "IM Fell English", serif;
+  font-weight: normal;
+  font-size: 19px;
+}
+
+.hud-card-desc {
+  font-size: 14px;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.hud-card-lore {
+  font-family: "Caveat", "Segoe Script", cursive;
+  font-size: 17px;
+  color: color-mix(in srgb, #211b17 80%, transparent);
+  margin-bottom: 8px;
+}
+
+.hud-card-registers {
+  border-top: 0.5px solid color-mix(in srgb, #211b17 45%, transparent);
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+}
+
+.hud-card-church {
+  font-family: "IM Fell English", serif;
+  font-style: italic;
+}
