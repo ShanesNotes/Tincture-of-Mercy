@@ -19,7 +19,7 @@ const at = (landmark: Vec3, facing: number): MotionState =>
   spawnMotionState(queries, params, landmark, facing, 100, SPAWN_DROP);
 
 /** Yaw that faces the given world XZ direction. */
-const facingToward = (x: number, z: number): number => Math.atan2(x, z);
+const facingToward = (x: number, z: number): number => Math.atan2(-x, -z);
 
 const push = (direction: { x: number; z: number }): MotionInput => ({
   moveX: direction.x,

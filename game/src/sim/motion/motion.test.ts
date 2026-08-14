@@ -84,7 +84,7 @@ const voidWorld: CollisionQueries = {
 };
 
 const idle: MotionInput = { moveX: 0, moveZ: 0, sprint: false, jump: false };
-const forward: MotionInput = { moveX: 0, moveZ: 1, sprint: false, jump: false };
+const forward: MotionInput = { moveX: 0, moveZ: -1, sprint: false, jump: false };
 
 const run = (
   start: MotionState,
@@ -143,11 +143,11 @@ describe("locomotion bands", () => {
     const { state } = run(spawn(), ground, 120, () => forward);
     expect(Math.hypot(state.velocity.x, state.velocity.z)).toBeCloseTo(params.speeds.run, 6);
     expect(state.locomotion).toBe("run");
-    expect(state.position.z).toBeGreaterThan(5);
+    expect(state.position.z).toBeLessThan(-5);
   });
 
   it("holds the walk band on a light stick deflection", () => {
-    const light: MotionInput = { moveX: 0, moveZ: 0.3, sprint: false, jump: false };
+    const light: MotionInput = { moveX: 0, moveZ: -0.3, sprint: false, jump: false };
     const { state } = run(spawn(), ground, 120, () => light);
     const speed = Math.hypot(state.velocity.x, state.velocity.z);
     expect(speed).toBeLessThan(params.speeds.walk);
@@ -156,7 +156,7 @@ describe("locomotion bands", () => {
   });
 
   it("sprints faster than it runs and drains Breath at 11 per second", () => {
-    const sprint: MotionInput = { moveX: 0, moveZ: 1, sprint: true, jump: false };
+    const sprint: MotionInput = { moveX: 0, moveZ: -1, sprint: true, jump: false };
     const { state, events } = run(spawn(), ground, 60, () => sprint);
     expect(state.locomotion).toBe("sprint");
     expect(Math.hypot(state.velocity.x, state.velocity.z)).toBeCloseTo(
@@ -169,7 +169,7 @@ describe("locomotion bands", () => {
   });
 
   it("drops out of sprint when Breath runs out", () => {
-    const sprint: MotionInput = { moveX: 0, moveZ: 1, sprint: true, jump: false };
+    const sprint: MotionInput = { moveX: 0, moveZ: -1, sprint: true, jump: false };
     const { state } = run(spawn(2), ground, 120, () => sprint);
     expect(state.breath).toBe(0);
     expect(state.locomotion).toBe("run");
@@ -183,7 +183,7 @@ describe("locomotion bands", () => {
   });
 
   it("turns toward the stick at the authored rate rather than snapping", () => {
-    const back: MotionInput = { moveX: 0, moveZ: -1, sprint: false, jump: false };
+    const back: MotionInput = { moveX: 0, moveZ: 1, sprint: false, jump: false };
     const start = spawn();
     const afterOne = stepMotion(start, back, ground, params).state;
     expect(Math.abs(afterOne.facing)).toBeGreaterThan(0);

@@ -105,7 +105,11 @@ export interface MotionState {
   /** Capsule foot position — the lowest point of the capsule, in world space. */
   readonly position: Vec3;
   readonly velocity: Vec3;
-  /** Yaw in radians; 0 faces +Z. */
+  /**
+   * Yaw in radians about +Y. Yaw 0 faces −Z, the rest orientation game space
+   * declares in `game/tools/blender/SIDECAR_SCHEMA.md`, so authored clip-local
+   * displacement rotates into world space without a correction.
+   */
   readonly facing: number;
   readonly locomotion: LocomotionState;
   readonly grounded: boolean;

@@ -121,7 +121,7 @@ describe("property: the actor never leaves the world", () => {
       queries,
       params,
       { x: 10, y: 0, z: 3.5 },
-      Math.PI / 2,
+      -Math.PI / 2,
       1e6,
       SPAWN_DROP,
     );

@@ -243,7 +243,8 @@ export const stepMotion = (
   const authority = state.grounded ? 1 : params.air.controlFactor;
   let facing = state.facing;
   if (hasInput) {
-    const desiredFacing = Math.atan2(input.moveX, input.moveZ);
+    // Yaw 0 faces −Z, so the desired yaw is the stick direction negated.
+    const desiredFacing = Math.atan2(-input.moveX, -input.moveZ);
     const turnStep = sampleCurve(params.turnRateCurve, speedFraction) * authority * seconds;
     const delta = angleDelta(state.facing, desiredFacing);
     facing = wrapAngle(state.facing + clamp(delta, -turnStep, turnStep));
@@ -252,9 +253,9 @@ export const stepMotion = (
   // --- horizontal velocity --------------------------------------------------
   const targetSpeed = targetSpeedFor(params, magnitude, sprinting);
   const desired: Vec3 = {
-    x: Math.sin(facing) * targetSpeed,
+    x: -Math.sin(facing) * targetSpeed,
     y: 0,
-    z: Math.cos(facing) * targetSpeed,
+    z: -Math.cos(facing) * targetSpeed,
   };
   const horizontal: Vec3 = { x: state.velocity.x, y: 0, z: state.velocity.z };
   const rate = hasInput
