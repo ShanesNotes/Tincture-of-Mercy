@@ -12,7 +12,9 @@ import rawAttendParams from "../data/attend_params.json";
 import rawCombatParams from "../data/combat_params.json";
 import rawFrameData from "../data/frame_data.json";
 import rawIronwoodManifest from "../data/levels/ironwood_manifest.json";
+import rawAudioParams from "../data/audio_params.json";
 import rawMotionParams from "../data/motion_params.json";
+import rawMusicParams from "../data/music_params.json";
 import rawSceneScripts from "../data/scene_scripts.json";
 import rawWardenParams from "../data/warden_params.json";
 import rawWolfAiParams from "../data/wolf_ai_params.json";
@@ -49,11 +51,29 @@ import {
 } from "../sim/world";
 import { bootRenderer } from "../view/renderer";
 import {
+  applyVfxEvents,
+  createVfxState,
+  emberDesatLevel,
+  inversionActive,
+  vfxEventsFromWorld,
+  VFX_PARAMS,
+  witherBandStop,
+  type VfxState,
+} from "../view/vfx";
+import {
   adaptWorldEvents,
   bootIronwoodWorldView,
+  createWorldVfxContext,
   presentWorldDebug,
   type WorldPresentation,
 } from "../view/world";
+import { parseAudioParams } from "./audio";
+import { createMusicSystem, parseMusicParams } from "./audio/music";
+import { musicStateFromWorld } from "./audio/worldMusic";
+import { layoutBlooms } from "./hud/impact/bloom";
+import { buildImpactLayer } from "./hud/impact/impact";
+import { hudInputFromWorld, hudMenuForWorld } from "./hud/live";
+import { bootHudScene } from "./hud/scene";
 import { GamepadInputSource } from "./gamepad";
 import { FixedTickLoop, startAnimationLoop } from "./loop";
 import { BrowserInputSource } from "./input";
@@ -220,6 +240,40 @@ const bootIronwoodPlay = async (
     worldView.dispose();
   };
   const pendingPadEdges: SampledInputEdge[] = [];
+
+  // The apparatus: manuscript border, impact layer, and score, all driven by
+  // the same SIM-truth snapshot the renderer draws. None of them can write back.
+  const playerId = definition.player.id;
+  const hud = bootHudScene({ mount, params, hearthId: () => snapshot.hearth.nearbyId });
+  const impact = buildImpactLayer(mount);
+  const music = createMusicSystem({
+    params: parseMusicParams(rawMusicParams),
+    audioParams: parseAudioParams(rawAudioParams),
+  });
+  let vfx: VfxState = createVfxState();
+  let openMenu: ReturnType<typeof hudMenuForWorld> = "none";
+  let menuPauseRequested = false;
+  const viewport = (): { readonly width: number; readonly height: number } => ({
+    width: Math.max(window.innerWidth, 1),
+    height: Math.max(window.innerHeight, 1),
+  });
+  const syncMenu = (next: ReturnType<typeof hudMenuForWorld>): void => {
+    if (next === openMenu) return;
+    openMenu = next;
+    hud.openMenu(next === "none" ? null : next);
+    loop.setMenuPaused(next === "pause" || next === "death");
+  };
+  const onHudIntent = (event: Event): void => {
+    const intent = (event as CustomEvent<{ readonly type: string }>).detail;
+    if (intent.type === "resume" || intent.type === "death-acknowledged") {
+      menuPauseRequested = false;
+    }
+  };
+  const onMenuKey = (event: KeyboardEvent): void => {
+    if (event.code === "Escape") menuPauseRequested = !menuPauseRequested;
+  };
+  window.addEventListener("hud-intent", onHudIntent);
+  window.addEventListener("keydown", onMenuKey);
   let moveX = 0;
   let moveZ = 0;
   let attendX = 0;
@@ -287,6 +341,8 @@ const bootIronwoodPlay = async (
     window.removeEventListener("resize", resize);
     window.removeEventListener("pointerdown", unlockAudio);
     window.removeEventListener("keydown", unlockAudio);
+    window.removeEventListener("hud-intent", onHudIntent);
+    window.removeEventListener("keydown", onMenuKey);
     const browser = window as unknown as { __TINCTURE_WORLD__?: unknown };
     if (browser.__TINCTURE_WORLD__ === installedFacade) {
       delete browser.__TINCTURE_WORLD__;
@@ -302,6 +358,7 @@ const bootIronwoodPlay = async (
   };
   const unlockAudio = (): void => {
     void worldView.unlockAudio().catch(() => undefined);
+    void music.unlockFromGesture().catch(() => undefined);
   };
 
   const loop = new FixedTickLoop({
@@ -313,7 +370,14 @@ const bootIronwoodPlay = async (
         { ...presentation, orbit } satisfies WorldPresentation,
         alpha,
       );
+      impact.apply({
+        blooms: layoutBlooms(vfx.blooms, vfx.tick, viewport(), VFX_PARAMS),
+        inversion: inversionActive(vfx),
+        witherBand: witherBandStop(vfx, VFX_PARAMS),
+        deathPage: vfx.deathPage !== null,
+      });
       document.body.dataset.simTick = String(state.tick);
+      document.body.dataset.vfxEmberDesat = emberDesatLevel(vfx, VFX_PARAMS).toFixed(3);
       recordDuration(renderSamples, startedAt);
     },
     sampleInput,
@@ -335,11 +399,25 @@ const bootIronwoodPlay = async (
       presentation = presentWorldDebug(snapshot);
       recordDuration(snapshotSamples, snapshotStartedAt);
       worldView.consumeEvents(adaptWorldEvents(stepped.events));
+      vfx = applyVfxEvents(
+        vfx,
+        vfxEventsFromWorld(
+          stepped.events,
+          createWorldVfxContext(snapshot, definition.combatData, playerId),
+        ),
+        state.tick,
+        VFX_PARAMS,
+      );
+      music.setState(musicStateFromWorld(snapshot));
+      music.syncClock(state.tick);
+      hud.setState(hudInputFromWorld(snapshot, playerId));
+      syncMenu(hudMenuForWorld(snapshot, menuPauseRequested));
       recordDuration(simStepSamples, startedAt);
     },
     pollResumeInput: pollGamepad,
     onPauseChange: (paused) => {
       void worldView.setPaused(paused).catch(() => undefined);
+      void music.setPaused(paused).catch(() => undefined);
     },
   });
 

@@ -27,6 +27,7 @@ export class FixedTickLoop {
   private clampedFrames = 0;
   private discardedMs = 0;
   private hidden = false;
+  private menuPaused = false;
   private paused = false;
   private renderFrames = 0;
   private simTicks = 0;
@@ -105,8 +106,19 @@ export class FixedTickLoop {
     }
   }
 
+  /**
+   * An open menu is a deliberate pause, not a lost-focus one: it must survive
+   * the ambient keydown/pointerdown that resumes a focus pause.
+   */
+  public setMenuPaused(paused: boolean): void {
+    this.accumulatorMs = 0;
+    this.menuPaused = paused;
+    this.awaitingInput = false;
+    this.setPaused(paused || this.hidden);
+  }
+
   public resumeFromInput(): void {
-    if (!this.awaitingInput) {
+    if (!this.awaitingInput || this.menuPaused) {
       return;
     }
     this.accumulatorMs = 0;

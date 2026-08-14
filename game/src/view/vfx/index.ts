@@ -20,3 +20,4 @@ export {
 } from "./controller";
 export { parseVfxParams, VFX_PARAMS, type VfxParams } from "./params";
 export { createVfxEmblemRegistry, VFX_EMBLEM_VERBS } from "./emblem";
+export { vfxEventsFromWorld } from "./worldEvents";

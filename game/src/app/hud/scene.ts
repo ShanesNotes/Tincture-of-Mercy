@@ -52,6 +52,8 @@ type MenuKind = "pause" | "settings" | "death" | "hearth";
 export interface HudSceneOptions {
   readonly mount: HTMLElement;
   readonly params: URLSearchParams;
+  /** s19: the live Hearth the player is standing in, when the world is driving. */
+  readonly hearthId?: () => string | null;
 }
 
 export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
@@ -95,7 +97,7 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
           ? buildSettingsPanel(defaultSettings(), context, onIntent)
           : openMenuKind === "death"
             ? buildDeathOverlay(params.get("pageLost") === "1", context, onIntent)
-            : buildHearthMenu(params.get("hearth") ?? "cabin", context, onIntent);
+            : buildHearthMenu(options.hearthId?.() ?? params.get("hearth") ?? "cabin", context, onIntent);
     page.append(menu);
   };
 
@@ -166,6 +168,10 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
   renderGallery();
 
   document.body.dataset.hudMounted = "true";
-  document.body.dataset.bootStatus = "ready";
+  // The world boot path owns its own readiness signal; only the standalone
+  // `?scene=hud` route is ready the moment the border is on screen.
+  if (params.get("scene") === "hud") {
+    document.body.dataset.bootStatus = "ready";
+  }
   return handle;
 };

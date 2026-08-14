@@ -5,8 +5,11 @@
  * unregistered light in the graph.
  *
  * Verbs (ART_BIBLE EN13): candle=`vigil`, hearth=`warm`, lantern=`guide`,
- * moon=`hide`. Emitters render as flat disks / scalloped halos / ray fans —
- * iconic light, never volumetrics, never generic glow (AD9, AD12).
+ * moon=`hide`, vial/Ember=`mercy` — the Tincture drink glow and Ember's gold
+ * glint, promoted here from the slice-local set in `view/vfx/emblem.ts` so the
+ * shared registry owns every verb. Emitters render as flat disks / scalloped
+ * halos / ray fans — iconic light, never volumetrics, never generic glow
+ * (AD9, AD12).
  *
  * The registry also owns the shared uniform slots the ramp materials read,
  * so shading light and visible emblem can never drift apart.
@@ -38,7 +41,7 @@ import {
 
 import { REGISTER_CONFIG } from "./config";
 
-export const EMBLEM_VERBS = ["vigil", "warm", "guide", "hide"] as const;
+export const EMBLEM_VERBS = ["vigil", "warm", "guide", "hide", "mercy"] as const;
 export type EmblemVerb = (typeof EMBLEM_VERBS)[number];
 
 export type EmblemShape = "disk" | "scallopHalo" | "rayFan";
