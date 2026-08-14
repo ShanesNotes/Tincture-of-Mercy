@@ -103,18 +103,19 @@ def assign_mat(obj) -> None:
     obj.data.materials.append(mat)
 
 
-def tag(obj, zone: str, collision: bool = True) -> None:
+def tag(obj, zone: str, collision: bool = True, nav: bool = True) -> None:
     obj["tincture_zone"] = zone
     obj["tincture_collision"] = 1 if collision else 0
+    obj["tincture_nav"] = 1 if nav else 0
 
 
-def add_mesh(col, name: str, verts, faces, collision: bool = True):
+def add_mesh(col, name: str, verts, faces, collision: bool = True, nav: bool = True):
     mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(verts, [], faces)
     mesh.update()
     obj = bpy.data.objects.new(name, mesh)
     assign_mat(obj)
-    tag(obj, col.name, collision)
+    tag(obj, col.name, collision, nav)
     link_to(obj, col)
     return obj
 
@@ -220,6 +221,76 @@ def add_bowl(col, name: str, center, radius: float, depth: float, rings: int = 4
             s2 = (s + 1) % segs
             faces.append((off + s, nxt + s, nxt + s2, off + s2))
     return add_mesh(col, name, verts, faces, True)
+
+
+def add_annulus(col, name: str, center, inner_r: float, outer_r: float, z: float, segs: int = 24):
+    """Flat ring floor. The snare ring stays the gameplay boundary; this is catch geometry."""
+    cx, cy, _cz = center
+    verts = []
+    for radius in (inner_r, outer_r):
+        for s in range(segs):
+            ang = 2.0 * math.pi * s / segs
+            verts.append((cx + radius * math.cos(ang), cy + radius * math.sin(ang), z))
+    faces = []
+    for s in range(segs):
+        s2 = (s + 1) % segs
+        faces.append((s, s2, segs + s2, segs + s))
+    return add_mesh(col, name, verts, faces, True, nav=False)
+
+
+def add_ring_wall(
+    col,
+    name: str,
+    center,
+    radius: float,
+    height: float,
+    thickness: float,
+    segs: int,
+    gap_deg: tuple[float, float],
+):
+    """Vertical lip with an entry gap in degrees (Blender XY, 0 = +X, 270 = -Y approach)."""
+    cx, cy, z0 = center
+    gap0, gap1 = gap_deg
+    inner = radius - thickness * 0.5
+    outer = radius + thickness * 0.5
+    verts: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, int, int, int]] = []
+
+    def in_gap(deg: float) -> bool:
+        wrapped = deg % 360.0
+        lo, hi = gap0 % 360.0, gap1 % 360.0
+        return lo <= wrapped <= hi if lo <= hi else wrapped >= lo or wrapped <= hi
+
+    rings = []
+    for s in range(segs):
+        ang = 2.0 * math.pi * s / segs
+        if in_gap(math.degrees(ang)):
+            rings.append(None)
+            continue
+        c, sn = math.cos(ang), math.sin(ang)
+        idx = len(verts)
+        verts.extend(
+            (
+                (cx + inner * c, cy + inner * sn, z0),
+                (cx + outer * c, cy + outer * sn, z0),
+                (cx + outer * c, cy + outer * sn, z0 + height),
+                (cx + inner * c, cy + inner * sn, z0 + height),
+            )
+        )
+        rings.append(idx)
+
+    for s in range(segs):
+        a = rings[s]
+        b = rings[(s + 1) % segs]
+        if a is None or b is None:
+            continue
+        faces.append((a + 0, b + 0, b + 3, a + 3))
+        faces.append((a + 1, a + 2, b + 2, b + 1))
+        faces.append((a + 0, a + 1, b + 1, b + 0))
+        faces.append((a + 3, b + 3, b + 2, a + 2))
+    if not faces:
+        raise ValueError(f"{name} wall produced no faces")
+    return add_mesh(col, name, verts, faces, True, nav=False)
 
 
 def add_empty(col, name: str, loc, kind: str, extra: dict | None = None, scale=(0.4, 0.4, 0.4)):
@@ -425,6 +496,10 @@ def build_road(col) -> None:
 def build_arena(col) -> None:
     add_box(col, "arena_approach", (10.0, 10.2, 0.12), (0.0, 122.5, -0.06))
     add_bowl(col, "arena_bowl", (0.0, 136.0, 0.0), 9.0, 0.40, rings=4, segs=20)
+    # Living Boundary stays the 9.2 m snare ring. Collision must not end there:
+    # a punish near the rim was ejecting fighters into the void (S19 finding b).
+    add_annulus(col, "arena_skirt_floor", (0.0, 136.0, 0.0), 9.0, 14.0, 0.0, segs=24)
+    add_ring_wall(col, "arena_skirt_wall", (0.0, 136.0, 0.0), 14.0, 3.0, 0.35, 24, (247.5, 292.5))
     add_box(col, "arena_entry_threshold", (4.0, 0.6, 0.12), (0.0, 127.0, 0.06))
     # Colonnade: 12 oversized trunks, 30° spacing, entry gap at -Y.
     for i in range(12):

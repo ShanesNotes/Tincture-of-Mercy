@@ -29,10 +29,10 @@
         ]
       },
       "collision": "arena.collision.json",
-      "sha256": "678b78e273e1616cc6436567a9da4e84739e120dce38ad66a18cba9d3b24e49b",
-      "triCount": 812,
+      "sha256": "cc19c341c3b387490b3dde3d7ad9ad1c5ec2c40e2033053215136b0c2fa36253",
+      "triCount": 1020,
       "visualGlb": "arena.visual.glb",
-      "visualSha256": "6b8855c51435150647a1a45b1d9b0b97c6e67ca4869dcc0b6dd51654ecc35548"
+      "visualSha256": "d2b15ba96ad03d6ec91ca41e59cca43de5c228d4c1f2238026feedba1a504c85"
     },
     "CABIN": {
       "bounds": {
