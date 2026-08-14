@@ -168,6 +168,19 @@ describe("F5 — i-frame honesty (no unavoidable attacks)", () => {
     );
   });
 
+  it("covers every row whose range gate the round-one spacing fix widened", () => {
+    // The three rows the round-one fix made reachable at new distances. They
+    // are named here so a retune that drops one out of the swing set — and so
+    // out of the F5 sweep above — fails instead of quietly losing its proof.
+    const widened = [
+      "warden_p1_stomp_snare_kick",
+      "warden_p1_two_step_chop",
+      "warden_p2_wide_fell",
+    ];
+    const covered = ALL_SWING_MOVES.map((entry) => entry.moveId);
+    for (const moveId of widened) expect(covered).toContain(moveId);
+  });
+
   it("records the per-band dodge tolerance against the GATES F5 +/-6 bar", () => {
     const tolerance = (band: (typeof ROLL_BANDS)[number]): number => {
       const [iframeStart, iframeEnd] = bandIframes(band);

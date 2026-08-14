@@ -65,9 +65,12 @@ const rejectionFor = (
 };
 
 /**
- * Score is an integer so the selector hashes byte-stably: authored weight
- * dominates, readiness beyond the cooldown breaks near-ties toward moves the
- * Warden has not used in a while.
+ * Score is an integer so the selector hashes byte-stably: authored weight sets
+ * the standing order, and readiness beyond the cooldown can overturn it. The
+ * data holds `cooldownScoreCapTicks` above the whole weight spread times
+ * `weightScoreScale`, so a row he has left alone for the cap outscores a
+ * heavier row he has just used — no authored move can be starved out of the
+ * rotation, and between two equally rested moves the heavier one still wins.
  */
 const scoreFor = (params: WardenParams, state: WardenState, move: WardenMoveParams): number => {
   const since = Math.min(ticksSinceUse(state, move.moveId), params.selection.cooldownScoreCapTicks);
@@ -81,24 +84,44 @@ export const selectWardenMove = (
   targetX: number,
   targetZ: number,
 ): WardenSelection => {
-  const candidates: WardenCandidate[] = [];
+  const scored: { readonly candidate: WardenCandidate; readonly score: number }[] = [];
   for (const move of params.phases[state.phase].moves) {
     const rejected = rejectionFor(params, ring, state, move, targetX, targetZ);
-    candidates.push({
-      moveId: move.moveId,
-      rejected,
-      score: rejected === null ? scoreFor(params, state, move) : 0,
+    const score = scoreFor(params, state, move);
+    scored.push({
+      candidate: { moveId: move.moveId, rejected, score: rejected === null ? score : 0 },
+      score,
     });
   }
-  candidates.sort((left, right) => left.moveId.localeCompare(right.moveId));
-  let chosen: WardenCandidate | null = null;
-  for (const candidate of candidates) {
-    if (candidate.rejected !== null) continue;
-    if (chosen === null || candidate.score > chosen.score) {
-      chosen = candidate;
+  scored.sort((left, right) => left.candidate.moveId.localeCompare(right.candidate.moveId));
+  const best = (
+    admits: (entry: (typeof scored)[number]) => boolean,
+  ): (typeof scored)[number] | null => {
+    let chosen: (typeof scored)[number] | null = null;
+    for (const entry of scored) {
+      if (!admits(entry)) continue;
+      if (chosen === null || entry.score > chosen.score) chosen = entry;
     }
-  }
-  return { moveId: chosen?.moveId ?? null, candidates };
+    return chosen;
+  };
+  const candidates = scored.map((entry) => entry.candidate);
+  const chosen = best((entry) => entry.candidate.rejected === null);
+  if (chosen !== null) return { moveId: chosen.candidate.moveId, candidates };
+  // The anti-repeat rule narrows his choice; it must never silence him. At
+  // contact range one row reaches and no other, and a hard cap there would hand
+  // the player a stance the Warden cannot answer at all — the same defect the
+  // range table used to have. Repeating is the lesser sin, so the cap is the
+  // only rejection that is dropped, and only when nothing else is legal.
+  const repeatable = best((entry) => entry.candidate.rejected === "consecutive");
+  if (repeatable === null) return { moveId: null, candidates };
+  return {
+    moveId: repeatable.candidate.moveId,
+    candidates: candidates.map((candidate) =>
+      candidate.moveId === repeatable.candidate.moveId
+        ? { ...candidate, rejected: null, score: repeatable.score }
+        : candidate,
+    ),
+  };
 };
 
 /** Neutral posture: he gives ground past the step-back range, and only there. */
