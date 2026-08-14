@@ -43,9 +43,9 @@ describe("audio_params", () => {
     expect(params.cues["sting.death"]?.seedPolicy).toBe("none");
   });
 
-  it("points every cue at a generated placeholder wav", () => {
+  it("points every cue at a generated content wav", () => {
     for (const [cueId, cue] of Object.entries(params.cues)) {
-      expect(cue.file.startsWith("placeholder/"), cueId).toBe(true);
+      expect(cue.file.startsWith("content/"), cueId).toBe(true);
       expect(existsSync(join(assets, cue.file)), cue.file).toBe(true);
     }
   });
