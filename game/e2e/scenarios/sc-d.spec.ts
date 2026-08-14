@@ -20,7 +20,7 @@ const GOLDEN_TICKS = 41_413;
  * the reducer again after the s22 regeneration, so this row anchors on it
  * rather than merely recording the drift.
  */
-const WORLD_SPEC_FROZEN_HASH = "3d7799d7";
+const WORLD_SPEC_FROZEN_HASH = "858797d7";
 /** The middle of the Warden's ring: the only ground he can reach Kalev on. */
 const ARENA_MIDDLE = { x: 0, y: 0, z: -136 } as const;
 /**

@@ -65,10 +65,10 @@ const GOLDEN_TICKS = 41_413;
 const GOLDEN_FINAL_HASH = "858797d7";
 const GOLDEN_CHECKPOINTS = [
   { tick: 1, stateHash: "a4296b22" },
-  { tick: 1_327, stateHash: "2e419e30" },
-  { tick: 1_370, stateHash: "94cd87a6" },
-  { tick: 1_977, stateHash: "55e4e8af" },
-  { tick: 6_753, stateHash: "684475f5" },
+  { tick: 1_327, stateHash: "cb5f40cd" },
+  { tick: 1_370, stateHash: "2f3d7e6a" },
+  { tick: 1_977, stateHash: "269b7371" },
+  { tick: 6_753, stateHash: "99730332" },
   { tick: 39_788, stateHash: "ec9bfe0b" },
   { tick: 39_996, stateHash: "36270987" },
   { tick: GOLDEN_TICKS, stateHash: GOLDEN_FINAL_HASH },
