@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "_source": {
+    "fov": "DECISIONS.md D2 - 'Compressed vertical FOV 38-48 degrees, no camera roll'. Default 44 is the band midpoint already used by the foundation boot camera.",
+    "depth": "DECISIONS.md D2 - 'Reverse-Z depth buffer (souls near/far spans a room and a horizon)'; the renderer boots with reversedDepthBuffer: true.",
+    "attend.framingMarginFraction": "GATES.md F9 - 'both bodies on screen with >=12% margin through strafes'.",
+    "attend.occlusionSnapTicks": "GATES.md F9 - 'target occluded <=8 consecutive ticks'.",
+    "follow": "Not in TUNING_V0 - slice-authored v0 baseline (souls-calibrated); the feel gate owns the final numbers.",
+    "orbit": "Not in TUNING_V0 - slice-authored v0 baseline; deadzone lives in gamepad_params.json (TUNING_V0 Input row).",
+    "collision": "Not in TUNING_V0 - slice-authored v0 baseline; probe radius clears the D8 player capsule radius 0.35 with skin to spare."
+  },
+  "fov": {
+    "defaultDegrees": 44,
+    "minDegrees": 38,
+    "maxDegrees": 48
+  },
+  "depth": {
+    "nearMeters": 0.1,
+    "farMeters": 1200,
+    "reverseZ": true
+  },
+  "follow": {
+    "pivotHeightMeters": 1.45,
+    "restDistanceMeters": 4.2,
+    "minDistanceMeters": 0.9,
+    "maxDistanceMeters": 6.5,
+    "restPitchDegrees": -12,
+    "yawSpringPerTick": 0.08,
+    "pitchSpringPerTick": 0.1,
+    "distanceSpringPerTick": 0.14,
+    "autoAlignDelayTicks": 45
+  },
+  "orbit": {
+    "yawDegreesPerTick": 3.2,
+    "pitchDegreesPerTick": 2.2,
+    "pitchMinDegrees": -55,
+    "pitchMaxDegrees": 42,
+    "invertPitch": false
+  },
+  "collision": {
+    "probeRadiusMeters": 0.28,
+    "skinMeters": 0.06,
+    "returnSpringPerTick": 0.08
+  },
+  "attend": {
+    "framingMarginFraction": 0.12,
+    "pivotHeightMeters": 1.35,
+    "minDistanceMeters": 2.4,
+    "maxDistanceMeters": 9,
+    "distanceSpringPerTick": 0.12,
+    "distanceSolveIterations": 24,
+    "basePitchDegrees": -8,
+    "targetHeightWeight": 0.6,
+    "yawSpringPerTick": 0.22,
+    "recoveryYawSpringPerTick": 0.6,
+    "occlusionSnapTicks": 8,
+    "occlusionRecoveryStartTicks": 4,
+    "playerSilhouette": {
+      "radiusMeters": 0.45,
+      "heightMeters": 1.8
+    },
+    "targetSilhouette": {
+      "radiusMeters": 0.55,
+      "heightMeters": 1.4
+    }
+  }
+}
