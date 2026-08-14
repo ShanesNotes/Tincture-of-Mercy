@@ -655,9 +655,9 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 
 /** Exact Node real-collision capture; consumers assert these instead of equality alone. */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "5c4c5456",
+  definitionFingerprint: "765da5fe",
   inputHash: "06c274c0",
-  stateHash: "86086ec6",
+  stateHash: "8a593f00",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
@@ -668,10 +668,18 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
   checkpointTicks: Object.freeze([1, 1327, 1370, 1977, 6753, 39788, 39996, 41413]),
 });
 
+/**
+ * `stateHash` is the Chromium capture `e2e/world.spec.ts` asserts as
+ * `GOLDEN_FINAL_HASH`; the two are the same quantity (`runReplay` returns
+ * `replay.stateHash` as `finalHash`) and had drifted apart before the round-one
+ * Warden retune forced a re-capture of both. Node cannot produce this number —
+ * Chromium's BVH arithmetic differs by design — so it moves only with a
+ * Playwright run of that row.
+ */
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "5c4c5456",
+  definitionFingerprint: "765da5fe",
   inputHash: "473705f7",
-  stateHash: "707e0b30",
+  stateHash: "858797d7",
 });
 
 const checkpoint = (
