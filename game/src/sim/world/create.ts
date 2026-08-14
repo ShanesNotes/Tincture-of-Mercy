@@ -4,6 +4,7 @@ import { createCombatSimulation, type CombatSimulationSeed } from "../combat";
 import { createMotionState } from "../motion";
 import { createMercyStats, createMetaState } from "../meta";
 import { applyVerb, createSceneState, tryEnterScene } from "../scenes";
+import { createWorldWardenState } from "./warden";
 import {
   WORLD_STATE_VERSION,
   type WorldActorState,
@@ -20,17 +21,32 @@ const createRoster = (queries: WorldQueries): readonly CombatSimulationSeed[] =>
   const definition = queries.definition;
   const meta = createMetaState(definition.metaParams);
   const playerStats = createMercyStats(meta, definition.metaParams);
+  const warden = definition.warden;
   return Object.values(definition.actors)
     .sort((left, right) => left.id.localeCompare(right.id))
-    .map((actor): CombatSimulationSeed => ({
-      actorClass: actor.kind === "player" ? "kalev" : "wolf",
-      facingRadians: combatYaw(actor.spawnFacing),
-      id: actor.id,
-      position: actor.spawnPosition,
-      pulse: actor.kind === "player" ? playerStats.pulse : 100,
-      rollBand: "medium",
-      steadyClass: actor.kind === "player" ? "kalev" : "wolf",
-    }));
+    .map((actor): CombatSimulationSeed => {
+      if (actor.kind === "warden") {
+        if (warden === null) throw new Error("World has a Warden actor with no Warden definition.");
+        return {
+          actorClass: warden.phaseActorClasses.p1,
+          facingRadians: combatYaw(actor.spawnFacing),
+          id: actor.id,
+          position: actor.spawnPosition,
+          pulse: warden.maxPulse,
+          rollBand: "medium",
+          steadyClass: warden.phaseSteadyClasses.p1,
+        };
+      }
+      return {
+        actorClass: actor.kind === "player" ? "kalev" : "wolf",
+        facingRadians: combatYaw(actor.spawnFacing),
+        id: actor.id,
+        position: actor.spawnPosition,
+        pulse: actor.kind === "player" ? playerStats.pulse : 100,
+        rollBand: "medium",
+        steadyClass: actor.kind === "player" ? "kalev" : "wolf",
+      };
+    });
 };
 
 const bindAuthoredPackRoles = (
@@ -120,10 +136,15 @@ export const createWorldState = (queries: WorldQueries): WorldState => {
     actors,
     combat: createCombatSimulation(definition.combatData, createRoster(queries)),
     aiPacks,
+    warden: createWorldWardenState(definition),
     meta,
     attend: createAttendState(),
     scenes,
     heldActions: [],
     engaged: false,
+    arenaHearthLit: false,
+    leftStartZone: false,
+    snareBandContact: false,
+    snareRootUntilTick: 0,
   };
 };

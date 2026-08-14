@@ -38,6 +38,7 @@ export interface HudSceneHandle {
   readonly setFixture: (name: string) => void;
   readonly descriptor: () => BorderDescriptor;
   readonly openMenu: (menu: string | null) => void;
+  readonly menu: () => string | null;
 }
 
 declare global {
@@ -52,6 +53,8 @@ type MenuKind = "pause" | "settings" | "death" | "hearth";
 export interface HudSceneOptions {
   readonly mount: HTMLElement;
   readonly params: URLSearchParams;
+  /** s19: the live Hearth the player is standing in, when the world is driving. */
+  readonly hearthId?: () => string | null;
 }
 
 export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
@@ -71,7 +74,15 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
     lock: input.registerLocked,
   });
 
-  const renderMenus = (): void => {
+  let renderedMenuKind: MenuKind | null | undefined;
+  const renderMenus = (force = false): void => {
+    // The border re-renders every sim tick once the world drives it. Tearing
+    // the menu DOM down and rebuilding it sixty times a second is pure waste,
+    // and it also destroys any focus the player has inside an open menu.
+    if (!force && openMenuKind === renderedMenuKind) {
+      return;
+    }
+    renderedMenuKind = openMenuKind;
     page.querySelectorAll(".hud-menu").forEach((node) => node.remove());
     if (openMenuKind === null) {
       return;
@@ -95,10 +106,12 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
           ? buildSettingsPanel(defaultSettings(), context, onIntent)
           : openMenuKind === "death"
             ? buildDeathOverlay(params.get("pageLost") === "1", context, onIntent)
-            : buildHearthMenu(params.get("hearth") ?? "cabin", context, onIntent);
+            : buildHearthMenu(options.hearthId?.() ?? params.get("hearth") ?? "cabin", context, onIntent);
     page.append(menu);
   };
 
+  let renderedDescriptor: string | undefined;
+  let renderedTextStep: number | undefined;
   const render = (): void => {
     const model = deriveHudModel(input);
     const descriptor = descriptorFromModel(model);
@@ -111,8 +124,14 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
           });
     applyBorder(border, descriptor, verdict);
     document.body.dataset.hudFixture = params.get("fixture") ?? DEFAULT_FIXTURE;
-    document.body.dataset.hudBorder = serializeDescriptor(descriptor);
-    renderMenus();
+    const serialized = serializeDescriptor(descriptor);
+    if (serialized !== renderedDescriptor) {
+      renderedDescriptor = serialized;
+      document.body.dataset.hudBorder = serialized;
+    }
+    const textStepChanged = model.textStep !== renderedTextStep;
+    renderedTextStep = model.textStep;
+    renderMenus(textStepChanged);
   };
 
   const renderGallery = (): void => {
@@ -146,6 +165,7 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
           : null;
       renderMenus();
     },
+    menu: () => openMenuKind,
   };
 
   window.__hud = handle;
@@ -166,6 +186,10 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
   renderGallery();
 
   document.body.dataset.hudMounted = "true";
-  document.body.dataset.bootStatus = "ready";
+  // The world boot path owns its own readiness signal; only the standalone
+  // `?scene=hud` route is ready the moment the border is on screen.
+  if (params.get("scene") === "hud") {
+    document.body.dataset.bootStatus = "ready";
+  }
   return handle;
 };

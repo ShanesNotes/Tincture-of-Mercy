@@ -541,11 +541,57 @@ if (GOLDEN_CAMP_MOVEMENT.length !== 15_305 || GOLDEN_ROUTE_MOVEMENT.length !== 1
   throw new Error(`Golden replay RLE length mismatch: ${String(GOLDEN_CAMP_MOVEMENT.length)}/${String(GOLDEN_ROUTE_MOVEMENT.length)}.`);
 }
 
+/**
+ * s19 plays the cabin prologue instead of auto-completing it, and a staged
+ * scene owns the frame it is open in. The authored loop is a combat/mercy-loop
+ * fixture, not a prologue fixture, so it discharges the prologue through the
+ * explicit verb seam on the ticks it already had, adding no frames and shifting
+ * no authored action.
+ */
+const GOLDEN_PROLOGUE_VERBS: readonly string[] = [
+  "DrawWater",
+  "CarryWater",
+  "BreakBread",
+  "ShareBread",
+  "DoseAnna",
+];
+
+/**
+ * Coming home also opens Anna's gravity, which owns the frame and would eat the
+ * script's closing Hearth rest. The loop discharges it the same way: the verb
+ * cycle is offered on the run-in to the rest, and the scene host applies each
+ * one only when it is legal. Offers made before the scene opens are rejected
+ * and cost nothing.
+ */
+const GOLDEN_ANNA_VERBS: readonly string[] = [
+  "ObserveBreath",
+  "SitNear",
+  "HoldHand",
+  "SpeakName",
+  "Pray",
+  "KeepWatch",
+  "WitnessDeath",
+  "WriteName",
+];
+
+const GOLDEN_ANNA_RUN_IN_TICKS = 400;
+
+const goldenSceneVerb = (tick: number, restTick: number | undefined): string | undefined => {
+  // Tick 0 enters the prologue; its verbs ride the next five frames.
+  const prologue = GOLDEN_PROLOGUE_VERBS[tick - 1];
+  if (prologue !== undefined) return prologue;
+  if (restTick === undefined) return undefined;
+  const runIn = tick - (restTick - GOLDEN_ANNA_RUN_IN_TICKS);
+  if (runIn < 0 || tick >= restTick) return undefined;
+  return GOLDEN_ANNA_VERBS[runIn % GOLDEN_ANNA_VERBS.length];
+};
+
 const buildGoldenInputs = (
   movement: string,
   actions: readonly GoldenAction[],
 ): readonly WorldReplayFrame[] => {
   const actionByTick = new Map(actions.map((action) => [action.tick, action]));
+  const restTick = actions.filter(({ action }) => action === "interact").at(-1)?.tick;
   let sequence = 0;
   return [...movement].map((code, tick) => {
     const direction = GOLDEN_DIRECTIONS[code];
@@ -554,6 +600,7 @@ const buildGoldenInputs = (
     const edges = action === undefined
       ? []
       : [{ action: action.action, pressed: true, sequence: sequence++, tick }];
+    const verb = goldenSceneVerb(tick, restTick);
     return {
       tick,
       input: {
@@ -562,6 +609,7 @@ const buildGoldenInputs = (
         moveZ: direction[1],
         edges,
         ...(action?.viewer === undefined ? {} : { viewer: action.viewer }),
+        ...(verb === undefined ? {} : { scene: { verb } }),
       },
     };
   });
@@ -607,9 +655,9 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 
 /** Exact Node real-collision capture; consumers assert these instead of equality alone. */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "366eb00a",
-  inputHash: "db0174e5",
-  stateHash: "fe62ea1f",
+  definitionFingerprint: "5c4c5456",
+  inputHash: "06c274c0",
+  stateHash: "86086ec6",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
@@ -621,9 +669,9 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 });
 
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "366eb00a",
-  inputHash: "3b620278",
-  stateHash: "4a8d3191",
+  definitionFingerprint: "5c4c5456",
+  inputHash: "473705f7",
+  stateHash: "707e0b30",
 });
 
 const checkpoint = (

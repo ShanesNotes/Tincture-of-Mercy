@@ -6,7 +6,6 @@ import {
   type BufferSourcePort,
   type GainPort,
 } from "./context";
-import { loadCommittedAudioParams } from "./load_params";
 import type { AudioParams } from "./types";
 
 export const MUSIC_PARAMS_VERSION = 1 as const;
@@ -98,7 +97,12 @@ export interface MusicSystem {
 
 export interface MusicSystemOptions {
   readonly params: MusicParams;
-  readonly audioParams?: Pick<AudioParams, "buses" | "clock">;
+  /**
+   * s19: required rather than defaulted. The old fallback read the committed
+   * JSON through `node:fs`, which made every browser module that imported this
+   * file fail `vite build`; the app now hands the parsed params in.
+   */
+  readonly audioParams: Pick<AudioParams, "buses" | "clock">;
   readonly context?: AudioContextPort;
 }
 
@@ -385,7 +389,7 @@ const applyLoopPoints = (source: BufferSourcePort, track: MusicTrackDef): void =
 
 export const createMusicSystem = (options: MusicSystemOptions): MusicSystem => {
   const params = options.params;
-  const audio = options.audioParams ?? loadCommittedAudioParams();
+  const audio = options.audioParams;
   const context = options.context ?? createBrowserAudioContext() ?? new FakeAudioContext();
 
   let clock: TickClock = createTickClock(0, 0);

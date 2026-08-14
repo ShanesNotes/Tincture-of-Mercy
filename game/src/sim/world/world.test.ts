@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { compileWalkGraph, parseWolfAiParams } from "../ai";
 import { parseAttendParams } from "../attend";
+import { parseWardenParams } from "../boss";
 import { acceptSidecar, compileCombatData, hashCanonical } from "../combat";
 import { parseMotionParams } from "../motion";
 import { parseSceneScripts } from "../scenes";
@@ -51,6 +52,8 @@ const definition = createWorldDefinition(assembly, {
   placements,
   sceneCatalog: parseSceneScripts(data("scene_scripts.json")),
   sidecars: Object.fromEntries(sidecarNames.map((name) => [name, acceptSidecar(asset(name))])),
+  wardenParams: parseWardenParams(data("warden_params.json"), data("frame_data.json")),
+  zones: (data("levels/ironwood_manifest.json") as { readonly zones: unknown }).zones,
 });
 
 const queries: WorldQueries = {
@@ -67,7 +70,7 @@ const queries: WorldQueries = {
 
 describe("world assembly", () => {
   it("validates the seam config and builds every sorted Ironwood pack", () => {
-    expect(definition.fingerprint).toBe("454eaebb");
+    expect(definition.fingerprint).toBe("67f550ef");
     expect(definition.player.id).toBe("kalev");
     expect(Object.keys(definition.packs)).toEqual(["den", "doorway", "road", "yard"]);
     expect(definition.packs.yard?.actors).toHaveLength(3);
@@ -148,11 +151,32 @@ describe("world assembly", () => {
     expect(changedAi.fingerprint).not.toBe(definition.fingerprint);
   });
 
-  it("auto-completes the cabin prologue through the canonical verbs", () => {
-    const state = createWorldState(queries);
+  it("wakes inside the cabin prologue and plays it with the interact key", () => {
+    let state = createWorldState(queries);
+    // s19 replaced s18's auto-complete: the prologue is played, not skipped.
+    expect(state.scenes.completed).not.toContain("cabin_prologue");
 
-    expect(state.scenes.active).toBeNull();
+    state = stepWorld(state, EMPTY_WORLD_INPUT, queries).state;
+    expect(state.scenes.active?.scriptId).toBe("cabin_prologue");
+
+    const applied: string[] = [];
+    for (let press = 0; press < 5; press += 1) {
+      const step = stepWorld(state, {
+        ...EMPTY_WORLD_INPUT,
+        edges: [{ action: "interact", pressed: true, sequence: 0, tick: state.tick }],
+      }, queries);
+      state = step.state;
+      for (const event of step.events) {
+        if (event.source === "scenes" && "type" in event.payload && event.payload.type === "verb-applied") {
+          applied.push(event.payload.verb);
+        }
+      }
+      state = stepWorld(state, EMPTY_WORLD_INPUT, queries).state;
+    }
+
+    expect(applied).toEqual(["DrawWater", "CarryWater", "BreakBread", "ShareBread", "DoseAnna"]);
     expect(state.scenes.completed).toContain("cabin_prologue");
+    expect(state.scenes.active).toBeNull();
     expect(state.scenes.flags).toMatchObject({
       "anna.dosesAdministered": 1,
       "taught.attend": 1,
@@ -384,9 +408,9 @@ describe("world assembly", () => {
 
   it("locks the real-collision golden and replays its headless seam prefix", () => {
     expect(WORLD_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "366eb00a",
-      inputHash: "db0174e5",
-      stateHash: "fe62ea1f",
+      definitionFingerprint: "5c4c5456",
+      inputHash: "06c274c0",
+      stateHash: "86086ec6",
     });
     expect(hashCanonical(WORLD_GOLDEN_REPLAY)).toBe(WORLD_GOLDEN_EXPECTED.inputHash);
     expect(WORLD_GOLDEN_REPLAY.durationTicks).toBe(23_776);
@@ -394,9 +418,9 @@ describe("world assembly", () => {
       1, 1327, 1370, 1977, 6753, 22140, 22348, 23776,
     ]);
     expect(WORLD_BROWSER_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "366eb00a",
-      inputHash: "3b620278",
-      stateHash: "4a8d3191",
+      definitionFingerprint: "5c4c5456",
+      inputHash: "473705f7",
+      stateHash: "707e0b30",
     });
     expect(hashCanonical(WORLD_BROWSER_GOLDEN_REPLAY)).toBe(
       WORLD_BROWSER_GOLDEN_EXPECTED.inputHash,
@@ -414,11 +438,11 @@ describe("world assembly", () => {
       frames: WORLD_GOLDEN_REPLAY.frames.filter(({ tick }) => tick < durationTicks),
       checkpointTicks: [1, 1327, durationTicks],
     });
-    expect(prefix.stateHash).toBe("60728856");
+    expect(prefix.stateHash).toBe("273db5f2");
     expect(prefix.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "1eb258a3" },
-      { tick: 1327, stateHash: "94e3a47e" },
-      { tick: 1370, stateHash: "60728856" },
+      { tick: 1, stateHash: "dcb86abc" },
+      { tick: 1327, stateHash: "9181409a" },
+      { tick: 1370, stateHash: "273db5f2" },
     ]);
     expect(prefix.checkpoints.every((entry) => entry.moduleClocksAligned)).toBe(true);
     expect(prefix.summary).toMatchObject({

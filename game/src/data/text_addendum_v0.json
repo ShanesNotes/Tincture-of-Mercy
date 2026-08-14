@@ -1,0 +1,200 @@
+{
+  "_meta": {
+    "folk": "Proposed additions to text_bible_v0.json. Not canon. Read TEXT_BIBLE.md for the law before changing a string.",
+    "church": null,
+    "state": null,
+    "_schema": "{key: {folk, church, state, numb1?, numb2?, numb3?, proposed}}. Identical to text_bible_v0.json plus the `proposed` marker. null = this register has no word for this thing (deliberate absence). Omitted numb1/2/3 = this key does not degrade (spoken lines, register-locked scenes). \"\" at a numb step = the line is not shown at that step. {n}/{name} are runtime substitutions.",
+    "_status": "PROPOSED — every entry in this file is a proposal, not canon, and every entry carries \"proposed\": true. Adoption is the owner's call: a string may not enter text_bible_v0.json without a TEXT_BIBLE.md amendment (§0, §9). Canon wins on any key collision; game/src/app/hud/bible.ts layers this file UNDER the shipping artifact and bible.test.ts fails the build if a key here collides.",
+    "_proposed_by": "slice s19 (final assembly), v1.0 Ironwood",
+    "_reason": "Four gaps the slice cannot render without: (a) ui.menu.*/ui.settings.* — the §8-style dispute already flagged in game/src/app/menus/logic.ts, whose MENU_CHROME table exists only because the bible authors no chrome keys; strings here are that table verbatim, so adoption changes no pixel. (b) the cabin prologue's per-verb prompts (DrawWater, CarryWater, BreakBread, ShareBread, DoseAnna), which currently share the generic ui.prompt.interact. (c) the Warden aftermath WalkAway verb, which has an outcome line (boss.aftermath.walked_away) but no prompt of its own beside boss.aftermath.write_prompt. (d) the Birdie coda end card that closes the playable slice. Authoring follows §7: folk <=14 words, no quest-log or triumph register, State fileable and never sneering. Coda keys omit numb* because the Birdie coda is register-locked (L-T4).",
+    "_authority_if_adopted": "design_system/v1_0_threejs_soulslike/TEXT_BIBLE.md §5 (UI strings), §6 (boss aftermath), §8 (disputes and authored extensions)."
+  },
+
+  "ui.menu.resume": {
+    "folk": "Back to the road",
+    "church": "Return to the way",
+    "state": "Resume session",
+    "numb1": "Back to the road",
+    "numb2": "Back.",
+    "numb3": "Resume",
+    "proposed": true
+  },
+  "ui.menu.settings": {
+    "folk": "Adjustments",
+    "church": "Putting things in order",
+    "state": "Configuration",
+    "numb1": "Adjustments",
+    "numb2": "Settings.",
+    "numb3": "Configuration",
+    "proposed": true
+  },
+  "ui.menu.quit": {
+    "folk": "Close the book",
+    "church": "Lay it down",
+    "state": "End session",
+    "numb1": "Close the book",
+    "numb2": "Close it.",
+    "numb3": "Terminate",
+    "proposed": true
+  },
+  "ui.menu.back": {
+    "folk": "Back",
+    "church": "Return",
+    "state": "Back",
+    "numb1": "Back",
+    "numb2": "Back.",
+    "numb3": "Return",
+    "proposed": true
+  },
+
+  "ui.settings.bus.master": {
+    "folk": "Every sound",
+    "church": "The whole of it",
+    "state": "Master level",
+    "numb1": "Every sound",
+    "numb2": "All sound.",
+    "numb3": "Master",
+    "proposed": true
+  },
+  "ui.settings.bus.sfx": {
+    "folk": "Blows and chimes",
+    "church": "The sounds of doing",
+    "state": "Effects level",
+    "numb1": "Blows and chimes",
+    "numb2": "Effects.",
+    "numb3": "SFX",
+    "proposed": true
+  },
+  "ui.settings.bus.ambience": {
+    "folk": "The room and the weather",
+    "church": "The air of the place",
+    "state": "Ambience level",
+    "numb1": "The room and the weather",
+    "numb2": "Ambience.",
+    "numb3": "Ambience",
+    "proposed": true
+  },
+  "ui.settings.reduced_feedback": {
+    "folk": "Less of the jolt",
+    "church": "A gentler telling",
+    "state": "Reduced feedback",
+    "numb1": "Less of the jolt",
+    "numb2": "Reduced feedback.",
+    "numb3": "Reduced feedback",
+    "proposed": true
+  },
+  "ui.settings.remap": {
+    "folk": "Move it",
+    "church": "Assign otherwise",
+    "state": "Reassign",
+    "numb1": "Move it",
+    "numb2": "Reassign.",
+    "numb3": "Reassign",
+    "proposed": true
+  },
+  "ui.settings.bind.attack-light": {
+    "folk": "Light blow",
+    "church": "The quick stroke",
+    "state": "Attack, light",
+    "numb1": "Light blow",
+    "numb2": "Attack (light).",
+    "numb3": "ATK-L",
+    "proposed": true
+  },
+  "ui.settings.bind.attack-heavy": {
+    "folk": "Heavy blow",
+    "church": "The committed stroke",
+    "state": "Attack, heavy",
+    "numb1": "Heavy blow",
+    "numb2": "Attack (heavy).",
+    "numb3": "ATK-H",
+    "proposed": true
+  },
+  "ui.settings.bind.roll": {
+    "folk": "The roll",
+    "church": "The avoidance",
+    "state": "Evasion",
+    "numb1": "The roll",
+    "numb2": "Dodge.",
+    "numb3": "EVADE",
+    "proposed": true
+  },
+  "ui.settings.bind.guard": {
+    "folk": "Hold it off",
+    "church": "The ward",
+    "state": "Guard",
+    "numb1": "Hold it off",
+    "numb2": "Guard.",
+    "numb3": "GUARD",
+    "proposed": true
+  },
+
+  "ui.prompt.draw_water": {
+    "folk": "Draw the water",
+    "church": "Draw water for the sick",
+    "state": "Draw ration, potable",
+    "numb1": "Draw the water",
+    "numb2": "Draw water",
+    "numb3": "Draw ration, potable",
+    "proposed": true
+  },
+  "ui.prompt.carry_water": {
+    "folk": "Carry the water to her",
+    "church": "Bear it to the bedside",
+    "state": "Convey ration to bedside",
+    "numb1": "Carry the water to her",
+    "numb2": "Carry water to bedside",
+    "numb3": "Convey ration to bedside",
+    "proposed": true
+  },
+  "ui.prompt.break_bread": {
+    "folk": "Break the bread",
+    "church": "Break the loaf",
+    "state": "Divide ration",
+    "numb1": "Break the bread",
+    "numb2": "Break bread",
+    "numb3": "Divide ration",
+    "proposed": true
+  },
+  "ui.prompt.share_bread": {
+    "folk": "Give Iiro his half",
+    "church": "Give the child his portion",
+    "state": "Issue half ration to minor",
+    "numb1": "Give Iiro his half",
+    "numb2": "Give the boy half",
+    "numb3": "Issue half ration to minor",
+    "proposed": true
+  },
+  "ui.prompt.dose_anna": {
+    "folk": "Give Anna the dose",
+    "church": "Give her the mercy",
+    "state": "Administer E-3",
+    "numb1": "Give Anna the dose",
+    "numb2": "Dose the mother",
+    "numb3": "Administer E-3",
+    "proposed": true
+  },
+
+  "ui.coda.end_card": {
+    "folk": "The Ironwood ends here. The walking does not.",
+    "church": "This stretch is behind you; the way is not finished.",
+    "state": "Ironwood sector traversed. Next post advised.",
+    "proposed": true
+  },
+  "ui.coda.end_card_names": {
+    "folk": "Names carried out of the Ironwood: {n}.",
+    "church": "Borne out and not yet set down: {n}.",
+    "state": "Outcomes carried from sector: {n}.",
+    "proposed": true
+  },
+
+  "boss.aftermath.walk_away_prompt": {
+    "folk": "Walk on",
+    "church": "Leave him uncommemorated",
+    "state": "Retain the tag, unfiled",
+    "numb1": "Walk on",
+    "numb2": "Walk on",
+    "numb3": "Retain tag, unfiled",
+    "proposed": true
+  }
+}

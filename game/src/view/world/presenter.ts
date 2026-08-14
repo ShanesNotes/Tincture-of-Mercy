@@ -44,7 +44,8 @@ export class WorldActorPresenter {
   #getActor(actor: ActorPresentation): ActorView {
     const existing = this.#actors.get(actor.id);
     if (existing !== undefined) return existing;
-    const character = actor.kind === "player" ? "kalev" : "wolf";
+    // D4 blocking proxy: the Warden wears the Kalev rig until s21/s23 land.
+    const character = actor.kind === "wolf" ? "wolf" : "kalev";
     const assets = this.#assets.characters.get(character);
     if (assets === undefined) throw new Error(`missing ${character} character assets`);
     const root = spawnCharacter(assets);

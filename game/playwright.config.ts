@@ -3,6 +3,11 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
   forbidOnly: Boolean(process.env.CI),
+  // s19: every spec here drives a real-time 60 Hz loop and several assert on
+  // frame timing or on a fixed number of ticks elapsing. Sharing a box between
+  // parallel workers starves the loop and makes those rows flake; the scenario
+  // pack made that unmissable. One worker is slower and honest.
+  workers: 1,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     baseURL: 'http://127.0.0.1:4173',

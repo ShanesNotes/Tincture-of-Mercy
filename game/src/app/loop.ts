@@ -27,6 +27,7 @@ export class FixedTickLoop {
   private clampedFrames = 0;
   private discardedMs = 0;
   private hidden = false;
+  private menuPaused = false;
   private paused = false;
   private renderFrames = 0;
   private simTicks = 0;
@@ -76,10 +77,14 @@ export class FixedTickLoop {
       if (Math.abs(this.accumulatorMs) < FLOAT_EPSILON_MS) {
         this.accumulatorMs = 0;
       }
+      // A step may open a menu, which pauses and resets the accumulator. Leave
+      // the catch-up loop at once rather than subtracting a tick it never ran:
+      // that is what drove the interpolation alpha negative.
+      if (this.paused) break;
     }
 
     this.renderFrames += 1;
-    this.callbacks.render(this.accumulatorMs / TICK_MS);
+    this.callbacks.render(Math.max(0, this.accumulatorMs) / TICK_MS);
   }
 
   public setVisibility(hidden: boolean): void {
@@ -105,8 +110,19 @@ export class FixedTickLoop {
     }
   }
 
+  /**
+   * An open menu is a deliberate pause, not a lost-focus one: it must survive
+   * the ambient keydown/pointerdown that resumes a focus pause.
+   */
+  public setMenuPaused(paused: boolean): void {
+    this.accumulatorMs = 0;
+    this.menuPaused = paused;
+    this.awaitingInput = false;
+    this.setPaused(paused || this.hidden);
+  }
+
   public resumeFromInput(): void {
-    if (!this.awaitingInput) {
+    if (!this.awaitingInput || this.menuPaused) {
       return;
     }
     this.accumulatorMs = 0;
@@ -158,6 +174,9 @@ export const startAnimationLoop = (loop: FixedTickLoop): AnimationLoopHandle => 
     lastTimestamp = undefined;
   };
   const onResumeInput = (): void => {
+    // Only a resume restarts the frame clock. Clearing it on every key edge let
+    // auto-repeat feed the loop 0 ms frames and halve the sim clock.
+    if (!loop.awaitingResumeInput) return;
     loop.resumeFromInput();
     lastTimestamp = undefined;
   };

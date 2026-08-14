@@ -115,12 +115,19 @@ export class WorldCameraBinding {
     if (presentation.tick !== this.#presentedTick) {
       this.#previous = this.#current;
       for (const event of this.#pendingEvents.splice(0)) {
-        this.#current =
-          event.type === "camera-release"
-            ? releaseFrame(this.#current)
-            : holdFrame(this.#current, stagedSpec(event, this.#assets), {
-                damageContext: presentation.damageContext,
-              });
+        if (event.type === "camera-release") {
+          this.#current = releaseFrame(this.#current);
+          continue;
+        }
+        // D2 is s12's law and `holdFrame` throws on it, which is right for a
+        // module that should never be asked. Composition can be asked: combat
+        // can open while a scene already holds the frame. The answer is to
+        // decline the staged plate and keep gameplay framing, not to throw a
+        // rendering error out of requestAnimationFrame and stop the game.
+        if (presentation.damageContext) continue;
+        this.#current = holdFrame(this.#current, stagedSpec(event, this.#assets), {
+          damageContext: false,
+        });
       }
       this.#current = stepCamera(this.#current, CAMERA_PARAMS, {
         playerPosition: player.position,

@@ -1,4 +1,4 @@
-export { adaptWorldEvents, presentWorldDebug } from "./adapter";
+export { adaptWorldEvents, createWorldVfxContext, presentWorldDebug } from "./adapter";
 export { SimClipPlayer, type AnimationSeek } from "./animation";
 export { WorldCameraBinding } from "./camera";
 export { SimCapsuleOverlay } from "./debug";

@@ -5,10 +5,33 @@ import {
   type SidecarData,
 } from "../combat";
 import type { RootDisplacementClip } from "../motion";
-import type { WorldActorDefinition, WorldActorState, WorldDefinition, WorldState } from "./types";
+import type {
+  WorldActorDefinition,
+  WorldActorState,
+  WorldAssetKey,
+  WorldDefinition,
+  WorldState,
+} from "./types";
 
-const assetKey = (actor: WorldActorDefinition): "kalev" | "wolf" =>
-  actor.kind === "player" ? "kalev" : "wolf";
+const assetKey = (actor: WorldActorDefinition): WorldAssetKey =>
+  actor.kind === "player" ? "kalev" : actor.kind === "warden" ? "warden" : "wolf";
+
+/** Authored sweep inflation for an actor wearing a borrowed blocking rig. */
+export const actorWeaponRadius = (
+  definition: WorldDefinition,
+  actorId: string,
+): number => {
+  const actor = definition.actors[actorId];
+  return actor === undefined ? 0 : definition.actorAssets[assetKey(actor)].weaponRadiusMeters;
+};
+
+const actorHurtboxRadius = (
+  definition: WorldDefinition,
+  actorId: string,
+): number => {
+  const actor = definition.actors[actorId];
+  return actor === undefined ? 0 : definition.actorAssets[assetKey(actor)].hurtboxRadiusMeters;
+};
 
 export const sidecarForAction = (
   definition: WorldDefinition,
@@ -71,10 +94,14 @@ export const actorHurtboxes = (
   const actor = state.actors[actorId];
   if (actor === undefined) return [];
   const sampled = actorActionSample(state, definition, actorId);
-  return sampleHurtboxCapsules(sampled.sidecar, sampled.tick, {
+  const capsules = sampleHurtboxCapsules(sampled.sidecar, sampled.tick, {
     position: actor.motion.position,
     yawRadians: actor.motion.facing,
   });
+  const bonus = actorHurtboxRadius(definition, actorId);
+  return bonus === 0
+    ? capsules
+    : capsules.map((capsule) => ({ ...capsule, radius: capsule.radius + bonus }));
 };
 
 export const actorWeapon = (
