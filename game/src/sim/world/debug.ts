@@ -134,7 +134,7 @@ export const createWorldDebugSnapshot = (
       activeId: state.scenes.active?.scriptId ?? null,
       completed: state.scenes.completed,
       sliceExit: (state.scenes.flags["slice.exit"] ?? 0) > 0,
-      unwrittenTag: (state.scenes.flags["warden.tag.unwritten"] ?? 0) > 0,
+      unwrittenTag: (state.scenes.flags["hud.unwrittenMark"] ?? 0) > 0,
     },
     meta: {
       life: state.meta.life,

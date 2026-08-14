@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 
 import { compileWalkGraph, parseWolfAiParams } from "../../sim/ai";
 import { parseAttendParams } from "../../sim/attend";
+import { parseWardenParams } from "../../sim/boss";
 import { acceptSidecar, compileCombatData } from "../../sim/combat";
 import { parseMotionParams } from "../../sim/motion";
 import { parseSceneScripts } from "../../sim/scenes";
@@ -62,6 +63,8 @@ const definition = createWorldDefinition(data("world_assembly.json"), {
   placements: data("levels/ironwood_placements.json"),
   sceneCatalog: parseSceneScripts(data("scene_scripts.json")),
   sidecars: Object.fromEntries(sidecarNames.map((name) => [name, acceptSidecar(asset(name))])),
+  wardenParams: parseWardenParams(data("warden_params.json"), data("frame_data.json")),
+  zones: (data("levels/ironwood_manifest.json") as { readonly zones: unknown }).zones,
 });
 
 const collisionGeometry = (): BufferGeometry => {
@@ -122,14 +125,14 @@ describe("world golden replay", () => {
       restedAfterPageRecovery: true,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "73913a9e" },
-      { tick: 1_327, stateHash: "c953cb41" },
-      { tick: 1_370, stateHash: "b5667a10" },
-      { tick: 1_977, stateHash: "bbd7d4ea" },
-      { tick: 6_753, stateHash: "58aaa28e" },
-      { tick: 22_140, stateHash: "76467889" },
-      { tick: 22_348, stateHash: "02d6e8e0" },
-      { tick: 23_776, stateHash: "fe62ea1f" },
+      { tick: 1, stateHash: "c2ff485a" },
+      { tick: 1_327, stateHash: "e87d4803" },
+      { tick: 1_370, stateHash: "5d227268" },
+      { tick: 1_977, stateHash: "92941e05" },
+      { tick: 6_753, stateHash: "0e9128cd" },
+      { tick: 22_140, stateHash: "1c7074d6" },
+      { tick: 22_348, stateHash: "0be1ec24" },
+      { tick: 23_776, stateHash: "7bc04431" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

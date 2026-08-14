@@ -316,6 +316,9 @@ const bootIronwoodPlay = async (
 
   const setLiveState = (next: WorldState): void => {
     state = next;
+    // The VFX clock only moves forward. A replay rewinds the sim clock, so the
+    // effect state has to start over with it.
+    vfx = createVfxState();
     snapshot = createWorldDebugSnapshot(next, definition);
     presentation = presentWorldDebug(snapshot);
     previousPresentation = presentation;

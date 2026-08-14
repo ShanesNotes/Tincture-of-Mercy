@@ -143,5 +143,8 @@ export const createWorldState = (queries: WorldQueries): WorldState => {
     heldActions: [],
     engaged: false,
     arenaHearthLit: false,
+    leftStartZone: false,
+    snareBandContact: false,
+    snareRootUntilTick: 0,
   };
 };

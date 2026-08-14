@@ -5,7 +5,7 @@
     "playerId": "kalev",
     "spawnPlacementId": "spawn.player",
     "startupScene": "cabin_prologue",
-    "autoCompleteStartupScene": true,
+    "autoCompleteStartupScene": false,
     "respawnHearthId": "cabin"
   },
   "level": {

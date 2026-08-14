@@ -64,7 +64,10 @@ import {
 import { createWorldState } from "./create";
 import { isWorldPackActive } from "./scheduler";
 import { actorHurtboxes, actorWeapon, rootClipForAction } from "./sidecars";
+import { applySceneEffects, interactVerb, sceneToEnter } from "./scenes";
 import { createWorldWardenState, stepWorldWarden, wardenSwingIsLive } from "./warden";
+import { zoneAt } from "./assembly";
+import { resolveRingContact } from "../boss";
 import type {
   WorldActorState,
   WorldEvent,
@@ -778,8 +781,7 @@ export const stepWorld = (
   // Motion is authoritative for every position and hosts authored root/knockback displacement.
   const actorsAfterMotion: Record<string, WorldActorState> = {};
   let combatBeforeStep = state.combat;
-  const rootedUntilTick = state.warden?.targetRootedUntilTick ?? 0;
-  const playerRooted = state.tick < rootedUntilTick;
+  const playerRooted = state.tick < state.snareRootUntilTick;
   for (const actorId of Object.keys(state.actors).sort()) {
     const base = state.actors[actorId] as WorldActorState;
     // The snare line roots whoever touches it; the Warden's own step is authored
@@ -926,7 +928,21 @@ export const stepWorld = (
       },
     });
   }
-  if (wardenTick?.snareRootUntilTick != null) {
+  // One root per approach: the FSM re-arms every `rootTicks` while the player
+  // stands in the band, and the player cannot walk out of a band that freezes
+  // them. Only a fresh crossing counts.
+  const playerPosition = actorsAfterCombat[playerId]?.motion.position;
+  const inSnareBand = wardenDefinition !== null && playerPosition !== undefined &&
+    resolveRingContact(
+      wardenDefinition.ring,
+      wardenDefinition.params,
+      "player",
+      playerPosition.x,
+      playerPosition.z,
+    ).touching;
+  let snareRootUntilTick = state.snareRootUntilTick;
+  if (wardenTick?.snareRootUntilTick != null && !state.snareBandContact) {
+    snareRootUntilTick = wardenTick.snareRootUntilTick;
     eventSeeds.push({
       source: "boss",
       actorId: playerId,
@@ -1070,7 +1086,8 @@ export const stepWorld = (
   let engaged = engagementFor(working);
   // Hearths are always a safe reset boundary. Engagement guards staged scenes,
   // but must not make the final mercy-loop rest impossible when a pack pursues.
-  if (pressed(input, "interact")) {
+  const sceneHoldsFrame = working.scenes.active !== null;
+  if (pressed(input, "interact") && !sceneHoldsFrame) {
     const position = working.actors[playerId]?.motion.position;
     const hearthId = position === undefined ? null : nearestHearth(position, queries);
     if (hearthId !== null) {
@@ -1113,6 +1130,29 @@ export const stepWorld = (
       payload: { type: "arena-hearth-lit", hearthId: wardenDefinition.arenaHearthId },
     });
   }
+  const zoneId = zoneAt(
+    queries.definition.zones,
+    working.actors[playerId]?.motion.position ?? playerMotion.position,
+  );
+  const leftStartZone = working.leftStartZone || (zoneId !== null && zoneId !== "CABIN");
+  const autoScene = sceneToEnter(
+    { ...working, scenes, leftStartZone },
+    queries.definition,
+    { zoneId, engaged },
+  );
+  if (autoScene !== null) {
+    const entered = tryEnterScene(scenes, autoScene, queries.definition.sceneCatalog, { engaged });
+    scenes = entered.state;
+    sceneEvents.push(...entered.events);
+  }
+  if (pressed(input, "interact") && scenes.active !== null) {
+    const verb = interactVerb(scenes, queries.definition.sceneCatalog);
+    if (verb !== null) {
+      const applied = applyVerb(scenes, verb, queries.definition.sceneCatalog);
+      scenes = applied.state;
+      sceneEvents.push(...applied.events);
+    }
+  }
   if (input.scene?.enterId !== undefined) {
     const entered = tryEnterScene(
       scenes,
@@ -1134,6 +1174,34 @@ export const stepWorld = (
   sceneEvents.push(...sceneStep.events);
   for (const event of sceneEvents) eventSeeds.push({ source: "scenes", actorId: null, payload: event });
 
+  // What the verbs promised, paid in mercy-loop currency.
+  const effects = applySceneEffects(
+    sceneEvents,
+    working.meta,
+    queries.definition.metaParams,
+    arenaHearthLit,
+  );
+  arenaHearthLit = effects.arenaHearthLit;
+  for (const event of effects.metaEvents) {
+    eventSeeds.push({ source: "meta", actorId: playerId, payload: event });
+  }
+  const cleansed = effects.cleanseTurn ? working.combat.damageActors[playerId] : undefined;
+  working = {
+    ...working,
+    meta: effects.meta,
+    ...(cleansed === undefined
+      ? {}
+      : {
+          combat: {
+            ...working.combat,
+            damageActors: {
+              ...working.combat.damageActors,
+              [playerId]: { ...cleansed, turnBuildup: 0, turned: false },
+            },
+          },
+        }),
+  };
+
   let nextEventSequence = state.nextEventSequence;
   const events: WorldEvent[] = eventSeeds.map((seed) => ({
     sequence: nextEventSequence++,
@@ -1147,6 +1215,9 @@ export const stepWorld = (
       meta: working.meta,
       engaged,
       arenaHearthLit,
+      leftStartZone,
+      snareBandContact: inSnareBand,
+      snareRootUntilTick,
       nextEventSequence,
     },
     events,

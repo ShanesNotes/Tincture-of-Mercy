@@ -77,10 +77,14 @@ export class FixedTickLoop {
       if (Math.abs(this.accumulatorMs) < FLOAT_EPSILON_MS) {
         this.accumulatorMs = 0;
       }
+      // A step may open a menu, which pauses and resets the accumulator. Leave
+      // the catch-up loop at once rather than subtracting a tick it never ran:
+      // that is what drove the interpolation alpha negative.
+      if (this.paused) break;
     }
 
     this.renderFrames += 1;
-    this.callbacks.render(this.accumulatorMs / TICK_MS);
+    this.callbacks.render(Math.max(0, this.accumulatorMs) / TICK_MS);
   }
 
   public setVisibility(hidden: boolean): void {

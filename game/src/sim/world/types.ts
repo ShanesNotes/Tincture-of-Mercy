@@ -161,6 +161,18 @@ export interface WorldState {
   readonly engaged: boolean;
   /** Lit by the aftermath branch; the arena Hearth stays cold until then. */
   readonly arenaHearthLit: boolean;
+  /**
+   * True once the player has been outside the cabin. Anna's gravity is the
+   * cabin you come back to, so it must not open on the prologue's own heels.
+   */
+  readonly leftStartZone: boolean;
+  /**
+   * The snare line roots on contact, once per approach. Without the edge the
+   * root re-arms under a player who cannot move out of the band, and the ring
+   * becomes a wall instead of a hazard.
+   */
+  readonly snareBandContact: boolean;
+  readonly snareRootUntilTick: number;
 }
 
 export interface WorldInputFrame {
