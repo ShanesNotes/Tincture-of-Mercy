@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "_source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md - 'Attend (lock-on)' row, verbatim: acquisition half-cone 34 deg, range 15m; retain to 22m or 30t broken LOS; switch on stick flick >0.6 within +/-45 deg, 12t cooldown, score 0.7 angle / 0.3 distance; on target death re-acquire <=8m within 20t.",
+  "acquisitionHalfConeDegrees": 34,
+  "acquisitionRangeMeters": 15,
+  "retainRangeMeters": 22,
+  "lineOfSightBreakTicks": 30,
+  "switchFlickMagnitude": 0.6,
+  "switchFlickHalfAngleDegrees": 45,
+  "switchCooldownTicks": 12,
+  "angleScoreWeight": 0.7,
+  "distanceScoreWeight": 0.3,
+  "reacquireRangeMeters": 8,
+  "reacquireWindowTicks": 20
+}
