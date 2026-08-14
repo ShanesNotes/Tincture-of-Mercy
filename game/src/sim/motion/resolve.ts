@@ -54,10 +54,23 @@ interface StepResult {
 }
 
 /**
- * Attempts to climb a blocking edge: lift by the step height, carry the
- * remaining horizontal motion, then drop back onto the tread. Rejected when the
- * lift is obstructed (low ceilings), when the landing is missing or too steep,
- * or when the resulting climb is not a genuine climb of at most `stepHeight`.
+ * Attempts to climb a blocking edge: lift, carry the motion forward, drop onto
+ * the tread.
+ *
+ * Two details are load-bearing.
+ *
+ * The lift is `stepHeight - skin`, not `stepHeight`. A grounded capsule already
+ * floats one skin width above its surface, so lifting by the full step height
+ * would put the capsule's underside at `stepHeight + skin` above the ground and
+ * quietly climb risers taller than the authored limit.
+ *
+ * The forward carry is at least `radius + 2 * skin`, even when the tick only
+ * asked for a centimetre. A capsule is supported by what is under its axis, and
+ * contact with a riser leaves the axis roughly a radius short of it — so a step
+ * that only advanced the requested distance would come down on the tread's lip,
+ * be rejected as unwalkable, and the actor would never climb stairs at walking
+ * speed. Committing the clearance instead makes the climb take exactly one
+ * tick, at the cost of a bounded forward pop on the tick a step is taken.
  */
 const tryStepUp = (
   queries: CollisionQueries,
@@ -66,53 +79,57 @@ const tryStepUp = (
   remaining: Vec3,
 ): StepResult | null => {
   const { stepHeight } = params.collision;
-  const { skin } = params.capsule;
+  const { skin, radius } = params.capsule;
   const horizontal: Vec3 = { x: remaining.x, y: 0, z: remaining.z };
   const horizontalDistance = length(horizontal);
-  if (horizontalDistance <= MOVE_EPSILON || stepHeight <= 0) {
+  const lift = stepHeight - skin;
+  if (horizontalDistance <= MOVE_EPSILON || lift <= 0) {
     return null;
   }
 
   const liftHit = queries.sweepCapsule({
     capsule: capsuleAtFoot(position, params),
-    displacement: { x: 0, y: stepHeight, z: 0 },
+    displacement: { x: 0, y: lift, z: 0 },
   });
-  if (liftHit !== null && liftHit.fraction * stepHeight - skin < stepHeight - MOVE_EPSILON) {
+  if (liftHit !== null && liftHit.fraction * lift - skin < lift - MOVE_EPSILON) {
     return null;
   }
-  const lifted: Vec3 = { x: position.x, y: position.y + stepHeight, z: position.z };
+  const lifted: Vec3 = { x: position.x, y: position.y + lift, z: position.z };
 
   const direction = scale(horizontal, 1 / horizontalDistance);
+  const carry = Math.max(horizontalDistance, radius + skin * 2);
   const forwardHit = queries.sweepCapsule({
     capsule: capsuleAtFoot(lifted, params),
-    displacement: horizontal,
+    displacement: scale(direction, carry),
   });
   const forwardTravel =
-    forwardHit === null
-      ? horizontalDistance
-      : clamp(forwardHit.fraction * horizontalDistance - skin, 0, horizontalDistance);
+    forwardHit === null ? carry : clamp(forwardHit.fraction * carry - skin, 0, carry);
   if (forwardTravel <= skin) {
     return null;
   }
   const advanced = addScaled(lifted, direction, forwardTravel);
 
-  const dropDistance = stepHeight + skin;
   const dropHit = queries.sweepCapsule({
     capsule: capsuleAtFoot(advanced, params),
-    displacement: { x: 0, y: -dropDistance, z: 0 },
+    displacement: { x: 0, y: -stepHeight, z: 0 },
   });
   if (dropHit === null || !isWalkable(dropHit.normal, params)) {
     return null;
   }
-  const drop = clamp(dropHit.fraction * dropDistance - skin, 0, dropDistance);
+  const drop = clamp(dropHit.fraction * stepHeight - skin, 0, stepHeight);
   const landed: Vec3 = { x: advanced.x, y: advanced.y - drop, z: advanced.z };
+
+  // Stand on top of what was landed on, never balanced against its lip.
+  if (landed.y < dropHit.point.y - MOVE_EPSILON) {
+    return null;
+  }
 
   const climb = landed.y - position.y;
   if (climb <= MOVE_EPSILON || climb > stepHeight + MOVE_EPSILON) {
     return null;
   }
 
-  const consumed = forwardTravel / horizontalDistance;
+  const consumed = clamp(forwardTravel / horizontalDistance, 0, 1);
   return {
     position: landed,
     remaining: {
