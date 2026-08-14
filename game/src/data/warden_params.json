@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md (Warden P1/P2 tables), ENCOUNTERS.md (Warden section), GATES.md (F3/F5/F6), DECISIONS.md (D7/D9)",
+  "provenance": {
+    "kind": "tuning_with_authored_defaults",
+    "reference": "TUNING_V0 The Warden of the Ironwood; ENCOUNTERS The Warden of the Ironwood; GATES F3/F5/F6",
+    "authoredReason": "Tick tables, phase threshold, ceremony hold, snare root, quiet Wither/radius and gate bars are verbatim law. Per-move engagement ranges, selection weights, cooldowns, and the Warden's authored per-tick displacement rates are absent from every source document and ship here as explicit v0 authored baselines."
+  },
+  "ceremony": {
+    "pulsePercent": 55,
+    "holdTicks": 90,
+    "invulnerable": true,
+    "dealsDamage": false,
+    "moveId": "warden_ceremony",
+    "cameraAnchorId": "cam.warden_intro",
+    "lanternHangAnchorId": "lantern.hang"
+  },
+  "ring": {
+    "sourcePlacementKey": "snareRing",
+    "zone": "ARENA",
+    "rootTicks": 45,
+    "chimeOnContact": true,
+    "contactBandMeters": 0.35,
+    "hugBandMeters": 2.0,
+    "radiusToleranceMeters": 0.05,
+    "wardenPassesThrough": true,
+    "chargeEndsAtRing": true
+  },
+  "leash": {
+    "mode": "arena_bounds",
+    "marginMeters": 0.0
+  },
+  "quiet": {
+    "moveId": "warden_p2_the_quiet",
+    "witherAmount": 25,
+    "radiusMeters": 6,
+    "pulseDamage": 0,
+    "stillnessTellTicks": 30
+  },
+  "selection": {
+    "sameMoveMaxConsecutive": 2,
+    "engageRangeMeters": 12.0,
+    "preferredRangeMeters": 2.0,
+    "stepBackRangeMeters": 5.5,
+    "neutralCooldownTicks": 24,
+    "cooldownScoreCapTicks": 600,
+    "weightScoreScale": 1000
+  },
+  "motion": {
+    "approachMetersPerTick": 0.075,
+    "stepBackMetersPerTick": 0.04,
+    "chargeMetersPerTick": 0.3,
+    "leashReturnMetersPerTick": 0.06
+  },
+  "gates": {
+    "openerMinStartupTicks": 18,
+    "heavyTellMinStartupTicks": 30,
+    "stillnessTellMinTicks": 30,
+    "minPunishableRecoveryTicks": 22,
+    "dodgeToleranceTicks": 6,
+    "knownShortfalls": [
+      {
+        "moveId": "warden_p1_lantern_swing",
+        "gate": "F3.openerMinStartupTicks",
+        "tellTicks": 14,
+        "requiredTicks": 18,
+        "note": "TUNING_V0 authors the lantern swing at 14t startup; GATES F3 bars boss openers below 18t. The table is law for this wave, so the shortfall is declared here instead of silently retuned. Feel-gate round must move one of the two."
+      }
+    ]
+  },
+  "aftermath": {
+    "tagItemId": "wardens_tag",
+    "tagTextKeys": [
+      "boss.aftermath.tag_read",
+      "item.key.wardens_tag.name",
+      "item.key.wardens_tag.desc",
+      "notebook.warden_tag"
+    ],
+    "titleCard": false
+  },
+  "phases": {
+    "p1": {
+      "actorClass": "warden_p1",
+      "steadyClass": "warden_p1",
+      "witherPerHit": 0,
+      "moves": [
+        {
+          "moveId": "warden_p1_overhead_fell",
+          "tellClass": "heavy",
+          "tableSegments": [32],
+          "tablePunish": "2 lights / 1 heavy",
+          "punishLights": 2,
+          "contactTicksPerWindow": null,
+          "weight": 24,
+          "cooldownTicks": 150,
+          "minRangeMeters": 1.0,
+          "maxRangeMeters": 3.6,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p1_side_clear",
+          "tellClass": "opener",
+          "tableSegments": [22],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 30,
+          "cooldownTicks": 90,
+          "minRangeMeters": 1.0,
+          "maxRangeMeters": 3.2,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p1_lantern_swing",
+          "tellClass": "close_poke",
+          "tableSegments": [14],
+          "tablePunish": "roll-through only",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 26,
+          "cooldownTicks": 70,
+          "minRangeMeters": 0.8,
+          "maxRangeMeters": 2.2,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p1_two_step_chop",
+          "tellClass": "opener",
+          "tableSegments": [26, 14],
+          "tablePunish": "after 2nd only",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 22,
+          "cooldownTicks": 180,
+          "minRangeMeters": 1.2,
+          "maxRangeMeters": 4.0,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p1_stomp_snare_kick",
+          "tellClass": "opener",
+          "tableSegments": [18],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 20,
+          "cooldownTicks": 120,
+          "minRangeMeters": 0.8,
+          "maxRangeMeters": 2.6,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p1_lantern_raise_bait",
+          "tellClass": "bait",
+          "tableSegments": [40],
+          "tablePunish": "free heavy in P1; punished in P2",
+          "punishLights": 0,
+          "contactTicksPerWindow": null,
+          "weight": 14,
+          "cooldownTicks": 300,
+          "minRangeMeters": 4.5,
+          "maxRangeMeters": 9.0,
+          "requiresStance": "stepped_back",
+          "requiresRingHug": false
+        }
+      ]
+    },
+    "p2": {
+      "actorClass": "warden_p2",
+      "steadyClass": "warden_p2",
+      "witherPerHit": 12,
+      "moves": [
+        {
+          "moveId": "warden_p2_wide_fell",
+          "tellClass": "heavy",
+          "tableSegments": [36],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 24,
+          "cooldownTicks": 160,
+          "minRangeMeters": 1.0,
+          "maxRangeMeters": 4.0,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p2_three_string_sweep",
+          "tellClass": "opener",
+          "tableSegments": [20, 12, 16],
+          "tablePunish": "after 3rd only",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 30,
+          "cooldownTicks": 200,
+          "minRangeMeters": 1.0,
+          "maxRangeMeters": 3.6,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p2_snare_toss",
+          "tellClass": "opener",
+          "tableSegments": [28],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 18,
+          "cooldownTicks": 240,
+          "minRangeMeters": 5.0,
+          "maxRangeMeters": 16.0,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p2_charge_through",
+          "tellClass": "heavy",
+          "tableSegments": [30],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": 6,
+          "weight": 20,
+          "cooldownTicks": 300,
+          "minRangeMeters": 5.0,
+          "maxRangeMeters": 16.0,
+          "requiresStance": null,
+          "requiresRingHug": false
+        },
+        {
+          "moveId": "warden_p2_lantern_fire_arc",
+          "tellClass": "opener",
+          "tableSegments": [24],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 22,
+          "cooldownTicks": 180,
+          "minRangeMeters": 0.8,
+          "maxRangeMeters": 4.0,
+          "requiresStance": null,
+          "requiresRingHug": true
+        },
+        {
+          "moveId": "warden_p2_the_quiet",
+          "tellClass": "stillness",
+          "tableSegments": [30],
+          "tablePunish": "1 light",
+          "punishLights": 1,
+          "contactTicksPerWindow": null,
+          "weight": 12,
+          "cooldownTicks": 420,
+          "minRangeMeters": 0.0,
+          "maxRangeMeters": 8.0,
+          "requiresStance": null,
+          "requiresRingHug": false
+        }
+      ]
+    }
+  }
+}
