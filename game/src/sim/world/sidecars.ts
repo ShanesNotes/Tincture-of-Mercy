@@ -116,4 +116,3 @@ export const withHostedAction = (
   actor.hostedActionInstance === instanceId
     ? actor
     : { ...actor, hostedActionInstance: instanceId };
-
