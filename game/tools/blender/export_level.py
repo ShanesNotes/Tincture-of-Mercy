@@ -166,11 +166,11 @@ def iter_world_tris(obj):
     ev.to_mesh_clear()
 
 
-def bake_collision(tris: list[list[Vector]]) -> dict:
+def bake_collision(tris: list[tuple[list[Vector], bool]]) -> dict:
     """1mm-quantize, weld, drop slivers, stable triangle order (D8)."""
     index: dict[tuple[int, int, int], int] = {}
     vertices: list[list[float]] = []
-    raw_tris: list[tuple[int, int, int]] = []
+    raw_tris: list[tuple[tuple[int, int, int], bool]] = []
 
     def weld(v: Vector) -> int:
         key = quantize_mm(to_game(v))
@@ -182,7 +182,7 @@ def bake_collision(tris: list[list[Vector]]) -> dict:
         vertices.append(from_mm(key))
         return idx
 
-    for pts in tris:
+    for pts, nav in tris:
         i0, i1, i2 = weld(pts[0]), weld(pts[1]), weld(pts[2])
         if i0 == i1 or i1 == i2 or i2 == i0:
             continue
@@ -199,18 +199,21 @@ def bake_collision(tris: list[list[Vector]]) -> dict:
         # Rotate so the smallest vertex index is first; preserve winding.
         trip = (i0, i1, i2)
         pivot = min(range(3), key=lambda k: trip[k])
-        raw_tris.append((trip[pivot], trip[(pivot + 1) % 3], trip[(pivot + 2) % 3]))
+        raw_tris.append(((trip[pivot], trip[(pivot + 1) % 3], trip[(pivot + 2) % 3]), nav))
 
-    raw_tris.sort()
-    # Drop exact duplicates after the stable sort.
+    raw_tris.sort(key=lambda item: (item[0], not item[1]))
+    # Drop exact duplicates after the stable sort. A playable copy wins.
     triangles: list[list[int]] = []
+    nav_exclude: list[int] = []
     prev = None
-    for tri in raw_tris:
+    for tri, nav in raw_tris:
         if tri == prev:
             continue
+        if not nav:
+            nav_exclude.append(len(triangles))
         triangles.append([tri[0], tri[1], tri[2]])
         prev = tri
-    return {
+    payload = {
         "schema": COLLISION_SCHEMA,
         "quantizationMm": 1,
         "triCount": len(triangles),
@@ -218,6 +221,9 @@ def bake_collision(tris: list[list[Vector]]) -> dict:
         "vertexCount": len(vertices),
         "vertices": vertices,
     }
+    if nav_exclude:
+        payload["navExclude"] = nav_exclude
+    return payload
 
 
 def collision_sha(payload: dict) -> str:
@@ -357,12 +363,20 @@ def main() -> int:
         for obj in collection_meshes(zone):
             if int(obj.get("tincture_collision", 1)) != 1:
                 continue
-            tris.extend(iter_world_tris(obj))
+            nav = int(obj.get("tincture_nav", 1)) == 1
+            tris.extend((pts, nav) for pts in iter_world_tris(obj))
         collision = bake_collision(tris)
         collision["zone"] = zone
         write_json(col_path, collision)
         sha = collision_sha(collision)
-        bounds = aabb_of(collision["vertices"])
+        exclude = set(collision.get("navExclude", []))
+        playable = [
+            collision["vertices"][index]
+            for tri_index, tri in enumerate(collision["triangles"])
+            if tri_index not in exclude
+            for index in tri
+        ]
+        bounds = aabb_of(playable if playable else collision["vertices"])
         zones_out[zone] = {
             "bounds": bounds,
             "collision": col_path.name,

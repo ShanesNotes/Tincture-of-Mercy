@@ -126,10 +126,10 @@ describe("world golden replay", () => {
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
       { tick: 1, stateHash: "8aa967b2" },
-      { tick: 1_327, stateHash: "3a8ac74b" },
-      { tick: 1_370, stateHash: "4b67e114" },
-      { tick: 1_977, stateHash: "66ebec55" },
-      { tick: 6_753, stateHash: "72509099" },
+      { tick: 1_327, stateHash: "b01c7d8a" },
+      { tick: 1_370, stateHash: "9e887772" },
+      { tick: 1_977, stateHash: "00f2f3eb" },
+      { tick: 6_753, stateHash: "1d89fdea" },
       { tick: 22_140, stateHash: "4c59da5a" },
       { tick: 22_348, stateHash: "174728b4" },
       { tick: 23_776, stateHash: "86086ec6" },

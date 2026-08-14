@@ -85,7 +85,7 @@ class Collision:
     def __init__(self, triangles: list[tuple]):
         self.tris = triangles
         self.buckets: dict[tuple[int, int], list[int]] = {}
-        for i, (a, b, c, _n, walk) in enumerate(triangles):
+        for i, (a, b, c, _n, walk, _block) in enumerate(triangles):
             xs = (a[0], b[0], c[0])
             zs = (a[2], b[2], c[2])
             x0, x1 = int(math.floor(min(xs) / CELL)), int(math.floor(max(xs) / CELL))
@@ -117,7 +117,7 @@ class Collision:
         dire = (0.0, -1.0, 0.0)
         best_t = None
         best = None
-        for a, b, c, n, walk in self.candidates(x, z, 0.75):
+        for a, b, c, n, walk, _block in self.candidates(x, z, 0.75):
             if walkable_only and not walk:
                 continue
             hit = moller(orig, dire, a, b, c)
@@ -142,12 +142,12 @@ class Collision:
         )
         seen: set[int] = set()
         for sx, sz in samples:
-            for a, b, c, n, walk in self.candidates(sx, sz, 1.6):
+            for a, b, c, n, walk, block in self.candidates(sx, sz, 1.6):
                 idx = id(a)
                 if idx in seen:
                     continue
                 seen.add(idx)
-                if walk:
+                if walk or not block:
                     continue
                 # Only treat near-vertical faces as walls.
                 if n[1] > 0.35:
@@ -165,7 +165,8 @@ def load_collision(build: Path, manifest: dict) -> Collision:
     for zone, meta in manifest["zones"].items():
         payload = load_json(build / meta["collision"])
         verts = payload["vertices"]
-        for i0, i1, i2 in payload["triangles"]:
+        excluded = set(payload.get("navExclude", []))
+        for index, (i0, i1, i2) in enumerate(payload["triangles"]):
             a, b, c = verts[i0], verts[i1], verts[i2]
             n = tri_normal(a, b, c)
             if n is None:
@@ -174,8 +175,10 @@ def load_collision(build: Path, manifest: dict) -> Collision:
             if n[1] < 0:
                 a, c = c, a
                 n = (-n[0], -n[1], -n[2])
-            walk = n[1] >= UP_DOT
-            tris.append((tuple(a), tuple(b), tuple(c), n, walk))
+            nav_ok = index not in excluded
+            walk = n[1] >= UP_DOT and nav_ok
+            block = nav_ok
+            tris.append((tuple(a), tuple(b), tuple(c), n, walk, block))
         _ = zone
     return Collision(tris)
 

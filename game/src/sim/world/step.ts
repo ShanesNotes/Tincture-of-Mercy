@@ -68,6 +68,7 @@ import {
   type SceneEvent,
   type SceneState,
 } from "../scenes";
+import { WORLD_KILL_PLANE_Y } from "./bounds";
 import { createWorldState } from "./create";
 import { isWorldPackActive } from "./scheduler";
 import { actorHurtboxes, actorWeapon, actorWeaponRadius, rootClipForAction } from "./sidecars";
@@ -849,6 +850,23 @@ export const stepWorld = (
         };
       }
     }
+    const fallen = actorsAfterMotion[actorId];
+    const fallenDamage = combatBeforeStep.damageActors[actorId];
+    if (
+      actorId === playerId &&
+      fallen !== undefined &&
+      fallenDamage !== undefined &&
+      fallenDamage.pulse > 0 &&
+      fallen.motion.position.y < WORLD_KILL_PLANE_Y
+    ) {
+      combatBeforeStep = {
+        ...combatBeforeStep,
+        damageActors: {
+          ...combatBeforeStep.damageActors,
+          [actorId]: { ...fallenDamage, pulse: 0 },
+        },
+      };
+    }
   }
   combatBeforeStep = syncCombatFromMotion(combatBeforeStep, actorsAfterMotion);
   const stagedForSweeps: WorldState = {
@@ -1108,7 +1126,11 @@ export const stepWorld = (
   const playerWasAlive = (state.combat.damageActors[playerId]?.pulse ?? 0) > 0;
   const playerIsDead = (combat.damageActors[playerId]?.pulse ?? 0) <= 0;
   if (playerWasAlive && playerIsDead) {
-    const death = recordDeath(meta, actorsAfterCombat[playerId]?.motion.position ?? playerMotion.position);
+    const deathMotion = actorsAfterCombat[playerId]?.motion ?? playerMotion;
+    const deathPosition = deathMotion.position.y < WORLD_KILL_PLANE_Y
+      ? { x: deathMotion.position.x, y: deathMotion.fallStartY, z: deathMotion.position.z }
+      : deathMotion.position;
+    const death = recordDeath(meta, deathPosition);
     meta = death.state;
     for (const event of death.events) eventSeeds.push({ source: "meta", actorId: playerId, payload: event });
     const hearthId = meta.lastHearthId ?? queries.definition.respawnHearthId;

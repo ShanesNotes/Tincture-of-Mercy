@@ -6,6 +6,7 @@ export {
   wardenIsInvulnerable,
   wardenSwingIsLive,
 } from "./warden";
+export { WORLD_KILL_PLANE_Y } from "./bounds";
 export { createWorldState } from "./create";
 export { createWorldDebugSnapshot } from "./debug";
 export { hashWorldState } from "./hash";
