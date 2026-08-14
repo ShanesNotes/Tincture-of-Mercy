@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md hitstop table (verbatim), GATES.md F4/A3, ART_BIBLE L4/L8/EN14, DECISIONS.md D9; slice s27-vfx contract",
+  "hitstopClasses": {
+    "_comment": "hitstopTicks are the TUNING_V0 Hitstop row verbatim (Light 3 · heavy 6 · charged 8 · blocked 5 · guard-break 9 · critical/death 12). bloomTicks pair the ink-bloom with the hitstop class (TUNING_V0: 'View adds ink-bloom at frame margin'); the authored decay tail beyond the freeze is recorded per class. peakIntensity and radiusPx are authored presentation values (no TUNING row governs view bloom size; bounded by the L8/A3 budget below).",
+    "light": { "hitstopTicks": 3, "bloomTicks": 8, "peakIntensity": 0.55, "radiusPx": 64 },
+    "blocked": { "hitstopTicks": 5, "bloomTicks": 10, "peakIntensity": 0.6, "radiusPx": 68 },
+    "heavy": { "hitstopTicks": 6, "bloomTicks": 12, "peakIntensity": 0.7, "radiusPx": 78 },
+    "charged": { "hitstopTicks": 8, "bloomTicks": 15, "peakIntensity": 0.8, "radiusPx": 88 },
+    "guard_break": { "hitstopTicks": 9, "bloomTicks": 15, "peakIntensity": 0.8, "radiusPx": 86 },
+    "critical": { "hitstopTicks": 12, "bloomTicks": 20, "peakIntensity": 1.0, "radiusPx": 104 },
+    "death": { "hitstopTicks": 12, "bloomTicks": 20, "peakIntensity": 1.0, "radiusPx": 104 }
+  },
+  "budget": {
+    "_comment": "L8 / gate A3: oxblood hue-mask coverage ceiling outside declared red-field states. The margin ink-bloom is oxblood and must respect it; blooms are brief.",
+    "maxOxbloodCoverage": 0.05
+  },
+  "inversion": {
+    "_comment": "Council canon impact spec: 1-frame parchment inversion on criticals (TUNING_V0 Hitstop row; slice: critical/death). Exactly one presented frame, never more.",
+    "frames": 1
+  },
+  "impactStrokes": {
+    "_comment": "World-space ink-stroke hit flashes: 3 authored stroke variants (slash / cross / blot), hatched line-work, never particle spray (AD9). Duration = hitstop freeze + authored tail. Gold is licensed ONLY for riposte/guard-break — the single small gold flash of the earned opening (slice deliverable 2; AD6 otherwise bans it).",
+    "variants": 3,
+    "tailTicks": 4,
+    "sizeMeters": 0.9,
+    "goldFlashSizeMeters": 0.45,
+    "goldFlashTicks": 8
+  },
+  "wither": {
+    "_comment": "EN14: ambient Wither = margin desaturation band + sparse ink motes; never green fog, never corruption splash. Density is data-driven and hard-capped.",
+    "maxMotes": 24,
+    "moteSizeMeters": 0.06,
+    "driftMetersPerTick": 0.004,
+    "bandStops": [0.25, 0.5],
+    "defaultDurationTicks": 120
+  },
+  "flask": {
+    "_comment": "Vial glow = registered emblem light pulse during the drink (L4 verb `mercy`, slice-licensed verb extension; KA4: the vial's jewel glint is Kalev's one licensed warm accent, runtime emblem light only).",
+    "pulseTicks": 20,
+    "peakIntensity": 2.2
+  },
+  "ember": {
+    "_comment": "Ember use = brief gold-to-grey world desaturation sweep (the Numbness moment made visible once, then gone). 60t is the slice-contract value; stops are stepped, never continuous (L3).",
+    "sweepTicks": 60,
+    "desatStops": [0, 0.6, 1, 0.4, 0],
+    "goldGlintTicks": 8
+  },
+  "tagChime": {
+    "_comment": "Tiny tin glint on snare-ring contact, pairing the audio tell (PR5: tags chime on contact). Tin/parchment flash, never gold (WR5).",
+    "glintTicks": 10,
+    "glintSizeMeters": 0.12
+  },
+  "deathPage": {
+    "_comment": "Death 'page' treatment hook (slice goal): the lower page dims for a beat while the Open Page scatters (D6/F11). Hook only — full treatment is integration work.",
+    "ticks": 30
+  },
+  "margin": {
+    "_comment": "Bloom anchors sit on the manuscript border's margin inset; matches the s16 HUD baseInsetPx so bloom and border agree at integration (authored presentation geometry).",
+    "insetPx": 28
+  },
+  "demo": {
+    "_comment": "?scene=vfx scripted timeline: one row per scripted event, exercising every effect for the e2e captures (slice deliverable 6).",
+    "loopTicks": 900,
+    "timeline": [
+      { "tick": 10, "event": { "kind": "whiff", "actorId": "kalev" } },
+      { "tick": 40, "event": { "kind": "hit", "targetId": "dummy", "hitstopTicks": 3, "direction": [1, 0.2], "contact": [0.45, 1.2, -4] } },
+      { "tick": 90, "event": { "kind": "hit", "targetId": "dummy", "hitstopTicks": 6, "direction": [0.2, 1], "contact": [0.2, 1.4, -4] } },
+      { "tick": 140, "event": { "kind": "hit", "targetId": "dummy", "hitstopTicks": 8, "direction": [-0.7, 0.7], "contact": [-0.3, 1.3, -4] } },
+      { "tick": 190, "event": { "kind": "hit", "targetId": "dummy", "hitstopTicks": 5, "direction": [-1, -0.1], "contact": [-0.45, 1.1, -4] } },
+      { "tick": 240, "event": { "kind": "guard_break", "targetId": "dummy", "hitstopTicks": 9, "direction": [0, -1], "contact": [0, 1.2, -4] } },
+      { "tick": 300, "event": { "kind": "riposte", "targetId": "dummy", "contact": [0.1, 1.25, -4] } },
+      { "tick": 360, "event": { "kind": "hit", "targetId": "dummy", "hitstopTicks": 12, "critical": true, "direction": [1, -0.5], "contact": [0.4, 1.3, -4] } },
+      { "tick": 420, "event": { "kind": "death", "targetId": "dummy", "hitstopTicks": 12, "direction": [-0.5, -1], "contact": [-0.2, 1.0, -4] } },
+      { "tick": 500, "event": { "kind": "wither", "density": 0.7, "durationTicks": 150 } },
+      { "tick": 700, "event": { "kind": "flask", "actorId": "kalev" } },
+      { "tick": 760, "event": { "kind": "ember", "actorId": "kalev" } },
+      { "tick": 860, "event": { "kind": "tag_chime", "contact": [3.6, 1.0, -4] } }
+    ]
+  }
+}

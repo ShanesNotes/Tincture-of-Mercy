@@ -59,6 +59,22 @@ export const bootApp = async (): Promise<void> => {
     return;
   }
 
+  // s27 impact/state VFX demo: additive mount — the border impact layer plus
+  // the scripted-timeline scene; the default boot path is untouched.
+  if (params.get("scene") === "vfx") {
+    const [{ bootVfxScene }, { buildImpactLayer }] = await Promise.all([
+      import("../view/vfx/scene"),
+      import("./hud/impact/impact"),
+    ]);
+    await bootVfxScene({
+      renderer: boot.renderer,
+      backend: boot.backend,
+      params,
+      impactLayer: buildImpactLayer(mount),
+    });
+    return;
+  }
+
   const scene = new Scene();
   scene.background = new Color("#f8f1e5");
   const camera = new PerspectiveCamera(44, 1, 0.1, 1_000);
