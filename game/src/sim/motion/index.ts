@@ -53,3 +53,17 @@ export {
   spawnMotionState,
   stepMotion,
 } from "./motion";
+
+/**
+ * The nasty-geometry test level and its brute-force query reference. Exported
+ * because PRD milestone M1 is "controller/camera/input on the nasty-geometry
+ * level" — the camera and renderer slices need the same geometry the controller
+ * is proven against, and this is the only description of it.
+ */
+export type { LevelTriangle, NastyLevel } from "./nasty_level";
+export {
+  BruteForceQueries,
+  NASTY_LEVEL_LANDMARKS,
+  closestDistanceToLevel,
+  createNastyLevel,
+} from "./nasty_level";
