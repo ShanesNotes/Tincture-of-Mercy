@@ -24,7 +24,7 @@ import type {
   RaycastQuery,
   Vec3,
 } from "./types";
-import { add, addScaled, clamp, cross, dot, lengthSq, normalize, scale, sub, vec } from "./vec";
+import { add, addScaled, clamp, cross, dot, length, lengthSq, normalize, scale, sub, vec } from "./vec";
 
 export interface LevelTriangle {
   readonly index: number;
@@ -311,19 +311,21 @@ export const NASTY_LEVEL_LANDMARKS = {
  * and every caller consumes the scratch immediately.
  */
 
-let scratchDistanceSq = 0;
-let scratchSegmentX = 0;
-let scratchSegmentY = 0;
-let scratchSegmentZ = 0;
-let scratchTriangleX = 0;
-let scratchTriangleY = 0;
-let scratchTriangleZ = 0;
-let segmentStartX = 0;
-let segmentStartY = 0;
-let segmentStartZ = 0;
-let segmentEndX = 0;
-let segmentEndY = 0;
-let segmentEndZ = 0;
+const scratch = {
+  distanceSq: 0,
+  segmentX: 0,
+  segmentY: 0,
+  segmentZ: 0,
+  triangleX: 0,
+  triangleY: 0,
+  triangleZ: 0,
+  startX: 0,
+  startY: 0,
+  startZ: 0,
+  endX: 0,
+  endY: 0,
+  endZ: 0,
+};
 
 const considerCandidate = (
   distanceSq: number,
@@ -334,19 +336,23 @@ const considerCandidate = (
   ty: number,
   tz: number,
 ): void => {
-  if (distanceSq >= scratchDistanceSq) {
+  if (distanceSq >= scratch.distanceSq) {
     return;
   }
-  scratchDistanceSq = distanceSq;
-  scratchSegmentX = sx;
-  scratchSegmentY = sy;
-  scratchSegmentZ = sz;
-  scratchTriangleX = tx;
-  scratchTriangleY = ty;
-  scratchTriangleZ = tz;
+  scratch.distanceSq = distanceSq;
+  scratch.segmentX = sx;
+  scratch.segmentY = sy;
+  scratch.segmentZ = sz;
+  scratch.triangleX = tx;
+  scratch.triangleY = ty;
+  scratch.triangleZ = tz;
 };
 
-/** True when `p`, assumed to lie in the triangle's plane, is inside it. `n` need not be unit. */
+/**
+ * True when `p`, assumed to lie in the triangle's plane, is inside it. `n` need
+ * not be unit. Written out per edge rather than through a helper closure: this
+ * is the innermost function of the sweep search.
+ */
 const projectsInsideTriangle = (
   px: number,
   py: number,
@@ -358,29 +364,48 @@ const projectsInsideTriangle = (
   ny: number,
   nz: number,
 ): boolean => {
-  const side = (from: Vec3, to: Vec3): number => {
-    const ex = to.x - from.x;
-    const ey = to.y - from.y;
-    const ez = to.z - from.z;
-    const fx = px - from.x;
-    const fy = py - from.y;
-    const fz = pz - from.z;
-    return (ey * fz - ez * fy) * nx + (ez * fx - ex * fz) * ny + (ex * fy - ey * fx) * nz;
-  };
-  return side(a, b) >= 0 && side(b, c) >= 0 && side(c, a) >= 0;
+  const abx = b.x - a.x;
+  const aby = b.y - a.y;
+  const abz = b.z - a.z;
+  const apx = px - a.x;
+  const apy = py - a.y;
+  const apz = pz - a.z;
+  if ((aby * apz - abz * apy) * nx + (abz * apx - abx * apz) * ny + (abx * apy - aby * apx) * nz < 0) {
+    return false;
+  }
+
+  const bcx = c.x - b.x;
+  const bcy = c.y - b.y;
+  const bcz = c.z - b.z;
+  const bpx = px - b.x;
+  const bpy = py - b.y;
+  const bpz = pz - b.z;
+  if ((bcy * bpz - bcz * bpy) * nx + (bcz * bpx - bcx * bpz) * ny + (bcx * bpy - bcy * bpx) * nz < 0) {
+    return false;
+  }
+
+  const cax = a.x - c.x;
+  const cay = a.y - c.y;
+  const caz = a.z - c.z;
+  const cpx = px - c.x;
+  const cpy = py - c.y;
+  const cpz = pz - c.z;
+  return (
+    (cay * cpz - caz * cpy) * nx + (caz * cpx - cax * cpz) * ny + (cax * cpy - cay * cpx) * nz >= 0
+  );
 };
 
 /** Closest pair between the scratch segment and the segment `e0` -> `e1`. */
 const considerEdge = (e0: Vec3, e1: Vec3): void => {
-  const d1x = segmentEndX - segmentStartX;
-  const d1y = segmentEndY - segmentStartY;
-  const d1z = segmentEndZ - segmentStartZ;
+  const d1x = scratch.endX - scratch.startX;
+  const d1y = scratch.endY - scratch.startY;
+  const d1z = scratch.endZ - scratch.startZ;
   const d2x = e1.x - e0.x;
   const d2y = e1.y - e0.y;
   const d2z = e1.z - e0.z;
-  const rx = segmentStartX - e0.x;
-  const ry = segmentStartY - e0.y;
-  const rz = segmentStartZ - e0.z;
+  const rx = scratch.startX - e0.x;
+  const ry = scratch.startY - e0.y;
+  const rz = scratch.startZ - e0.z;
   const a = d1x * d1x + d1y * d1y + d1z * d1z;
   const e = d2x * d2x + d2y * d2y + d2z * d2z;
   const f = d2x * rx + d2y * ry + d2z * rz;
@@ -411,9 +436,9 @@ const considerEdge = (e0: Vec3, e1: Vec3): void => {
     }
   }
 
-  const sx = segmentStartX + d1x * s;
-  const sy = segmentStartY + d1y * s;
-  const sz = segmentStartZ + d1z * s;
+  const sx = scratch.startX + d1x * s;
+  const sy = scratch.startY + d1y * s;
+  const sz = scratch.startZ + d1z * s;
   const tx = e0.x + d2x * t;
   const ty = e0.y + d2y * t;
   const tz = e0.z + d2z * t;
@@ -440,13 +465,13 @@ const solveClosestSegmentTriangle = (
   b: Vec3,
   c: Vec3,
 ): number => {
-  segmentStartX = px;
-  segmentStartY = py;
-  segmentStartZ = pz;
-  segmentEndX = qx;
-  segmentEndY = qy;
-  segmentEndZ = qz;
-  scratchDistanceSq = Number.POSITIVE_INFINITY;
+  scratch.startX = px;
+  scratch.startY = py;
+  scratch.startZ = pz;
+  scratch.endX = qx;
+  scratch.endY = qy;
+  scratch.endZ = qz;
+  scratch.distanceSq = Number.POSITIVE_INFINITY;
 
   const abx = b.x - a.x;
   const aby = b.y - a.y;
@@ -481,22 +506,31 @@ const solveClosestSegmentTriangle = (
     const startX = px - ux * dp;
     const startY = py - uy * dp;
     const startZ = pz - uz * dp;
-    if (projectsInsideTriangle(startX, startY, startZ, a, b, c, nx, ny, nz)) {
+    const startInside = projectsInsideTriangle(startX, startY, startZ, a, b, c, nx, ny, nz);
+    if (startInside) {
       considerCandidate(dp * dp, px, py, pz, startX, startY, startZ);
     }
 
     const endX = qx - ux * dq;
     const endY = qy - uy * dq;
     const endZ = qz - uz * dq;
-    if (projectsInsideTriangle(endX, endY, endZ, a, b, c, nx, ny, nz)) {
+    const endInside = projectsInsideTriangle(endX, endY, endZ, a, b, c, nx, ny, nz);
+    if (endInside) {
       considerCandidate(dq * dq, qx, qy, qz, endX, endY, endZ);
+    }
+
+    if (startInside && endInside) {
+      // The projection is affine and the face convex, so the whole segment
+      // projects inside it; distance to the plane is linear along the segment
+      // and therefore extremal at an endpoint. No edge can beat that.
+      return Math.sqrt(scratch.distanceSq);
     }
   }
 
   considerEdge(a, b);
   considerEdge(b, c);
   considerEdge(c, a);
-  return Math.sqrt(scratchDistanceSq);
+  return Math.sqrt(scratch.distanceSq);
 };
 
 /** Allocating wrapper around the kernel, for tests and one-off queries. */
@@ -518,8 +552,8 @@ export const closestSegmentTriangle = (
   );
   return {
     distance,
-    onSegment: vec(scratchSegmentX, scratchSegmentY, scratchSegmentZ),
-    onTriangle: vec(scratchTriangleX, scratchTriangleY, scratchTriangleZ),
+    onSegment: vec(scratch.segmentX, scratch.segmentY, scratch.segmentZ),
+    onTriangle: vec(scratch.triangleX, scratch.triangleY, scratch.triangleZ),
   };
 };
 
@@ -717,8 +751,8 @@ const makeTriangleHit = (
   displacement: Vec3,
   fraction: number,
 ): CapsuleSweepHit => {
-  const onTriangle = vec(scratchTriangleX, scratchTriangleY, scratchTriangleZ);
-  const onSegment = vec(scratchSegmentX, scratchSegmentY, scratchSegmentZ);
+  const onTriangle = vec(scratch.triangleX, scratch.triangleY, scratch.triangleZ);
+  const onSegment = vec(scratch.segmentX, scratch.segmentY, scratch.segmentZ);
   const offset = sub(onSegment, onTriangle);
   const normal =
     lengthSq(offset) > CONTACT_EPSILON * CONTACT_EPSILON
@@ -744,6 +778,7 @@ const sweepTriangle = (
   triangle: LevelTriangle,
   capsule: Capsule,
   displacement: Vec3,
+  reach: number,
 ): CapsuleSweepHit | null => {
   const distanceAt = (fraction: number): number =>
     solveClosestSegmentTriangle(
@@ -758,8 +793,14 @@ const sweepTriangle = (
       triangle.c,
     );
 
-  if (distanceAt(0) <= capsule.radius) {
+  const initialDistance = distanceAt(0);
+  if (initialDistance <= capsule.radius) {
     return makeTriangleHit(triangle, displacement, 0);
+  }
+  if (initialDistance - reach > capsule.radius + CONTACT_EPSILON) {
+    // `d` is 1-Lipschitz in the fraction (translation moves points at most
+    // `reach`), so this triangle is out of range without searching it.
+    return null;
   }
 
   const minimumFraction = findMinimumDistanceFraction(distanceAt);
@@ -901,12 +942,13 @@ export class BruteForceQueries implements CollisionQueries {
     assertVec3(query.displacement, "capsule displacement");
 
     const bounds = makeSweptBounds(query.capsule, query.displacement);
+    const reach = length(query.displacement);
     let earliest: CapsuleSweepHit | null = null;
     for (const entry of this.#entries) {
       if (!overlaps(entry, bounds)) {
         continue;
       }
-      const candidate = sweepTriangle(entry.triangle, query.capsule, query.displacement);
+      const candidate = sweepTriangle(entry.triangle, query.capsule, query.displacement, reach);
       if (candidate !== null && isEarlier(candidate, earliest)) {
         earliest = candidate;
       }
