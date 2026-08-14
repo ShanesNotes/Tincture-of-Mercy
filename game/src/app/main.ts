@@ -11,12 +11,15 @@ import {
 import rawAttendParams from "../data/attend_params.json";
 import rawCombatParams from "../data/combat_params.json";
 import rawFrameData from "../data/frame_data.json";
+import rawIronwoodManifest from "../data/levels/ironwood_manifest.json";
 import rawMotionParams from "../data/motion_params.json";
 import rawSceneScripts from "../data/scene_scripts.json";
+import rawWardenParams from "../data/warden_params.json";
 import rawWolfAiParams from "../data/wolf_ai_params.json";
 import rawWorldAssembly from "../data/world_assembly.json";
 import { compileWalkGraph, parseWolfAiParams, type WalkGraphData } from "../sim/ai";
 import { parseAttendParams } from "../sim/attend";
+import { parseWardenParams } from "../sim/boss";
 import { compileCombatData } from "../sim/combat";
 import {
   FrameInputSampler,
@@ -200,6 +203,8 @@ const bootIronwoodPlay = async (
     placements: placementsBeforeSynthesis(worldView.assets.placements),
     sceneCatalog: parseSceneScripts(rawSceneScripts),
     sidecars: Object.fromEntries(worldView.assets.sidecarsByFile),
+    wardenParams: parseWardenParams(rawWardenParams, rawFrameData),
+    zones: rawIronwoodManifest.zones,
   });
   const queries: WorldQueries = { ...worldView.assets.collisionQueries, definition };
   let state = createWorldState(queries);

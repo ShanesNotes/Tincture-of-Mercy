@@ -1,7 +1,14 @@
 import type { WolfAttackId, WolfRole } from "../ai";
 import type { WolfAiParams } from "../ai/params";
 import type { AttendParams } from "../attend";
-import { hashCanonical, type CombatData, type SidecarData } from "../combat";
+import { parseSnareRing, type WardenParams, type WardenPhase } from "../boss";
+import {
+  hashCanonical,
+  type ActorClass,
+  type CombatData,
+  type SidecarData,
+  type SteadyClass,
+} from "../combat";
 import type { MotionParams, Vec3 } from "../motion";
 import { DEFAULT_META_PARAMS, type MetaParams } from "../meta";
 import type { SceneCatalog } from "../scenes";
@@ -13,9 +20,14 @@ import {
   type WorldDefinition,
   type WorldHearthDefinition,
   type WorldPackDefinition,
+  type WorldWardenDefinition,
+  type WorldZoneDefinition,
 } from "./types";
 
 type RecordValue = Record<string, unknown>;
+
+const WARDEN_ACTOR_CLASSES = ["warden_p1", "warden_p2"] as const satisfies readonly ActorClass[];
+const WARDEN_STEADY_CLASSES = ["warden_p1", "warden_p2"] as const satisfies readonly SteadyClass[];
 
 export interface WorldDefinitionSources {
   readonly combatData: CombatData;
@@ -27,6 +39,10 @@ export interface WorldDefinitionSources {
   readonly navGraph: CompiledWalkGraph;
   readonly placements: unknown;
   readonly sidecars: Readonly<Record<string, SidecarData>>;
+  /** Compiled `warden_params.json`. Omit to assemble a world without the boss. */
+  readonly wardenParams?: WardenParams;
+  /** `manifest.zones` from the s20 level bake; omit for worlds without zones. */
+  readonly zones?: unknown;
 }
 
 interface Placement {
@@ -167,6 +183,119 @@ const actorAsset = (
     }
   }
   return Object.freeze(result);
+};
+
+const parseZones = (raw: unknown): readonly WorldZoneDefinition[] => {
+  if (raw === undefined) return Object.freeze([]);
+  const source = record(raw, "$.zones");
+  return Object.freeze(
+    Object.keys(source)
+      .sort()
+      .map((id) => {
+        const box = record(source[id], `$.zones.${id}`);
+        const bounds = box.bounds === undefined ? box : record(box.bounds, `$.zones.${id}.bounds`);
+        const min = vec3(bounds.min, `$.zones.${id}.min`);
+        const max = vec3(bounds.max, `$.zones.${id}.max`);
+        if (max.x <= min.x || max.z <= min.z) {
+          return fail(`$.zones.${id}`, "must bound a positive XZ footprint");
+        }
+        return Object.freeze({ id, min, max, area: (max.x - min.x) * (max.z - min.z) });
+      }),
+  );
+};
+
+/**
+ * Baked zone boxes overlap at their seams (ROAD/ARENA, ARENA/ROAD_CODA). The
+ * smallest containing footprint wins, with the id as the tie-break, so the
+ * lookup is total and order-independent.
+ */
+export const zoneAt = (
+  zones: readonly WorldZoneDefinition[],
+  position: Vec3,
+): string | null => {
+  let best: WorldZoneDefinition | null = null;
+  for (const zone of zones) {
+    if (
+      position.x < zone.min.x ||
+      position.x > zone.max.x ||
+      position.z < zone.min.z ||
+      position.z > zone.max.z
+    ) {
+      continue;
+    }
+    if (best === null || zone.area < best.area || (zone.area === best.area && zone.id < best.id)) {
+      best = zone;
+    }
+  }
+  return best?.id ?? null;
+};
+
+const wardenDefinition = (
+  raw: unknown,
+  params: WardenParams,
+  placements: ReadonlyMap<string, Placement>,
+  rawPlacements: unknown,
+  hearths: Readonly<Record<string, WorldHearthDefinition>>,
+  combatData: CombatData,
+): WorldWardenDefinition => {
+  const path = "$.warden";
+  const source = record(raw, path);
+  const spawnPlacementId = string(source, "spawnPlacementId", path);
+  const spawn = placements.get(spawnPlacementId);
+  if (spawn?.kind !== "spawn_warden") {
+    return fail(`${path}.spawnPlacementId`, "must reference a spawn_warden placement");
+  }
+  const arenaHearthId = string(source, "arenaHearthId", path);
+  if (hearths[arenaHearthId] === undefined) {
+    return fail(`${path}.arenaHearthId`, "must reference a Hearth");
+  }
+  const ceremonyMoveId = params.ceremony.moveId;
+  if (combatData.frameData.moves[ceremonyMoveId] === undefined) {
+    return fail(`${path}.ceremony`, `unknown combat move ${ceremonyMoveId}`);
+  }
+  const classes = record(source.phaseActorClasses, `${path}.phaseActorClasses`);
+  const steady = record(source.phaseSteadyClasses, `${path}.phaseSteadyClasses`);
+  // The frame-data table declares exactly two Warden classes; the assembly may
+  // only name those, so the narrowing below is checked rather than asserted.
+  const wardenClass = <T extends string>(
+    value: string,
+    allowed: readonly T[],
+    at: string,
+  ): T => allowed.includes(value as T) ? (value as T) : fail(at, `must be one of ${allowed.join(", ")}`);
+  const phaseActorClasses: Record<WardenPhase, ActorClass> = {
+    p1: wardenClass(string(classes, "p1", `${path}.phaseActorClasses`), WARDEN_ACTOR_CLASSES, `${path}.phaseActorClasses.p1`),
+    p2: wardenClass(string(classes, "p2", `${path}.phaseActorClasses`), WARDEN_ACTOR_CLASSES, `${path}.phaseActorClasses.p2`),
+  };
+  const phaseSteadyClasses: Record<WardenPhase, SteadyClass> = {
+    p1: wardenClass(string(steady, "p1", `${path}.phaseSteadyClasses`), WARDEN_STEADY_CLASSES, `${path}.phaseSteadyClasses.p1`),
+    p2: wardenClass(string(steady, "p2", `${path}.phaseSteadyClasses`), WARDEN_STEADY_CLASSES, `${path}.phaseSteadyClasses.p2`),
+  };
+  for (const phase of ["p1", "p2"] as const) {
+    if (params.phases[phase].actorClass !== phaseActorClasses[phase]) {
+      return fail(
+        `${path}.phaseActorClasses.${phase}`,
+        `must match warden_params ${params.phases[phase].actorClass}`,
+      );
+    }
+    if (params.phases[phase].steadyClass !== phaseSteadyClasses[phase]) {
+      return fail(
+        `${path}.phaseSteadyClasses.${phase}`,
+        `must match warden_params ${params.phases[phase].steadyClass}`,
+      );
+    }
+  }
+  return Object.freeze({
+    actorId: string(source, "actorId", path),
+    params,
+    ring: parseSnareRing(rawPlacements, params),
+    spawnPosition: spawn.position,
+    spawnFacing: spawn.yaw,
+    maxPulse: number(source, "maxPulse", path, Number.MIN_VALUE),
+    phaseActorClasses: Object.freeze(phaseActorClasses),
+    phaseSteadyClasses: Object.freeze(phaseSteadyClasses),
+    arenaHearthId,
+    ceremonyMoveId,
+  });
 };
 
 const wolfActor = (placement: Placement, packId: string): WorldActorDefinition => ({
@@ -328,7 +457,36 @@ export const createWorldDefinition = (
   const actorAssets = {
     kalev: actorAsset(rawActors.kalev, "$.actors.kalev", sources.sidecars),
     wolf: actorAsset(rawActors.wolf, "$.actors.wolf", sources.sidecars),
+    warden: actorAsset(rawActors.warden, "$.actors.warden", sources.sidecars),
   } as const;
+  const zones = parseZones(sources.zones);
+
+  // The Warden is a world actor like any other: s10 owns his position, s11 owns
+  // his Pulse and Steady. `sim/boss` only decides what he does next.
+  const warden = sources.wardenParams === undefined
+    ? null
+    : wardenDefinition(
+        source.warden,
+        sources.wardenParams,
+        placements,
+        sources.placements,
+        hearths,
+        sources.combatData,
+      );
+  if (warden !== null) {
+    if (actors[warden.actorId] !== undefined) {
+      return fail("$.warden.actorId", `duplicate actor id ${warden.actorId}`);
+    }
+    actors[warden.actorId] = Object.freeze({
+      id: warden.actorId,
+      kind: "warden",
+      packId: null,
+      authoredRole: null,
+      spawnPlacementId: string(record(source.warden, "$.warden"), "spawnPlacementId", "$.warden"),
+      spawnPosition: warden.spawnPosition,
+      spawnFacing: warden.spawnFacing,
+    });
+  }
   const interaction = record(source.interaction, "$.interaction");
   const packNavRadius = sources.aiParams.leash.radiusM + sources.aiParams.nav.slotOuterRadiusM;
   const packNavGraphs = Object.freeze(Object.fromEntries(
@@ -345,6 +503,11 @@ export const createWorldDefinition = (
     attendParams: sources.attendParams,
     metaParams: sources.metaParams ?? DEFAULT_META_PARAMS,
     sceneCatalog: withoutUndefined(sources.sceneCatalog),
+    wardenParams: sources.wardenParams === undefined
+      ? null
+      : withoutUndefined(sources.wardenParams),
+    wardenRing: warden === null ? null : warden.ring,
+    zones,
     placements: {
       actors: Object.values(actors)
         .sort((left, right) => left.id.localeCompare(right.id)),
@@ -366,6 +529,7 @@ export const createWorldDefinition = (
     fingerprint,
     seed,
     player,
+    warden,
     actors: Object.freeze(Object.fromEntries(Object.entries(actors).sort(([left], [right]) => left.localeCompare(right)))),
     packs: Object.freeze(packs),
     hearths: Object.freeze(Object.fromEntries(Object.entries(hearths).sort(([left], [right]) => left.localeCompare(right)))),
@@ -375,6 +539,7 @@ export const createWorldDefinition = (
     hearthRadiusMeters: number(interaction, "hearthRadiusMeters", "$.interaction", Number.MIN_VALUE),
     aiMoveBindings: Object.freeze(aiMoveBindings),
     actorAssets: Object.freeze(actorAssets),
+    zones,
     combatData: sources.combatData,
     motionParams: sources.motionParams,
     aiParams: sources.aiParams,

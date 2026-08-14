@@ -34,6 +34,22 @@
       "spawn.wolf.den.harrier.0"
     ]
   },
+  "warden": {
+    "actorId": "warden",
+    "spawnPlacementId": "spawn.warden",
+    "arenaHearthId": "arena",
+    "maxPulse": 720.0,
+    "phaseActorClasses": {
+      "p1": "warden_p1",
+      "p2": "warden_p2"
+    },
+    "phaseSteadyClasses": {
+      "p1": "warden_p1",
+      "p2": "warden_p2"
+    },
+    "source": "TUNING_V0 gives the Warden Steady 65 (P1) / 80 (P2) and a 55% ceremony threshold, but no Pulse pool for any actor.",
+    "authoredReason": "maxPulse 720 is an explicit v0 authored default: ~26 Kalev light hits (28 each) across both phases, ceremony at 396. Feel-gate round 1 is the referee."
+  },
   "aiMoveBindings": {
     "lunge": "lunge",
     "flank_bite": "wolf_harrier_bite",
@@ -62,6 +78,47 @@
         "flask_drink": "missing authored flask clip; bind pose/guard visual only, frame_data remains authoritative",
         "sprint": "missing authored locomotion clip; bind pose/guard visual only",
         "jump": "missing authored jump clip; bind pose/guard visual only"
+      }
+    },
+    "warden": {
+      "assetBase": "/assets/build/",
+      "manifest": "kalev_blocking.manifest.json",
+      "neutralSidecar": "kalev_blocking_guard.json",
+      "sidecars": {
+        "warden_p1_overhead_fell": "kalev_blocking_heavy.json",
+        "warden_p1_side_clear": "kalev_blocking_light1.json",
+        "warden_p1_lantern_swing": "kalev_blocking_light1.json",
+        "warden_p1_two_step_chop": "kalev_blocking_heavy.json",
+        "warden_p1_stomp_snare_kick": "kalev_blocking_light1.json",
+        "warden_p1_lantern_raise_bait": "kalev_blocking_guard.json",
+        "warden_ceremony": "kalev_blocking_guard.json",
+        "warden_p2_wide_fell": "kalev_blocking_heavy.json",
+        "warden_p2_three_string_sweep": "kalev_blocking_heavy.json",
+        "warden_p2_snare_toss": "kalev_blocking_light1.json",
+        "warden_p2_charge_through": "kalev_blocking_heavy.json",
+        "warden_p2_lantern_fire_arc": "kalev_blocking_light1.json",
+        "warden_p2_the_quiet": "kalev_blocking_guard.json"
+      },
+      "visualClips": {
+        "idle": "guard",
+        "warden_p1_overhead_fell": "heavy",
+        "warden_p1_side_clear": "light1",
+        "warden_p1_lantern_swing": "light1",
+        "warden_p1_two_step_chop": "heavy",
+        "warden_p1_stomp_snare_kick": "light1",
+        "warden_p1_lantern_raise_bait": "guard",
+        "warden_ceremony": "guard",
+        "warden_p2_wide_fell": "heavy",
+        "warden_p2_three_string_sweep": "heavy",
+        "warden_p2_snare_toss": "light1",
+        "warden_p2_charge_through": "heavy",
+        "warden_p2_lantern_fire_arc": "light1",
+        "warden_p2_the_quiet": "guard"
+      },
+      "fallbacks": {
+        "asset": "D4 gates the authored Warden model and clip set (s21/s23) on the feel gate passing with blocking assets. Until then he wears the Kalev blocking rig: hurtbox and weapon capsules are sampled from Kalev's authored sidecars, frame_data.json remains authoritative for every tick and every damage number.",
+        "warden_p2_snare_toss": "no projectile rig in the blocking pipeline; the release samples the light1 weapon capsule at its single active tick",
+        "warden_p2_the_quiet": "no swing: resolved as an area Wither pulse by the world, never through the weapon path"
       }
     },
     "wolf": {
@@ -95,6 +152,20 @@
     }
   },
   "syntheticPlacements": [
+    {
+      "id": "spawn.warden",
+      "kind": "spawn_warden",
+      "key": "warden",
+      "zone": "ARENA",
+      "yaw": 0.0,
+      "position": [
+        0.0,
+        -0.38,
+        -136.0
+      ],
+      "source": "s20 bakes the arena but no Warden spawn; nav.arena is the ring centre",
+      "note": "ring centre (snare radius 9.2 m), collision-grounded to the nav landmark height"
+    },
     {
       "id": "hearth.arena",
       "kind": "hearth",

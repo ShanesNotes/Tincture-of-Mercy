@@ -1,4 +1,11 @@
-export { createWorldDefinition, type WorldDefinitionSources } from "./assembly";
+export { createWorldDefinition, zoneAt, type WorldDefinitionSources } from "./assembly";
+export {
+  createWorldWardenState,
+  isQuietMove,
+  stepWorldWarden,
+  wardenIsInvulnerable,
+  wardenSwingIsLive,
+} from "./warden";
 export { createWorldState } from "./create";
 export { createWorldDebugSnapshot } from "./debug";
 export { hashWorldState } from "./hash";
@@ -22,9 +29,14 @@ export {
 export type {
   WorldActorAssetDefinition,
   WorldActorDefinition,
+  WorldActorKind,
   WorldActorState,
+  WorldAssetKey,
   WorldDebugActor,
+  WorldDebugBoss,
   WorldDebugSnapshot,
+  WorldWardenDefinition,
+  WorldZoneDefinition,
   WorldDefinition,
   WorldEvent,
   WorldEventPayload,

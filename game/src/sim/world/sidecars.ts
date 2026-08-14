@@ -5,10 +5,16 @@ import {
   type SidecarData,
 } from "../combat";
 import type { RootDisplacementClip } from "../motion";
-import type { WorldActorDefinition, WorldActorState, WorldDefinition, WorldState } from "./types";
+import type {
+  WorldActorDefinition,
+  WorldActorState,
+  WorldAssetKey,
+  WorldDefinition,
+  WorldState,
+} from "./types";
 
-const assetKey = (actor: WorldActorDefinition): "kalev" | "wolf" =>
-  actor.kind === "player" ? "kalev" : "wolf";
+const assetKey = (actor: WorldActorDefinition): WorldAssetKey =>
+  actor.kind === "player" ? "kalev" : actor.kind === "warden" ? "warden" : "wolf";
 
 export const sidecarForAction = (
   definition: WorldDefinition,

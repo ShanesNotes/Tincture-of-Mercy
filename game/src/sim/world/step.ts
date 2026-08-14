@@ -32,11 +32,16 @@ import {
   type Vec3,
 } from "../motion";
 import {
+  arenaOnDeath,
   awardNames,
   beginTinctureUse,
+  bossDefeated,
+  bossIsDown,
   cancelUse,
   commitUse,
   createMercyStats,
+  enterArena,
+  engageBoss,
   hearthRest,
   markEnemyDefeated,
   recordDeath,
@@ -46,10 +51,20 @@ import {
   type MercyStats,
   type MetaState,
 } from "../meta";
-import { applyVerb, stepScene, tryEnterScene, type SceneEvent, type SceneState } from "../scenes";
+import {
+  applyVerb,
+  createWardenAftermathTrigger,
+  createWardenCeremonyTrigger,
+  idleEngagement,
+  stepScene,
+  tryEnterScene,
+  type SceneEvent,
+  type SceneState,
+} from "../scenes";
 import { createWorldState } from "./create";
 import { isWorldPackActive } from "./scheduler";
 import { actorHurtboxes, actorWeapon, rootClipForAction } from "./sidecars";
+import { createWorldWardenState, stepWorldWarden, wardenSwingIsLive } from "./warden";
 import type {
   WorldActorState,
   WorldEvent,
@@ -454,22 +469,35 @@ const swingFrames = (
   queries: WorldQueries,
 ): readonly CombatSwingFrame[] => {
   const frames: CombatSwingFrame[] = [];
+  const warden = queries.definition.warden;
   for (const actorId of Object.keys(state.actors).sort()) {
     if ((state.combat.damageActors[actorId]?.pulse ?? 0) <= 0) continue;
     const action = state.combat.combat.actors[actorId]?.action;
     if (action === undefined || action === null) continue;
+    const attackerKind = queries.definition.actors[actorId]?.kind;
+    // The charge-through travels for thirty ticks and connects for six of them.
+    if (
+      attackerKind === "warden" &&
+      warden !== null &&
+      state.warden !== null &&
+      !wardenSwingIsLive(warden, state.warden.phase, action.id, action.tick)
+    ) {
+      continue;
+    }
     const currentWeapon = actorWeapon(state, queries.definition, actorId, 0, 0);
     const previousWeapon = actorWeapon(state, queries.definition, actorId, -1, 0);
     if (currentWeapon === null || previousWeapon === null) continue;
-    const attackerKind = queries.definition.actors[actorId]?.kind;
+    const attackerIsPlayer = attackerKind === "player";
     const targets = Object.values(queries.definition.actors)
-      .filter((target) => target.kind !== attackerKind && (state.combat.damageActors[target.id]?.pulse ?? 0) > 0)
+      .filter((target) =>
+        (target.kind === "player") !== attackerIsPlayer &&
+        (state.combat.damageActors[target.id]?.pulse ?? 0) > 0)
       // An unaware pack outside its authored 18 m perception range cannot be
       // reached by any accepted weapon/root clip this tick. Preserve exact
       // active-pack geometry while avoiding sidecar/sweep work for remote
       // composed encounters.
       .filter((target) => {
-        if (attackerKind !== "player" || target.packId === null) return true;
+        if (!attackerIsPlayer || target.packId === null) return true;
         const pack = state.aiPacks[target.packId];
         const player = state.actors[queries.definition.player.id]?.motion.position;
         return pack !== undefined && player !== undefined &&
@@ -553,11 +581,28 @@ const resetAtHearth = (
     packId,
     { ...pack, tick: state.tick },
   ]));
+
+  // Victory is terminal (s15 `victoryNoRespawn`): the Warden never comes back,
+  // whatever the standard respawn registry says. Otherwise the encounter resets
+  // whole — full Pulse, Phase 1, outside the ring — like every other Hearth reset.
+  const wardenDown = bossIsDown(meta);
+  const wardenId = queries.definition.warden?.actorId;
+  const warden = wardenDown ? state.warden : createWorldWardenState(queries.definition);
+  const downedWarden = wardenDown && wardenId !== undefined
+    ? combat.damageActors[wardenId]
+    : undefined;
+  const withWarden = downedWarden === undefined || wardenId === undefined
+    ? combat
+    : {
+        ...combat,
+        damageActors: { ...combat.damageActors, [wardenId]: { ...downedWarden, pulse: 0 } },
+      };
   return {
     ...state,
     actors,
-    combat,
+    combat: withWarden,
     aiPacks,
+    warden: warden === null ? null : { ...warden, tick: state.tick },
     attend: createAttendState(),
     meta,
     engaged: false,
@@ -571,7 +616,13 @@ const engagementFor = (state: WorldState): boolean =>
         wolf.alive &&
         (wolf.alert !== "unaware" || wolf.action !== null),
     ),
-  );
+  ) ||
+  // The Warden counts from the moment he commits, and stops counting during his
+  // own ceremony, which is authored as a no-damage hold.
+  (state.warden !== null &&
+    state.warden.engaged &&
+    state.warden.fsm !== "defeated" &&
+    state.warden.fsm !== "ceremony");
 
 export const stepWorld = (
   state: WorldState,
@@ -593,8 +644,9 @@ export const stepWorld = (
   }> = [];
 
   // Attend owns target truth; combat tracking and camera both consume this state.
+  // Every hostile is attendable — the Warden above all.
   const attendActors = Object.values(queries.definition.actors)
-    .filter((actor) => actor.kind === "wolf")
+    .filter((actor) => actor.kind !== "player")
     .sort((left, right) => left.id.localeCompare(right.id))
     .map((actor) => {
       const motion = state.actors[actor.id]?.motion;
@@ -702,11 +754,39 @@ export const stepWorld = (
     }
   }
 
+  // The Warden runs on the same contract as the pack: he proposes, s10 disposes.
+  // He is stepped before motion so his authored step is hosted this tick, and
+  // he reads the same pre-motion player position the pack does.
+  const wardenDefinition = queries.definition.warden;
+  const wardenTick = state.warden === null || wardenDefinition === null
+    ? null
+    : stepWorldWarden(state.warden, queries.definition, {
+        targetPosition: playerMotion.position,
+        targetDied: (state.combat.damageActors[playerId]?.pulse ?? 0) <= 0,
+        combatPulse: state.combat.damageActors[wardenDefinition.actorId]?.pulse ??
+          state.warden.pulse,
+        sequenceBase: aiSequence,
+        tick: state.tick,
+      });
+  if (wardenTick !== null) {
+    aiSequence += wardenTick.commands.length;
+    for (const event of wardenTick.events) {
+      eventSeeds.push({ source: "boss", actorId: wardenDefinition?.actorId ?? null, payload: event });
+    }
+  }
+
   // Motion is authoritative for every position and hosts authored root/knockback displacement.
   const actorsAfterMotion: Record<string, WorldActorState> = {};
   let combatBeforeStep = state.combat;
+  const rootedUntilTick = state.warden?.targetRootedUntilTick ?? 0;
+  const playerRooted = state.tick < rootedUntilTick;
   for (const actorId of Object.keys(state.actors).sort()) {
-    const actor = state.actors[actorId] as WorldActorState;
+    const base = state.actors[actorId] as WorldActorState;
+    // The snare line roots whoever touches it; the Warden's own step is authored
+    // displacement, hosted by motion exactly like combat knockback.
+    const actor = actorId === wardenDefinition?.actorId && wardenTick?.displacement != null
+      ? { ...base, pendingCombatDisplacement: wardenTick.displacement }
+      : base;
     const packId = queries.definition.actors[actorId]?.packId;
     if (packId !== null && packId !== undefined && dormantPackIds.has(packId)) {
       actorsAfterMotion[actorId] = advanceDormantMotionClock(actor);
@@ -722,7 +802,7 @@ export const stepWorld = (
       actorId,
       locomotion.get(actorId),
       held,
-      input,
+      actorId === playerId && playerRooted ? { ...input, moveX: 0, moveZ: 0 } : input,
       queries,
     );
     const aliveInput = packId === null || packId === undefined
@@ -766,6 +846,7 @@ export const stepWorld = (
     actors: actorsAfterMotion,
     combat: combatBeforeStep,
     aiPacks,
+    warden: wardenTick?.state ?? state.warden,
     attend,
     heldActions,
   };
@@ -776,6 +857,7 @@ export const stepWorld = (
     commands: [
       ...playerCommands(input, tracked, playerId),
       ...aiCommands,
+      ...(wardenTick?.commands ?? []),
     ],
     swings: swingFrames(stagedForSweeps, queries),
   });
@@ -810,6 +892,77 @@ export const stepWorld = (
     };
   }
   let combat = syncCombatFromMotion(combatStep.state, actorsAfterCombat);
+
+  // "The quiet" is an area pulse, never a swing: no weapon, no Pulse damage,
+  // Wither only, and only inside its authored radius (TUNING_V0 — 25 in 6 m).
+  for (const pulse of wardenTick?.quietPulses ?? []) {
+    const wardenPosition = actorsAfterCombat[wardenDefinition?.actorId ?? ""]?.motion.position;
+    const playerPosition = actorsAfterCombat[playerId]?.motion.position;
+    const damaged = combat.damageActors[playerId];
+    if (wardenPosition === undefined || playerPosition === undefined || damaged === undefined) {
+      continue;
+    }
+    const distance = Math.hypot(
+      playerPosition.x - wardenPosition.x,
+      playerPosition.y - wardenPosition.y,
+      playerPosition.z - wardenPosition.z,
+    );
+    if (distance > pulse.radiusMeters) continue;
+    combat = {
+      ...combat,
+      damageActors: {
+        ...combat.damageActors,
+        [playerId]: { ...damaged, turnBuildup: damaged.turnBuildup + pulse.witherAmount },
+      },
+    };
+    eventSeeds.push({
+      source: "boss",
+      actorId: playerId,
+      payload: {
+        type: "wither-pulse-applied",
+        targetId: playerId,
+        witherAmount: pulse.witherAmount,
+        radiusMeters: pulse.radiusMeters,
+      },
+    });
+  }
+  if (wardenTick?.snareRootUntilTick != null) {
+    eventSeeds.push({
+      source: "boss",
+      actorId: playerId,
+      payload: {
+        type: "snare-root-applied",
+        targetId: playerId,
+        untilTick: wardenTick.snareRootUntilTick,
+      },
+    });
+  }
+
+  // Phase 2 raises the Warden's Steady class (65 -> 80). s11 seeds poise bands
+  // once at creation, so composition re-seats them on the phase change.
+  if (wardenTick?.phaseChanged != null && wardenDefinition !== null) {
+    const wardenId = wardenDefinition.actorId;
+    const damaged = combat.damageActors[wardenId];
+    const steady = queries.definition.combatData.params.steady.classes[
+      wardenDefinition.phaseSteadyClasses[wardenTick.phaseChanged]
+    ];
+    if (damaged !== undefined && steady !== undefined) {
+      combat = {
+        ...combat,
+        damageActors: {
+          ...combat.damageActors,
+          [wardenId]: {
+            ...damaged,
+            poiseBands: {
+              flinch: steady.flinchThreshold,
+              stagger: steady.staggerThreshold,
+              knockdown: steady.knockdownThreshold,
+            },
+          },
+        },
+      };
+    }
+  }
 
   // Meta owns persistent maxima/vial/Names; combat owns transient Pulse/Breath/Turn.
   let stats = mercyStatsFromCombat(meta, combat, queries);
@@ -852,6 +1005,27 @@ export const stepWorld = (
     }
   }
 
+  // The arena run state is s15's. The FSM only reports the crossings.
+  for (const transition of wardenTick?.arenaTransitions ?? []) {
+    meta = transition === "enter"
+      ? enterArena(meta)
+      : transition === "engage"
+        ? engageBoss(meta)
+        : transition === "defeated"
+          ? bossDefeated(meta)
+          : arenaOnDeath(meta);
+  }
+
+  // s10 owns his position, s11 owns his Pulse; the FSM reads both back.
+  const wardenAfterWorld = wardenTick === null || wardenDefinition === null
+    ? state.warden
+    : {
+        ...wardenTick.state,
+        x: actorsAfterCombat[wardenDefinition.actorId]?.motion.position.x ?? wardenTick.state.x,
+        z: actorsAfterCombat[wardenDefinition.actorId]?.motion.position.z ?? wardenTick.state.z,
+        pulse: combat.damageActors[wardenDefinition.actorId]?.pulse ?? wardenTick.state.pulse,
+      };
+
   let working: WorldState = {
     ...state,
     tick: nextTick,
@@ -864,6 +1038,7 @@ export const stepWorld = (
         combat,
       })]),
     ),
+    warden: wardenAfterWorld,
     meta,
     attend,
     heldActions,
@@ -912,9 +1087,32 @@ export const stepWorld = (
     }
   }
 
-  // Scene engagement is a hard guard. The cabin prologue is marked complete at creation for this slice.
+  // Scene engagement is a hard guard for scripted entries. The two boss-driven
+  // scenes are the sanctioned exception the s25 contract documents: the ceremony
+  // is a 90-tick invulnerable hold that deals no damage, and the aftermath opens
+  // over a corpse. Both are no-damage moments, so D2 is satisfied by construction
+  // and they enter with an idle engagement.
   let scenes: SceneState = working.scenes;
   const sceneEvents: SceneEvent[] = [];
+  let arenaHearthLit = working.arenaHearthLit;
+  if (wardenTick?.ceremonyRequested === true) {
+    const entered = createWardenCeremonyTrigger(queries.definition.sceneCatalog)
+      .begin(scenes, idleEngagement());
+    scenes = entered.state;
+    sceneEvents.push(...entered.events);
+  }
+  if (wardenTick?.aftermath != null && wardenDefinition !== null) {
+    const entered = createWardenAftermathTrigger(queries.definition.sceneCatalog)
+      .begin(scenes, idleEngagement());
+    scenes = entered.state;
+    sceneEvents.push(...entered.events);
+    arenaHearthLit = true;
+    eventSeeds.push({
+      source: "world",
+      actorId: wardenDefinition.actorId,
+      payload: { type: "arena-hearth-lit", hearthId: wardenDefinition.arenaHearthId },
+    });
+  }
   if (input.scene?.enterId !== undefined) {
     const entered = tryEnterScene(
       scenes,
@@ -948,6 +1146,7 @@ export const stepWorld = (
       scenes,
       meta: working.meta,
       engaged,
+      arenaHearthLit,
       nextEventSequence,
     },
     events,

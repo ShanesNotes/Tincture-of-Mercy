@@ -1,3 +1,4 @@
+import type { WorldActorKind } from "../../sim/world/types";
 import type { Group, Object3D, Scene } from "three";
 
 import type { AudioSourceEvent } from "../../app/audio";
@@ -104,7 +105,7 @@ export interface LoadedIronwoodAssets {
 
 export interface ActorPresentation {
   readonly id: string;
-  readonly kind: "player" | "wolf";
+  readonly kind: WorldActorKind;
   /** SIM-owned scheduler truth; dormant actors remain instantiated but freeze their neutral pose. */
   readonly active: boolean;
   readonly position: Point3;

@@ -7,10 +7,20 @@ import type {
 import type { WolfAiParams } from "../ai/params";
 import type { AttendParams, AttendState, AttendViewer } from "../attend";
 import type {
+  WardenEvent,
+  WardenFsmState,
+  WardenParams,
+  WardenPhase,
+  WardenRingGeometry,
+  WardenState,
+} from "../boss";
+import type {
+  ActorClass,
   CombatData,
   CombatPresenterEvent,
   CombatSimulationState,
   SidecarData,
+  SteadyClass,
 } from "../combat";
 import type { InputAction, InputEdge } from "../input";
 import type {
@@ -20,16 +30,18 @@ import type {
   MotionState,
   Vec3,
 } from "../motion";
-import type { MetaEvent, MetaParams, MetaState } from "../meta";
+import type { ArenaPhase, MetaEvent, MetaParams, MetaState } from "../meta";
 import type { SceneCatalog, SceneEvent, SceneState } from "../scenes";
 
 export const WORLD_STATE_VERSION = 1 as const;
 export const WORLD_ASSEMBLY_SCHEMA = "tincture.world_assembly.v0" as const;
 export const WORLD_REPLAY_FORMAT_VERSION = 1 as const;
 
+export type WorldActorKind = "player" | "wolf" | "warden";
+
 export interface WorldActorDefinition {
   readonly id: string;
-  readonly kind: "player" | "wolf";
+  readonly kind: WorldActorKind;
   readonly packId: string | null;
   readonly authoredRole: WolfRole | null;
   readonly spawnPlacementId: string;
@@ -50,6 +62,17 @@ export interface WorldHearthDefinition {
   readonly synthetic: boolean;
 }
 
+export type WorldAssetKey = "kalev" | "wolf" | "warden";
+
+/** Axis-aligned zone box baked by s20. Lookup is XZ-only; y bands are cosmetic. */
+export interface WorldZoneDefinition {
+  readonly id: string;
+  readonly min: Vec3;
+  readonly max: Vec3;
+  /** XZ footprint, precomputed so the smallest containing zone wins deterministically. */
+  readonly area: number;
+}
+
 export interface WorldActorAssetDefinition {
   readonly assetBase: string;
   readonly manifest: string;
@@ -59,11 +82,31 @@ export interface WorldActorAssetDefinition {
   readonly fallbacks: Readonly<Record<string, string>>;
 }
 
+/**
+ * Composition-owned Warden binding. `sim/boss` stays headless: the world holds
+ * its compiled params, the baked ring geometry, and the authored Pulse pool
+ * that no law document supplies.
+ */
+export interface WorldWardenDefinition {
+  readonly actorId: string;
+  readonly params: WardenParams;
+  readonly ring: WardenRingGeometry;
+  readonly spawnPosition: Vec3;
+  readonly spawnFacing: number;
+  readonly maxPulse: number;
+  readonly phaseActorClasses: Readonly<Record<WardenPhase, ActorClass>>;
+  readonly phaseSteadyClasses: Readonly<Record<WardenPhase, SteadyClass>>;
+  /** Lit by the aftermath; s20 omits it, so `world_assembly.json` synthesizes it. */
+  readonly arenaHearthId: string;
+  readonly ceremonyMoveId: string;
+}
+
 export interface WorldDefinition {
   readonly version: 1;
   readonly fingerprint: string;
   readonly seed: number;
   readonly player: WorldActorDefinition;
+  readonly warden: WorldWardenDefinition | null;
   readonly actors: Readonly<Record<string, WorldActorDefinition>>;
   readonly packs: Readonly<Record<string, WorldPackDefinition>>;
   readonly hearths: Readonly<Record<string, WorldHearthDefinition>>;
@@ -72,7 +115,9 @@ export interface WorldDefinition {
   readonly autoCompleteStartupScene: boolean;
   readonly hearthRadiusMeters: number;
   readonly aiMoveBindings: Readonly<Record<Exclude<WolfAttackId, "howl">, string>>;
-  readonly actorAssets: Readonly<Record<"kalev" | "wolf", WorldActorAssetDefinition>>;
+  readonly actorAssets: Readonly<Record<WorldAssetKey, WorldActorAssetDefinition>>;
+  /** Player zone lookup, baked from the level placement zones (HUD/music seam). */
+  readonly zones: readonly WorldZoneDefinition[];
   readonly combatData: CombatData;
   readonly motionParams: MotionParams;
   readonly aiParams: WolfAiParams;
@@ -108,11 +153,14 @@ export interface WorldState {
   readonly actors: Readonly<Record<string, WorldActorState>>;
   readonly combat: CombatSimulationState;
   readonly aiPacks: Readonly<Record<string, WolfAiState>>;
+  readonly warden: WardenState | null;
   readonly meta: MetaState;
   readonly attend: AttendState;
   readonly scenes: SceneState;
   readonly heldActions: readonly InputAction[];
   readonly engaged: boolean;
+  /** Lit by the aftermath branch; the arena Hearth stays cold until then. */
+  readonly arenaHearthLit: boolean;
 }
 
 export interface WorldInputFrame {
@@ -142,13 +190,23 @@ export type WorldEventPayload =
   | MetaEvent
   | SceneEvent
   | WorldAiEvent
+  | WardenEvent
   | { readonly type: "open-page-proximity"; readonly recovered: boolean }
-  | { readonly type: "world-respawn"; readonly hearthId: string };
+  | { readonly type: "world-respawn"; readonly hearthId: string }
+  | { readonly type: "arena-hearth-lit"; readonly hearthId: string }
+  /** The quiet, resolved as an area pulse: never a swing, never Pulse damage. */
+  | {
+      readonly type: "wither-pulse-applied";
+      readonly targetId: string;
+      readonly witherAmount: number;
+      readonly radiusMeters: number;
+    }
+  | { readonly type: "snare-root-applied"; readonly targetId: string; readonly untilTick: number };
 
 export interface WorldEvent {
   readonly sequence: number;
   readonly tick: number;
-  readonly source: "motion" | "combat" | "ai" | "meta" | "scenes" | "world";
+  readonly source: "motion" | "combat" | "ai" | "boss" | "meta" | "scenes" | "world";
   readonly actorId: string | null;
   readonly payload: WorldEventPayload;
 }
@@ -160,7 +218,7 @@ export interface WorldStep {
 
 export interface WorldDebugActor {
   readonly id: string;
-  readonly kind: "player" | "wolf";
+  readonly kind: WorldActorKind;
   readonly packId: string | null;
   readonly active: boolean;
   readonly position: Vec3;
@@ -175,6 +233,20 @@ export interface WorldDebugActor {
   readonly hitboxes: readonly { readonly start: Vec3; readonly end: Vec3; readonly radius: number }[];
 }
 
+/** SIM-truth Warden projection. `present: false` on worlds assembled without him. */
+export interface WorldDebugBoss {
+  readonly present: boolean;
+  readonly fsm: WardenFsmState | null;
+  readonly phase: WardenPhase | null;
+  readonly pulse: number;
+  readonly maxPulse: number;
+  readonly arena: ArenaPhase;
+  readonly ceremonyActive: boolean;
+  readonly defeated: boolean;
+  readonly rootedUntilTick: number;
+  readonly enteredArena: boolean;
+}
+
 export interface WorldDebugSnapshot {
   readonly tick: number;
   readonly stateHash: string;
@@ -183,12 +255,34 @@ export interface WorldDebugSnapshot {
   readonly tokenHolders: readonly { readonly packId: string; readonly wolfId: string | null }[];
   readonly tokenInvariant: boolean;
   readonly engaged: boolean;
+  /** Baked zone id containing the player, or null outside every baked box. */
+  readonly zoneId: string | null;
+  readonly boss: WorldDebugBoss;
+  readonly scenes: {
+    readonly activeId: string | null;
+    readonly completed: readonly string[];
+    readonly sliceExit: boolean;
+    readonly unwrittenTag: boolean;
+  };
   readonly meta: {
     readonly life: MetaState["life"];
     readonly doses: number;
+    readonly maxDoses: number;
     readonly carriedNames: number;
     readonly openPage: MetaState["openPage"];
     readonly lastHearthId: string | null;
+    readonly numbnessStacks: number;
+    readonly vigilRestore: number;
+    readonly atHearth: boolean;
+    readonly turn: number;
+    readonly turnCap: number;
+    readonly maxPulse: number;
+    readonly maxBreath: number;
+  };
+  /** Hearth the player currently stands inside, and whether it is burning. */
+  readonly hearth: {
+    readonly nearbyId: string | null;
+    readonly lit: boolean;
   };
 }
 
