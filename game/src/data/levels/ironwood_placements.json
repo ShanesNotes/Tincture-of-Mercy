@@ -1,0 +1,1623 @@
+{
+  "all": [
+    {
+      "axis": "bed horizontal against room verticals",
+      "border": "footer death line in graphite",
+      "cm": "CM6-CM12",
+      "field": "white mercy field tilting toward vigil",
+      "id": "cam.anna_death",
+      "kind": "camera",
+      "light": "hearth warm, dimmed one ramp step",
+      "lookAt": [
+        -2.45,
+        0.7,
+        1.15
+      ],
+      "memory": "the vial \u2014 borrowed mercy",
+      "position": [
+        2.15,
+        1.55,
+        -1.55
+      ],
+      "scene": "anna_death",
+      "threshold": "the bed itself",
+      "witness": "Iiro at the margin; the cup",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "the road's S-curve",
+      "border": "unwritten Warden mark if unread",
+      "cm": "CM34-CM40",
+      "field": "route conversion toward Bethany",
+      "id": "cam.birdie_coda",
+      "kind": "camera",
+      "light": "late overcast gold break, guide",
+      "lookAt": [
+        10.2,
+        0.9,
+        -160.0
+      ],
+      "memory": "the apple offered and refused",
+      "position": [
+        4.2,
+        1.6,
+        -154.0
+      ],
+      "scene": "birdie_coda",
+      "threshold": "the bend/fork",
+      "witness": "Birdie small at the margin",
+      "zone": "ROAD_CODA"
+    },
+    {
+      "axis": "the flame vertical",
+      "border": "lit-state ornament; vigil seal",
+      "cm": "CM13-CM19",
+      "field": "black vigil field",
+      "id": "cam.hearth_vigil",
+      "kind": "camera",
+      "light": "hearth warm/vigil",
+      "lookAt": [
+        0.0,
+        0.8,
+        3.15
+      ],
+      "memory": "notebook opened, Names written",
+      "position": [
+        1.7,
+        1.4,
+        0.4
+      ],
+      "scene": "hearth_vigil",
+      "threshold": "hearth stone ring",
+      "witness": "Cedar Dog at pouch slot 1",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "the vial, relic approach",
+      "border": "footer cartouche, folk name",
+      "cm": "CM27-CM33",
+      "field": "parchment field, one focal object",
+      "id": "cam.item_revelation",
+      "kind": "camera",
+      "light": "one named emitter, never self-glow",
+      "lookAt": [
+        1.85,
+        0.75,
+        -0.35
+      ],
+      "memory": "soot and fill line",
+      "position": [
+        2.45,
+        1.3,
+        -1.25
+      ],
+      "scene": "item_revelation",
+      "threshold": "the act of taking",
+      "witness": "one small emblem only",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "light shaft he stands into",
+      "border": "boss-phase verdict; no title card",
+      "cm": "CM20-CM26",
+      "field": "custody green \u2014 colonnade enclosing",
+      "id": "cam.warden_intro",
+      "kind": "camera",
+      "light": "lantern guide turned accuse",
+      "lookAt": [
+        0.0,
+        1.8,
+        -136.0
+      ],
+      "memory": "well-kept axe, stripped insignia",
+      "position": [
+        0.0,
+        1.7,
+        -124.199997
+      ],
+      "scene": "warden_intro",
+      "threshold": "snare-line ring",
+      "witness": "tin tags, enumerable",
+      "zone": "ARENA"
+    },
+    {
+      "id": "gate.loop_b",
+      "key": "loop_b",
+      "kind": "gate",
+      "locked": 1,
+      "position": [
+        -12.4,
+        0.0,
+        -30.0
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "id": "hearth.cabin",
+      "key": "cabin",
+      "kind": "hearth",
+      "position": [
+        0.0,
+        0.16,
+        3.15
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "hearth.road",
+      "key": "road",
+      "kind": "hearth",
+      "position": [
+        4.2,
+        0.14,
+        -116.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.00",
+      "index": 0,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.0,
+        0.0,
+        -62.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.01",
+      "index": 1,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.6,
+        0.0,
+        -70.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.02",
+      "index": 2,
+      "kind": "iiro_waypoint",
+      "position": [
+        2.1,
+        0.0,
+        -78.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.03",
+      "index": 3,
+      "kind": "iiro_waypoint",
+      "position": [
+        3.4,
+        0.0,
+        -86.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.04",
+      "index": 4,
+      "kind": "iiro_waypoint",
+      "position": [
+        1.0,
+        0.0,
+        -94.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.05",
+      "index": 5,
+      "kind": "iiro_waypoint",
+      "position": [
+        -1.6,
+        0.0,
+        -102.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.06",
+      "index": 6,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.4,
+        0.0,
+        -110.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.07",
+      "index": 7,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.0,
+        0.0,
+        -116.5
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "item.bread",
+      "key": "bread",
+      "kind": "item",
+      "position": [
+        1.7,
+        0.9,
+        -0.35
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.hearth_iron",
+      "key": "hearth_iron",
+      "kind": "item",
+      "position": [
+        0.55,
+        0.7,
+        3.0
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.vial",
+      "key": "vial",
+      "kind": "item",
+      "position": [
+        1.95,
+        0.9,
+        -0.55
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.water",
+      "key": "water",
+      "kind": "item",
+      "position": [
+        -1.6,
+        0.28,
+        -3.2
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "lantern.hang",
+      "kind": "lantern_hang",
+      "position": [
+        0.0,
+        3.4,
+        -145.100006
+      ],
+      "verb": "guide",
+      "zone": "ARENA"
+    },
+    {
+      "id": "nav.anchor.arena_entry",
+      "kind": "nav_anchor",
+      "landmark": "arena_entry",
+      "position": [
+        0.0,
+        0.0,
+        -127.0
+      ],
+      "zone": "ARENA"
+    },
+    {
+      "id": "nav.anchor.birdie",
+      "kind": "nav_anchor",
+      "landmark": "birdie",
+      "position": [
+        8.0,
+        0.0,
+        -158.0
+      ],
+      "zone": "ROAD_CODA"
+    },
+    {
+      "id": "nav.anchor.door",
+      "kind": "nav_anchor",
+      "landmark": "door",
+      "position": [
+        0.0,
+        0.16,
+        -4.0
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "nav.anchor.road_mid",
+      "kind": "nav_anchor",
+      "landmark": "road_mid",
+      "position": [
+        0.0,
+        0.0,
+        -88.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "nav.anchor.woodline",
+      "kind": "nav_anchor",
+      "landmark": "woodline",
+      "position": [
+        0.0,
+        0.0,
+        -27.0
+      ],
+      "zone": "WOODLINE"
+    },
+    {
+      "id": "nav.arena",
+      "kind": "nav_landmark",
+      "landmark": "arena",
+      "position": [
+        0.0,
+        -0.38,
+        -136.0
+      ],
+      "zone": "ARENA"
+    },
+    {
+      "id": "nav.cabin",
+      "kind": "nav_landmark",
+      "landmark": "cabin",
+      "position": [
+        0.0,
+        0.16,
+        -0.2
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "end": "bottom",
+      "id": "nav.drop.bottom",
+      "kind": "nav_drop",
+      "position": [
+        11.0,
+        0.0,
+        -7.2
+      ],
+      "zone": "YARD"
+    },
+    {
+      "end": "top",
+      "id": "nav.drop.top",
+      "kind": "nav_drop",
+      "position": [
+        11.0,
+        2.78,
+        -8.2
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "id": "nav.forest",
+      "kind": "nav_landmark",
+      "landmark": "forest",
+      "position": [
+        0.0,
+        0.0,
+        -45.0
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "end": "a",
+      "id": "nav.gate.a",
+      "kind": "nav_gate",
+      "position": [
+        -12.4,
+        0.0,
+        -28.6
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "end": "b",
+      "id": "nav.gate.b",
+      "kind": "nav_gate",
+      "position": [
+        -12.4,
+        0.0,
+        -31.4
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "id": "nav.yard",
+      "kind": "nav_landmark",
+      "landmark": "yard",
+      "position": [
+        1.0,
+        0.0,
+        -15.0
+      ],
+      "zone": "YARD"
+    },
+    {
+      "id": "snare.00",
+      "index": 0,
+      "kind": "snare",
+      "position": [
+        0.0,
+        0.35,
+        -126.800003
+      ],
+      "segment": 0,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.01",
+      "index": 1,
+      "kind": "snare",
+      "position": [
+        3.520688,
+        0.35,
+        -127.500305
+      ],
+      "segment": 1,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.02",
+      "index": 2,
+      "kind": "snare",
+      "position": [
+        6.505383,
+        0.35,
+        -129.494614
+      ],
+      "segment": 2,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.03",
+      "index": 3,
+      "kind": "snare",
+      "position": [
+        8.499692,
+        0.35,
+        -132.479309
+      ],
+      "segment": 3,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.04",
+      "index": 4,
+      "kind": "snare",
+      "position": [
+        9.2,
+        0.35,
+        -136.0
+      ],
+      "segment": 4,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.05",
+      "index": 5,
+      "kind": "snare",
+      "position": [
+        8.499692,
+        0.35,
+        -139.520691
+      ],
+      "segment": 5,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.06",
+      "index": 6,
+      "kind": "snare",
+      "position": [
+        6.505383,
+        0.35,
+        -142.505386
+      ],
+      "segment": 6,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.07",
+      "index": 7,
+      "kind": "snare",
+      "position": [
+        3.520688,
+        0.35,
+        -144.499695
+      ],
+      "segment": 7,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.08",
+      "index": 8,
+      "kind": "snare",
+      "position": [
+        0.0,
+        0.35,
+        -145.199997
+      ],
+      "segment": 8,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.09",
+      "index": 9,
+      "kind": "snare",
+      "position": [
+        -3.520688,
+        0.35,
+        -144.499695
+      ],
+      "segment": 9,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.10",
+      "index": 10,
+      "kind": "snare",
+      "position": [
+        -6.505383,
+        0.35,
+        -142.505386
+      ],
+      "segment": 10,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.11",
+      "index": 11,
+      "kind": "snare",
+      "position": [
+        -8.499692,
+        0.35,
+        -139.520691
+      ],
+      "segment": 11,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.12",
+      "index": 12,
+      "kind": "snare",
+      "position": [
+        -9.2,
+        0.35,
+        -136.0
+      ],
+      "segment": 12,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.13",
+      "index": 13,
+      "kind": "snare",
+      "position": [
+        -8.499692,
+        0.35,
+        -132.479309
+      ],
+      "segment": 13,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.14",
+      "index": 14,
+      "kind": "snare",
+      "position": [
+        -6.505383,
+        0.35,
+        -129.494614
+      ],
+      "segment": 14,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.15",
+      "index": 15,
+      "kind": "snare",
+      "position": [
+        -3.520688,
+        0.35,
+        -127.500305
+      ],
+      "segment": 15,
+      "zone": "ARENA"
+    },
+    {
+      "id": "spawn.birdie",
+      "key": "birdie",
+      "kind": "spawn_npc",
+      "position": [
+        10.2,
+        0.0,
+        -160.0
+      ],
+      "zone": "ROAD_CODA"
+    },
+    {
+      "id": "spawn.player",
+      "kind": "spawn_player",
+      "position": [
+        0.55,
+        0.16,
+        -1.2
+      ],
+      "role": "player",
+      "yaw": 0.0,
+      "zone": "CABIN"
+    },
+    {
+      "id": "spawn.wolf.den.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "den",
+      "position": [
+        13.0,
+        0.0,
+        -92.0
+      ],
+      "role": "harrier",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.den.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "den",
+      "position": [
+        13.2,
+        0.0,
+        -52.0
+      ],
+      "role": "lunger",
+      "zone": "FOREST"
+    },
+    {
+      "id": "spawn.wolf.doorway.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "doorway",
+      "position": [
+        0.0,
+        0.0,
+        -27.200001
+      ],
+      "role": "lunger",
+      "zone": "WOODLINE"
+    },
+    {
+      "id": "spawn.wolf.road.baiter.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        1.2,
+        0.0,
+        -78.0
+      ],
+      "role": "baiter",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.baiter.1",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        -1.8,
+        0.0,
+        -91.0
+      ],
+      "role": "baiter",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        2.0,
+        0.0,
+        -86.0
+      ],
+      "role": "harrier",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        -1.1,
+        0.0,
+        -82.5
+      ],
+      "role": "lunger",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.yard.baiter.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        2.2,
+        0.0,
+        -16.200001
+      ],
+      "role": "baiter",
+      "zone": "YARD"
+    },
+    {
+      "id": "spawn.wolf.yard.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        3.4,
+        0.0,
+        -14.1
+      ],
+      "role": "harrier",
+      "zone": "YARD"
+    },
+    {
+      "id": "spawn.wolf.yard.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        -0.8,
+        0.0,
+        -17.4
+      ],
+      "role": "lunger",
+      "zone": "YARD"
+    },
+    {
+      "id": "wither.pocket_a",
+      "key": "pocket_a",
+      "kind": "wither",
+      "position": [
+        12.5,
+        0.0,
+        -82.0
+      ],
+      "radius": 4.5,
+      "zone": "ROAD"
+    },
+    {
+      "id": "wither.pocket_b",
+      "key": "pocket_b",
+      "kind": "wither",
+      "position": [
+        -12.0,
+        0.0,
+        -102.0
+      ],
+      "radius": 4.5,
+      "zone": "ROAD"
+    }
+  ],
+  "cameras": [
+    {
+      "axis": "bed horizontal against room verticals",
+      "border": "footer death line in graphite",
+      "cm": "CM6-CM12",
+      "field": "white mercy field tilting toward vigil",
+      "id": "cam.anna_death",
+      "kind": "camera",
+      "light": "hearth warm, dimmed one ramp step",
+      "lookAt": [
+        -2.45,
+        0.7,
+        1.15
+      ],
+      "memory": "the vial \u2014 borrowed mercy",
+      "position": [
+        2.15,
+        1.55,
+        -1.55
+      ],
+      "scene": "anna_death",
+      "threshold": "the bed itself",
+      "witness": "Iiro at the margin; the cup",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "the flame vertical",
+      "border": "lit-state ornament; vigil seal",
+      "cm": "CM13-CM19",
+      "field": "black vigil field",
+      "id": "cam.hearth_vigil",
+      "kind": "camera",
+      "light": "hearth warm/vigil",
+      "lookAt": [
+        0.0,
+        0.8,
+        3.15
+      ],
+      "memory": "notebook opened, Names written",
+      "position": [
+        1.7,
+        1.4,
+        0.4
+      ],
+      "scene": "hearth_vigil",
+      "threshold": "hearth stone ring",
+      "witness": "Cedar Dog at pouch slot 1",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "the vial, relic approach",
+      "border": "footer cartouche, folk name",
+      "cm": "CM27-CM33",
+      "field": "parchment field, one focal object",
+      "id": "cam.item_revelation",
+      "kind": "camera",
+      "light": "one named emitter, never self-glow",
+      "lookAt": [
+        1.85,
+        0.75,
+        -0.35
+      ],
+      "memory": "soot and fill line",
+      "position": [
+        2.45,
+        1.3,
+        -1.25
+      ],
+      "scene": "item_revelation",
+      "threshold": "the act of taking",
+      "witness": "one small emblem only",
+      "zone": "CABIN"
+    },
+    {
+      "axis": "light shaft he stands into",
+      "border": "boss-phase verdict; no title card",
+      "cm": "CM20-CM26",
+      "field": "custody green \u2014 colonnade enclosing",
+      "id": "cam.warden_intro",
+      "kind": "camera",
+      "light": "lantern guide turned accuse",
+      "lookAt": [
+        0.0,
+        1.8,
+        -136.0
+      ],
+      "memory": "well-kept axe, stripped insignia",
+      "position": [
+        0.0,
+        1.7,
+        -124.199997
+      ],
+      "scene": "warden_intro",
+      "threshold": "snare-line ring",
+      "witness": "tin tags, enumerable",
+      "zone": "ARENA"
+    },
+    {
+      "axis": "the road's S-curve",
+      "border": "unwritten Warden mark if unread",
+      "cm": "CM34-CM40",
+      "field": "route conversion toward Bethany",
+      "id": "cam.birdie_coda",
+      "kind": "camera",
+      "light": "late overcast gold break, guide",
+      "lookAt": [
+        10.2,
+        0.9,
+        -160.0
+      ],
+      "memory": "the apple offered and refused",
+      "position": [
+        4.2,
+        1.6,
+        -154.0
+      ],
+      "scene": "birdie_coda",
+      "threshold": "the bend/fork",
+      "witness": "Birdie small at the margin",
+      "zone": "ROAD_CODA"
+    }
+  ],
+  "gates": [
+    {
+      "id": "gate.loop_b",
+      "key": "loop_b",
+      "kind": "gate",
+      "locked": 1,
+      "position": [
+        -12.4,
+        0.0,
+        -30.0
+      ],
+      "zone": "FOREST"
+    }
+  ],
+  "hearths": [
+    {
+      "id": "hearth.cabin",
+      "key": "cabin",
+      "kind": "hearth",
+      "position": [
+        0.0,
+        0.16,
+        3.15
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "hearth.road",
+      "key": "road",
+      "kind": "hearth",
+      "position": [
+        4.2,
+        0.14,
+        -116.0
+      ],
+      "zone": "ROAD"
+    }
+  ],
+  "iiroRoute": [
+    {
+      "id": "iiro.00",
+      "index": 0,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.0,
+        0.0,
+        -62.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.01",
+      "index": 1,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.6,
+        0.0,
+        -70.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.02",
+      "index": 2,
+      "kind": "iiro_waypoint",
+      "position": [
+        2.1,
+        0.0,
+        -78.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.03",
+      "index": 3,
+      "kind": "iiro_waypoint",
+      "position": [
+        3.4,
+        0.0,
+        -86.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.04",
+      "index": 4,
+      "kind": "iiro_waypoint",
+      "position": [
+        1.0,
+        0.0,
+        -94.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.05",
+      "index": 5,
+      "kind": "iiro_waypoint",
+      "position": [
+        -1.6,
+        0.0,
+        -102.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.06",
+      "index": 6,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.4,
+        0.0,
+        -110.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "iiro.07",
+      "index": 7,
+      "kind": "iiro_waypoint",
+      "position": [
+        0.0,
+        0.0,
+        -116.5
+      ],
+      "zone": "ROAD"
+    }
+  ],
+  "items": [
+    {
+      "id": "item.water",
+      "key": "water",
+      "kind": "item",
+      "position": [
+        -1.6,
+        0.28,
+        -3.2
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.bread",
+      "key": "bread",
+      "kind": "item",
+      "position": [
+        1.7,
+        0.9,
+        -0.35
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.vial",
+      "key": "vial",
+      "kind": "item",
+      "position": [
+        1.95,
+        0.9,
+        -0.55
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "item.hearth_iron",
+      "key": "hearth_iron",
+      "kind": "item",
+      "position": [
+        0.55,
+        0.7,
+        3.0
+      ],
+      "zone": "CABIN"
+    }
+  ],
+  "lanternHang": [
+    {
+      "id": "lantern.hang",
+      "kind": "lantern_hang",
+      "position": [
+        0.0,
+        3.4,
+        -145.100006
+      ],
+      "verb": "guide",
+      "zone": "ARENA"
+    }
+  ],
+  "nav": [
+    {
+      "id": "nav.cabin",
+      "kind": "nav_landmark",
+      "landmark": "cabin",
+      "position": [
+        0.0,
+        0.16,
+        -0.2
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "nav.anchor.door",
+      "kind": "nav_anchor",
+      "landmark": "door",
+      "position": [
+        0.0,
+        0.16,
+        -4.0
+      ],
+      "zone": "CABIN"
+    },
+    {
+      "id": "nav.yard",
+      "kind": "nav_landmark",
+      "landmark": "yard",
+      "position": [
+        1.0,
+        0.0,
+        -15.0
+      ],
+      "zone": "YARD"
+    },
+    {
+      "end": "bottom",
+      "id": "nav.drop.bottom",
+      "kind": "nav_drop",
+      "position": [
+        11.0,
+        0.0,
+        -7.2
+      ],
+      "zone": "YARD"
+    },
+    {
+      "id": "nav.anchor.woodline",
+      "kind": "nav_anchor",
+      "landmark": "woodline",
+      "position": [
+        0.0,
+        0.0,
+        -27.0
+      ],
+      "zone": "WOODLINE"
+    },
+    {
+      "id": "nav.forest",
+      "kind": "nav_landmark",
+      "landmark": "forest",
+      "position": [
+        0.0,
+        0.0,
+        -45.0
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "end": "top",
+      "id": "nav.drop.top",
+      "kind": "nav_drop",
+      "position": [
+        11.0,
+        2.78,
+        -8.2
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "end": "a",
+      "id": "nav.gate.a",
+      "kind": "nav_gate",
+      "position": [
+        -12.4,
+        0.0,
+        -28.6
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "end": "b",
+      "id": "nav.gate.b",
+      "kind": "nav_gate",
+      "position": [
+        -12.4,
+        0.0,
+        -31.4
+      ],
+      "zone": "FOREST"
+    },
+    {
+      "id": "nav.anchor.road_mid",
+      "kind": "nav_anchor",
+      "landmark": "road_mid",
+      "position": [
+        0.0,
+        0.0,
+        -88.0
+      ],
+      "zone": "ROAD"
+    },
+    {
+      "id": "nav.arena",
+      "kind": "nav_landmark",
+      "landmark": "arena",
+      "position": [
+        0.0,
+        -0.38,
+        -136.0
+      ],
+      "zone": "ARENA"
+    },
+    {
+      "id": "nav.anchor.arena_entry",
+      "kind": "nav_anchor",
+      "landmark": "arena_entry",
+      "position": [
+        0.0,
+        0.0,
+        -127.0
+      ],
+      "zone": "ARENA"
+    },
+    {
+      "id": "nav.anchor.birdie",
+      "kind": "nav_anchor",
+      "landmark": "birdie",
+      "position": [
+        8.0,
+        0.0,
+        -158.0
+      ],
+      "zone": "ROAD_CODA"
+    }
+  ],
+  "schema": "tincture.placements.v0",
+  "snareRing": [
+    {
+      "id": "snare.00",
+      "index": 0,
+      "kind": "snare",
+      "position": [
+        0.0,
+        0.35,
+        -126.800003
+      ],
+      "segment": 0,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.01",
+      "index": 1,
+      "kind": "snare",
+      "position": [
+        3.520688,
+        0.35,
+        -127.500305
+      ],
+      "segment": 1,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.02",
+      "index": 2,
+      "kind": "snare",
+      "position": [
+        6.505383,
+        0.35,
+        -129.494614
+      ],
+      "segment": 2,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.03",
+      "index": 3,
+      "kind": "snare",
+      "position": [
+        8.499692,
+        0.35,
+        -132.479309
+      ],
+      "segment": 3,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.04",
+      "index": 4,
+      "kind": "snare",
+      "position": [
+        9.2,
+        0.35,
+        -136.0
+      ],
+      "segment": 4,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.05",
+      "index": 5,
+      "kind": "snare",
+      "position": [
+        8.499692,
+        0.35,
+        -139.520691
+      ],
+      "segment": 5,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.06",
+      "index": 6,
+      "kind": "snare",
+      "position": [
+        6.505383,
+        0.35,
+        -142.505386
+      ],
+      "segment": 6,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.07",
+      "index": 7,
+      "kind": "snare",
+      "position": [
+        3.520688,
+        0.35,
+        -144.499695
+      ],
+      "segment": 7,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.08",
+      "index": 8,
+      "kind": "snare",
+      "position": [
+        0.0,
+        0.35,
+        -145.199997
+      ],
+      "segment": 8,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.09",
+      "index": 9,
+      "kind": "snare",
+      "position": [
+        -3.520688,
+        0.35,
+        -144.499695
+      ],
+      "segment": 9,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.10",
+      "index": 10,
+      "kind": "snare",
+      "position": [
+        -6.505383,
+        0.35,
+        -142.505386
+      ],
+      "segment": 10,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.11",
+      "index": 11,
+      "kind": "snare",
+      "position": [
+        -8.499692,
+        0.35,
+        -139.520691
+      ],
+      "segment": 11,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.12",
+      "index": 12,
+      "kind": "snare",
+      "position": [
+        -9.2,
+        0.35,
+        -136.0
+      ],
+      "segment": 12,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.13",
+      "index": 13,
+      "kind": "snare",
+      "position": [
+        -8.499692,
+        0.35,
+        -132.479309
+      ],
+      "segment": 13,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.14",
+      "index": 14,
+      "kind": "snare",
+      "position": [
+        -6.505383,
+        0.35,
+        -129.494614
+      ],
+      "segment": 14,
+      "zone": "ARENA"
+    },
+    {
+      "id": "snare.15",
+      "index": 15,
+      "kind": "snare",
+      "position": [
+        -3.520688,
+        0.35,
+        -127.500305
+      ],
+      "segment": 15,
+      "zone": "ARENA"
+    }
+  ],
+  "spawns": [
+    {
+      "id": "spawn.player",
+      "kind": "spawn_player",
+      "position": [
+        0.55,
+        0.16,
+        -1.2
+      ],
+      "role": "player",
+      "yaw": 0.0,
+      "zone": "CABIN"
+    },
+    {
+      "id": "spawn.wolf.yard.baiter.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        2.2,
+        0.0,
+        -16.200001
+      ],
+      "role": "baiter",
+      "zone": "YARD"
+    },
+    {
+      "id": "spawn.wolf.yard.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        -0.8,
+        0.0,
+        -17.4
+      ],
+      "role": "lunger",
+      "zone": "YARD"
+    },
+    {
+      "id": "spawn.wolf.yard.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "yard",
+      "position": [
+        3.4,
+        0.0,
+        -14.1
+      ],
+      "role": "harrier",
+      "zone": "YARD"
+    },
+    {
+      "id": "spawn.wolf.doorway.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "doorway",
+      "position": [
+        0.0,
+        0.0,
+        -27.200001
+      ],
+      "role": "lunger",
+      "zone": "WOODLINE"
+    },
+    {
+      "id": "spawn.wolf.den.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "den",
+      "position": [
+        13.2,
+        0.0,
+        -52.0
+      ],
+      "role": "lunger",
+      "zone": "FOREST"
+    },
+    {
+      "id": "spawn.wolf.road.baiter.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        1.2,
+        0.0,
+        -78.0
+      ],
+      "role": "baiter",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.lunger.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        -1.1,
+        0.0,
+        -82.5
+      ],
+      "role": "lunger",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        2.0,
+        0.0,
+        -86.0
+      ],
+      "role": "harrier",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.road.baiter.1",
+      "kind": "spawn_wolf",
+      "pack": "road",
+      "position": [
+        -1.8,
+        0.0,
+        -91.0
+      ],
+      "role": "baiter",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.wolf.den.harrier.0",
+      "kind": "spawn_wolf",
+      "pack": "den",
+      "position": [
+        13.0,
+        0.0,
+        -92.0
+      ],
+      "role": "harrier",
+      "zone": "ROAD"
+    },
+    {
+      "id": "spawn.birdie",
+      "key": "birdie",
+      "kind": "spawn_npc",
+      "position": [
+        10.2,
+        0.0,
+        -160.0
+      ],
+      "zone": "ROAD_CODA"
+    }
+  ],
+  "witherZones": [
+    {
+      "id": "wither.pocket_a",
+      "key": "pocket_a",
+      "kind": "wither",
+      "position": [
+        12.5,
+        0.0,
+        -82.0
+      ],
+      "radius": 4.5,
+      "zone": "ROAD"
+    },
+    {
+      "id": "wither.pocket_b",
+      "key": "pocket_b",
+      "kind": "wither",
+      "position": [
+        -12.0,
+        0.0,
+        -102.0
+      ],
+      "radius": 4.5,
+      "zone": "ROAD"
+    }
+  ]
+}
