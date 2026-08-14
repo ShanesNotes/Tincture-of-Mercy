@@ -1,0 +1,153 @@
+{
+  "generator": "tincture-export/0",
+  "metrics": {
+    "capsuleHeight": 1.75,
+    "capsuleRadius": 0.35,
+    "maxSlopeDeg": 45.0,
+    "maxSurvivableDrop": 6.0,
+    "minDoorway": 0.9,
+    "stepHeight": 0.35
+  },
+  "nav": "ironwood_nav.json",
+  "placements": "ironwood.placements.json",
+  "schema": "tincture.level.v0",
+  "source": "ironwood.blend",
+  "units": "meters",
+  "up": "y",
+  "zones": {
+    "ARENA": {
+      "bounds": {
+        "max": [
+          11.958,
+          14.0,
+          -117.4
+        ],
+        "min": [
+          -11.958,
+          -0.4,
+          -147.917
+        ]
+      },
+      "collision": "arena.collision.json",
+      "sha256": "678b78e273e1616cc6436567a9da4e84739e120dce38ad66a18cba9d3b24e49b",
+      "triCount": 812,
+      "visualGlb": "arena.visual.glb",
+      "visualSha256": "6b8855c51435150647a1a45b1d9b0b97c6e67ca4869dcc0b6dd51654ecc35548"
+    },
+    "CABIN": {
+      "bounds": {
+        "max": [
+          3.61,
+          2.76,
+          4.11
+        ],
+        "min": [
+          -3.61,
+          0.0,
+          -6.65
+        ]
+      },
+      "collision": "cabin.collision.json",
+      "sha256": "a7e1f1fc5f14b5e1fe82db1cd86fb04fad82b4e0b017ebac49dd62c79639752c",
+      "triCount": 196,
+      "visualGlb": "cabin.visual.glb",
+      "visualSha256": "bdd3ea5d2c6b59b95920bafd42b0f5f5f63e170671b0b782cc3681fffaafb8d2"
+    },
+    "FOREST": {
+      "bounds": {
+        "max": [
+          18.0,
+          13.0,
+          -8.0
+        ],
+        "min": [
+          -18.0,
+          -0.12,
+          -58.1
+        ]
+      },
+      "collision": "forest.collision.json",
+      "sha256": "62241cc3b28f5e554264205dd06a70055c81533394a8bdcbd238fbe1649ecea7",
+      "triCount": 388,
+      "visualGlb": "forest.visual.glb",
+      "visualSha256": "983086430ad333f0d276cf2be7e138075845571117d9e7893b997cc3d31b5e56"
+    },
+    "ROAD": {
+      "bounds": {
+        "max": [
+          6.22,
+          11.8,
+          -57.9
+        ],
+        "min": [
+          -6.24,
+          -0.12,
+          -118.1
+        ]
+      },
+      "collision": "road.collision.json",
+      "sha256": "fb62c280b6964e9ab663122caa59dfcec0ff2642e15c3704e2f0f651ba7e245d",
+      "triCount": 236,
+      "visualGlb": "road.visual.glb",
+      "visualSha256": "48f9d1c166b7d55e78079be099be695bdbae2ca71cf9dc5d931a2fd50f2fe52e"
+    },
+    "ROAD_CODA": {
+      "bounds": {
+        "max": [
+          22.0,
+          0.0,
+          -145.5
+        ],
+        "min": [
+          -4.0,
+          -0.12,
+          -168.0
+        ]
+      },
+      "collision": "road_coda.collision.json",
+      "sha256": "1dfcde7e32246f56d42ae3e83b8a1bfa5177d278f6bd0937c10ad35ad22ac9d6",
+      "triCount": 36,
+      "visualGlb": "road_coda.visual.glb",
+      "visualSha256": "2268f767bbd4a0743891d917d27477b4f4e47a2bb68f7142b2ad0b2c914f3bd2"
+    },
+    "WOODLINE": {
+      "bounds": {
+        "max": [
+          4.0,
+          9.0,
+          -21.9
+        ],
+        "min": [
+          -4.0,
+          -0.12,
+          -32.1
+        ]
+      },
+      "collision": "woodline.collision.json",
+      "sha256": "38a5c4fdecddf0457b5a6f84ec83d2c6dc7e17bf9d200858d1706588224dec6b",
+      "triCount": 196,
+      "visualGlb": "woodline.visual.glb",
+      "visualSha256": "c18b39ea3ca5cbce429fb8477baddb499658f559084d41890333d67944a94c22"
+    },
+    "YARD": {
+      "bounds": {
+        "max": [
+          8.1,
+          1.345,
+          -6.4
+        ],
+        "min": [
+          -8.1,
+          -0.12,
+          -22.1
+        ]
+      },
+      "collision": "yard.collision.json",
+      "sha256": "d818f275b5cb1b02fdeaa874870deed0d8d9e6ffebb0d1fa4dd3be42793e2a8d",
+      "triCount": 68,
+      "visualGlb": "yard.visual.glb",
+      "visualSha256": "f868d39da1cbb65c5de7b231ddff40e2ee7d88d83cba27e0d75366ce6502d750"
+    }
+  },
+  "zonesFile": "ironwood.zones.json"
+}
