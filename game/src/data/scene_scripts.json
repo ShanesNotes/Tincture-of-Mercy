@@ -1,0 +1,546 @@
+{
+  "_meta": {
+    "version": 1,
+    "note": "Staged-scene scripts. Values from TUNING_V0 / ENCOUNTERS / ART_BIBLE CM1–CM40. Text keys are text_bible_v0.json only."
+  },
+  "params": {
+    "ceremonyHoldTicks": 90,
+    "ceremonyPulsePercent": 55,
+    "hearthDimPercent": 18,
+    "hearthDimRampSteps": 1,
+    "annaStartingDoses": 3,
+    "stagedFovDegrees": 44,
+    "items": {
+      "vial": {
+        "textKeys": [
+          "item.tincture.vial.name",
+          "item.tincture.vial.desc",
+          "item.tincture.vial.lore"
+        ]
+      },
+      "hearth_iron": {
+        "textKeys": [
+          "item.weapon.hearth_iron.name",
+          "item.weapon.hearth_iron.desc",
+          "item.weapon.hearth_iron.lore"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "cabin_prologue": {
+      "id": "cabin_prologue",
+      "beat": 1,
+      "registerLocked": false,
+      "repeatable": false,
+      "interrupt": "none",
+      "composition": {
+        "field": "parchment field, one focal object",
+        "axis": "the vial, relic approach",
+        "threshold": "the act of dosing Anna",
+        "witness": "the cup on the night-table",
+        "light": "one named emitter, never self-glow",
+        "memory": "doses prepared for her",
+        "border": "footer cartouche wakes with the first dose"
+      },
+      "steps": [
+        {
+          "id": "water",
+          "stagedAnchorId": null,
+          "verbs": ["DrawWater", "CarryWater"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "DrawWater": {
+              "textKeys": ["ui.prompt.interact", "npc.anna.water"],
+              "flags": { "taught.interact": 1 },
+              "events": [{ "type": "teach-flag", "flag": "taught.interact" }]
+            },
+            "CarryWater": {
+              "textKeys": ["npc.iiro.water_carry"],
+              "flags": { "taught.water": 1, "taught.move": 1 },
+              "events": [
+                { "type": "teach-flag", "flag": "taught.water" },
+                { "type": "teach-flag", "flag": "taught.move" }
+              ]
+            }
+          }
+        },
+        {
+          "id": "bread",
+          "stagedAnchorId": null,
+          "verbs": ["BreakBread", "ShareBread"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "BreakBread": {
+              "textKeys": ["npc.anna.bread"],
+              "flags": { "taught.bread": 1 },
+              "events": [{ "type": "teach-flag", "flag": "taught.bread" }]
+            },
+            "ShareBread": {
+              "textKeys": ["npc.iiro.bread_receive", "notebook.bread"],
+              "events": [{ "type": "notebook-line", "textKey": "notebook.bread" }]
+            }
+          }
+        },
+        {
+          "id": "dose",
+          "stagedAnchorId": "cam.item_revelation",
+          "verbs": ["DoseAnna"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "DoseAnna": {
+              "textKeys": ["npc.anna.dose_first", "npc.anna.dose_relief", "ui.tincture.drink"],
+              "flags": { "taught.flask": 1, "hud.woken": 1, "taught.attend": 1 },
+              "addFlags": { "anna.dosesAdministered": 1 },
+              "events": [
+                { "type": "dose-prepared" },
+                { "type": "hud-border-wake" },
+                { "type": "teach-flag", "flag": "taught.flask" },
+                { "type": "teach-flag", "flag": "taught.attend" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "anna_gravity": {
+      "id": "anna_gravity",
+      "beat": 5,
+      "registerLocked": true,
+      "repeatable": false,
+      "interrupt": "none",
+      "composition": {
+        "field": "white mercy field tilting toward vigil",
+        "axis": "the bed's horizontal line against the room's verticals",
+        "threshold": "the bed itself",
+        "witness": "Iiro small at the margin; the cup",
+        "light": "hearth warm, dimmed one ramp step",
+        "memory": "the vial — borrowed mercy",
+        "border": "footer death line in graphite"
+      },
+      "steps": [
+        {
+          "id": "bedside",
+          "stagedAnchorId": "cam.anna_death",
+          "verbs": [
+            "ObserveBreath",
+            "SitNear",
+            "HoldHand",
+            "SpeakName",
+            "Pray",
+            "KeepWatch"
+          ],
+          "verbOrder": "free",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "ObserveBreath": {
+              "textKeys": ["ui.presence.observe_breath", "npc.anna.presence.observe_breath"]
+            },
+            "SitNear": {
+              "textKeys": ["ui.presence.sit_near", "npc.anna.presence.sit_near"]
+            },
+            "HoldHand": {
+              "textKeys": ["ui.presence.hold_hand", "npc.anna.presence.hold_hand"]
+            },
+            "SpeakName": {
+              "textKeys": ["ui.presence.speak_name", "npc.anna.presence.speak_name"]
+            },
+            "Pray": {
+              "textKeys": ["ui.presence.pray", "npc.anna.presence.pray"]
+            },
+            "KeepWatch": {
+              "textKeys": ["ui.presence.keep_watch", "npc.anna.presence.keep_watch"]
+            }
+          }
+        },
+        {
+          "id": "witness",
+          "stagedAnchorId": "cam.anna_death",
+          "verbs": ["WitnessDeath"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "WitnessDeath": {
+              "textKeys": ["ui.presence.witness_death", "npc.anna.presence.witness_death"],
+              "flags": { "anna.dead": 1 },
+              "events": [{ "type": "hearth-dim" }]
+            }
+          }
+        },
+        {
+          "id": "write",
+          "stagedAnchorId": "cam.anna_death",
+          "verbs": ["WriteName"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "WriteName": {
+              "textKeys": [
+                "ui.presence.write_name",
+                "npc.anna.presence.write_name",
+                "notebook.anna_choice_a",
+                "notebook.borrowed_mercy"
+              ],
+              "flags": { "anna.written": 1 },
+              "events": [
+                { "type": "notebook-line", "textKey": "notebook.anna_choice_a" },
+                { "type": "notebook-line", "textKey": "notebook.borrowed_mercy" },
+                { "type": "names-witness", "kind": "witness", "sourceId": "anna_death" },
+                { "type": "vial-inherited" },
+                { "type": "item-reveal-request", "itemId": "vial" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "hearth_vigil": {
+      "id": "hearth_vigil",
+      "beat": "hearth",
+      "registerLocked": false,
+      "repeatable": true,
+      "interrupt": "none",
+      "composition": {
+        "field": "black vigil field",
+        "axis": "the flame vertical",
+        "threshold": "hearth stone ring",
+        "witness": "Cedar Dog at pouch slot 1",
+        "light": "hearth warm/vigil",
+        "memory": "notebook opened, Names written",
+        "border": "lit-state ornament; vigil seal"
+      },
+      "steps": [
+        {
+          "id": "approach",
+          "stagedAnchorId": "cam.hearth_vigil",
+          "verbs": ["Approach"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Approach": {
+              "textKeys": ["ui.hearth.approach"],
+              "events": [
+                { "type": "hearth-arrive" },
+                { "type": "hud-border-state", "state": "hearth-approached" }
+              ]
+            }
+          }
+        },
+        {
+          "id": "light",
+          "stagedAnchorId": "cam.hearth_vigil",
+          "verbs": ["Light"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Light": {
+              "textKeys": ["ui.hearth.light"],
+              "flags": { "hearth.lit": 1 },
+              "events": [{ "type": "hud-border-state", "state": "hearth-lit" }]
+            }
+          }
+        },
+        {
+          "id": "wait",
+          "stagedAnchorId": "cam.hearth_vigil",
+          "verbs": ["Wait"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Wait": {
+              "textKeys": [
+                "ui.hearth.wait",
+                "ui.hearth.vigil_save",
+                "ui.hearth.doses_renewed",
+                "ui.hearth.numbness_restore"
+              ],
+              "events": [
+                { "type": "hearth-rest-request" },
+                { "type": "hearth-refill-request" },
+                { "type": "hearth-respawn-request" }
+              ]
+            }
+          }
+        },
+        {
+          "id": "remember",
+          "stagedAnchorId": "cam.hearth_vigil",
+          "verbs": ["Remember"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Remember": {
+              "textKeys": ["ui.hearth.remember", "ui.level.write_names"],
+              "events": [
+                { "type": "hearth-bank-request" },
+                { "type": "hearth-level-request" }
+              ]
+            }
+          }
+        },
+        {
+          "id": "leave",
+          "stagedAnchorId": "cam.hearth_vigil",
+          "verbs": ["Leave"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Leave": {
+              "textKeys": ["ui.hearth.leave"],
+              "events": [
+                { "type": "hearth-craft-request" },
+                { "type": "hearth-leave" },
+                { "type": "hud-border-state", "state": "hearth-left" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "warden_ceremony": {
+      "id": "warden_ceremony",
+      "beat": 8,
+      "registerLocked": false,
+      "repeatable": false,
+      "interrupt": "none",
+      "composition": {
+        "field": "custody green — colonnade enclosing",
+        "axis": "light shaft he stands into; hung lantern",
+        "threshold": "snare-line ring",
+        "witness": "tin tags, enumerable",
+        "light": "lantern guide turned accuse",
+        "memory": "well-kept axe, stripped insignia",
+        "border": "boss-phase verdict; no title card"
+      },
+      "steps": [
+        {
+          "id": "hold",
+          "stagedAnchorId": "cam.warden_intro",
+          "propAnchorId": "lantern.hang",
+          "verbs": [],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "afterTicks": 90 },
+          "onEnter": {
+            "textKeys": ["boss.warden.ceremony_lantern", "boss.warden.ceremony_dose"],
+            "events": [
+              { "type": "ceremony-started" },
+              { "type": "invulnerable-hold" }
+            ]
+          },
+          "onExit": {
+            "events": [{ "type": "ceremony-ended" }]
+          },
+          "verbEffects": {}
+        }
+      ]
+    },
+    "warden_aftermath": {
+      "id": "warden_aftermath",
+      "beat": 8,
+      "registerLocked": false,
+      "repeatable": false,
+      "interrupt": "none",
+      "composition": {
+        "field": "custody green — colonnade enclosing",
+        "axis": "light shaft he stands into",
+        "threshold": "snare-line ring",
+        "witness": "the tin tag",
+        "light": "lantern guide turned accuse",
+        "memory": "a name stamped in tin",
+        "border": "unwritten mark until the name is written; no title card"
+      },
+      "steps": [
+        {
+          "id": "tag",
+          "stagedAnchorId": "cam.warden_intro",
+          "verbs": ["DiscoverTag"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "DiscoverTag": {
+              "textKeys": [
+                "boss.aftermath.tag_read",
+                "item.key.wardens_tag.name",
+                "item.key.wardens_tag.desc"
+              ],
+              "flags": { "warden.tagFound": 1 }
+            }
+          }
+        },
+        {
+          "id": "choice",
+          "stagedAnchorId": "cam.warden_intro",
+          "verbs": ["WriteName", "WalkAway"],
+          "verbOrder": "choice",
+          "interrupt": "none",
+          "exit": { "afterAnyVerb": true },
+          "verbEffects": {
+            "WriteName": {
+              "textKeys": [
+                "boss.aftermath.write_prompt",
+                "boss.aftermath.written_line",
+                "notebook.warden_tag",
+                "boss.aftermath.turn_cleansed",
+                "boss.aftermath.hearth_lit"
+              ],
+              "flags": { "warden.written": 1, "hud.unwrittenMark": 0 },
+              "events": [
+                { "type": "notebook-line", "textKey": "notebook.warden_tag" },
+                { "type": "names-witness", "kind": "notebook", "sourceId": "warden_tag" },
+                { "type": "turn-cleanse-request" },
+                { "type": "arena-hearth-light", "hearthId": "arena" },
+                { "type": "unwritten-mark", "set": 0 }
+              ]
+            },
+            "WalkAway": {
+              "textKeys": ["boss.aftermath.walked_away", "notebook.warden_tag_unwritten"],
+              "flags": { "warden.written": 0, "hud.unwrittenMark": 1 },
+              "events": [
+                { "type": "notebook-line", "textKey": "notebook.warden_tag_unwritten" },
+                { "type": "unwritten-mark", "set": 1 }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "birdie_coda": {
+      "id": "birdie_coda",
+      "beat": 9,
+      "registerLocked": true,
+      "repeatable": false,
+      "interrupt": "none",
+      "composition": {
+        "field": "route conversion toward Bethany",
+        "axis": "the road's S-curve",
+        "threshold": "the bend/fork",
+        "witness": "Birdie small at the margin",
+        "light": "late overcast gold break, guide",
+        "memory": "the apple offered and refused",
+        "border": "unwritten Warden mark if unread"
+      },
+      "steps": [
+        {
+          "id": "sight",
+          "stagedAnchorId": "cam.birdie_coda",
+          "verbs": ["MeetBirdie"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "MeetBirdie": {
+              "textKeys": ["npc.birdie.first_sight"]
+            }
+          }
+        },
+        {
+          "id": "apple",
+          "stagedAnchorId": "cam.birdie_coda",
+          "verbs": ["OfferApple"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "OfferApple": {
+              "textKeys": ["ui.prompt.offer_apple", "npc.birdie.apple_refusal"],
+              "flags": { "birdie.refused": 1 }
+            }
+          }
+        },
+        {
+          "id": "misname",
+          "stagedAnchorId": "cam.birdie_coda",
+          "verbs": ["HearMisname"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "HearMisname": {
+              "textKeys": ["npc.birdie.caleb_misname"],
+              "events": [{ "type": "caleb-misname" }]
+            }
+          }
+        },
+        {
+          "id": "road",
+          "stagedAnchorId": "cam.birdie_coda",
+          "verbs": ["TakeRoad"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "TakeRoad": {
+              "textKeys": ["npc.birdie.road_ahead"],
+              "flags": { "slice.exit": 1 },
+              "events": [
+                { "type": "names-witness", "kind": "witness", "sourceId": "birdie_threshold" },
+                { "type": "slice-exit" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "item_revelation": {
+      "id": "item_revelation",
+      "beat": "item",
+      "registerLocked": false,
+      "repeatable": true,
+      "interrupt": "none",
+      "composition": {
+        "field": "parchment field, one focal object",
+        "axis": "the object itself, relic approach",
+        "threshold": "the act of taking",
+        "witness": "one small emblem only",
+        "light": "one named emitter, never self-glow",
+        "memory": "soot, wear, fill line",
+        "border": "footer cartouche, folk name"
+      },
+      "steps": [
+        {
+          "id": "behold",
+          "stagedAnchorId": "cam.item_revelation",
+          "verbs": ["Behold"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Behold": {
+              "textFromItem": true
+            }
+          }
+        },
+        {
+          "id": "take",
+          "stagedAnchorId": "cam.item_revelation",
+          "verbs": ["Take"],
+          "verbOrder": "fixed",
+          "interrupt": "none",
+          "exit": { "allVerbsApplied": true },
+          "verbEffects": {
+            "Take": {
+              "textKeys": ["ui.prompt.pick_up", "ui.prompt.take_iron"],
+              "events": [{ "type": "item-revealed" }]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
