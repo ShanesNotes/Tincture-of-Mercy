@@ -169,6 +169,19 @@ const nearestHostile = (
   return best?.actor.position;
 };
 
+/**
+ * The snare line's tin tags. `world.tag_chime` has been an authored cue with no
+ * emitter since s17; the Warden's ring is what rings it.
+ */
+const bossAudio = (event: WorldEvent): readonly AudioSourceEvent[] => {
+  if (event.source !== "boss") return [];
+  const payload: unknown = event.payload;
+  if (typeof payload !== "object" || payload === null || !("type" in payload)) return [];
+  return payload.type === "snare-contact" && "chime" in payload && payload.chime === true
+    ? [{ type: "world.tag_chime", tick: event.tick }]
+    : [];
+};
+
 /** Adapts the globally sequenced presenter stream into camera and audio ports. */
 export const adaptWorldEvents = (events: readonly WorldEvent[]): WorldViewEventBatch => {
   const camera: CameraWorldEvent[] = [];
@@ -181,6 +194,7 @@ export const adaptWorldEvents = (events: readonly WorldEvent[]): WorldViewEventB
         camera.push({ type: "camera-release" });
       }
     }
+    audio.push(...bossAudio(event));
     if (event.source === "ai" && "kind" in event.payload && "detail" in event.payload) {
       audio.push(
         ...fromAiEvent({

@@ -264,7 +264,12 @@ const bootIronwoodPlay = async (
     width: Math.max(window.innerWidth, 1),
     height: Math.max(window.innerHeight, 1),
   });
-  const syncMenu = (next: ReturnType<typeof hudMenuForWorld>): void => {
+  /**
+   * A pause stops `step`, so the menu state cannot be driven from inside it —
+   * that is how the game could be paused and never resumed. The DOM handlers
+   * apply it directly and the step loop only reports the world-driven menus.
+   */
+  const applyMenu = (next: ReturnType<typeof hudMenuForWorld>): void => {
     if (next === openMenu) return;
     openMenu = next;
     hud.openMenu(next === "none" ? null : next);
@@ -282,9 +287,12 @@ const bootIronwoodPlay = async (
     } else if (intent.type === "hearth-rest" || intent.type === "refill" || intent.type === "respawn") {
       pendingHearthRest = true;
     }
+    applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
   };
   const onMenuKey = (event: KeyboardEvent): void => {
-    if (event.code === "Escape") menuPauseRequested = !menuPauseRequested;
+    if (event.code !== "Escape") return;
+    menuPauseRequested = !menuPauseRequested;
+    applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
   };
   window.addEventListener("hud-intent", onHudIntent);
   window.addEventListener("keydown", onMenuKey);
@@ -442,7 +450,7 @@ const bootIronwoodPlay = async (
       music.setState(musicStateFromWorld(snapshot));
       music.syncClock(state.tick);
       hud.setState(hudInputFromWorld(snapshot, playerId));
-      syncMenu(hudMenuForWorld(snapshot, menuPauseRequested));
+      applyMenu(hudMenuForWorld(snapshot, menuPauseRequested));
       recordDuration(simStepSamples, startedAt);
     },
     pollResumeInput: pollGamepad,
