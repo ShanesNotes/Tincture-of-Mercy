@@ -202,8 +202,21 @@ describe("property: fall damage thresholds are exact", () => {
     }
   });
 
-  it("emits the fall-damage event exactly when the drop passes the safe height", () => {
-    const dropFrom = (height: number): number => {
+  /**
+   * The threshold itself is exact on the pure function (params.test.ts and the
+   * sampled case above pin 6m to zero and 14m to one). What this covers is the
+   * plumbing: that a real fall measures the real drop and routes it to the
+   * right side of that function. Heights are placed a clear margin off the
+   * boundary, because a drop constructed to land on it exactly lands within
+   * picometres of it, and picometres are not a behaviour worth asserting.
+   */
+  it("measures a real drop and routes it across the safe height", () => {
+    interface Landing {
+      readonly fallMeters: number;
+      readonly pulseFraction: number;
+    }
+
+    const dropFrom = (height: number): Landing => {
       let state: MotionState = {
         ...spawnAt("flatStart"),
         position: { x: 0, y: height, z: 3.5 },
@@ -214,21 +227,33 @@ describe("property: fall damage thresholds are exact", () => {
       for (let tick = 0; tick < 400; tick += 1) {
         const stepped = stepMotion(state, input, queries, params);
         state = stepped.state;
-        const damage = stepped.events.find((event) => event.type === "fallDamage");
-        if (damage !== undefined && damage.type === "fallDamage") {
-          return damage.pulseFraction;
-        }
-        if (stepped.events.some((event) => event.type === "landed")) {
-          return 0;
+        const landed = stepped.events.find((event) => event.type === "landed");
+        if (landed !== undefined && landed.type === "landed") {
+          const damage = stepped.events.find((event) => event.type === "fallDamage");
+          return {
+            fallMeters: landed.fallMeters,
+            pulseFraction: damage?.type === "fallDamage" ? damage.pulseFraction : 0,
+          };
         }
       }
       throw new Error("never landed");
     };
 
     const skin = params.capsule.skin;
-    expect(dropFrom(params.fallDamage.safeMeters + skin)).toBe(0);
-    expect(dropFrom(params.fallDamage.safeMeters + skin + 0.01)).toBeGreaterThan(0);
-    expect(dropFrom(params.fallDamage.lethalMeters + skin)).toBe(1);
+    const { safeMeters, lethalMeters } = params.fallDamage;
+
+    const shallow = dropFrom(safeMeters + skin - 0.1);
+    expect(shallow.fallMeters).toBeCloseTo(safeMeters - 0.1, 6);
+    expect(shallow.pulseFraction).toBe(0);
+
+    const past = dropFrom(safeMeters + skin + 0.1);
+    expect(past.fallMeters).toBeCloseTo(safeMeters + 0.1, 6);
+    expect(past.pulseFraction).toBeGreaterThan(0);
+    expect(past.pulseFraction).toBeLessThan(0.05);
+
+    const lethal = dropFrom(lethalMeters + skin + 0.1);
+    expect(lethal.fallMeters).toBeCloseTo(lethalMeters + 0.1, 6);
+    expect(lethal.pulseFraction).toBe(1);
   }, 60_000);
 });
 

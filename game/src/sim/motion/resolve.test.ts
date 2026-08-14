@@ -70,11 +70,18 @@ describe("ground snap", () => {
     expect(Math.max(...heights) - Math.min(...heights)).toBeLessThan(1e-6);
   });
 
-  it("pushes the capsule out when it starts intersecting the floor", () => {
-    const sunk: Vec3 = { x: 0, y: -0.05, z: 3.5 };
-    const ground = resolveGround(queries, params, sunk, 0);
-    expect(ground.grounded).toBe(true);
-    expect(ground.position.y).toBeCloseTo(params.capsule.skin, 6);
+  it("pushes an intersecting capsule out, one skin width at a time", () => {
+    // The query interface reports no penetration depth, so recovery is bounded
+    // rather than instant: a gentle climb out beats an explosive pop.
+    let position: Vec3 = { x: 0, y: -0.05, z: 3.5 };
+    for (let attempt = 0; attempt < 10; attempt += 1) {
+      const previous = position;
+      const ground = resolveGround(queries, params, previous, 0);
+      expect(ground.grounded).toBe(true);
+      expect(ground.position.y - previous.y).toBeLessThanOrEqual(params.capsule.skin + 1e-12);
+      position = ground.position;
+    }
+    expect(position.y).toBeCloseTo(params.capsule.skin, 6);
   });
 });
 
@@ -153,7 +160,8 @@ describe("step offset", () => {
   it("is refused entirely under a ceiling too low to stand in", () => {
     const start = at(NASTY_LEVEL_LANDMARKS.lowCeilingApproach, facingToward(1, 0));
     const { state } = drive(start, 240, EAST);
-    expect(state.position.x).toBeLessThan(4);
+    // The 1.2m slab starts at x = 0; a 1.75m capsule cannot get under it.
+    expect(state.position.x).toBeLessThan(0);
   });
 });
 
@@ -178,6 +186,35 @@ describe("slope limit", () => {
     const { states } = drive(start, 180, EAST);
     for (const state of states) {
       expect(state.position.y).toBeLessThanOrEqual(start.position.y + 0.05);
+    }
+  });
+
+  /** Dropped onto a ramp face partway up it, rather than walked at from the base. */
+  const standOnRamp = (x: number, z: number): MotionState =>
+    spawnMotionState(queries, params, { x, y: 3, z }, facingToward(1, 0), 100, SPAWN_DROP);
+
+  it("stands still on a 44 degree ramp with no input", () => {
+    const start = standOnRamp(-4.5, -3.5);
+    expect(start.grounded).toBe(true);
+    expect(start.position.y).toBeGreaterThan(1.4);
+    const { state } = drive(start, 120, { x: 0, z: 0 });
+    expect(state.grounded).toBe(true);
+    expect(state.position.y).toBeCloseTo(start.position.y, 6);
+  });
+
+  it("slides back down a 46 degree ramp under gravity alone", () => {
+    const start = standOnRamp(-4.5, -1);
+    expect(start.grounded).toBe(false);
+    expect(start.position.y).toBeGreaterThan(1.4);
+    const { state, states } = drive(start, 180, { x: 0, z: 0 });
+    expect(state.position.y).toBeLessThan(start.position.y - 1);
+    expect(state.position.x).toBeLessThan(start.position.x);
+    for (let index = 1; index < states.length; index += 1) {
+      const previous = states[index - 1];
+      const current = states[index];
+      if (previous !== undefined && current !== undefined) {
+        expect(current.position.y).toBeLessThanOrEqual(previous.position.y + 1e-9);
+      }
     }
   });
 
@@ -219,7 +256,10 @@ describe("ledges", () => {
         break;
       }
     }
-    expect(landedFall).toBeCloseTo(2, 2);
+    // Slightly under the 2m geometric drop: scraping off the edge counts as
+    // sliding, not falling, so the fall is measured from the last contact.
+    expect(landedFall).toBeGreaterThan(1.9);
+    expect(landedFall).toBeLessThanOrEqual(2);
     expect(damaged).toBe(false);
     expect(state.grounded).toBe(true);
   });
