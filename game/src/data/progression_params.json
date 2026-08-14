@@ -1,0 +1,94 @@
+{
+  "_source": "design_system/v1_0_threejs_soulslike/DECISIONS.md D6 (Names / the Open Page / the Hearth / attributes / Burden) + PRD R5/R7 + TUNING_V0.md. Keys prefixed with _ are provenance notes and are stripped before the data<->code parity comparison (see data.parity.test.ts).",
+  "version": 1,
+  "attributes": {
+    "_source": "D6 attribute set verbatim: Pulse (HP) / Breath (stamina) / Hands (weapon force + craft) / Steady (poise + guard stability) / Spirit (Tincture potency + Wither resist) / Sight (discovery + Attend range). breath.base 100 and steady.base 20 are TUNING_V0 verbatim ('Breath (stamina, 100 base)', 'Kalev base 20'); sight.base 1500cm is TUNING_V0 Attend range 15m verbatim. pulse/hands/spirit bases and every segment curve are AUTHORED (TUNING_V0 gives no level curves). Units are integers so every derived value stays exact.",
+    "pulse": {
+      "unit": "maxPulse",
+      "base": 300,
+      "segments": [
+        { "toPoints": 20, "perPoint": 22 },
+        { "toPoints": 40, "perPoint": 12 },
+        { "toPoints": 99, "perPoint": 5 }
+      ]
+    },
+    "breath": {
+      "unit": "maxBreath",
+      "base": 100,
+      "segments": [
+        { "toPoints": 15, "perPoint": 6 },
+        { "toPoints": 35, "perPoint": 3 },
+        { "toPoints": 99, "perPoint": 1 }
+      ]
+    },
+    "hands": {
+      "unit": "weaponForcePercent",
+      "base": 100,
+      "segments": [
+        { "toPoints": 20, "perPoint": 3 },
+        { "toPoints": 99, "perPoint": 1 }
+      ]
+    },
+    "steady": {
+      "unit": "poise",
+      "base": 20,
+      "segments": [{ "toPoints": 99, "perPoint": 1 }]
+    },
+    "spirit": {
+      "unit": "tincturePotencyPercent",
+      "base": 100,
+      "segments": [
+        { "toPoints": 20, "perPoint": 2 },
+        { "toPoints": 99, "perPoint": 1 }
+      ]
+    },
+    "sight": {
+      "unit": "attendRangeCm",
+      "base": 1500,
+      "segments": [
+        { "toPoints": 20, "perPoint": 20 },
+        { "toPoints": 99, "perPoint": 10 }
+      ]
+    }
+  },
+  "level": {
+    "_source": "AUTHORED. cost(spent) = costBase + costLinear*spent + costQuad*spent^2, where spent is the total attribute points already written into the notebook. Integer by construction.",
+    "costBase": 60,
+    "costLinear": 12,
+    "costQuad": 2,
+    "maxPointsPerAttribute": 99
+  },
+  "names": {
+    "_source": "AUTHORED award table. Sources are the three accrual events named in the slice contract (kill / witness / notebook) over the ENCOUNTERS.md Ironwood cast.",
+    "awards": {
+      "kill": {
+        "wolf": 40,
+        "warden": 800
+      },
+      "witness": {
+        "anna_death": 300,
+        "iiro_safe": 120,
+        "birdie_threshold": 150
+      },
+      "notebook": {
+        "entry": 60,
+        "warden_tag": 200
+      }
+    }
+  },
+  "burden": {
+    "_source": "Band thresholds are TUNING_V0 § Movement & defense verbatim: Light (<30%) / Medium (30-70%) / Heavy (>70%). Capacity curve AUTHORED and driven by Steady (D6: Steady is postural stability; 'bearing it is the work').",
+    "capacityBase": 40,
+    "capacityPerSteadyPoint": 3,
+    "lightMaxPercent": 30,
+    "mediumMaxPercent": 70
+  },
+  "openPage": {
+    "_source": "D6 (the Open Page: one recovery; second death loses them) + GATES F11 ('Open Page within 0.5m of death site') - the page is recorded at the exact death position, so the drop offset is 0m. recoveryRadiusM AUTHORED (pickup reach).",
+    "recoveryRadiusM": 1.5
+  },
+  "respawn": {
+    "_source": "PRD R7 + D7: Hearth rest respawns standard enemies; bosses never respawn (the Warden is excluded via the boss-arena state machine).",
+    "bossEnemyIds": ["warden"]
+  }
+}

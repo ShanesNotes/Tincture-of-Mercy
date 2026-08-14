@@ -1,0 +1,116 @@
+{
+  "_source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md § Tincture + DECISIONS.md D6 + TEXT_BIBLE.md §2/§3. Keys prefixed with _ are provenance notes and are stripped before the data<->code parity comparison (see data.parity.test.ts).",
+  "version": 1,
+  "vial": {
+    "_source": "TUNING_V0 § Tincture verbatim: 'Slice doses: 3 base, +1 per Hearth upgrade tier (pouch materials).' maxUpgradeTier 2 authored (slice reach: 5 doses).",
+    "baseDoses": 3,
+    "dosesPerUpgradeTier": 1,
+    "maxUpgradeTier": 2,
+    "defaultVariant": "pulseleaf_draught",
+    "upgradeCost": {
+      "cedar": 2,
+      "cotton": 2,
+      "oil": 1
+    }
+  },
+  "variants": {
+    "_source": "Kinds are TUNING_V0 verbatim (instant / over-time / cleanse-Turn / Breath surge + brief Steady / large heal + deferred instability). Magnitudes are AUTHORED (TUNING_V0 gives no Tincture magnitudes); ER-calibrated against maxPulse base 300 in progression_params.json. Feel gate owns final numbers.",
+    "pulseleaf_draught": {
+      "kind": "instant",
+      "healPulse": 140,
+      "healBreath": 0,
+      "cleansesTurn": false
+    },
+    "honeyed_draw": {
+      "kind": "overTime",
+      "totalHealPulse": 180,
+      "ticks": 300,
+      "intervalTicks": 10
+    },
+    "salt_wash": {
+      "kind": "cleanse",
+      "healPulse": 40,
+      "cleansesTurn": true
+    },
+    "cedar_wool_compress": {
+      "kind": "surge",
+      "healBreath": 70,
+      "steadyDelta": 12,
+      "ticks": 300
+    },
+    "bitter_phrine": {
+      "kind": "deferred",
+      "healPulse": 280,
+      "delayTicks": 60,
+      "windowTicks": 240,
+      "breathRegenPercent": 60,
+      "steadyDelta": -8
+    }
+  },
+  "ember": {
+    "_source": "DECISIONS D6 + TUNING_V0 verbatim: 2 doses in slice, non-craftable, full Pulse+Breath restore + Turn cleanse + 20s surge (1200t at 60Hz). Surge magnitudes AUTHORED. surgeSteadyDelta 15 > cedar_wool_compress 12 so Ember dominates every craftable dose on every restoration axis (D6 canon law: Ember must be genuinely wanted).",
+    "startingDoses": 2,
+    "craftable": false,
+    "restoresPulseFully": true,
+    "restoresBreathFully": true,
+    "cleansesTurn": true,
+    "surgeTicks": 1200,
+    "surgeDamagePercent": 125,
+    "surgeBreathRegenPercent": 135,
+    "surgeSteadyDelta": 15
+  },
+  "numbness": {
+    "_source": "DECISIONS D6 + TUNING_V0 verbatim: -8% Tincture healing, +25% Turn buildup, +1 register step per permanent stack. maxTextStep 3 and maxVigilRestore 1 from TEXT_BIBLE §2 (textStep = clamp(stacks - vigilRestore, 0, 3); vigilRestore is 1 while the current Hearth vigil holds).",
+    "healingPenaltyPercentPerStack": 8,
+    "turnBuildupPercentPerStack": 25,
+    "registerStepPerStack": 1,
+    "maxTextStep": 3,
+    "maxVigilRestore": 1
+  },
+  "pouch": {
+    "_source": "TEXT_BIBLE §3 'The pouch (15 entries, folk order - v0.3 §V/§X verbatim)'. Ember is the 15th entry and is the Ember dose count (single source of truth). Starting counts AUTHORED.",
+    "items": [
+      "pulseleaf",
+      "arbor",
+      "acebark",
+      "phrine",
+      "cillin",
+      "zyl",
+      "honey",
+      "cedar",
+      "wool",
+      "cotton",
+      "salt",
+      "myrrh",
+      "oil",
+      "furos",
+      "ember"
+    ],
+    "nonCraftable": ["ember"],
+    "starting": {
+      "pulseleaf": 4,
+      "arbor": 2,
+      "acebark": 2,
+      "phrine": 3,
+      "cillin": 0,
+      "zyl": 2,
+      "honey": 3,
+      "cedar": 3,
+      "wool": 3,
+      "cotton": 4,
+      "salt": 4,
+      "myrrh": 1,
+      "oil": 2,
+      "furos": 1,
+      "ember": 2
+    }
+  },
+  "recipes": {
+    "_source": "AUTHORED. TEXT_BIBLE §3 card descriptions drive the ingredient logic (honey 'carries a bitter dose past the tongue'; salt 'for the wash'; cedar+wool for the compress; zyl numbs the hands for Bitter Phrine). Craft at the Hearth only (DECISIONS D6: the Tincture Wheel is Hearth work).",
+    "pulseleaf_draught": { "pulseleaf": 2, "oil": 1 },
+    "honeyed_draw": { "pulseleaf": 1, "honey": 2 },
+    "salt_wash": { "salt": 2, "myrrh": 1 },
+    "cedar_wool_compress": { "cedar": 1, "wool": 2 },
+    "bitter_phrine": { "phrine": 2, "zyl": 1 }
+  }
+}
