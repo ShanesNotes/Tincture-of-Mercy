@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "tickHz": 60,
+  "source": "PRD R10 + ART_BIBLE register restraint (znamenny/valaam-adjacent austerity; tin, iron, breath) + ENCOUNTERS ceremony 90t + GATES F4 mix law (impacts always read over music). Road default is silence.",
+  "buses": {
+    "music": 0.2,
+    "note": "Composed on top of audio_params master. Sits under sfx 0.85 and at/under ambience 0.4 so impacts always read."
+  },
+  "ducking": {
+    "deathSting": 0.05,
+    "note": "Matches audio_params ducking.sting.ambience. Music ducks under the death sting; s18 binds setDeathSting."
+  },
+  "ceremonySilence": {
+    "nonCeremonyGain": 0,
+    "fadeTicks": 12,
+    "note": "ENCOUNTERS / TUNING_V0: ceremony is 90t, arena holds its breath. Non-ceremony layers mute over 12t; the ceremony bed is the only licensed tone."
+  },
+  "defaults": {
+    "fadeTicks": 90,
+    "loopCrossfadeTicks": 24
+  },
+  "tracks": {
+    "hearth_theme": {
+      "file": "hearth_theme.wav",
+      "loop": true,
+      "loopStartSeconds": 0,
+      "loopEndSeconds": 73.024,
+      "gain": 0.55,
+      "fadeTicks": 120,
+      "source": "Solo, warm-sparse, the one licensed tenderness. 60–90s loop."
+    },
+    "warden_p1": {
+      "file": "warden_p1.wav",
+      "loop": true,
+      "loopStartSeconds": 0,
+      "loopEndSeconds": 70.524,
+      "gain": 0.42,
+      "fadeTicks": 90,
+      "source": "Cold modal pulse; space for telegraphs. Phase 1."
+    },
+    "warden_ceremony": {
+      "file": "warden_ceremony.wav",
+      "loop": true,
+      "loopStartSeconds": 0,
+      "loopEndSeconds": 15.232,
+      "gain": 0.28,
+      "fadeTicks": 12,
+      "source": "Near-silence: held ison + tin snare-tags. 90t-compatible bed (TUNING_V0 ceremony = 90t)."
+    },
+    "warden_p2": {
+      "file": "warden_p2.wav",
+      "loop": true,
+      "loopStartSeconds": 0,
+      "loopEndSeconds": 62.532,
+      "gain": 0.38,
+      "fadeTicks": 90,
+      "source": "P1 material narrowed/hollowed — same theme, fewer voices, more iron."
+    },
+    "road_motif": {
+      "file": "road_motif.wav",
+      "loop": false,
+      "loopStartSeconds": 0,
+      "loopEndSeconds": 14.04,
+      "gain": 0.36,
+      "fadeTicks": 24,
+      "source": "Brief unaccompanied threshold line. Non-looping. Road default is silence."
+    }
+  },
+  "rules": [
+    {
+      "id": "ceremony",
+      "when": { "ceremony": true },
+      "track": "warden_ceremony"
+    },
+    {
+      "id": "hearth",
+      "when": { "hearthRest": true },
+      "track": "hearth_theme"
+    },
+    {
+      "id": "warden_p2",
+      "when": { "zone": "arena", "bossPhase": 2 },
+      "track": "warden_p2"
+    },
+    {
+      "id": "warden_p1_phase",
+      "when": { "zone": "arena", "bossPhase": 1 },
+      "track": "warden_p1"
+    },
+    {
+      "id": "warden_p1_combat",
+      "when": { "zone": "arena", "inCombat": true },
+      "track": "warden_p1"
+    },
+    {
+      "id": "threshold",
+      "when": { "zone": "threshold" },
+      "track": "road_motif"
+    },
+    {
+      "id": "silence",
+      "when": {},
+      "track": null
+    }
+  ]
+}
