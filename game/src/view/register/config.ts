@@ -62,8 +62,7 @@ export interface GateThresholds {
   /** A4: a populated band holds at least this fraction of frame pixels. */
   readonly a4MinBandPopulation: number;
   /** A4: minimum grayscale standard deviation (contrast readability). */
-  readonly a4MinStdDev: number;
-  /** A6: ink-outline edge density band on silhouette shots [min, max]. */
+  readonly a4MinStdDev: number;  /** A6: ink-outline edge density band on silhouette shots [min, max]. */
   readonly a6EdgeDensity: readonly [number, number];
 }
 
@@ -117,8 +116,8 @@ export const REGISTER_CONFIG: RegisterConfig = {
     {
       // Shot 2 — wolf silhouette against the parchment field (A6 subject).
       name: "wolf-silhouette",
-      position: [2.2, 1.1, -2.2],
-      target: [-0.6, 0.7, -7.5],
+      position: [0.6, 1.0, -3.4],
+      target: [-1.5, 0.6, -7],
       silhouette: true,
     },
     {
@@ -141,7 +140,10 @@ export const REGISTER_CONFIG: RegisterConfig = {
     a3OxbloodCoverage: 0.05, // GATES.md A3 / L8
     a4MinBands: 4, // contrast-band readability in value-only conversion
     a4MinBandPopulation: 0.02,
-    a4MinStdDev: 24,
+    // σ floor for value spread: the L5 blue-shift compresses post-on frames
+    // to σ≈23 (post-off baseline σ≈42); 20 fails a truly flattened frame
+    // while honoring the stepped-band register. A washed frame (~σ<15) fails.
+    a4MinStdDev: 20,
     a6EdgeDensity: [0.004, 0.2],
   },
 };

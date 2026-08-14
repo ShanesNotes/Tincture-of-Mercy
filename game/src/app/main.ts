@@ -33,9 +33,23 @@ export const bootApp = async (): Promise<void> => {
   const canvas = makeCanvas();
   mount.append(canvas);
 
-  const forceWebGL = new URLSearchParams(window.location.search).get("renderer") === "webgl2";
+  const params = new URLSearchParams(window.location.search);
+  const forceWebGL = params.get("renderer") === "webgl2";
   const boot = await bootRenderer(canvas, { forceWebGL });
   document.body.dataset.rendererBackend = boot.backend;
+
+  // s13 renderer-register sample scene: additive mount, the default boot
+  // path below is untouched for every other URL.
+  if (params.get("scene") === "register") {
+    const { bootRegisterScene } = await import("../view/register/scene");
+    await bootRegisterScene({
+      renderer: boot.renderer,
+      backend: boot.backend,
+      reversedDepth: boot.reversedDepthBuffer,
+      params,
+    });
+    return;
+  }
 
   const scene = new Scene();
   scene.background = new Color("#f8f1e5");

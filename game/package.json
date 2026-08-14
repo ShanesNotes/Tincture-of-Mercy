@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "e2e": "playwright test",
+    "artgate": "node tools/artgate/run.js",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
     "verify:full": "npm run verify && npm run e2e"
   },
