@@ -1,0 +1,28 @@
+{
+  "files": [
+    "preview.glb",
+    "preview.fbx"
+  ],
+  "prompt_sent": "A real grey wolf standing, quadruped, accurate wolf proportions, lean winter coat, no glowing eyes, no armor, no saddle, no fantasy features, clean silhouette, low-poly blocking friendly. Tincture of Mercy art direction: carved-figure silhouette, no glowing eyes, no fantasy scale inflation, restrained face, pattern-over-texture, palette-covenant materials (parchment/ironwood/oxblood), elongated adult proportions ~1:7.5 head:body when humanoid. Real-world animal anatomy when wolf.",
+  "settings": {
+    "ai_model": "latest",
+    "art_constraints": "Tincture of Mercy art direction: carved-figure silhouette, no glowing eyes, no fantasy scale inflation, restrained face, pattern-over-texture, palette-covenant materials (parchment/ironwood/oxblood), elongated adult proportions ~1:7.5 head:body when humanoid. Real-world animal anatomy when wolf.",
+    "height_meters": 0.75,
+    "id": "wolf",
+    "mode": "preview",
+    "model_type": "lowpoly",
+    "pose_mode": "",
+    "prompt": "A real grey wolf standing, quadruped, accurate wolf proportions, lean winter coat, no glowing eyes, no armor, no saddle, no fantasy features, clean silhouette, low-poly blocking friendly.",
+    "refine": false,
+    "rig": false,
+    "target_formats": [
+      "glb",
+      "fbx"
+    ]
+  },
+  "settings_hash": "d525c9591659cbf3",
+  "status": "ok",
+  "task_ids": {
+    "preview": "019ffd88-9785-758f-b1ad-69bff438ca14"
+  }
+}

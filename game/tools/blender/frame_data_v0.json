@@ -1,0 +1,74 @@
+{
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md",
+  "notes": "Verbatim TUNING_V0 numbers where the table names a move. Authoring-only rows are tagged source=authoring. Clips are sliced to this table, never the reverse.",
+  "moves": {
+    "light1": {
+      "startup": 11,
+      "active": 4,
+      "recovery": 20,
+      "ticks": 35,
+      "trackingUntil": 8,
+      "breath": 14,
+      "poiseDamage": 10,
+      "source": "TUNING_V0 Player weapon — hearth iron / Light 1"
+    },
+    "heavy": {
+      "startup": 24,
+      "active": 5,
+      "recovery": 34,
+      "ticks": 63,
+      "trackingUntil": 16,
+      "breath": 26,
+      "poiseDamage": 24,
+      "hyperarmor": [18, 29],
+      "source": "TUNING_V0 Player weapon — hearth iron / Heavy"
+    },
+    "roll": {
+      "ticks": 43,
+      "band": "medium",
+      "iframes": [2, 14],
+      "actionableFrom": 30,
+      "rollCancelToAttack": 22,
+      "source": "TUNING_V0 Movement & defense / Medium (30–70%)"
+    },
+    "guard": {
+      "enter": 8,
+      "hold": 16,
+      "exit": 10,
+      "ticks": 34,
+      "source": "authoring — TUNING_V0 has no guard clip table; enter/hold/exit phases required by D4 4-attack set"
+    },
+    "lunge": {
+      "startup": 30,
+      "active": 8,
+      "recovery": 22,
+      "ticks": 60,
+      "source": "TUNING_V0 Wolves / Lunger pounce 30t startup; active+recovery authored so startup+active+recovery is the clip"
+    },
+    "idle": {
+      "ticks": 32,
+      "source": "authoring"
+    },
+    "stalk": {
+      "ticks": 40,
+      "source": "authoring"
+    },
+    "circle": {
+      "ticks": 48,
+      "source": "authoring"
+    },
+    "flinch": {
+      "ticks": 12,
+      "source": "authoring"
+    },
+    "death_crumple_fwd": {
+      "ticks": 48,
+      "source": "authoring — D4 directional crumple"
+    },
+    "death_crumple_back": {
+      "ticks": 48,
+      "source": "authoring — D4 directional crumple"
+    }
+  }
+}

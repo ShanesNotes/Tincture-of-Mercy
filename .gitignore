@@ -36,6 +36,9 @@ screenshots/
 
 # CI / local build outputs
 build/
+# D4 Meshy→Blender pipeline artifacts (committed; not the Godot CI build/)
+!game/assets/build/
+!game/assets/build/**
 reports/
 .nuget/
 

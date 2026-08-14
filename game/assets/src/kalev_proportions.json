@@ -1,0 +1,7 @@
+{
+  "head_body_ratio": 7.5,
+  "head_height_m": 0.24,
+  "shoulder_width_heads": 1.75,
+  "hand_length_heads": 0.75,
+  "notes": "height_m = head_height_m * head_body_ratio (1.80m). Author clips as bone rotations + root XZ only so re-proportioning rebuilds the rig without retiming clips. Final proportions come from ART_BIBLE; this is the D4 blocking seed."
+}

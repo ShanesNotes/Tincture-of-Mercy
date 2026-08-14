@@ -1,0 +1,9 @@
+{
+  "shoulder_height_m": 0.75,
+  "body_length_m": 0.7,
+  "head_length_m": 0.28,
+  "neck_length_m": 0.2,
+  "tail_length_m": 0.4,
+  "chest_width_m": 0.28,
+  "notes": "Real-wolf quadruped blocking scale (grey wolf, no fantasy inflation). Rebuild via author_blocking.py after edits."
+}
