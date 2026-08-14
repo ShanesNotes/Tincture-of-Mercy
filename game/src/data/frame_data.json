@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "replayDataVersion": 1,
+  "tickHz": 60,
+  "source": "design_system/v1_0_threejs_soulslike/TUNING_V0.md and game/tools/blender/frame_data_v0.json",
+  "moves": {
+    "light1": {
+      "id": "light1", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 11, "activeTicks": 4, "recoveryTicks": 20, "totalTicks": 35,
+      "activeWindows": [[11, 15]], "trackingUntilTick": 8, "trackingWindows": [[0, 9]], "turnRateRadiansPerTick": 0.1308996938995747,
+      "breathCost": 14, "poiseDamage": 10, "pulseDamage": 28, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 35,
+      "knockback": { "forwardMeters": 0.25, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 1", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines." }
+    },
+    "light2": {
+      "id": "light2", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 9, "activeTicks": 4, "recoveryTicks": 24, "totalTicks": 37,
+      "activeWindows": [[9, 13]], "trackingUntilTick": 6, "trackingWindows": [[0, 7]], "turnRateRadiansPerTick": 0.1308996938995747,
+      "breathCost": 14, "poiseDamage": 10, "pulseDamage": 30, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 37,
+      "knockback": { "forwardMeters": 0.28, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 2", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines." }
+    },
+    "heavy": {
+      "id": "heavy", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 24, "activeTicks": 5, "recoveryTicks": 34, "totalTicks": 63,
+      "activeWindows": [[24, 29]], "trackingUntilTick": 16, "trackingWindows": [[0, 17]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 26, "poiseDamage": 24, "pulseDamage": 55, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "heavy", "reHitLockoutTicks": 63,
+      "knockback": { "forwardMeters": 0.7, "rightMeters": 0 }, "hyperarmorWindow": [18, 30], "hyperarmorPoise": 25, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["hyperarmor"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Heavy; Steady hyperarmor", "authoredReason": "Pulse damage, damage type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines." }
+    },
+    "charged": {
+      "id": "charged", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 24, "activeTicks": 5, "recoveryTicks": 38, "totalTicks": 67,
+      "activeWindows": [[24, 29]], "trackingUntilTick": 16, "trackingWindows": [[0, 17]], "turnRateRadiansPerTick": 0.08726646259971647,
+      "breathCost": 34, "poiseDamage": 34, "pulseDamage": 78, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "charged", "reHitLockoutTicks": 67,
+      "knockback": { "forwardMeters": 1.1, "rightMeters": 0 }, "hyperarmorWindow": [18, 30], "hyperarmorPoise": 25, "iframes": [], "chargeHoldMaxTicks": 45, "tags": ["chargeable", "hyperarmor"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Charged; Steady hyperarmor", "authoredReason": "Charged inherits the Heavy 24-tick base startup before the authored variable hold; damage, type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines." }
+    },
+    "running": {
+      "id": "running", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 14, "activeTicks": 4, "recoveryTicks": 22, "totalTicks": 40,
+      "activeWindows": [[14, 18]], "trackingUntilTick": 10, "trackingWindows": [[0, 11]], "turnRateRadiansPerTick": 0.1308996938995747,
+      "breathCost": 18, "poiseDamage": 14, "pulseDamage": 38, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 40,
+      "knockback": { "forwardMeters": 0.5, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Running", "authoredReason": "Damage, type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines." }
+    },
+    "rolling_attack": {
+      "id": "rolling_attack", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 12, "activeTicks": 4, "recoveryTicks": 26, "totalTicks": 42,
+      "activeWindows": [[12, 16]], "trackingUntilTick": 8, "trackingWindows": [[0, 9]], "turnRateRadiansPerTick": 0.1308996938995747,
+      "breathCost": 16, "poiseDamage": 12, "pulseDamage": 34, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 42,
+      "knockback": { "forwardMeters": 0.45, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Rolling", "authoredReason": "Damage, type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines." }
+    },
+    "jump_attack": {
+      "id": "jump_attack", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 20, "activeTicks": 5, "recoveryTicks": 30, "totalTicks": 55,
+      "activeWindows": [[20, 25]], "trackingUntilTick": 12, "trackingWindows": [[0, 13]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 22, "poiseDamage": 30, "pulseDamage": 60, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "heavy", "reHitLockoutTicks": 55,
+      "knockback": { "forwardMeters": 0.85, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "authored", "reference": "PRD R2 requires jump attack or explicit deferral; TUNING_V0 supplies jump cost and poise damage only", "authoredReason": "Startup, active, recovery, tracking, damage, type, hitstop mapping, re-hit lockout, and knockback are explicit v0 authored defaults." }
+    },
+    "roll": {
+      "id": "roll", "actorClass": "kalev", "kind": "defense",
+      "startupTicks": 2, "activeTicks": 13, "recoveryTicks": 28, "totalTicks": 43,
+      "activeWindows": [[2, 15]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 22, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [[2, 15]], "chargeHoldMaxTicks": 0, "tags": ["roll"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Movement & defense / Medium (30–70%)", "authoredReason": "The table gives total and inclusive iframe range t2–t14; startup/active/recovery phase labels are the explicit clip interpretation used by the Blender sidecar." }
+    },
+    "guard": {
+      "id": "guard", "actorClass": "kalev", "kind": "defense",
+      "startupTicks": 8, "activeTicks": 16, "recoveryTicks": 10, "totalTicks": 34,
+      "activeWindows": [[8, 24]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "blocked", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["guard"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json guard", "authoredReason": "TUNING_V0 has no guard clip phase table; Blender authoring establishes enter 8 / hold 16 / exit 10." }
+    },
+    "backstep": {
+      "id": "backstep", "actorClass": "kalev", "kind": "defense",
+      "startupTicks": 1, "activeTicks": 5, "recoveryTicks": 16, "totalTicks": 22,
+      "activeWindows": [[1, 6]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [[1, 6]], "chargeHoldMaxTicks": 0, "tags": ["roll"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Movement & defense / Backstep", "authoredReason": "The table gives total and inclusive iframe range t1–t5; startup/active/recovery phase labels are explicit authored clip slots." }
+    },
+    "riposte": {
+      "id": "riposte", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 20, "activeTicks": 1, "recoveryTicks": 69, "totalTicks": 90,
+      "activeWindows": [[20, 21]], "trackingUntilTick": 19, "trackingWindows": [[0, 20]], "turnRateRadiansPerTick": 0.2617993877991494,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 160, "witherBuildup": 0, "damageType": "pierce", "hitstopClass": "critical", "reHitLockoutTicks": 90,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [[0, 81]], "chargeHoldMaxTicks": 0, "tags": ["critical"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Riposte/backstab — 90t committed, i-frames t0–t80", "authoredReason": "Critical phase split, tracking, damage, type, and re-hit lockout are explicit v0 authored defaults; inclusive i-frames are normalized to [0,81)." }
+    },
+    "backstab": {
+      "id": "backstab", "actorClass": "kalev", "kind": "attack",
+      "startupTicks": 20, "activeTicks": 1, "recoveryTicks": 69, "totalTicks": 90,
+      "activeWindows": [[20, 21]], "trackingUntilTick": 19, "trackingWindows": [[0, 20]], "turnRateRadiansPerTick": 0.2617993877991494,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 160, "witherBuildup": 0, "damageType": "pierce", "hitstopClass": "critical", "reHitLockoutTicks": 90,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [[0, 81]], "chargeHoldMaxTicks": 0, "tags": ["critical"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Riposte/backstab — 90t committed, i-frames t0–t80", "authoredReason": "Critical phase split, tracking, damage, type, and re-hit lockout are explicit v0 authored defaults; inclusive i-frames are normalized to [0,81)." }
+    },
+    "flask_drink": {
+      "id": "flask_drink", "actorClass": "kalev", "kind": "item",
+      "startupTicks": 24, "activeTicks": 18, "recoveryTicks": 30, "totalTicks": 72,
+      "activeWindows": [[24, 42]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["flask"],
+      "provenance": { "kind": "authored", "reference": "TUNING_V0 Tincture requires startup/drink/recovery slots but supplies no tick values", "authoredReason": "24/18/30 is the explicit punishable-but-survivable v0 authored flask baseline required by F8." }
+    },
+    "ember_use": {
+      "id": "ember_use", "actorClass": "kalev", "kind": "item",
+      "startupTicks": 30, "activeTicks": 18, "recoveryTicks": 36, "totalTicks": 84,
+      "activeWindows": [[30, 48]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["ember"],
+      "provenance": { "kind": "authored", "reference": "TUNING_V0 Ember use has effects but no committed clip ticks", "authoredReason": "30/18/36 is the explicit v0 authored Ember-use baseline; it remains interruptible and punishable." }
+    },
+    "lunge": {
+      "id": "lunge", "actorClass": "wolf", "kind": "attack",
+      "startupTicks": 30, "activeTicks": 8, "recoveryTicks": 22, "totalTicks": 60,
+      "activeWindows": [[30, 38]], "trackingUntilTick": 20, "trackingWindows": [[0, 21]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 18, "pulseDamage": 38, "witherBuildup": 0, "damageType": "pierce", "hitstopClass": "heavy", "reHitLockoutTicks": 60,
+      "knockback": { "forwardMeters": 0.8, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Wolves / Lunger pounce 30t; Blender frame data fixes 30/8/22", "authoredReason": "Active/recovery, tracking, damage, type, hitstop mapping, re-hit lockout, and knockback are tagged pipeline-authored defaults; wolves apply zero Wither by law." }
+    },
+    "wolf_harrier_bite": {
+      "id": "wolf_harrier_bite", "actorClass": "wolf", "kind": "attack",
+      "startupTicks": 16, "activeTicks": 4, "recoveryTicks": 20, "totalTicks": 40,
+      "activeWindows": [[16, 20]], "trackingUntilTick": 12, "trackingWindows": [[0, 13]], "turnRateRadiansPerTick": 0.17453292519943295,
+      "breathCost": 0, "poiseDamage": 10, "pulseDamage": 22, "witherBuildup": 0, "damageType": "pierce", "hitstopClass": "light", "reHitLockoutTicks": 40,
+      "knockback": { "forwardMeters": 0.3, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Wolves / Harrier flank bite 16t", "authoredReason": "Only startup is specified; active/recovery, tracking, damage, type, hitstop mapping, re-hit lockout, and knockback are explicit v0 authored defaults; wolves apply zero Wither." }
+    },
+    "wolf_baiter_feint": {
+      "id": "wolf_baiter_feint", "actorClass": "wolf", "kind": "attack",
+      "startupTicks": 12, "activeTicks": 0, "recoveryTicks": 14, "totalTicks": 26,
+      "activeWindows": [], "trackingUntilTick": 8, "trackingWindows": [[0, 9]], "turnRateRadiansPerTick": 0.17453292519943295,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["bait"],
+      "provenance": { "kind": "authored", "reference": "TUNING_V0 Wolves says Baiter feints are low-commitment without tick values", "authoredReason": "12 startup / no damage / 14 recovery is the explicit v0 authored feint baseline." }
+    },
+    "warden_p1_overhead_fell": {
+      "id": "warden_p1_overhead_fell", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 32, "activeTicks": 4, "recoveryTicks": 46, "totalTicks": 82,
+      "activeWindows": [[32, 36]], "trackingUntilTick": 24, "trackingWindows": [[0, 25]], "turnRateRadiansPerTick": 0.08726646259971647,
+      "breathCost": 0, "poiseDamage": 40, "pulseDamage": 60, "witherBuildup": 0, "damageType": "slash", "hitstopClass": "heavy", "reHitLockoutTicks": 82,
+      "knockback": { "forwardMeters": 1, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 1 / Overhead fell", "authoredReason": "Damage, type, turn cap, hitstop mapping, re-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p1_side_clear": {
+      "id": "warden_p1_side_clear", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 22, "activeTicks": 5, "recoveryTicks": 30, "totalTicks": 57,
+      "activeWindows": [[22, 27]], "trackingUntilTick": 16, "trackingWindows": [[0, 17]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 32, "pulseDamage": 45, "witherBuildup": 0, "damageType": "slash", "hitstopClass": "heavy", "reHitLockoutTicks": 57,
+      "knockback": { "forwardMeters": 0.55, "rightMeters": 0.35 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 1 / Side clear", "authoredReason": "Damage, type, turn cap, hitstop mapping, re-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p1_lantern_swing": {
+      "id": "warden_p1_lantern_swing", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 14, "activeTicks": 3, "recoveryTicks": 22, "totalTicks": 39,
+      "activeWindows": [[14, 17]], "trackingUntilTick": 10, "trackingWindows": [[0, 11]], "turnRateRadiansPerTick": 0.1308996938995747,
+      "breathCost": 0, "poiseDamage": 18, "pulseDamage": 28, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 39,
+      "knockback": { "forwardMeters": 0.35, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 1 / Lantern swing", "authoredReason": "Damage, type, turn cap, hitstop mapping, re-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p1_two_step_chop": {
+      "id": "warden_p1_two_step_chop", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 40, "activeTicks": 8, "recoveryTicks": 38, "totalTicks": 86,
+      "activeWindows": [[26, 30], [44, 48]], "trackingUntilTick": 38, "trackingWindows": [[0, 19], [30, 39]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 56, "pulseDamage": 84, "witherBuildup": 0, "damageType": "slash", "hitstopClass": "heavy", "reHitLockoutTicks": 14,
+      "knockback": { "forwardMeters": 0.6, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["compound"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 1 / Two-step chop 26→14, 4/4, recovery 38, tracking t18/t8", "authoredReason": "The compound windows normalize local timings onto one clock; aggregate damage, type, turn cap, hitstop mapping, 14t inter-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p1_stomp_snare_kick": {
+      "id": "warden_p1_stomp_snare_kick", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 18, "activeTicks": 3, "recoveryTicks": 26, "totalTicks": 47,
+      "activeWindows": [[18, 21]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 22, "pulseDamage": 30, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "heavy", "reHitLockoutTicks": 47,
+      "knockback": { "forwardMeters": 0.7, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["root"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 1 / Stomp-snare kick", "authoredReason": "Damage, type, root effect tag, hitstop mapping, re-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p1_lantern_raise_bait": {
+      "id": "warden_p1_lantern_raise_bait", "actorClass": "warden_p1", "kind": "attack",
+      "startupTicks": 40, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 40,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["bait"],
+      "provenance": { "kind": "tuning", "reference": "TUNING_V0 Warden Phase 1 / Step-back + lantern raise (bait), 40t", "authoredReason": null }
+    },
+    "warden_ceremony": {
+      "id": "warden_ceremony", "actorClass": "warden_p1", "kind": "ceremony",
+      "startupTicks": 0, "activeTicks": 90, "recoveryTicks": 0, "totalTicks": 90,
+      "activeWindows": [[0, 90]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [[0, 90]], "chargeHoldMaxTicks": 0, "tags": ["ember"],
+      "provenance": { "kind": "tuning", "reference": "TUNING_V0 Warden transition — 90t invulnerable, deals no damage", "authoredReason": null }
+    },
+    "warden_p2_wide_fell": {
+      "id": "warden_p2_wide_fell", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 36, "activeTicks": 5, "recoveryTicks": 40, "totalTicks": 81,
+      "activeWindows": [[36, 41]], "trackingUntilTick": 26, "trackingWindows": [[0, 27]], "turnRateRadiansPerTick": 0.08726646259971647,
+      "breathCost": 0, "poiseDamage": 55, "pulseDamage": 70, "witherBuildup": 12, "damageType": "slash", "hitstopClass": "heavy", "reHitLockoutTicks": 81,
+      "knockback": { "forwardMeters": 1.15, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["wither"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 2 / Wide fell; phase law 12 Wither/hit", "authoredReason": "Tracking, damage, type, hitstop mapping, re-hit lockout, and knockback are tagged v0 authored defaults." }
+    },
+    "warden_p2_three_string_sweep": {
+      "id": "warden_p2_three_string_sweep", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 48, "activeTicks": 12, "recoveryTicks": 44, "totalTicks": 104,
+      "activeWindows": [[20, 24], [36, 40], [56, 60]], "trackingUntilTick": 48, "trackingWindows": [[0, 15], [24, 33], [40, 49]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 48, "pulseDamage": 105, "witherBuildup": 12, "damageType": "slash", "hitstopClass": "heavy", "reHitLockoutTicks": 10,
+      "knockback": { "forwardMeters": 0.75, "rightMeters": 0.25 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["compound", "wither"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 2 / Three-string sweep 20→12→16, 4 each, recovery 44", "authoredReason": "Compound windows normalize local timing; tracking windows, damage, poise distribution, type, hitstop mapping, re-hit lockout, and knockback are explicit v0 authored defaults." }
+    },
+    "warden_p2_snare_toss": {
+      "id": "warden_p2_snare_toss", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 28, "activeTicks": 1, "recoveryTicks": 30, "totalTicks": 59,
+      "activeWindows": [[28, 29]], "trackingUntilTick": 22, "trackingWindows": [[0, 23]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 20, "witherBuildup": 12, "damageType": "standard", "hitstopClass": "light", "reHitLockoutTicks": 59,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["projectile", "root", "wither"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 2 / Snare toss 28, projectile, 30, roots 45t", "authoredReason": "Projectile release is normalized to one active tick; tracking, damage, type, hitstop mapping, and re-hit lockout are explicit v0 authored defaults." }
+    },
+    "warden_p2_charge_through": {
+      "id": "warden_p2_charge_through", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 30, "activeTicks": 30, "recoveryTicks": 36, "totalTicks": 96,
+      "activeWindows": [[30, 60]], "trackingUntilTick": 24, "trackingWindows": [[0, 25]], "turnRateRadiansPerTick": 0.06981317007977318,
+      "breathCost": 0, "poiseDamage": 50, "pulseDamage": 65, "witherBuildup": 12, "damageType": "strike", "hitstopClass": "heavy", "reHitLockoutTicks": 96,
+      "knockback": { "forwardMeters": 1.4, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["wither"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 2 / Charge-through 30, 6+24 travel, 36", "authoredReason": "The 6+24 active travel is one continuous window; tracking, damage, poise, type, hitstop mapping, re-hit lockout, and knockback are explicit v0 authored defaults." }
+    },
+    "warden_p2_lantern_fire_arc": {
+      "id": "warden_p2_lantern_fire_arc", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 24, "activeTicks": 8, "recoveryTicks": 34, "totalTicks": 66,
+      "activeWindows": [[24, 32]], "trackingUntilTick": 16, "trackingWindows": [[0, 17]], "turnRateRadiansPerTick": 0.10471975511965977,
+      "breathCost": 0, "poiseDamage": 30, "pulseDamage": 55, "witherBuildup": 12, "damageType": "standard", "hitstopClass": "heavy", "reHitLockoutTicks": 66,
+      "knockback": { "forwardMeters": 0.45, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["wither"],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Warden Phase 2 / Lantern-fire arc", "authoredReason": "Tracking, damage, poise, type, hitstop mapping, re-hit lockout, and knockback are explicit v0 authored defaults." }
+    },
+    "warden_p2_the_quiet": {
+      "id": "warden_p2_the_quiet", "actorClass": "warden_p2", "kind": "attack",
+      "startupTicks": 30, "activeTicks": 12, "recoveryTicks": 40, "totalTicks": 82,
+      "activeWindows": [[30, 42]], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0,
+      "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 25, "damageType": "wither", "hitstopClass": "none", "reHitLockoutTicks": 82,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["wither"],
+      "provenance": { "kind": "tuning", "reference": "TUNING_V0 Warden Phase 2 / The quiet — 30/12/40, no damage, 25 Wither in 6m", "authoredReason": null }
+    },
+    "idle": {
+      "id": "idle", "actorClass": "wolf", "kind": "locomotion", "startupTicks": 32, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 32,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["ambient"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json idle", "authoredReason": "Animation-pipeline authored clip length; no TUNING_V0 combat row exists." }
+    },
+    "stalk": {
+      "id": "stalk", "actorClass": "wolf", "kind": "locomotion", "startupTicks": 40, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 40,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["ambient"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json stalk", "authoredReason": "Animation-pipeline authored clip length; no TUNING_V0 combat row exists." }
+    },
+    "circle": {
+      "id": "circle", "actorClass": "wolf", "kind": "locomotion", "startupTicks": 48, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 48,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["ambient"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json circle", "authoredReason": "Animation-pipeline authored clip length; no TUNING_V0 combat row exists." }
+    },
+    "flinch": {
+      "id": "flinch", "actorClass": "wolf", "kind": "reaction", "startupTicks": 12, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 12,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "none", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json flinch", "authoredReason": "Animation-pipeline authored clip length; no TUNING_V0 frame row exists." }
+    },
+    "death_crumple_fwd": {
+      "id": "death_crumple_fwd", "actorClass": "wolf", "kind": "reaction", "startupTicks": 48, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 48,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "death", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["directional_death"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json death_crumple_fwd; D4 directional crumple", "authoredReason": "Animation-pipeline authored clip length." }
+    },
+    "death_crumple_back": {
+      "id": "death_crumple_back", "actorClass": "wolf", "kind": "reaction", "startupTicks": 48, "activeTicks": 0, "recoveryTicks": 0, "totalTicks": 48,
+      "activeWindows": [], "trackingUntilTick": null, "trackingWindows": [], "turnRateRadiansPerTick": 0, "breathCost": 0, "poiseDamage": 0, "pulseDamage": 0, "witherBuildup": 0, "damageType": "none", "hitstopClass": "death", "reHitLockoutTicks": 0,
+      "knockback": { "forwardMeters": 0, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": ["directional_death"],
+      "provenance": { "kind": "authored", "reference": "game/tools/blender/frame_data_v0.json death_crumple_back; D4 directional crumple", "authoredReason": "Animation-pipeline authored clip length." }
+    }
+  }
+}
