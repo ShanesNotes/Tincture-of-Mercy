@@ -1,4 +1,4 @@
-import type { DamageType } from "./damage";
+import type { CombatPosition, DamageType } from "./damage";
 
 interface CombatEventBase {
   readonly actorId: string;
@@ -36,7 +36,20 @@ export interface ActionCombatEvent extends CombatEventBase {
   readonly kind: "action_started" | "action_ended";
 }
 
+/**
+ * One actor's sim-owned freeze, reported to the presenter.
+ *
+ * `targetId` is the actor whose clocks hold; `actorId` is the attacker whose
+ * confirmed hit bought the freeze, so an attacker's own freeze reads
+ * `actorId === targetId`. `contact` is the world-space anchor of the hit that
+ * caused it: the struck actor's position on the tick of contact, taken before
+ * knockback displaces him. Hit detection resolves swept capsules and keeps no
+ * intersection point, so the struck actor's authored position is the sim's
+ * honest contact anchor — the same anchor the view's own fallback used when it
+ * had to invent one.
+ */
 export interface HitstopCombatEvent extends CombatEventBase {
+  readonly contact: CombatPosition;
   readonly durationTicks: number;
   readonly kind: "hitstop";
   readonly targetId: string;

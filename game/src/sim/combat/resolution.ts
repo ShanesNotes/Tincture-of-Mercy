@@ -109,6 +109,15 @@ export const resolveHitBatch = (
   const acceptedKeys = new Set<string>();
   const aggregates = new Map<string, TargetAggregate>();
   const hitstopByActor: Record<string, number> = {};
+  /** Where each frozen actor's freeze came from, for the presenter event. */
+  const freezeCause: Record<string, { readonly attackerId: string; readonly contact: CombatPosition }> = {};
+  const freeze = (actorId: string, ticks: number, attackerId: string, struckId: string): void => {
+    if (ticks <= (hitstopByActor[actorId] ?? 0)) return;
+    hitstopByActor[actorId] = ticks;
+    const struck = snapshots.get(struckId);
+    if (struck === undefined) throw new Error("A freeze references an unknown actor.");
+    freezeCause[actorId] = { attackerId, contact: struck.position };
+  };
 
   for (const hit of orderedHits(hits)) {
     const attacker = snapshots.get(hit.attackerId);
@@ -157,8 +166,8 @@ export const resolveHitBatch = (
     aggregates.set(hit.targetId, aggregate);
 
     const hitstop = params.hitstopTicks[guarded ? "blocked" : hit.hitstopClass];
-    hitstopByActor[hit.attackerId] = Math.max(hitstopByActor[hit.attackerId] ?? 0, hitstop);
-    hitstopByActor[hit.targetId] = Math.max(hitstopByActor[hit.targetId] ?? 0, hitstop);
+    freeze(hit.attackerId, hitstop, hit.attackerId, hit.targetId);
+    freeze(hit.targetId, hitstop, hit.attackerId, hit.targetId);
   }
 
   const actors: Record<string, ResolvedHitActor> = {};
@@ -237,27 +246,19 @@ export const resolveHitBatch = (
       });
       sequence += 1;
       for (const { hit } of aggregate.hits) {
-        hitstopByActor[hit.attackerId] = Math.max(
-          hitstopByActor[hit.attackerId] ?? 0,
-          params.guardBreakHitstopTicks,
-        );
+        freeze(hit.attackerId, params.guardBreakHitstopTicks, attackerId, targetId);
       }
       hitstopByActor[targetId] = params.guardBreakHitstopTicks;
+      freezeCause[targetId] = { attackerId, contact: snapshot.position };
     }
 
     if (pulse === 0) {
       events.push({ actorId: attackerId, kind: "death", sequence, targetId, tick: worldTick });
       sequence += 1;
       for (const { hit } of aggregate.hits) {
-        hitstopByActor[hit.attackerId] = Math.max(
-          hitstopByActor[hit.attackerId] ?? 0,
-          params.hitstopTicks.death,
-        );
+        freeze(hit.attackerId, params.hitstopTicks.death, attackerId, targetId);
       }
-      hitstopByActor[targetId] = Math.max(
-        hitstopByActor[targetId] ?? 0,
-        params.hitstopTicks.death,
-      );
+      freeze(targetId, params.hitstopTicks.death, attackerId, targetId);
     } else if (!guardBroken) {
       const outcome = resolveSteadyOutcome(
         steadyBuildup,
@@ -276,6 +277,26 @@ export const resolveHitBatch = (
         sequence += 1;
       }
     }
+  }
+
+  // The freeze is a presenter beat, not just a clock: without it the VFX seam
+  // reads a 0-tick hitstop, `classifyHitstop` rejects the row, and a confirmed
+  // hit lights nothing. One event per frozen actor, in actor-id order so the
+  // stream stays byte-stable, each carrying the contact that bought the freeze.
+  for (const actorId of Object.keys(hitstopByActor).sort()) {
+    const durationTicks = hitstopByActor[actorId] ?? 0;
+    const cause = freezeCause[actorId];
+    if (durationTicks <= 0 || cause === undefined) continue;
+    events.push({
+      actorId: cause.attackerId,
+      contact: cause.contact,
+      durationTicks,
+      kind: "hitstop",
+      sequence,
+      targetId: actorId,
+      tick: worldTick,
+    });
+    sequence += 1;
   }
 
   const hitLedger = [...ledger, ...acceptedKeys].sort();

@@ -226,4 +226,79 @@ describe("resolveHitBatch", () => {
     expect(result.actors.b?.steadyBuildup).toBe(24);
     expect(result.events.some((event) => event.kind === "stagger")).toBe(false);
   });
+
+  describe("the hitstop presenter beat", () => {
+    const swing = {
+      attackerFacingRadians: 0,
+      attackerId: "a",
+      critical: false,
+      damageType: "slash" as const,
+      hitstopClass: "heavy" as const,
+      knockback: { forward: 1.5, right: 0 },
+      poiseDamage: 10,
+      pulseDamage: 20,
+      swingId: "a:1",
+      targetId: "b",
+      witherBuildup: 0,
+    };
+
+    it("reports both freezes and the contact that bought them on a confirmed hit", () => {
+      const struckAt = { x: 2, y: 0.9, z: -4 };
+      const result = resolveHitBatch(
+        [actor("a", { position: { x: 0, y: 0, z: 0 } }), actor("b", { position: struckAt })],
+        [swing],
+        [],
+        params,
+        7,
+        0,
+      );
+
+      expect(result.events.filter((event) => event.kind === "hitstop")).toEqual([
+        { actorId: "a", contact: struckAt, durationTicks: 6, kind: "hitstop", sequence: 2, targetId: "a", tick: 7 },
+        { actorId: "a", contact: struckAt, durationTicks: 6, kind: "hitstop", sequence: 3, targetId: "b", tick: 7 },
+      ]);
+      // The freeze the clocks actually take, and the contact before knockback.
+      expect(result.hitstopByActor).toEqual({ a: 6, b: 6 });
+      expect(result.displacements.b).not.toEqual(struckAt);
+      expect(result.nextEventSequence).toBe(4);
+    });
+
+    it("upgrades the freeze to the death class and keeps the contact", () => {
+      const struckAt = { x: -1, y: 0, z: 3 };
+      const result = resolveHitBatch(
+        [actor("a"), actor("b", { position: struckAt, pulse: 5 })],
+        [swing],
+        [],
+        params,
+        9,
+        0,
+      );
+      const freezes = result.events.filter((event) => event.kind === "hitstop");
+      expect(freezes.map((event) => event.kind === "hitstop" && event.durationTicks)).toEqual([
+        params.hitstopTicks.death,
+        params.hitstopTicks.death,
+      ]);
+      expect(freezes.every((event) => event.kind === "hitstop" && event.contact === struckAt)).toBe(true);
+    });
+
+    it("emits nothing on a whiff — an empty batch freezes no one", () => {
+      const whiff = resolveHitBatch([actor("a"), actor("b")], [], [], params, 7, 0);
+      expect(whiff.events).toEqual([]);
+      expect(whiff.hitstopByActor).toEqual({});
+      expect(whiff.nextEventSequence).toBe(0);
+    });
+
+    it("emits nothing when the only swing is refused by i-frames", () => {
+      const refused = resolveHitBatch(
+        [actor("a"), actor("b", { invulnerable: true })],
+        [swing],
+        [],
+        params,
+        7,
+        0,
+      );
+      expect(refused.events.filter((event) => event.kind === "hitstop")).toEqual([]);
+      expect(refused.hitstopByActor).toEqual({});
+    });
+  });
 });

@@ -93,6 +93,68 @@ describe("combat simulation composition", () => {
     expect(result.stateHash).toMatch(/^[0-9a-f]{8}$/u);
   });
 
+  it("emits the hitstop beat with a contact on a hit, and nothing at all on a whiff", () => {
+    const armed = (): ReturnType<typeof createCombatSimulation> => {
+      let state = createCombatSimulation(data, [
+        {
+          actorClass: "kalev",
+          facingRadians: 0,
+          id: "kalev",
+          position: { x: 0, y: 0, z: 0 },
+          pulse: 100,
+          steadyClass: "kalev",
+        },
+        {
+          actorClass: "wolf",
+          facingRadians: Math.PI,
+          id: "dummy",
+          position: { x: 0, y: 0, z: 2 },
+          pulse: 50,
+          steadyClass: "wolf",
+        },
+      ]);
+      state = stepCombatSimulation(data, state, {
+        commands: [{ actorId: "kalev", edge: { action: "attack", pressed: true, sequence: 0, tick: 0 } }],
+        swings: [],
+      }).state;
+      for (let tick = 1; tick < 11; tick += 1) {
+        state = stepCombatSimulation(data, state, { commands: [], swings: [] }).state;
+      }
+      return state;
+    };
+
+    const landed = stepCombatSimulation(data, armed(), {
+      commands: [],
+      swings: [collisionSweep("kalev", "dummy")],
+    });
+    expect(landed.events.filter((event) => event.kind === "hitstop")).toEqual([
+      expect.objectContaining({
+        contact: { x: 0, y: 0, z: 2 },
+        durationTicks: 3,
+        kind: "hitstop",
+        targetId: "dummy",
+      }),
+      expect.objectContaining({ durationTicks: 3, kind: "hitstop", targetId: "kalev" }),
+    ]);
+
+    // The same live active window, swung where he is not: nothing is confirmed,
+    // so no damage row and no freeze beat reach the presenter.
+    const air = collisionSweep("kalev", "dummy");
+    const whiffed = stepCombatSimulation(data, armed(), {
+      commands: [],
+      swings: [
+        {
+          ...air,
+          currentWeapon: { ...air.currentWeapon, a: { x: 2, y: 0.5, z: 40 }, b: { x: 2, y: 1.5, z: 40 } },
+          previousWeapon: { ...air.previousWeapon, a: { x: -2, y: 0.5, z: 40 }, b: { x: -2, y: 1.5, z: 40 } },
+        },
+      ],
+    });
+    expect(whiffed.events.filter((event) => event.kind === "hitstop")).toEqual([]);
+    expect(whiffed.events.filter((event) => event.kind === "damage")).toEqual([]);
+    expect(whiffed.state.damageActors.dummy?.pulse).toBe(50);
+  });
+
   it("forces guard down and rejects actions for the full actor-clock guard-break stagger", () => {
     let state = createCombatSimulation(data, [
       {
