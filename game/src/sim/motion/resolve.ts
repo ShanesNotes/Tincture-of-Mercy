@@ -10,6 +10,7 @@ import {
   UP,
   addScaled,
   clamp,
+  dot,
   horizontalLength,
   length,
   lengthSq,
@@ -189,6 +190,15 @@ export const moveAndSlide = (
     contacts += 1;
     const direction = scale(remaining, 1 / distance);
     const travel = clamp(hit.fraction * distance - skin, 0, distance);
+
+    if (travel <= 0 && dot(direction, hit.normal) >= 0) {
+      // Already touching a surface the motion is leaving rather than entering.
+      // Sliding along it here is the classic sticky-wall bug; nudge clear and
+      // let the next sweep decide instead.
+      position = addScaled(position, hit.normal, skin);
+      continue;
+    }
+
     position = addScaled(position, direction, travel);
     const left = scale(direction, distance - travel);
     const walkable = isWalkable(hit.normal, params);
