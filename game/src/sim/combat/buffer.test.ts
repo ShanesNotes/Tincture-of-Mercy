@@ -3,8 +3,6 @@ import { describe, expect, it } from "vitest";
 import {
   INPUT_BUFFER_WINDOWS,
   InputBuffer,
-  type InputAction,
-  type InputEdge,
 } from "../input";
 import {
   advanceCombatInputClock,
@@ -12,14 +10,16 @@ import {
   consumeCombatInput,
   consumeOldestCombatInput,
   createCombatInputBuffer,
+  type CombatBufferAction,
   type CombatInputBufferState,
+  type CombatInputEdge,
 } from "./buffer";
 
 const press = (
-  action: InputAction,
+  action: CombatBufferAction,
   tick: number,
   sequence: number,
-): InputEdge => ({ action, pressed: true, sequence, tick });
+): CombatInputEdge => ({ action, pressed: true, sequence, tick });
 
 const advanceTo = (
   buffer: CombatInputBufferState,

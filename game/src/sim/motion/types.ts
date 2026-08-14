@@ -140,6 +140,10 @@ export interface MotionInput {
   /** s11 hands a clip over on the tick the roll/backstep starts. */
   readonly beginDisplacement?: RootDisplacementClip;
   readonly cancelDisplacement?: boolean;
+  /** Rotate toward moveX/moveZ using the authored turn curve without horizontal travel this tick. */
+  readonly turnOnly?: boolean;
+  /** Combat-authored yaw for this tick; also latches a newly begun displacement in that facing. */
+  readonly facingOverride?: number;
 }
 
 export type MotionEvent =

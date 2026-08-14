@@ -152,6 +152,8 @@ export interface WolfAiStepInput {
   readonly howlRequested?: boolean;
   readonly pulseOverrides?: Readonly<Record<string, number>>;
   readonly deadIds?: readonly string[];
+  /** Integration-authored roles; omitted consumers retain lexical pack assignment. */
+  readonly roleOverrides?: Readonly<Record<string, WolfRole>>;
 }
 
 export interface WolfAiStepResult {

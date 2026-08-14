@@ -1,0 +1,139 @@
+{
+  "schema": "tincture.world_assembly.v0",
+  "seed": 1414483249,
+  "entry": {
+    "playerId": "kalev",
+    "spawnPlacementId": "spawn.player",
+    "startupScene": "cabin_prologue",
+    "autoCompleteStartupScene": true,
+    "respawnHearthId": "cabin"
+  },
+  "level": {
+    "assetBase": "/assets/build/levels/",
+    "manifest": "manifest.json",
+    "placements": "ironwood.placements.json",
+    "nav": "ironwood_nav.json"
+  },
+  "packs": {
+    "doorway": [
+      "spawn.wolf.doorway.lunger.0"
+    ],
+    "yard": [
+      "spawn.wolf.yard.baiter.0",
+      "spawn.wolf.yard.lunger.0",
+      "spawn.wolf.yard.harrier.0"
+    ],
+    "road": [
+      "spawn.wolf.road.baiter.0",
+      "spawn.wolf.road.lunger.0",
+      "spawn.wolf.road.harrier.0",
+      "spawn.wolf.road.baiter.1"
+    ],
+    "den": [
+      "spawn.wolf.den.lunger.0",
+      "spawn.wolf.den.harrier.0"
+    ]
+  },
+  "aiMoveBindings": {
+    "lunge": "lunge",
+    "flank_bite": "wolf_harrier_bite",
+    "feint": "wolf_baiter_feint"
+  },
+  "actors": {
+    "kalev": {
+      "assetBase": "/assets/build/",
+      "manifest": "kalev_blocking.manifest.json",
+      "neutralSidecar": "kalev_blocking_guard.json",
+      "sidecars": {
+        "light1": "kalev_blocking_light1.json",
+        "heavy": "kalev_blocking_heavy.json",
+        "roll_medium": "kalev_blocking_roll.json"
+      },
+      "visualClips": {
+        "idle": "guard",
+        "light1": "light1",
+        "heavy": "heavy",
+        "roll_medium": "roll",
+        "flask_drink": "guard",
+        "sprint": "guard",
+        "jump": "guard"
+      },
+      "fallbacks": {
+        "flask_drink": "missing authored flask clip; bind pose/guard visual only, frame_data remains authoritative",
+        "sprint": "missing authored locomotion clip; bind pose/guard visual only",
+        "jump": "missing authored jump clip; bind pose/guard visual only"
+      }
+    },
+    "wolf": {
+      "assetBase": "/assets/build/",
+      "manifest": "wolf.manifest.json",
+      "neutralSidecar": "wolf_idle.json",
+      "sidecars": {
+        "idle": "wolf_idle.json",
+        "circle": "wolf_circle.json",
+        "stalk": "wolf_stalk.json",
+        "lunge": "wolf_lunge.json",
+        "flinch": "wolf_flinch.json",
+        "death_crumple_fwd": "wolf_death_crumple_fwd.json",
+        "death_crumple_back": "wolf_death_crumple_back.json"
+      },
+      "visualClips": {
+        "idle": "idle",
+        "circle": "circle",
+        "stalk": "stalk",
+        "lunge": "lunge",
+        "wolf_harrier_bite": "lunge",
+        "wolf_baiter_feint": "circle",
+        "flinch": "flinch",
+        "death_crumple_fwd": "death_crumple_fwd",
+        "death_crumple_back": "death_crumple_back"
+      },
+      "fallbacks": {
+        "wolf_harrier_bite": "missing authored harrier clip; lunge visual only, frame_data remains authoritative",
+        "wolf_baiter_feint": "missing authored feint clip; circle visual only, frame_data remains authoritative"
+      }
+    }
+  },
+  "syntheticPlacements": [
+    {
+      "id": "hearth.arena",
+      "kind": "hearth",
+      "key": "arena",
+      "zone": "ARENA",
+      "position": [
+        0.0,
+        0.0,
+        -126.0
+      ],
+      "source": "warden_aftermath hearthId arena; s20 placements omit the arena Hearth",
+      "note": "north arena-entry edge, collision-grounded and outside the 9.2 m snare ring"
+    }
+  ],
+  "interaction": {
+    "hearthRadiusMeters": 1.5
+  },
+  "respawn": {
+    "classes": [
+      "standard"
+    ],
+    "standardPacks": [
+      "doorway",
+      "yard",
+      "road",
+      "den"
+    ]
+  },
+  "inertPlacements": {
+    "kinds": [
+      "iiro_waypoint"
+    ],
+    "until": "wave3"
+  },
+  "cameraAnchors": {
+    "anna_death": "cam.anna_death",
+    "hearth_vigil": "cam.hearth_vigil",
+    "item_revelation": "cam.item_revelation",
+    "warden_intro": "cam.warden_intro",
+    "birdie_coda": "cam.birdie_coda"
+  }
+}

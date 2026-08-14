@@ -134,7 +134,7 @@ const applyMembership = (
     if (!wolf.alive) {
       return { ...wolf, hasToken: false, action: null };
     }
-    const role = roles.get(wolf.id);
+    const role = input.roleOverrides?.[wolf.id] ?? roles.get(wolf.id);
     if (role === undefined || role === wolf.role) {
       return wolf;
     }

@@ -191,6 +191,28 @@ describe("locomotion bands", () => {
     const settled = run(afterOne, ground, 120, () => back).state;
     expect(Math.abs(Math.abs(settled.facing) - Math.PI)).toBeLessThan(1e-9);
   });
+
+  it("can turn in place without carrying existing horizontal velocity", () => {
+    const start: MotionState = {
+      ...spawn(),
+      velocity: { x: 3, y: 0, z: -4 },
+    };
+
+    const turned = stepMotion(
+      start,
+      { moveX: 1, moveZ: 0, sprint: false, jump: false, turnOnly: true },
+      ground,
+      params,
+    ).state;
+
+    expect(turned.facing).not.toBe(start.facing);
+    expect(turned.position.x).toBe(start.position.x);
+    expect(turned.position.y).toBeCloseTo(start.position.y, 12);
+    expect(turned.position.z).toBe(start.position.z);
+    expect(Math.hypot(turned.velocity.x, turned.velocity.y, turned.velocity.z)).toBe(0);
+    expect(turned.grounded).toBe(true);
+    expect(turned.locomotion).toBe("idle");
+  });
 });
 
 describe("jump", () => {
@@ -362,6 +384,22 @@ describe("root displacement hosting", () => {
     );
     expect(state.position.x - start.position.x).toBeCloseTo(0.5, 9);
     expect(state.position.z - start.position.z).toBeCloseTo(0, 9);
+  });
+
+  it("uses a combat-authored facing override for the actor and a newly hosted clip", () => {
+    const roll = clip([0.5, 0.5]);
+    const override = Math.PI / 2;
+    const state = stepMotion(
+      spawn(),
+      { ...idle, beginDisplacement: roll, facingOverride: override },
+      ground,
+      params,
+    ).state;
+
+    expect(state.facing).toBe(override);
+    expect(state.displacement?.facing).toBe(override);
+    expect(state.position.x).toBeCloseTo(0.5, 9);
+    expect(state.position.z).toBeCloseTo(0, 9);
   });
 
   it("suppresses stick control while a clip is hosted", () => {
