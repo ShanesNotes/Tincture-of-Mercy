@@ -1,0 +1,1515 @@
+{
+  "_meta": {
+    "folk": "Machine form of TEXT_BIBLE.md. Read that file for the law before changing a string.",
+    "church": null,
+    "state": null,
+    "_schema": "{key: {folk, church, state, numb1?, numb2?, numb3?}}. null = this register has no word for this thing (deliberate absence). Omitted numb1/2/3 = this key does not degrade. \"\" at a numb step = the line is not shown at that step. {n}/{name} are runtime substitutions.",
+    "_version": "v0",
+    "_authority": "design_system/v1_0_threejs_soulslike/DECISIONS.md D6 (naming) + PRD R14 (polyphonic text). Lore: docs/lore/."
+  },
+
+  "item.weapon.hearth_iron.name": {
+    "folk": "the hearth iron",
+    "church": "the warming iron",
+    "state": "domestic implement, ferrous",
+    "numb1": "the hearth iron",
+    "numb2": "hearth iron (domestic implement)",
+    "numb3": "implement, ferrous"
+  },
+  "item.weapon.hearth_iron.desc": {
+    "folk": "The fire iron from Anna's hearth. Black at the tip, warm halfway up.",
+    "church": "What kept her fire is carried out into the cold.",
+    "state": "Household implement in unsanctioned use. Log on entry.",
+    "numb1": "The fire iron from Anna's hearth.",
+    "numb2": "Fire iron. Taken from the cabin.",
+    "numb3": "Implement recovered on site."
+  },
+  "item.weapon.hearth_iron.lore": {
+    "folk": "It was for banking coals. It banks nothing now.",
+    "church": "A tool of warmth taken up for a harder warmth.",
+    "state": null,
+    "numb1": "It was for banking coals.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.vial.name": {
+    "folk": "the Tincture",
+    "church": "mercy you can carry",
+    "state": "E-3 stabilizer",
+    "numb1": "the Tincture",
+    "numb2": "the Tincture (E-3)",
+    "numb3": "E-3"
+  },
+  "item.tincture.vial.desc": {
+    "folk": "Doses drawn for Anna. They are yours now, and they are counted. {n} left.",
+    "church": "What was prepared for one is spent by another.",
+    "state": "E-3 stabilizer. Doses on hand: {n}. Replenish at Warming Station.",
+    "numb1": "Doses drawn for Anna. {n} left.",
+    "numb2": "Doses: {n}. Refill at the station.",
+    "numb3": "E-3, {n} units. Replenish at station."
+  },
+  "item.tincture.vial.lore": {
+    "folk": "Borrowed mercy. Renewed at the fire, never repaid.",
+    "church": "Mercy is carried, and only so far.",
+    "state": null,
+    "numb1": "Borrowed mercy.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.pulseleaf_draught.name": {
+    "folk": "Pulseleaf Draught",
+    "church": null,
+    "state": "LOL susp.",
+    "numb1": "Pulseleaf Draught",
+    "numb2": "Pulseleaf Draught (LOL susp.)",
+    "numb3": "LOL susp."
+  },
+  "item.tincture.pulseleaf_draught.desc": {
+    "folk": "Bitter and quick. Closes the wound before you have finished flinching.",
+    "church": null,
+    "state": "Rapid-onset. Single administration. Onset under 2s.",
+    "numb1": "Bitter and quick.",
+    "numb2": "Rapid onset.",
+    "numb3": "Rapid onset. Single administration."
+  },
+  "item.tincture.pulseleaf_draught.lore": {
+    "folk": "The plants the old world named for the molecules they replaced.",
+    "church": null,
+    "state": null,
+    "numb1": "",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.honeyed_draw.name": {
+    "folk": "Honeyed Draw",
+    "church": null,
+    "state": "HONEY-LOL, extended",
+    "numb1": "Honeyed Draw",
+    "numb2": "Honeyed Draw (HONEY-LOL ext.)",
+    "numb3": "HONEY-LOL ext."
+  },
+  "item.tincture.honeyed_draw.desc": {
+    "folk": "Slow and sweet. Keeps working while you keep moving.",
+    "church": null,
+    "state": "Extended release. Effect continues through activity.",
+    "numb1": "Slow and sweet. Keeps working.",
+    "numb2": "Extended release.",
+    "numb3": "Extended release."
+  },
+  "item.tincture.honeyed_draw.lore": {
+    "folk": "Honey keeps. That is most of what he knows about honey.",
+    "church": null,
+    "state": null,
+    "numb1": "",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.salt_wash.name": {
+    "folk": "Salt Wash",
+    "church": "the washing",
+    "state": "SALT irrigation",
+    "numb1": "Salt Wash",
+    "numb2": "Salt Wash (SALT irr.)",
+    "numb3": "SALT irr."
+  },
+  "item.tincture.salt_wash.desc": {
+    "folk": "Stings badly enough to be believed. Drives the Turn back out of you.",
+    "church": "The Withering is washed out; it is not argued with.",
+    "state": "Clears accumulated affect flattening. Index returns toward baseline.",
+    "numb1": "Stings. Drives the Turn back out of you.",
+    "numb2": "Clears the Turn.",
+    "numb3": "Clears affect flattening index."
+  },
+  "item.tincture.salt_wash.lore": {
+    "folk": "Salt was in the pouch before any of the rest of it.",
+    "church": "Salt of the covenant; it keeps what it touches.",
+    "state": null,
+    "numb1": "Salt was in the pouch first.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.cedar_wool_compress.name": {
+    "folk": "Cedar-Wool Compress",
+    "church": null,
+    "state": "CEDAR-WOOL, topical",
+    "numb1": "Cedar-Wool Compress",
+    "numb2": "Cedar-Wool Compress (topical)",
+    "numb3": "CEDAR-WOOL top."
+  },
+  "item.tincture.cedar_wool_compress.desc": {
+    "folk": "Heat held against the chest. Your breath comes back and your feet hold.",
+    "church": null,
+    "state": "Restores exertion tolerance. Brief postural stability gain.",
+    "numb1": "Heat on the chest. Breath comes back.",
+    "numb2": "Restores Breath. Brief Steady.",
+    "numb3": "Exertion tolerance restored."
+  },
+  "item.tincture.cedar_wool_compress.lore": {
+    "folk": "The oldest medicine in the pouch is a warm thing held against a cold one.",
+    "church": null,
+    "state": null,
+    "numb1": "",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.tincture.bitter_phrine.name": {
+    "folk": "Bitter Phrine",
+    "church": null,
+    "state": "PHRINE, high-dose",
+    "numb1": "Bitter Phrine",
+    "numb2": "Bitter Phrine (PHRINE HD)",
+    "numb3": "PHRINE HD"
+  },
+  "item.tincture.bitter_phrine.desc": {
+    "folk": "Takes the whole wound. Then your hands are not yours for a while.",
+    "church": null,
+    "state": "High-dose. Substantial recovery. Instability window follows administration.",
+    "numb1": "Takes the whole wound. Hands go unsteady after.",
+    "numb2": "Large heal. Instability follows.",
+    "numb3": "High-dose. Instability window follows."
+  },
+  "item.tincture.bitter_phrine.lore": {
+    "folk": "Everything that works this well costs the same way.",
+    "church": null,
+    "state": null,
+    "numb1": "",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.ember.name": {
+    "folk": "Ember",
+    "church": "Strange Fire",
+    "state": "E-7",
+    "numb1": "Ember",
+    "numb2": "Ember (E-7)",
+    "numb3": "E-7"
+  },
+  "item.ember.desc": {
+    "folk": "One swallow and the grey stone turns to smoke. {n} left.",
+    "church": "It burns. It was not given.",
+    "state": "E-7. Units on hand: {n}. Self-administration is within protocol.",
+    "numb1": "One swallow and the grey stone turns to smoke. {n} left.",
+    "numb2": "Full restore. {n} units.",
+    "numb3": "E-7, {n} units. Self-administration within protocol."
+  },
+  "item.ember.lore": {
+    "folk": "A fire he had not been given.",
+    "church": "Unauthorized fire, offered and consumed.",
+    "state": null,
+    "numb1": "A fire he had not been given.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.pulseleaf.name": {
+    "folk": "Pulseleaf",
+    "church": null,
+    "state": "LOL",
+    "numb2": "Pulseleaf (LOL)",
+    "numb3": "LOL"
+  },
+  "item.pouch.pulseleaf.desc": {
+    "folk": "Small leaves at the base of a stone, with a bitter shimmer if you know how to read it.",
+    "church": null,
+    "state": "Cardiac-analogue botanical. Field-gathered. Unassayed.",
+    "numb2": "Botanical, cardiac analogue.",
+    "numb3": "LOL. Unassayed."
+  },
+  "item.pouch.pulseleaf.lore": {
+    "folk": "Named for the molecule it replaced.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.arbor.name": {
+    "folk": "Arbor",
+    "church": null,
+    "state": "ARB",
+    "numb2": "Arbor (ARB)",
+    "numb3": "ARB"
+  },
+  "item.pouch.arbor.desc": {
+    "folk": "Shaved inner bark, dried grey. Loosens what is clenched.",
+    "church": null,
+    "state": "Vascular-analogue botanical. Field-gathered.",
+    "numb2": "Botanical, vascular analogue.",
+    "numb3": "ARB. Field-gathered."
+  },
+  "item.pouch.arbor.lore": {
+    "folk": "Grows where the old orchards went back to woods.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.acebark.name": {
+    "folk": "Acebark",
+    "church": null,
+    "state": "ACE",
+    "numb2": "Acebark (ACE)",
+    "numb3": "ACE"
+  },
+  "item.pouch.acebark.desc": {
+    "folk": "Chewed for fever. Tastes like a fence post and works anyway.",
+    "church": null,
+    "state": "Antipyretic-analogue botanical.",
+    "numb2": "Botanical, antipyretic.",
+    "numb3": "ACE."
+  },
+  "item.pouch.acebark.lore": {
+    "folk": "The first thing anyone learns to gather.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.phrine.name": {
+    "folk": "Phrine",
+    "church": null,
+    "state": "PHRINE",
+    "numb2": "Phrine (PHRINE)",
+    "numb3": "PHRINE"
+  },
+  "item.pouch.phrine.desc": {
+    "folk": "Kept in dark glass. A little wakes a heart; more than a little does not.",
+    "church": null,
+    "state": "Pressor analogue. Narrow margin. Two-person check advised.",
+    "numb2": "Pressor. Narrow margin.",
+    "numb3": "PHRINE. Narrow margin."
+  },
+  "item.pouch.phrine.lore": {
+    "folk": "He has never used it on someone who then walked.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.cillin.name": {
+    "folk": "Cillin",
+    "church": null,
+    "state": "CILLIN",
+    "numb2": "Cillin (CILLIN)",
+    "numb3": "CILLIN"
+  },
+  "item.pouch.cillin.desc": {
+    "folk": "The good powder. He is always out and always looking.",
+    "church": null,
+    "state": "Antimicrobial. Rationed. Requisition through station.",
+    "numb2": "Antimicrobial. Rationed.",
+    "numb3": "CILLIN. Rationed."
+  },
+  "item.pouch.cillin.lore": {
+    "folk": "Worth more than the coat it is carried in.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.zyl.name": {
+    "folk": "Zyl",
+    "church": null,
+    "state": "ZYL",
+    "numb2": "Zyl (ZYL)",
+    "numb3": "ZYL"
+  },
+  "item.pouch.zyl.desc": {
+    "folk": "Numbs the skin so the hands can work. Does not reach any deeper.",
+    "church": null,
+    "state": "Local anaesthetic analogue. Surface only.",
+    "numb2": "Local anaesthetic. Surface only.",
+    "numb3": "ZYL. Surface only."
+  },
+  "item.pouch.zyl.lore": {
+    "folk": "The honest kind of numb: it stops where it says it stops.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.honey.name": {
+    "folk": "Honey",
+    "church": "the sweetness of the land",
+    "state": "HONEY",
+    "numb2": "Honey (HONEY)",
+    "numb3": "HONEY"
+  },
+  "item.pouch.honey.desc": {
+    "folk": "In waxed cloth. Dresses a burn and carries a bitter dose past the tongue.",
+    "church": "Given to the sick and to the child, and it keeps without asking.",
+    "state": "Wound dressing, occlusive. Carrier for oral administration.",
+    "numb2": "Dressing. Carrier for oral dose.",
+    "numb3": "HONEY. Occlusive dressing."
+  },
+  "item.pouch.honey.lore": {
+    "folk": "The only thing in the pouch that does not spoil.",
+    "church": "It does not spoil; neither does what it stands for.",
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.cedar.name": {
+    "folk": "Cedar",
+    "church": "the wood that does not rot",
+    "state": "CEDAR",
+    "numb2": "Cedar (CEDAR)",
+    "numb3": "CEDAR"
+  },
+  "item.pouch.cedar.desc": {
+    "folk": "Shavings and a strip of bark. Smells like a hope chest.",
+    "church": "Cut for the temple and for the coffin alike.",
+    "state": "Aromatic timber. Antiseptic packing material.",
+    "numb2": "Aromatic timber. Packing.",
+    "numb3": "CEDAR. Packing material."
+  },
+  "item.pouch.cedar.lore": {
+    "folk": "His wife's hope chest was cedar. So is the dog.",
+    "church": "It outlasts the hand that shaped it.",
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.wool.name": {
+    "folk": "Wool",
+    "church": "the fleece",
+    "state": "WOOL",
+    "numb2": "Wool (WOOL)",
+    "numb3": "WOOL"
+  },
+  "item.pouch.wool.desc": {
+    "folk": "Greasy and warm even wet. Packs a wound, holds a compress.",
+    "church": "Warmth taken from the animal and given to the sick.",
+    "state": "Absorbent packing. Retains thermal value when saturated.",
+    "numb2": "Absorbent packing.",
+    "numb3": "WOOL. Absorbent packing."
+  },
+  "item.pouch.wool.lore": {
+    "folk": "Wet wool is the smell of every November he can remember.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.cotton.name": {
+    "folk": "Cotton",
+    "church": "the clean cloth",
+    "state": "COTTON",
+    "numb2": "Cotton (COTTON)",
+    "numb3": "COTTON"
+  },
+  "item.pouch.cotton.desc": {
+    "folk": "Boiled, folded, counted. The one thing he still keeps in numbers.",
+    "church": "The cloth is made clean before it is laid on anyone.",
+    "state": "Sterile field material. Count on open, count on close.",
+    "numb2": "Field material. Count on open and close.",
+    "numb3": "COTTON. Count in, count out."
+  },
+  "item.pouch.cotton.lore": {
+    "folk": "Count them in, count them out. That much of the hospital stayed.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.salt.name": {
+    "folk": "Salt",
+    "church": "the salt of the covenant",
+    "state": "SALT",
+    "numb2": "Salt (SALT)",
+    "numb3": "SALT"
+  },
+  "item.pouch.salt.desc": {
+    "folk": "For the wash and for the road. Everything here has salt on it by December.",
+    "church": "Laid on the tongue at the door, before anything else is said.",
+    "state": "Irrigation base. Preservative. Ubiquitous supply.",
+    "numb2": "Irrigation base. Preservative.",
+    "numb3": "SALT. Irrigation base."
+  },
+  "item.pouch.salt.lore": {
+    "folk": "Road salt and wound salt out of the same sack, and he knows it.",
+    "church": "It keeps what it touches.",
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.myrrh.name": {
+    "folk": "Myrrh",
+    "church": "the burial spice",
+    "state": "MYRRH",
+    "numb2": "Myrrh (MYRRH)",
+    "numb3": "MYRRH"
+  },
+  "item.pouch.myrrh.desc": {
+    "folk": "Resin beads, dark red. Cuts a smell no washing will.",
+    "church": "Brought to the tomb by women who expected to use it.",
+    "state": "Aromatic resin. Odour management, post-mortem handling.",
+    "numb2": "Aromatic resin. Odour management.",
+    "numb3": "MYRRH. Post-mortem handling."
+  },
+  "item.pouch.myrrh.lore": {
+    "folk": "He carries it for the living and uses it for the dead.",
+    "church": "It is for the body after the breath.",
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.oil.name": {
+    "folk": "Oil",
+    "church": "the oil of the sick",
+    "state": "OIL",
+    "numb2": "Oil (OIL)",
+    "numb3": "OIL"
+  },
+  "item.pouch.oil.desc": {
+    "folk": "A flat tin of it. Loosens a bandage, softens a hand, thins a salve.",
+    "church": "Poured on the forehead of the one who cannot ask for it.",
+    "state": "Emollient base. Lubricant. Non-rationed.",
+    "numb2": "Emollient base.",
+    "numb3": "OIL. Emollient base."
+  },
+  "item.pouch.oil.lore": {
+    "folk": "He has used it both ways and only writes down one of them.",
+    "church": "It is asked for by the Church and given by the hand.",
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.pouch.furos.name": {
+    "folk": "Furos",
+    "church": null,
+    "state": "FUROS",
+    "numb2": "Furos (FUROS)",
+    "numb3": "FUROS"
+  },
+  "item.pouch.furos.desc": {
+    "folk": "Small dark glass, hoarded since the last town. Pulls water off a drowning chest.",
+    "church": null,
+    "state": "Loop-diuretic analogue. Monitor response.",
+    "numb2": "Diuretic. Monitor response.",
+    "numb3": "FUROS. Monitor response."
+  },
+  "item.pouch.furos.lore": {
+    "folk": "It buys a night. Sometimes a night is the whole ask.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.loot.wolf_hide.name": {
+    "folk": "wolf hide",
+    "church": null,
+    "state": "biological salvage, class III",
+    "numb2": "wolf hide (salvage III)",
+    "numb3": "salvage, class III"
+  },
+  "item.loot.wolf_hide.desc": {
+    "folk": "Heavy, rank, still warm at the shoulder. It will wrap a haft or a chest.",
+    "church": null,
+    "state": "Recovered animal material. Fabrication stock.",
+    "numb2": "Animal material. Fabrication stock.",
+    "numb3": "Salvage III. Fabrication stock."
+  },
+  "item.loot.wolf_hide.lore": {
+    "folk": "You took the door from it. Now you are wearing the door.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.loot.wolf_sinew.name": {
+    "folk": "wolf sinew",
+    "church": null,
+    "state": "biological salvage, class II",
+    "numb2": "wolf sinew (salvage II)",
+    "numb3": "salvage, class II"
+  },
+  "item.loot.wolf_sinew.desc": {
+    "folk": "Dried, it binds tighter than any cord he can trade for.",
+    "church": null,
+    "state": "Recovered animal material. Binding stock.",
+    "numb2": "Animal material. Binding stock.",
+    "numb3": "Salvage II. Binding stock."
+  },
+  "item.loot.wolf_sinew.lore": {
+    "folk": "What held the animal together will hold the iron on.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.loot.wolf_tooth.name": {
+    "folk": "wolf tooth",
+    "church": null,
+    "state": "biological salvage, class I",
+    "numb2": "wolf tooth (salvage I)",
+    "numb3": "salvage, class I"
+  },
+  "item.loot.wolf_tooth.desc": {
+    "folk": "Longer than it looked when it was coming at you.",
+    "church": null,
+    "state": "Recovered animal material. Minor fabrication stock.",
+    "numb2": "Animal material. Minor stock.",
+    "numb3": "Salvage I."
+  },
+  "item.loot.wolf_tooth.lore": {
+    "folk": "Nothing about it is a trophy. It is just what was in the way.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.loot.wolf_meat.name": {
+    "folk": "wolf meat",
+    "church": null,
+    "state": "biological salvage, consumable",
+    "numb2": "wolf meat (consumable salvage)",
+    "numb3": "salvage, consumable"
+  },
+  "item.loot.wolf_meat.desc": {
+    "folk": "Dark and stringy. It is food, and the boy has not eaten today.",
+    "church": null,
+    "state": "Recovered animal protein. Cook thoroughly. Not for issue.",
+    "numb2": "Animal protein. Cook thoroughly.",
+    "numb3": "Consumable salvage. Cook thoroughly."
+  },
+  "item.loot.wolf_meat.lore": {
+    "folk": "Loot is not winning. It is what is left over from a thing that happened.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.charm.cedar_dog.name": {
+    "folk": "the cedar dog",
+    "church": "the dog that went with them",
+    "state": null,
+    "numb1": "the cedar dog",
+    "numb2": "the carving",
+    "numb3": "personal effect, unlisted"
+  },
+  "item.charm.cedar_dog.desc": {
+    "folk": "Carved by a smaller hand than his. The ear is uneven and the flank has a knife mark.",
+    "church": "It walked out and it walked back, and no one wrote down why.",
+    "state": null,
+    "numb1": "Carved by a smaller hand than his. The ear is uneven.",
+    "numb2": "A carving. Wood. Uneven.",
+    "numb3": "Personal effect. No classification."
+  },
+  "item.charm.cedar_dog.lore": {
+    "folk": "Pine, he told the boy. The boy insisted on cedar — because his father had said once that cedar lasts.",
+    "church": "A companion given for a journey no one explained.",
+    "state": null,
+    "numb1": "Pine, he told the boy. The boy insisted on cedar.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.key.wardens_tag.name": {
+    "folk": "a tin tag",
+    "church": "the name that outlived the post",
+    "state": "identification tag, Continuance post 9",
+    "numb1": "a tin tag",
+    "numb2": "tin tag (post 9)",
+    "numb3": "ID tag, post 9"
+  },
+  "item.key.wardens_tag.desc": {
+    "folk": "Stamped tin, warm from his belt. There is a name on it.",
+    "church": "One name among the tags he hung on the line.",
+    "state": "Post identification, recovered. File on return to station.",
+    "numb1": "Stamped tin. There is a name on it.",
+    "numb2": "Stamped tin. A name.",
+    "numb3": "Post ID recovered. File on return."
+  },
+  "item.key.wardens_tag.lore": {
+    "folk": "He kept the line after there was no one left to keep it for.",
+    "church": "The lamp stayed lit after the asking died.",
+    "state": null,
+    "numb1": "He kept the line after there was no one left to keep it for.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.key.notebook.name": {
+    "folk": "the notebook",
+    "church": "the diptych",
+    "state": "unauthorized record",
+    "numb1": "the notebook",
+    "numb2": "the record",
+    "numb3": "record, unauthorized"
+  },
+  "item.key.notebook.desc": {
+    "folk": "Leather, swollen with damp. Names in graphite, one to a line.",
+    "church": "The commemoration, carried on the body.",
+    "state": "Non-standard personal register. Names recorded without case reference.",
+    "numb1": "Leather, swollen with damp. Names in graphite.",
+    "numb2": "Personal register. Names, no case references.",
+    "numb3": "Non-standard register. No case references."
+  },
+  "item.key.notebook.lore": {
+    "folk": "The virus could take the breath. It could not plunder the name.",
+    "church": "What is written here is read elsewhere.",
+    "state": null,
+    "numb1": "It could not plunder the name.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.key.open_page.name": {
+    "folk": "the Open Page",
+    "church": "the unnamed",
+    "state": "lapsed entries",
+    "numb1": "the Open Page",
+    "numb2": "loose leaves (lapsed)",
+    "numb3": "lapsed entries"
+  },
+  "item.key.open_page.desc": {
+    "folk": "Loose unwritten leaves, scattered where you fell. Go back for them.",
+    "church": "What you witnessed and did not write waits at the place.",
+    "state": "Unfiled outcomes held at incident site. One retrieval permitted.",
+    "numb1": "Loose leaves where you fell. Go back for them.",
+    "numb2": "Loose leaves at the site. One retrieval.",
+    "numb3": "Unfiled outcomes at site. One retrieval."
+  },
+  "item.key.open_page.lore": {
+    "folk": "Die again on the way and they are lost to the spreadsheet.",
+    "church": "The unnamed are not lost. They are only unwritten here.",
+    "state": null,
+    "numb1": "Die again on the way and they are gone.",
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "item.key.gate_pin.name": {
+    "folk": "the hasp pin",
+    "church": null,
+    "state": "access hardware, post road",
+    "numb2": "hasp pin (access hardware)",
+    "numb3": "access hardware"
+  },
+  "item.key.gate_pin.desc": {
+    "folk": "A bent iron pin off a warden's gate. It opens the road back the short way.",
+    "church": null,
+    "state": "Recovered gate hardware. Restores post-road transit.",
+    "numb2": "Gate hardware. Opens the short way back.",
+    "numb3": "Gate hardware. Transit restored."
+  },
+  "item.key.gate_pin.lore": {
+    "folk": "Someone walked this loop every day for years. Now you do.",
+    "church": null,
+    "state": null,
+    "numb2": "",
+    "numb3": ""
+  },
+
+  "npc.kalev.attrib": {
+    "folk": "Kalev",
+    "church": "the one who carries names",
+    "state": "practitioner, unlicensed",
+    "numb1": "Kalev",
+    "numb2": "the healer",
+    "numb3": "practitioner, unlicensed"
+  },
+  "npc.anna.attrib": {
+    "folk": "Anna",
+    "church": "the one commemorated",
+    "state": "the case",
+    "numb1": "Anna",
+    "numb2": "the mother",
+    "numb3": "the case"
+  },
+  "npc.iiro.attrib": {
+    "folk": "Iiro",
+    "church": "the child in your keeping",
+    "state": "minor, unassigned",
+    "numb1": "Iiro",
+    "numb2": "the boy",
+    "numb3": "minor, unassigned"
+  },
+  "npc.birdie.attrib": {
+    "folk": "Birdie",
+    "church": "the fool who keeps the road",
+    "state": "minor, unregistered",
+    "numb1": "Birdie",
+    "numb2": "the girl",
+    "numb3": "minor, unregistered"
+  },
+  "boss.warden.attrib": {
+    "folk": "the keeper on the road",
+    "church": "the lamp that stayed lit after the asking died",
+    "state": "Ironwood Warden, Continuance post 9",
+    "numb1": "the keeper on the road",
+    "numb2": "the warden",
+    "numb3": "post 9"
+  },
+
+  "npc.anna.water": {
+    "folk": "Just the wet on my lip. Don't spend it all on me.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.bread": {
+    "folk": "Give it to the boy.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.dose_first": {
+    "folk": "Is that the last of it?",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.dose_relief": {
+    "folk": "Better. For a while.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.about_iiro": {
+    "folk": "He's been carrying that cup since morning. He won't set it down.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.last_line": {
+    "folk": "Did the boy eat?",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.observe_breath": {
+    "folk": "(Her breath goes long, then short, then long. Nothing you do changes the count.)",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.sit_near": {
+    "folk": "Sit where I can see you.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.hold_hand": {
+    "folk": "Cold hands. Good for a fever.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.speak_name": {
+    "folk": "That's mine. Keep it.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.pray": {
+    "folk": "I don't know the words either. Say them anyway.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.keep_watch": {
+    "folk": "(She does not speak. The hearth does.)",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.witness_death": {
+    "folk": "Anna's breath stops with Kalev still beside her.",
+    "church": null,
+    "state": null
+  },
+  "npc.anna.presence.write_name": {
+    "folk": "(You write Anna. The graphite shines darkly in the damp.)",
+    "church": null,
+    "state": null
+  },
+
+  "npc.iiro.bread_receive": {
+    "folk": "Half's enough. Is she having some?",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.water_carry": {
+    "folk": "I can carry it. I won't spill it.",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.cabin_fear": {
+    "folk": "Is she asleep, or is it the other thing?",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.flight_start": {
+    "folk": "I know the way. Past the stump, then the two turns.",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.flight_mid": {
+    "folk": "I'm at the stump! Don't come — hold it there!",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.flight_wounded": {
+    "folk": "It got my leg. I'm still going.",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.flight_woodline": {
+    "folk": "I'm in the trees. I'm in the trees.",
+    "church": null,
+    "state": null
+  },
+  "npc.iiro.silence_after": {
+    "folk": "(Iiro says nothing. He holds the cup with both hands.)",
+    "church": null,
+    "state": null
+  },
+
+  "npc.birdie.first_sight": {
+    "folk": "You walk loud for someone on his own.",
+    "church": null,
+    "state": null
+  },
+  "npc.birdie.apple_refusal": {
+    "folk": "I'm not hungry for that.",
+    "church": null,
+    "state": null
+  },
+  "npc.birdie.follow": {
+    "folk": "I'm not following you. I'm going the same way.",
+    "church": null,
+    "state": null
+  },
+  "npc.birdie.caleb_misname": {
+    "folk": "Which way now, Caleb?",
+    "church": null,
+    "state": null
+  },
+  "npc.birdie.name_refusal": {
+    "folk": "Names are for people who know where they came from.",
+    "church": null,
+    "state": null
+  },
+  "npc.birdie.road_ahead": {
+    "folk": "That road bends toward Bethany. I've never been. I'm still going.",
+    "church": null,
+    "state": null
+  },
+
+  "boss.warden.first_sight": {
+    "folk": "Line's mine.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.warning": {
+    "folk": "Off the line.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p1_bark_a": {
+    "folk": "Marked.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p1_bark_b": {
+    "folk": "Post nine.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p1_bark_c": {
+    "folk": "Back.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.ceremony_lantern": {
+    "folk": "Line holds.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.ceremony_dose": {
+    "folk": "Continuance.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p2_bark_a": {
+    "folk": "On the line.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p2_bark_b": {
+    "folk": "Tagged.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.p2_bark_c": {
+    "folk": "Cleared.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.quiet_pulse": {
+    "folk": "Quiet.",
+    "church": null,
+    "state": null
+  },
+  "boss.warden.death": {
+    "folk": "Line's —",
+    "church": null,
+    "state": null
+  },
+
+  "notebook.anna_choice_a": {
+    "folk": "Anna.",
+    "church": null,
+    "state": null
+  },
+  "notebook.anna_choice_b": {
+    "folk": "Anna. The breath went out with me still there.",
+    "church": null,
+    "state": null
+  },
+  "notebook.anna_choice_c": {
+    "folk": "Anna. She asked whether the boy had eaten.",
+    "church": null,
+    "state": null
+  },
+  "notebook.borrowed_mercy": {
+    "folk": "The doses were hers. I am walking on them.",
+    "church": null,
+    "state": null
+  },
+  "notebook.bread": {
+    "folk": "Bread, halved. It was what there was.",
+    "church": null,
+    "state": null
+  },
+  "notebook.warden_tag": {
+    "folk": "Arvo Lampi. He kept the line after there was no one left to keep it for.",
+    "church": null,
+    "state": null
+  },
+  "notebook.warden_tag_unwritten": {
+    "folk": "(A tin tag in the pouch. The border keeps an unwritten mark.)",
+    "church": null,
+    "state": null
+  },
+  "notebook.names_carried": {
+    "folk": "Carried, not yet written: {n}.",
+    "church": "The uncommemorated: {n}.",
+    "state": "Unfiled outcomes: {n}.",
+    "numb1": "Carried, not yet written: {n}.",
+    "numb2": "Not yet written: {n}.",
+    "numb3": "Unfiled outcomes: {n}."
+  },
+  "notebook.page_66_locked": {
+    "folk": "(Page sixty-six is spoken for. Seven lines down, in his own hand.)",
+    "church": null,
+    "state": null
+  },
+  "notebook.page_77_reserved": {
+    "folk": "(Page seventy-seven. A faint gold rule, seven lines down. Nothing on it.)",
+    "church": null,
+    "state": null
+  },
+
+  "ui.hearth.approach": {
+    "folk": "Keep vigil",
+    "church": "Keep the lamp",
+    "state": "Check in — Warming Station",
+    "numb1": "Keep vigil",
+    "numb2": "Rest — station",
+    "numb3": "Check in"
+  },
+  "ui.hearth.light": {
+    "folk": "Light it",
+    "church": "Kindle the lamp",
+    "state": "Activate station",
+    "numb1": "Light it",
+    "numb2": "Light station",
+    "numb3": "Activate"
+  },
+  "ui.hearth.wait": {
+    "folk": "Wait a while",
+    "church": "Abide",
+    "state": "Standby",
+    "numb1": "Wait a while",
+    "numb2": "Wait",
+    "numb3": "Standby"
+  },
+  "ui.hearth.remember": {
+    "folk": "Write the Names",
+    "church": "Commemorate",
+    "state": "File outcomes",
+    "numb1": "Write the Names",
+    "numb2": "Write / file",
+    "numb3": "File outcomes"
+  },
+  "ui.hearth.leave": {
+    "folk": "Bank the fire and go",
+    "church": "Go in peace",
+    "state": "Check out",
+    "numb1": "Bank the fire and go",
+    "numb2": "Bank fire. Go.",
+    "numb3": "Check out"
+  },
+  "ui.hearth.vigil_save": {
+    "folk": "The fire holds. Vigil kept.",
+    "church": "The lamp is kept.",
+    "state": "Station log updated.",
+    "numb1": "The fire holds. Vigil kept.",
+    "numb2": "Fire holds. Logged.",
+    "numb3": "Station log updated."
+  },
+  "ui.hearth.doses_renewed": {
+    "folk": "Doses drawn again. {n}.",
+    "church": "Mercy renewed. {n}.",
+    "state": "E-3 replenished to issue level: {n}.",
+    "numb1": "Doses drawn again. {n}.",
+    "numb2": "Doses: {n}.",
+    "numb3": "E-3 to issue level: {n}."
+  },
+  "ui.hearth.numbness_restore": {
+    "folk": "Some of the words came back.",
+    "church": "Sight is returned in part.",
+    "state": "Perception index partially corrected.",
+    "numb1": "Some of the words came back.",
+    "numb2": "Some words came back.",
+    "numb3": "Perception index partially corrected."
+  },
+
+  "ui.death.message": {
+    "folk": "The page falls open.",
+    "church": "Unwritten leaves scatter.",
+    "state": "Outcome failure recorded.",
+    "numb1": "The page falls open.",
+    "numb2": "Page open.",
+    "numb3": "Outcome failure recorded."
+  },
+  "ui.death.open_page_dropped": {
+    "folk": "Your Names lie where you fell.",
+    "church": "The unnamed wait at the place.",
+    "state": "Unfiled outcomes held at incident site.",
+    "numb1": "Your Names lie where you fell.",
+    "numb2": "Names at the site.",
+    "numb3": "Unfiled outcomes at incident site."
+  },
+  "ui.death.open_page_recovered": {
+    "folk": "You gather the loose leaves.",
+    "church": "The unnamed are taken up.",
+    "state": "Unfiled outcomes retrieved.",
+    "numb1": "You gather the loose leaves.",
+    "numb2": "Leaves recovered.",
+    "numb3": "Outcomes retrieved."
+  },
+  "ui.death.open_page_lost": {
+    "folk": "Lost to the spreadsheet.",
+    "church": "Unwritten here. Not unnamed elsewhere.",
+    "state": "Entries lapsed. No further recovery.",
+    "numb1": "Lost to the spreadsheet.",
+    "numb2": "Entries lapsed.",
+    "numb3": "Entries lapsed. No further recovery."
+  },
+  "ui.recovery.respawn": {
+    "folk": "The fire held. You did not.",
+    "church": "You are returned to the lamp.",
+    "state": "Subject returned to last station.",
+    "numb1": "The fire held. You did not.",
+    "numb2": "Returned to the fire.",
+    "numb3": "Subject returned to last station."
+  },
+  "ui.recovery.enemies_returned": {
+    "folk": "The wood filled back in behind you.",
+    "church": "The road is walked again.",
+    "state": "Population restored to baseline.",
+    "numb1": "The wood filled back in.",
+    "numb2": "The wood is full again.",
+    "numb3": "Population restored to baseline."
+  },
+
+  "ui.level.names_banked": {
+    "folk": "Names: {n}",
+    "church": "The uncommemorated: {n}",
+    "state": "Unfiled outcomes: {n}",
+    "numb1": "Names: {n}",
+    "numb2": "Names (unfiled): {n}",
+    "numb3": "Unfiled outcomes: {n}"
+  },
+  "ui.level.write_names": {
+    "folk": "Write them down",
+    "church": "Commemorate them",
+    "state": "File them",
+    "numb1": "Write them down",
+    "numb2": "Write / file",
+    "numb3": "File"
+  },
+  "ui.level.confirm": {
+    "folk": "Written. {n} Names spent.",
+    "church": "Commemorated. {n}.",
+    "state": "Filed. {n} outcomes cleared.",
+    "numb1": "Written. {n} Names spent.",
+    "numb2": "Written. {n} spent.",
+    "numb3": "Filed. {n} outcomes cleared."
+  },
+  "ui.attr.pulse": {
+    "folk": "Pulse",
+    "church": null,
+    "state": "Form 9 — I. vital reserve",
+    "numb1": "Pulse",
+    "numb2": "Pulse (index I)",
+    "numb3": "Index I"
+  },
+  "ui.attr.breath": {
+    "folk": "Breath",
+    "church": null,
+    "state": "Form 9 — II. exertion tolerance",
+    "numb1": "Breath",
+    "numb2": "Breath (index II)",
+    "numb3": "Index II"
+  },
+  "ui.attr.hands": {
+    "folk": "Hands",
+    "church": null,
+    "state": "Form 9 — III. manual force",
+    "numb1": "Hands",
+    "numb2": "Hands (index III)",
+    "numb3": "Index III"
+  },
+  "ui.attr.steady": {
+    "folk": "Steady",
+    "church": null,
+    "state": "Form 9 — IV. postural stability",
+    "numb1": "Steady",
+    "numb2": "Steady (index IV)",
+    "numb3": "Index IV"
+  },
+  "ui.attr.spirit": {
+    "folk": "Spirit",
+    "church": null,
+    "state": "Form 9 — V. agent response",
+    "numb1": "Spirit",
+    "numb2": "Spirit (index V)",
+    "numb3": "Index V"
+  },
+  "ui.attr.sight": {
+    "folk": "Sight",
+    "church": null,
+    "state": "Form 9 — VI. observational acuity",
+    "numb1": "Sight",
+    "numb2": "Sight (index VI)",
+    "numb3": "Index VI"
+  },
+  "ui.burden.label": {
+    "folk": "Burden",
+    "church": "the weight",
+    "state": "accumulated load",
+    "numb1": "Burden",
+    "numb2": "Burden (load)",
+    "numb3": "Accumulated load"
+  },
+  "ui.burden.line": {
+    "folk": "Bearing it is the work.",
+    "church": "The weight is not the enemy.",
+    "state": "Load band determines permitted evasive class.",
+    "numb1": "Bearing it is the work.",
+    "numb2": "",
+    "numb3": "Load band determines permitted evasive class."
+  },
+
+  "ui.attend.label": {
+    "folk": "Attend",
+    "church": "Keep them in sight",
+    "state": "Case focus",
+    "numb1": "Attend",
+    "numb2": "Attend (focus)",
+    "numb3": "Case focus"
+  },
+  "ui.attend.on": {
+    "folk": "Attending {name}.",
+    "church": "You keep {name} in sight.",
+    "state": "Case focus: {name}.",
+    "numb1": "Attending {name}.",
+    "numb2": "Focus: {name}.",
+    "numb3": "Case focus: {name}."
+  },
+  "ui.attend.off": {
+    "folk": "You look away.",
+    "church": "Sight released.",
+    "state": "Case focus cleared.",
+    "numb1": "You look away.",
+    "numb2": "Focus off.",
+    "numb3": "Case focus cleared."
+  },
+  "ui.attend.lost": {
+    "folk": "Gone out of sight.",
+    "church": "Out of sight, not out of mind.",
+    "state": "Focus lost. Subject out of range.",
+    "numb1": "Gone out of sight.",
+    "numb2": "Out of range.",
+    "numb3": "Focus lost. Subject out of range."
+  },
+
+  "ui.turn.label": {
+    "folk": "the Turn",
+    "church": "the Withering",
+    "state": "affect flattening",
+    "numb1": "the Turn",
+    "numb2": "the Turn (flattening)",
+    "numb3": "affect flattening"
+  },
+  "ui.turn.rising": {
+    "folk": "The margin is narrowing.",
+    "church": "The Withering presses.",
+    "state": "Flattening index: rising.",
+    "numb1": "The margin is narrowing.",
+    "numb2": "Margin narrowing.",
+    "numb3": "Flattening index: rising."
+  },
+  "ui.turn.near": {
+    "folk": "Not much page left.",
+    "church": "Little margin remains.",
+    "state": "Index approaching threshold.",
+    "numb1": "Not much page left.",
+    "numb2": "Margin low.",
+    "numb3": "Index approaching threshold."
+  },
+  "ui.turn.turned": {
+    "folk": "Turned.",
+    "church": "Withered.",
+    "state": "Threshold exceeded. Response flat.",
+    "numb1": "Turned.",
+    "numb2": "Turned.",
+    "numb3": "Threshold exceeded."
+  },
+  "ui.turn.cleansed": {
+    "folk": "The margin opens again.",
+    "church": "The Withering lifts.",
+    "state": "Index returned to baseline.",
+    "numb1": "The margin opens again.",
+    "numb2": "Margin open.",
+    "numb3": "Index returned to baseline."
+  },
+
+  "ui.tincture.drink": {
+    "folk": "Drink",
+    "church": "Take the mercy",
+    "state": "Self-administer E-3",
+    "numb1": "Drink",
+    "numb2": "Drink (E-3)",
+    "numb3": "Self-administer E-3"
+  },
+  "ui.tincture.empty": {
+    "folk": "Nothing left in it.",
+    "church": "The mercy is spent.",
+    "state": "E-3 exhausted. Replenish at station.",
+    "numb1": "Nothing left in it.",
+    "numb2": "Empty.",
+    "numb3": "E-3 exhausted."
+  },
+  "ui.tincture.wheel": {
+    "folk": "The pouch, laid out",
+    "church": null,
+    "state": "Compounding — Form 9 annex",
+    "numb1": "The pouch, laid out",
+    "numb2": "Pouch / compounding",
+    "numb3": "Compounding annex"
+  },
+
+  "ui.ember.use": {
+    "folk": "Take the Ember",
+    "church": "Take the strange fire",
+    "state": "Self-administer E-7",
+    "numb1": "Take the Ember",
+    "numb2": "Take the Ember (E-7)",
+    "numb3": "Self-administer E-7"
+  },
+  "ui.ember.numbness_gained": {
+    "folk": "Something goes quiet that was not quiet before.",
+    "church": "The eyes dim toward apathy.",
+    "state": "Perception index reduced. Function maintained.",
+    "numb1": "Something goes quiet that was not quiet before.",
+    "numb2": "Something goes quiet.",
+    "numb3": "Perception index reduced. Function maintained."
+  },
+  "ui.ember.none_left": {
+    "folk": "The vial is dry.",
+    "church": "No fire left to take.",
+    "state": "E-7: no units on hand.",
+    "numb1": "The vial is dry.",
+    "numb2": "Dry.",
+    "numb3": "E-7: no units on hand."
+  },
+
+  "ui.presence.observe_breath": {
+    "folk": "Watch her breathing",
+    "church": "Attend the breath",
+    "state": "Observe respiration"
+  },
+  "ui.presence.sit_near": {
+    "folk": "Sit near her",
+    "church": "Abide with her",
+    "state": "Remain at bedside"
+  },
+  "ui.presence.hold_hand": {
+    "folk": "Hold her hand",
+    "church": "Take her hand",
+    "state": "Physical contact, comfort"
+  },
+  "ui.presence.speak_name": {
+    "folk": "Say her name",
+    "church": "Name her aloud",
+    "state": "Verbal orientation"
+  },
+  "ui.presence.pray": {
+    "folk": "Pray",
+    "church": "Pray",
+    "state": "Spiritual attendance, unrecorded"
+  },
+  "ui.presence.keep_watch": {
+    "folk": "Keep watch",
+    "church": "Keep the vigil",
+    "state": "Continuous observation"
+  },
+  "ui.presence.witness_death": {
+    "folk": "Stay",
+    "church": "Witness",
+    "state": "Confirm outcome"
+  },
+  "ui.presence.write_name": {
+    "folk": "Write her name",
+    "church": "Commemorate her",
+    "state": "File the outcome"
+  },
+
+  "ui.prompt.interact": {
+    "folk": "Take a look",
+    "church": "Attend",
+    "state": "Inspect",
+    "numb1": "Take a look",
+    "numb2": "Look",
+    "numb3": "Inspect"
+  },
+  "ui.prompt.pick_up": {
+    "folk": "Pick it up",
+    "church": "Take it up",
+    "state": "Acquire",
+    "numb1": "Pick it up",
+    "numb2": "Take",
+    "numb3": "Acquire"
+  },
+  "ui.prompt.offer_apple": {
+    "folk": "Offer the apple",
+    "church": "Offer the fruit",
+    "state": "Issue ration",
+    "numb1": "Offer the apple",
+    "numb2": "Offer the apple",
+    "numb3": "Issue ration"
+  },
+  "ui.prompt.take_iron": {
+    "folk": "Take the hearth iron",
+    "church": "Take up the iron",
+    "state": "Acquire implement",
+    "numb1": "Take the hearth iron",
+    "numb2": "Take the iron",
+    "numb3": "Acquire implement"
+  },
+
+  "ui.world.gate_locked": {
+    "folk": "Barred from the other side.",
+    "church": "Not yet open to you.",
+    "state": "Transit closed. Hardware missing.",
+    "numb1": "Barred from the other side.",
+    "numb2": "Barred.",
+    "numb3": "Transit closed."
+  },
+  "ui.world.gate_opened": {
+    "folk": "The gate swings. The way back is short now.",
+    "church": "The way is opened.",
+    "state": "Transit restored, post road.",
+    "numb1": "The gate swings. Short way back.",
+    "numb2": "Gate open.",
+    "numb3": "Transit restored."
+  },
+  "ui.world.shortcut_opened": {
+    "folk": "You can come back this way.",
+    "church": "The road doubles for you.",
+    "state": "Route registered.",
+    "numb1": "You can come back this way.",
+    "numb2": "Route open.",
+    "numb3": "Route registered."
+  },
+  "ui.world.snare_rooted": {
+    "folk": "The line has you. The tags are ringing.",
+    "church": "Held at the boundary.",
+    "state": "Contact with post line. Movement restricted.",
+    "numb1": "The line has you. Tags ringing.",
+    "numb2": "Line has you.",
+    "numb3": "Contact with post line. Movement restricted."
+  },
+
+  "boss.aftermath.tag_name": {
+    "folk": "Arvo Lampi",
+    "church": "Arvo Lampi",
+    "state": "LAMPI, A. — post 9",
+    "numb1": "Arvo Lampi",
+    "numb2": "Arvo Lampi",
+    "numb3": "LAMPI, A. — post 9"
+  },
+  "boss.aftermath.tag_read": {
+    "folk": "The tag reads ARVO LAMPI. Below it, POST 9.",
+    "church": "A name, stamped in tin, on a line he strung himself.",
+    "state": "Post identification recovered: LAMPI, A. Post 9.",
+    "numb1": "The tag reads ARVO LAMPI. Below it, POST 9.",
+    "numb2": "Tag: ARVO LAMPI. POST 9.",
+    "numb3": "Post ID recovered: LAMPI, A., post 9."
+  },
+  "boss.aftermath.write_prompt": {
+    "folk": "Write the name",
+    "church": "Commemorate him",
+    "state": "File the outcome",
+    "numb1": "Write the name",
+    "numb2": "Write the name",
+    "numb3": "File the outcome"
+  },
+  "boss.aftermath.written_line": {
+    "folk": "Arvo Lampi. He kept the line after there was no one left to keep it for.",
+    "church": null,
+    "state": null
+  },
+  "boss.aftermath.walked_away": {
+    "folk": "The tag stays in your pouch. The border keeps the mark unwritten.",
+    "church": "One name still uncommemorated, and it is on you.",
+    "state": "Outcome unfiled. Tag retained.",
+    "numb1": "The tag stays in your pouch. The mark stays unwritten.",
+    "numb2": "Tag retained. Mark unwritten.",
+    "numb3": "Outcome unfiled. Tag retained."
+  },
+  "boss.aftermath.hearth_lit": {
+    "folk": "The clearing has a fire in it now.",
+    "church": "A lamp where the lamp went out.",
+    "state": "Warming Station established, Ironwood clearing.",
+    "numb1": "The clearing has a fire in it now.",
+    "numb2": "Fire in the clearing.",
+    "numb3": "Warming Station established."
+  },
+  "boss.aftermath.turn_cleansed": {
+    "folk": "Writing it opens the margin.",
+    "church": "Commemoration lifts the Withering.",
+    "state": "Filing returns the index to baseline.",
+    "numb1": "Writing it opens the margin.",
+    "numb2": "Written. Margin opens.",
+    "numb3": "Filing returns index to baseline."
+  }
+}
