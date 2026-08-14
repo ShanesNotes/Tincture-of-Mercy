@@ -1,0 +1,12 @@
+{
+  "character": "kalev_blocking",
+  "glb": "kalev_blocking.cfc533d1eaba.glb",
+  "glbHash": "cfc533d1eaba7a3534b8ed9e264f57bc0a06726f1b9f9bf29197d293a846c0d6",
+  "sidecars": [
+    "kalev_blocking_guard.json",
+    "kalev_blocking_heavy.json",
+    "kalev_blocking_light1.json",
+    "kalev_blocking_roll.json"
+  ],
+  "source": "kalev_blocking.blend"
+}

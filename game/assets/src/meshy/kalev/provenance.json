@@ -1,0 +1,34 @@
+{
+  "files": [
+    "preview.glb",
+    "preview.fbx",
+    "refine.glb",
+    "refine.fbx",
+    "rigged.glb",
+    "rigged.fbx"
+  ],
+  "prompt_sent": "Adult male apothecary standing A-pose, elongated 1:7.5 head-to-body, long hands, worn wool coat and linen, restrained face, no smile, no glowing eyes, carved-figure silhouette, folk-ironwood clothing. Tincture of Mercy art direction: carved-figure silhouette, no glowing eyes, no fantasy scale inflation, restrained face, pattern-over-texture, palette-covenant materials (parchment/ironwood/oxblood), elongated adult proportions ~1:7.5 head:body when humanoid. Real-world animal anatomy when wolf.",
+  "settings": {
+    "ai_model": "latest",
+    "art_constraints": "Tincture of Mercy art direction: carved-figure silhouette, no glowing eyes, no fantasy scale inflation, restrained face, pattern-over-texture, palette-covenant materials (parchment/ironwood/oxblood), elongated adult proportions ~1:7.5 head:body when humanoid. Real-world animal anatomy when wolf.",
+    "height_meters": 1.8,
+    "id": "kalev",
+    "mode": "preview",
+    "model_type": "lowpoly",
+    "pose_mode": "a-pose",
+    "prompt": "Adult male apothecary standing A-pose, elongated 1:7.5 head-to-body, long hands, worn wool coat and linen, restrained face, no smile, no glowing eyes, carved-figure silhouette, folk-ironwood clothing.",
+    "refine": true,
+    "rig": true,
+    "target_formats": [
+      "glb",
+      "fbx"
+    ]
+  },
+  "settings_hash": "b8ab54d4729b7db3",
+  "status": "ok",
+  "task_ids": {
+    "preview": "019ffd8c-09a3-76ea-814f-2d4dac1d5ad1",
+    "refine": "019ffd8e-9cac-7e73-87ac-6203ac699dc5",
+    "rig": "019ffd8f-9581-76a4-8710-9e9c6553fbdd"
+  }
+}
