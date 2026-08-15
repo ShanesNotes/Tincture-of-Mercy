@@ -35,7 +35,8 @@ describe("combat module interface", () => {
     ]);
 
     expect(result.state.actors.kalev?.action?.id).toBe("light1");
-    expect(result.state.actors.kalev?.breath.value).toBe(86);
+    // Round-1 G2 retune: the light attack costs 20 Breath, not 14.
+    expect(result.state.actors.kalev?.breath.value).toBe(80);
     expect(data.params.breath.costs).toMatchObject({ jump: 22, sprintPerSecond: 11 });
   });
 

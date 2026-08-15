@@ -16,7 +16,7 @@ Protocol: machine rows exit 0 before any panel convenes. Panels are cross-model 
 - F4 Impact: hit vs whiff unmistakable — sim hitstop within ±10ms of table, ink-bloom/border pulse within 2 ticks, distinct SFX sample-accurate; zero camera shake anywhere; no juice on air.
 - F5 I-frame honesty: debug overlay matches the table for all three Burden bands; a roll begun within ±6 ticks of an active start avoids it for every move in the game (no unavoidable attacks).
 - F6 Punish honesty: scripted bot lands a light on every whiffed/recovering boss move except the declared bait; punish windows match ENCOUNTERS.md.
-- F7 Breath grammar: empty bar denies roll; regen delay felt; ≤3 lights or ≤4 rolls consecutively at base; empty→full ≤3.0s.
+- F7 Breath grammar: empty bar denies roll; regen delay felt; ≤5 lights or ≤4 rolls consecutively at base; empty→full ≤3.0s. *(Round-1 chair adjudication G2: the bar was written for a 3-light budget but the table shipped a 14-Breath light, which bought seven. Light cost moved to 20 and this row to the five casts a full bar now buys.)*
 - F8 Weight: displacement curves, never velocity slides; feet plant on recovery; committed flask drink is punishable and survivable-if-timed.
 - F9 Attend: target occluded ≤8 consecutive ticks; both bodies on screen with ≥12% margin through strafes; switch intentional (flick threshold + cooldown); clean re-acquire on target death.
 - F10 Pack fairness: attack token holds — no true combo from multiple angles; wolves reposition, not blend.

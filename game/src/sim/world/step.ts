@@ -21,6 +21,8 @@ import {
 } from "../ai";
 import { createAttendState, stepAttend } from "../attend";
 import {
+  requestBackstab,
+  requestRiposte,
   stepCombatSimulation,
   type CombatSimulationState,
   type CombatStepCommand,
@@ -449,19 +451,91 @@ const stepSupportedAiMotion = (
   }, queries, queries.definition.motionParams);
 };
 
+/**
+ * Round-1 finding G3. The attack press used to map to `light1` unconditionally,
+ * so the authored 90-tick backstab/riposte rows were unreachable in a session.
+ * Candidates are the Attend-locked target when Attend holds one, otherwise every
+ * live hostile inside the authored critical reach, ordered by distance then id
+ * so an unlocked press stays deterministic.
+ *
+ * The band is bounded at both ends. Below two capsule radii the two bodies
+ * interpenetrate and the rear-cone direction is degenerate — a step-through at
+ * 0.16 m would read as "behind you" — so the near edge is the point where the
+ * attacker is genuinely outside the target rather than standing in it.
+ */
+const criticalCandidates = (
+  queries: WorldQueries,
+  combat: CombatSimulationState,
+  playerId: string,
+  attendTargetId: string | null,
+): readonly string[] => {
+  const player = combat.combat.actors[playerId];
+  if (player === undefined) return [];
+  const reachMeters = queries.definition.combatData.params.defense.criticalReachMeters;
+  const minimumMeters = queries.definition.motionParams.capsule.radius * 2;
+  const distanceTo = (actorId: string): number | null => {
+    if (actorId === playerId) return null;
+    if (queries.definition.actors[actorId]?.kind === "player") return null;
+    const target = combat.combat.actors[actorId];
+    if (target === undefined) return null;
+    if ((combat.damageActors[actorId]?.pulse ?? 0) <= 0) return null;
+    const distance = Math.hypot(
+      target.position.x - player.position.x,
+      target.position.z - player.position.z,
+    );
+    return distance >= minimumMeters && distance <= reachMeters ? distance : null;
+  };
+  if (attendTargetId !== null) {
+    return distanceTo(attendTargetId) === null ? [] : [attendTargetId];
+  }
+  return Object.keys(combat.combat.actors)
+    .map((actorId) => ({ actorId, distance: distanceTo(actorId) }))
+    .filter((entry): entry is { actorId: string; distance: number } => entry.distance !== null)
+    .sort((left, right) =>
+      left.distance === right.distance
+        ? left.actorId.localeCompare(right.actorId)
+        : left.distance - right.distance)
+    .map((entry) => entry.actorId);
+};
+
+const criticalCommand = (
+  queries: WorldQueries,
+  combat: CombatSimulationState,
+  playerId: string,
+  attendTargetId: string | null,
+  sequence: number,
+): CombatStepCommand | null => {
+  for (const targetId of criticalCandidates(queries, combat, playerId, attendTargetId)) {
+    const opened =
+      requestBackstab(queries.definition.combatData, combat, playerId, targetId, sequence) ??
+      requestRiposte(queries.definition.combatData, combat, playerId, targetId, sequence);
+    if (opened !== null) return opened;
+  }
+  return null;
+};
+
 const playerCommands = (
   input: WorldInputFrame,
   targetPosition: { readonly x: number; readonly z: number } | undefined,
   playerId: string,
+  queries: WorldQueries,
+  combat: CombatSimulationState,
+  attendTargetId: string | null,
 ): readonly CombatStepCommand[] => {
   const commands: CombatStepCommand[] = [];
   if (targetPosition !== undefined) commands.push({ actorId: playerId, targetPosition });
   for (const edge of input.edges) {
     if (edge.action === "attack" || edge.action === "heavy") {
+      const critical = edge.action === "attack" && edge.pressed
+        ? criticalCommand(queries, combat, playerId, attendTargetId, edge.sequence)
+        : null;
       commands.push({
         actorId: playerId,
         edge: { action: "attack", pressed: edge.pressed, sequence: edge.sequence, tick: edge.tick },
         ...(edge.action === "heavy" ? { moveId: "heavy" } : {}),
+        ...(critical === null
+          ? {}
+          : { moveId: critical.moveId, criticalTargetId: critical.criticalTargetId }),
         ...(targetPosition === undefined ? {} : { targetPosition }),
       });
     } else if (edge.action === "roll" || edge.action === "flask") {
@@ -883,7 +957,7 @@ export const stepWorld = (
   const tracked = combatTargetPosition(stagedForSweeps, attend.targetId);
   const combatStep = stepCombatSimulation(queries.definition.combatData, combatBeforeStep, {
     commands: [
-      ...playerCommands(input, tracked, playerId),
+      ...playerCommands(input, tracked, playerId, queries, combatBeforeStep, attend.targetId),
       ...aiCommands,
       ...(wardenTick?.commands ?? []),
     ],

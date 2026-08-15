@@ -125,14 +125,14 @@ describe("world golden replay", () => {
       restedAfterPageRecovery: true,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "a4296b22" },
-      { tick: 1_327, stateHash: "6e71789e" },
-      { tick: 1_370, stateHash: "e2fc71d3" },
-      { tick: 1_977, stateHash: "cf01b226" },
-      { tick: 6_753, stateHash: "76d008bc" },
-      { tick: 22_140, stateHash: "2a4b722b" },
-      { tick: 22_348, stateHash: "1075e108" },
-      { tick: 23_776, stateHash: "8a593f00" },
+      { tick: 1, stateHash: "0e5c539c" },
+      { tick: 1_327, stateHash: "11a21e54" },
+      { tick: 1_370, stateHash: "50627931" },
+      { tick: 1_977, stateHash: "a657cd7c" },
+      { tick: 6_753, stateHash: "f8f6fb16" },
+      { tick: 22_140, stateHash: "a3408809" },
+      { tick: 22_348, stateHash: "bacaa37a" },
+      { tick: 23_776, stateHash: "4ad45fae" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

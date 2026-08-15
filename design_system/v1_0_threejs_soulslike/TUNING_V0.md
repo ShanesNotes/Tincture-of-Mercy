@@ -6,14 +6,16 @@ Seeded from the Opus council seat's souls-calibrated baseline, cross-checked aga
 | | Light (<30%) | Medium (30–70%) | Heavy (>70%) |
 |---|---|---|---|
 | Roll total | 40t | 43t | 48t |
-| I-frames | t2–t16 (15) | t2–t14 (13) | t2–t12 (11) |
+| I-frames | t2–t16 (15) | t2–t14 (13) | t2–t14 (13) |
 | Actionable from | t26 | t30 | t36 |
 | Roll-cancel to attack | t20 | t22 | t26 |
 (Alt reading from 3 seats: 26 i-frames as the 60Hz doubling of the 30fps convention — hold as the "generous" tune if F5/F6 rounds report unfair.)
+*Round-1 chair adjudication G4: heavy moved 11 → 13 i-frames (t2–t12 → t2–t14) so the F5 ±6 guarantee holds against the eight-tick contact windows (wolf lunge, lantern-fire arc). Roll total 48t, actionable t36, and roll-cancel t26 are unchanged — the band still owns the worst recovery.*
 Backstep 22t, i-frames t1–t5. Sprint drain 11 Breath/s. Jump 22 Breath, ~1.2m. Locomotion ~6m/s run; all displacement authored per-tick curves.
 
 ## Breath (stamina, 100 base)
-Light attack 14 · heavy 26 · charged 34 · running 18 · rolling 16 · roll 22 (18/27 by band) · guard cost = incoming × 0.35 · regen 45/s starting 33t after last spend (40% while guarding) · zero-Breath guard break = 60t stagger.
+Light attack 20 · heavy 26 · charged 34 · running 18 · rolling 16 · roll 22 (18/27 by band) · guard cost = incoming × 0.35 · regen 45/s starting 33t after last spend (40% while guarding) · zero-Breath guard break = 60t stagger.
+*Round-1 chair adjudication G2: the light attack moved 14 → 20. At 14 a full bar bought seven consecutive lights and read as free; 20 gives the five casts GATES F7 now names.*
 
 ## Steady (poise, buildup model; full reset after 90t clean)
 Kalev base 20 (~35 with wolf-hide wrap) · wolf 12 · Turned humanoid 30 · Warden 65 (P1) / 80 (P2). Poise damage: light 10 · heavy 24 · charged 34 · running 14 · jump 30. Heavy attack hyperarmor t18–t29 (worth 25). Bands: flinch / stagger / knockdown per class table. Wither-typed hits ×1.4 poise.
@@ -30,13 +32,16 @@ Acquisition half-cone 34°, range 15m; retain to 22m or 30t broken LOS; switch o
 ## Player weapon — hearth iron (opening weapon)
 | Move | Startup | Active | Recovery | Tracking until | Breath | Poise dmg |
 |---|---|---|---|---|---|---|
-| Light 1 | 11 | 4 | 20 | t8 | 14 | 10 |
-| Light 2 | 9 | 4 | 24 | t6 | 14 | 10 |
+| Light 1 | 11 | 4 | 20 | t8 | 20 | 10 |
+| Light 2 | 9 | 4 | 24 | t6 | 20 | 10 |
 | Heavy | 24 | 5 | 34 | t16 | 26 | 24 |
 | Charged | +≤45 hold | 5 | 38 | t16 | 34 | 34 |
 | Running | 14 | 4 | 22 | t10 | 18 | 14 |
 | Rolling | 12 | 4 | 26 | t8 | 16 | 12 |
 | Riposte/backstab | 90t committed, i-frames t0–t80 | | | | 0 | — |
+
+*Round-1 chair adjudication O-F11: the global cancel tail is 6 ticks, which left Light 1 with 14 and Running with 16 non-cancellable recovery ticks — under the GATES F2 floor of 18. Both rows now carry a per-move cancel tail (Light 1 → 2, Running → 4) so the locked recovery reads 18. Authored startup/active/recovery are untouched; only the point the cancel opens moved, and it never opens earlier than recovery−6.*
+*Round-1 finding G3: the critical rows are opened by an attack press inside the target's rear cone (backstab) or its guard-break riposte window, at 0.70–1.50 m — near edge two capsule radii so the two bodies are not interpenetrating, far edge the authored `criticalReachMeters`.*
 
 ## Wolves (Baiter / Lunger / Harrier)
 Lunger pounce 30t startup · Harrier flank bite 16t · Baiter feints low-commitment. One attack token per 3.5m ring; release 45t after resolution. Howl escalates +1. Leash 25m. Flee <25% Pulse, return ~40s. No Wither. Loot: hide/sinew/tooth/meat.

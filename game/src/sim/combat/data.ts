@@ -86,6 +86,11 @@ export interface CombatMoveData {
   readonly hyperarmorPoise: number;
   readonly iframes: readonly TickWindow[];
   readonly chargeHoldMaxTicks: number;
+  /**
+   * Per-move override of `buffers.recoveryCancelTailTicks`. Null keeps the
+   * global tail; a smaller value locks more of the recovery (round-1 O-F11).
+   */
+  readonly cancelTailTicks: number | null;
   readonly tags: readonly MoveTag[];
   readonly provenance: Provenance;
 }
@@ -200,6 +205,7 @@ export interface DefenseParams {
   readonly criticalCommittedTicks: number;
   readonly criticalIframes: TickWindow;
   readonly criticalDamageMultiplier: number;
+  readonly criticalReachMeters: number;
   readonly turnThreshold: number;
   readonly turnedDurationTicks: number;
   readonly provenance: Provenance;
@@ -674,6 +680,7 @@ const parseMove = (
       "hyperarmorPoise",
       "iframes",
       "chargeHoldMaxTicks",
+      "cancelTailTicks",
       "tags",
       "provenance",
     ],
@@ -780,8 +787,18 @@ const parseMove = (
       "must contain at least one window when tracking is enabled",
     );
   }
+  // Absent means "use the global recovery tail"; only the rows that lock extra
+  // recovery carry the key.
+  const cancelTailTicks =
+    object.cancelTailTicks === undefined
+      ? null
+      : nullableIntegerAt(object, "cancelTailTicks", path, issues);
+  if (cancelTailTicks !== null && cancelTailTicks > recoveryTicks) {
+    issues.add(`${path}.cancelTailTicks`, "must fit inside recoveryTicks");
+  }
 
   return {
+    cancelTailTicks,
     id: parsedId,
     actorClass: enumAt(object, "actorClass", ACTOR_CLASSES, path, issues),
     kind: enumAt(object, "kind", MOVE_KINDS, path, issues),
@@ -1340,6 +1357,7 @@ const parseDefense = (
       "criticalCommittedTicks",
       "criticalIframes",
       "criticalDamageMultiplier",
+      "criticalReachMeters",
       "turnThreshold",
       "turnedDurationTicks",
       "provenance",
@@ -1409,6 +1427,13 @@ const parseDefense = (
       path,
       issues,
       1,
+    ),
+    criticalReachMeters: finiteNumberAt(
+      object,
+      "criticalReachMeters",
+      path,
+      issues,
+      0,
     ),
     turnThreshold: finiteNumberAt(object, "turnThreshold", path, issues, 1),
     turnedDurationTicks: integerAt(

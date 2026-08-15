@@ -189,9 +189,10 @@ describe("F5 — i-frame honesty (no unavoidable attacks)", () => {
     // The +/-6 in GATES F5 is exactly the medium band's 13 i-frames.
     expect(tolerance("light")).toBeGreaterThanOrEqual(WARDEN_PARAMS.gates.dodgeToleranceTicks);
     expect(tolerance("medium")).toBe(WARDEN_PARAMS.gates.dodgeToleranceTicks);
-    // Heavy ships 11 i-frames, which cannot reach +/-6. Declared, not hidden:
-    // TUNING_V0 already flags the "generous" 26-i-frame alt tune for this case.
-    expect(tolerance("heavy")).toBe(WARDEN_PARAMS.gates.dodgeToleranceTicks - 1);
+    // Round-1 chair adjudication G4 closed s22 law gap (b): heavy moved from 11
+    // i-frames to 13, so every band now reaches the +/-6 bar. Its 48-tick total
+    // and t36 actionable are untouched, so the band still owns the worst recovery.
+    expect(tolerance("heavy")).toBe(WARDEN_PARAMS.gates.dodgeToleranceTicks);
   });
 });
 
@@ -200,10 +201,27 @@ describe("Steady and hyperarmor per the class table", () => {
 
   const HITSTOP_SLACK_TICKS = 8;
 
+  /**
+   * Round-1 G2 raised the light attack to 20 Breath, so a long chain of lights
+   * now has to wait out the regen delay between swings. These cases measure the
+   * Steady class table, not the Breath economy, so the stride is derived from
+   * the authored regen: spend, wait the delay, earn the cost back. It stays
+   * under `cleanResetTicks` so the buildup being measured never resets.
+   */
+  const BREATH_STRIDE_TICKS =
+    COMBAT_DATA.params.breath.regenDelayTicks +
+    Math.ceil(
+      COMBAT_DATA.params.breath.costs.lightAttack /
+        (COMBAT_DATA.params.breath.regenPerSecond / COMBAT_DATA.params.tickHz),
+    );
+
   const severityAfterLights = (phase: WardenPhase, lights: number): string => {
     const seat = seatAt(0, 1.5);
     const clip = COMBAT_DATA.frameData.moves[PLAYER_LIGHT_ID];
-    const stride = (clip?.totalTicks ?? 35) + HITSTOP_SLACK_TICKS;
+    const stride = Math.max(
+      (clip?.totalTicks ?? 35) + HITSTOP_SLACK_TICKS,
+      BREATH_STRIDE_TICKS,
+    );
     const run = runCombat(roster(phase, seat), stride * lights + 4, (tick) => {
       const commands = [];
       const swings = [];
@@ -222,6 +240,10 @@ describe("Steady and hyperarmor per the class table", () => {
     const last = staggers.at(-1);
     return last !== undefined && last.kind === "stagger" ? last.severity : "none";
   };
+
+  it("keeps the Breath-paced light stride under the Steady clean reset", () => {
+    expect(BREATH_STRIDE_TICKS).toBeLessThan(COMBAT_DATA.params.steady.cleanResetTicks);
+  });
 
   it("uses the authored Warden Steady classes, and P2 is the sturdier one", () => {
     const steady = COMBAT_DATA.params.steady.classes;

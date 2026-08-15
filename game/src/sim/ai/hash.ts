@@ -10,6 +10,12 @@ const wolfTuple = (wolf: WolfActorState): readonly (string | number | boolean | 
   quantizeMm(wolf.z),
   quantizeMm(wolf.yaw),
   quantizeMm(wolf.pulse),
+  // Round-1 finding K3: the last-known target anchor and the pulse ceiling are
+  // mutable state the pack reads back, so a determinism compare has to see them.
+  quantizeMm(wolf.maxPulse),
+  quantizeMm(wolf.lastKnownX),
+  quantizeMm(wolf.lastKnownY),
+  quantizeMm(wolf.lastKnownZ),
   wolf.alert,
   wolf.alertTimer,
   wolf.confirmTimer,

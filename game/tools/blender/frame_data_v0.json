@@ -9,9 +9,9 @@
       "recovery": 20,
       "ticks": 35,
       "trackingUntil": 8,
-      "breath": 14,
+      "breath": 20,
       "poiseDamage": 10,
-      "source": "TUNING_V0 Player weapon — hearth iron / Light 1"
+      "source": "TUNING_V0 Player weapon — hearth iron / Light 1 (round-1 G2 retune: light Breath 14 → 20)"
     },
     "heavy": {
       "startup": 24,
