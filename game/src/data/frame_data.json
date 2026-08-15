@@ -8,17 +8,17 @@
       "id": "light1", "actorClass": "kalev", "kind": "attack",
       "startupTicks": 11, "activeTicks": 4, "recoveryTicks": 20, "totalTicks": 35,
       "activeWindows": [[11, 15]], "trackingUntilTick": 8, "trackingWindows": [[0, 9]], "turnRateRadiansPerTick": 0.1308996938995747,
-      "breathCost": 14, "poiseDamage": 10, "pulseDamage": 28, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 35,
-      "knockback": { "forwardMeters": 0.25, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
-      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 1", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines." }
+      "breathCost": 20, "poiseDamage": 10, "pulseDamage": 28, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 35,
+      "knockback": { "forwardMeters": 0.25, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "cancelTailTicks": 2, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 1 (round-1 retune)", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines. Round-1 chair adjudications moved two values: G2 raised the light Breath cost 14 to 20 so a full bar buys the five consecutive lights GATES F7 now names, and O-F11 set cancelTailTicks to 2 so the F2 floor of eighteen locked recovery ticks holds (20 recovery minus a 6-tick tail was 14)." }
     },
     "light2": {
       "id": "light2", "actorClass": "kalev", "kind": "attack",
       "startupTicks": 9, "activeTicks": 4, "recoveryTicks": 24, "totalTicks": 37,
       "activeWindows": [[9, 13]], "trackingUntilTick": 6, "trackingWindows": [[0, 7]], "turnRateRadiansPerTick": 0.1308996938995747,
-      "breathCost": 14, "poiseDamage": 10, "pulseDamage": 30, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 37,
+      "breathCost": 20, "poiseDamage": 10, "pulseDamage": 30, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 37,
       "knockback": { "forwardMeters": 0.28, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
-      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 2", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines." }
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Light 2 (round-1 retune)", "authoredReason": "Damage type, Pulse damage, turn cap, re-hit lockout, and knockback are required by D5 but absent from TUNING_V0; these are tagged v0 authored baselines. Round-1 chair adjudication G2 raised the light Breath cost 14 to 20; light 2 carries the same cost as light 1 in TUNING_V0. Its 24-tick recovery already clears the F2 floor of eighteen locked ticks." }
     },
     "heavy": {
       "id": "heavy", "actorClass": "kalev", "kind": "attack",
@@ -41,8 +41,8 @@
       "startupTicks": 14, "activeTicks": 4, "recoveryTicks": 22, "totalTicks": 40,
       "activeWindows": [[14, 18]], "trackingUntilTick": 10, "trackingWindows": [[0, 11]], "turnRateRadiansPerTick": 0.1308996938995747,
       "breathCost": 18, "poiseDamage": 14, "pulseDamage": 38, "witherBuildup": 0, "damageType": "strike", "hitstopClass": "light", "reHitLockoutTicks": 40,
-      "knockback": { "forwardMeters": 0.5, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "tags": [],
-      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Running", "authoredReason": "Damage, type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines." }
+      "knockback": { "forwardMeters": 0.5, "rightMeters": 0 }, "hyperarmorWindow": null, "hyperarmorPoise": 0, "iframes": [], "chargeHoldMaxTicks": 0, "cancelTailTicks": 4, "tags": [],
+      "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Player weapon — hearth iron / Running (round-1 retune)", "authoredReason": "Damage, type, turn cap, re-hit lockout, and knockback are tagged v0 authored baselines. Round-1 chair adjudication O-F11 set cancelTailTicks to 4 so the F2 floor of eighteen locked recovery ticks holds (22 recovery minus a 6-tick tail was 16); the authored recovery itself is unchanged." }
     },
     "rolling_attack": {
       "id": "rolling_attack", "actorClass": "kalev", "kind": "attack",

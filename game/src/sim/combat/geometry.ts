@@ -374,6 +374,36 @@ const interpolateWeaponPose = (
   };
 };
 
+/**
+ * Round-1 finding K11. Each substep is tested as two triangles, so the chord
+ * between the two tip poses dips inside the true arc by its sagitta and drops
+ * grazes just under the weapon's outer reach — a 4.5 mm band at the authored
+ * caps. Raising the substep count only narrows that hole — it never closes it,
+ * because the sagitta only falls as the square of the substep turn (measured
+ * against a dense-pose oracle, 3, 4, 6 and 8 substeps all still dropped
+ * contacts, every one of them within 4.5 mm of the true outer reach) — so the
+ * swept pose carries the sagitta as extra radius instead. The bound is
+ * `max tip length × (1 − cos(Δ/2))` over the substep's turn Δ: exact at the
+ * chord midpoint, zero without rotation, and never a miss. Its cost is the same
+ * bound as conservative over-reach, only at the substep boundaries.
+ */
+const chordSagitta = (start: Capsule, end: Capsule): number => {
+  const startOffset = subtract(start.b, start.a);
+  const endOffset = subtract(end.b, end.a);
+  const startLength = Math.sqrt(lengthSquared(startOffset));
+  const endLength = Math.sqrt(lengthSquared(endOffset));
+  if (startLength <= EPSILON || endLength <= EPSILON) {
+    return 0;
+  }
+  const cosine = clamp(
+    dot(scale(startOffset, 1 / startLength), scale(endOffset, 1 / endLength)),
+    -1,
+    1,
+  );
+  const halfAngleCosine = Math.sqrt((1 + cosine) / 2);
+  return Math.max(startLength, endLength) * (1 - halfAngleCosine);
+};
+
 const sweptPoseIntersects = (
   start: Capsule,
   end: Capsule,
@@ -381,7 +411,10 @@ const sweptPoseIntersects = (
   epsilonMeters: number,
 ): boolean => {
   const combinedRadius =
-    Math.max(start.radius, end.radius) + hurtbox.radius + epsilonMeters;
+    Math.max(start.radius, end.radius) +
+    hurtbox.radius +
+    epsilonMeters +
+    chordSagitta(start, end);
   const threshold = combinedRadius * combinedRadius + EPSILON;
   return (
     segmentTriangleDistanceSquared(

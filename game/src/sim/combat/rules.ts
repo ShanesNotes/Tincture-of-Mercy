@@ -34,6 +34,9 @@ export const combatRulesFromData = (data: CombatData): CombatRules => {
             },
           }),
       reHitLockoutTicks: move.reHitLockoutTicks,
+      ...(move.cancelTailTicks === null
+        ? {}
+        : { recoveryCancelTailTicks: move.cancelTailTicks }),
       ...(id === "roll"
         ? {
             cancelRules: [

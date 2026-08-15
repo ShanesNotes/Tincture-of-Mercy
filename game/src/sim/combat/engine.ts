@@ -33,6 +33,8 @@ export interface CombatMoveRules {
   readonly hyperarmorPoise?: number;
   readonly hyperarmorWindow?: TickWindow;
   readonly iframeWindow?: TickWindow;
+  /** Per-move override of {@link CombatRules.recoveryCancelTailTicks} (O-F11). */
+  readonly recoveryCancelTailTicks?: number;
   readonly reHitLockoutTicks?: number;
   readonly trackingUntilTick?: number;
   readonly trackingWindows?: readonly TickWindow[];
@@ -187,7 +189,7 @@ const canBeginMove = (
     actor.action.tick,
     nextAction,
     currentMove.cancelRules ?? [],
-    rules.recoveryCancelTailTicks,
+    currentMove.recoveryCancelTailTicks ?? rules.recoveryCancelTailTicks,
   );
 };
 

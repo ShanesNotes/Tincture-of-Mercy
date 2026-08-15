@@ -9,15 +9,15 @@
     "bands": {
       "light": { "totalTicks": 40, "iframes": [2, 17], "actionableFromTick": 26, "attackCancelFromTick": 20, "breathCost": 18 },
       "medium": { "totalTicks": 43, "iframes": [2, 15], "actionableFromTick": 30, "attackCancelFromTick": 22, "breathCost": 22 },
-      "heavy": { "totalTicks": 48, "iframes": [2, 13], "actionableFromTick": 36, "attackCancelFromTick": 26, "breathCost": 27 }
+      "heavy": { "totalTicks": 48, "iframes": [2, 15], "actionableFromTick": 36, "attackCancelFromTick": 26, "breathCost": 27 }
     },
     "backstep": { "totalTicks": 22, "iframes": [1, 6] },
-    "provenance": { "kind": "tuning", "reference": "TUNING_V0 Movement & defense; inclusive iframe ranges normalized to half-open windows", "authoredReason": null }
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Movement & defense; inclusive iframe ranges normalized to half-open windows", "authoredReason": "Round-1 chair adjudication G4 moved the heavy Burden band from 11 i-frames (t2–t12) to 13 (t2–t14) so the GATES F5 ±6 guarantee holds against the eight-tick contact windows (wolf lunge, lantern-fire arc). Total ticks, actionableFromTick 36, and attackCancelFromTick 26 are unchanged, so the band keeps the worst recovery." }
   },
   "breath": {
     "baseMaximum": 100,
     "costs": {
-      "lightAttack": 14,
+      "lightAttack": 20,
       "heavyAttack": 26,
       "chargedAttack": 34,
       "runningAttack": 18,
@@ -30,7 +30,7 @@
     "regenDelayTicks": 33,
     "guardingRegenMultiplier": 0.4,
     "guardCostIncomingMultiplier": 0.35,
-    "provenance": { "kind": "tuning", "reference": "TUNING_V0 Breath", "authoredReason": null }
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Breath", "authoredReason": "Round-1 chair adjudication G2 raised the light attack cost 14 to 20: at 14 a full bar bought seven consecutive lights, which read as free. Twenty gives the five casts from full that GATES F7 now names. Every other cost is TUNING_V0 verbatim." }
   },
   "steady": {
     "cleanResetTicks": 90,
@@ -75,9 +75,10 @@
     "criticalCommittedTicks": 90,
     "criticalIframes": [0, 81],
     "criticalDamageMultiplier": 3,
+    "criticalReachMeters": 1.5,
     "turnThreshold": 100,
     "turnedDurationTicks": 300,
-    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Breath guard cost/guard break; hearth-iron critical commitment; S11 defense contract", "authoredReason": "Guard absorption, 90t riposte eligibility, 30-degree rear half-cone, critical multiplier, Turn threshold, and Turned duration are source gaps explicitly tagged as v0 authored defaults." }
+    "provenance": { "kind": "tuning_with_authored_defaults", "reference": "TUNING_V0 Breath guard cost/guard break; hearth-iron critical commitment; S11 defense contract", "authoredReason": "Guard absorption, 90t riposte eligibility, 30-degree rear half-cone, critical multiplier, Turn threshold, and Turned duration are source gaps explicitly tagged as v0 authored defaults. Round-1 finding G3 added criticalReachMeters: TUNING_V0 names no engage distance for the critical rows, so 1.5 m (two capsule radii plus a hearth-iron step-in) is the explicit v0 authored bound that stops a rear-cone attack press from opening a backstab across the arena." }
   },
   "collision": {
     "substepsPerTick": 3,
