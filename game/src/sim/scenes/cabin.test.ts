@@ -59,14 +59,11 @@ describe("cabin prologue", () => {
   it("prepares Anna's dose against the s15 vial stock", () => {
     const { state } = playCabin();
     const meta: MetaState = createMetaState();
-    expect(meta.vial.doses).toBe(SCENE_CATALOG.params.annaStartingDoses);
+    expect(meta.vial.doses).toBe(0);
+    expect(meta.annaSupply.doses).toBe(SCENE_CATALOG.params.annaStartingDoses);
     const remaining = state.flags["anna.dosesRemaining"] ?? 0;
-    const inherited: MetaState = {
-      ...meta,
-      vial: { ...meta.vial, doses: remaining },
-    };
-    expect(inherited.vial.doses).toBe(2);
-    expect(createMercyStats(inherited).maxPulse).toBeGreaterThan(0);
+    expect(remaining).toBe(2);
+    expect(createMercyStats(meta).maxPulse).toBeGreaterThan(0);
   });
 
   it("hands the remaining prepared doses to Anna's inheritance event", () => {

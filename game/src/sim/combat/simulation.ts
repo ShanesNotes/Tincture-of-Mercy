@@ -1,3 +1,4 @@
+import { applyMetaPercent, applySteadyDeltaToBands } from "./damage";
 import type { CombatData, CombatMoveData, SteadyClass } from "./data";
 import {
   detectActiveSwingHits,
@@ -52,6 +53,17 @@ export interface CombatSimulationFrame {
   readonly commands: readonly CombatStepCommand[];
   readonly guarding?: readonly { readonly actorId: string; readonly value: boolean }[];
   readonly swings?: readonly CombatSwingFrame[];
+  /**
+   * The single metaModifiers seam (O-F2). Player-only: outgoing damage,
+   * incoming Wither, Breath regen, and Steady band shift.
+   */
+  readonly metaCombat?: {
+    readonly playerId: string;
+    readonly damagePercent: number;
+    readonly turnBuildupPercent: number;
+    readonly breathRegenPercent: number;
+    readonly steadyDelta: number;
+  };
 }
 
 export interface CombatSimulationStep {
@@ -444,6 +456,7 @@ export const stepCombatSimulation = (
     actionStep.state,
     frame.swings ?? [],
   );
+  const metaCombat = frame.metaCombat;
   let damageActors = Object.values(state.damageActors)
     .sort((left, right) => left.id.localeCompare(right.id))
     .map((actor) => {
@@ -472,9 +485,17 @@ export const stepCombatSimulation = (
             { buildup: actor.steadyBuildup, cleanTicks: actor.steadyCleanTicks },
             data.params.steady.cleanResetTicks,
           );
+      const rawBreath = combatActor?.breath.value ?? actor.breath;
+      const previousBreath = state.combat.actors[actor.id]?.breath.value ?? rawBreath;
+      const breath =
+        metaCombat !== undefined &&
+        actor.id === metaCombat.playerId &&
+        rawBreath > previousBreath
+          ? previousBreath + applyMetaPercent(rawBreath - previousBreath, metaCombat.breathRegenPercent)
+          : rawBreath;
       return {
         ...actor,
-        breath: combatActor?.breath.value ?? actor.breath,
+        breath,
         combatClock: combatActor?.buffer.inputClock ?? actor.combatClock,
         guarding: combatActor?.guarding ?? actor.guarding,
         hyperarmorPoise,
@@ -487,9 +508,33 @@ export const stepCombatSimulation = (
         steadyCleanTicks: steady.cleanTicks,
       };
     });
+  if (metaCombat !== undefined && metaCombat.steadyDelta !== 0) {
+    damageActors = damageActors.map((actor) =>
+      actor.id === metaCombat.playerId
+        ? {
+            ...actor,
+            poiseBands: applySteadyDeltaToBands(actor.poiseBands, metaCombat.steadyDelta),
+          }
+        : actor,
+    );
+  }
+  const scaledHits =
+    metaCombat === undefined
+      ? detected.hits
+      : detected.hits.map((hit) => ({
+          ...hit,
+          pulseDamage:
+            hit.attackerId === metaCombat.playerId
+              ? applyMetaPercent(hit.pulseDamage, metaCombat.damagePercent)
+              : hit.pulseDamage,
+          witherBuildup:
+            hit.targetId === metaCombat.playerId
+              ? applyMetaPercent(hit.witherBuildup, metaCombat.turnBuildupPercent)
+              : hit.witherBuildup,
+        }));
   const hitStep = resolveHitBatch(
     damageActors,
-    detected.hits,
+    scaledHits,
     [],
     hitResolutionParamsFromData(data),
     state.combat.worldTick,
@@ -517,8 +562,13 @@ export const stepCombatSimulation = (
         isHyperarmorActive(action.tick, hyperarmorWindow)
           ? (move?.hyperarmorPoise ?? 0)
           : 0;
+      const baseBands =
+        metaCombat !== undefined && actor.id === metaCombat.playerId
+          ? state.damageActors[actor.id]?.poiseBands
+          : undefined;
       return {
         ...actor,
+        ...(baseBands === undefined ? {} : { poiseBands: baseBands }),
         hyperarmorPoise,
         invulnerable:
           action !== undefined &&

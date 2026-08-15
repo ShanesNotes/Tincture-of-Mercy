@@ -9,6 +9,7 @@ import {
   leaveHearth,
   respawnAtHearth,
   stepMeta,
+  withInheritedVial,
 } from "./index";
 import { bossDefeated, engageBoss, enterArena } from "./arena";
 import type { MetaEvent } from "./events";
@@ -24,7 +25,7 @@ const DEATH_SITE: WorldPosition = { x: -8, y: 0, z: 21.5 };
 describe("the mercy loop, end to end", () => {
   it("plays the Ironwood shape: fight, fall, recover, keep vigil, burn Ember", () => {
     const events: MetaEvent[] = [];
-    let state = createMetaState();
+    let state = withInheritedVial();
     let stats: MercyStats = createMercyStats(state);
 
     const record = (result: { state: MetaState; events: readonly MetaEvent[] }): void => {

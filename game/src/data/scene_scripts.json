@@ -190,12 +190,13 @@
                 "notebook.anna_choice_a",
                 "notebook.borrowed_mercy"
               ],
-              "flags": { "anna.written": 1 },
+              "flags": { "anna.written": 1, "taught.inherited": 1 },
               "events": [
                 { "type": "notebook-line", "textKey": "notebook.anna_choice_a" },
                 { "type": "notebook-line", "textKey": "notebook.borrowed_mercy" },
                 { "type": "names-witness", "kind": "witness", "sourceId": "anna_death" },
                 { "type": "vial-inherited" },
+                { "type": "teach-flag", "flag": "taught.inherited" },
                 { "type": "item-reveal-request", "itemId": "vial" }
               ]
             }

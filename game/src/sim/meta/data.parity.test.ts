@@ -100,6 +100,14 @@ describe("data laws", () => {
     expect(PROGRESSION_PARAMS.burden.mediumMaxPercent).toBe(70);
   });
 
+  it("ambient Wither is 0.5/s = 1/120 per tick", () => {
+    expect(TINCTURE_PARAMS.ambientWither.perSecond).toBe(0.5);
+    expect(TINCTURE_PARAMS.ambientWither.ticksPerSecond).toBe(60);
+    expect(
+      TINCTURE_PARAMS.ambientWither.perSecond / TINCTURE_PARAMS.ambientWither.ticksPerSecond,
+    ).toBe(1 / 120);
+  });
+
   it("Ember is 2 doses, 1200 ticks of surge (TUNING_V0 verbatim)", () => {
     expect(TINCTURE_PARAMS.ember.startingDoses).toBe(2);
     expect(TINCTURE_PARAMS.pouch.starting.ember).toBe(TINCTURE_PARAMS.ember.startingDoses);

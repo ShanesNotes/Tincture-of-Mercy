@@ -6,7 +6,7 @@
  * modules happens at integration; this file declares the whole seam.
  */
 
-export const META_STATE_VERSION = 1 as const;
+export const META_STATE_VERSION = 2 as const;
 
 /* ------------------------------------------------------------------ identity */
 
@@ -162,6 +162,15 @@ export interface NumbnessParams {
   readonly maxVigilRestore: number;
 }
 
+/**
+ * Ambient off-path Wither (TUNING_V0: 0.5/s in the deep wood).
+ * `perSecond / ticksPerSecond` is the exact per-tick fraction (0.5/60 = 1/120).
+ */
+export interface AmbientWitherParams {
+  readonly perSecond: number;
+  readonly ticksPerSecond: number;
+}
+
 export interface PouchParams {
   readonly items: readonly PouchItemId[];
   readonly nonCraftable: readonly PouchItemId[];
@@ -176,6 +185,7 @@ export interface TinctureParams {
   readonly numbness: NumbnessParams;
   readonly pouch: PouchParams;
   readonly recipes: Readonly<Record<TinctureVariantId, Readonly<Partial<Record<PouchItemId, number>>>>>;
+  readonly ambientWither: AmbientWitherParams;
 }
 
 export interface CurveSegment {
@@ -230,6 +240,12 @@ export interface VialState {
   readonly variant: TinctureVariantId;
 }
 
+/** Anna's medicine chest — the doses and Embers live here until WitnessDeath. */
+export interface AnnaSupply {
+  readonly doses: number;
+  readonly ember: number;
+}
+
 /** A drink that has started but not yet reached its drink tick (s11 owns the clip). */
 export interface PendingUse {
   readonly kind: "tincture" | "ember";
@@ -276,6 +292,10 @@ export interface MetaState {
   readonly version: typeof META_STATE_VERSION;
   readonly tick: number;
   readonly vial: VialState;
+  /** Anna's remaining chest. Emptied at inheritance; DoseAnna spends from here. */
+  readonly annaSupply: AnnaSupply;
+  /** False until WitnessDeath transfers the remaining chest. Flask is empty until then. */
+  readonly inherited: boolean;
   readonly pouch: Readonly<Record<PouchItemId, number>>;
   readonly numbnessStacks: number;
   readonly vigilRestore: number;

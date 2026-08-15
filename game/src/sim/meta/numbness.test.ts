@@ -3,18 +3,18 @@ import { describe, expect, it } from "vitest";
 import {
   arriveAtHearth,
   createMercyStats,
-  createMetaState,
   hearthRest,
   hostileContact,
   leaveHearth,
   stepMeta,
+  withInheritedVial,
 } from "./index";
 import { metaModifiers, numbnessHealingPercent, scaleTinctureHeal, textStep, turnBuildupPercent } from "./numbness";
 import { beginEmberUse, beginTinctureUse, commitUse } from "./tincture";
 import type { MercyStats, MetaState, TinctureVariantId } from "./types";
 
 const withStacks = (stacks: number, vigilRestore = 0): MetaState => ({
-  ...createMetaState(),
+  ...withInheritedVial(),
   numbnessStacks: stacks,
   vigilRestore,
 });

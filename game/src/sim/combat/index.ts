@@ -59,6 +59,7 @@ export type {
 } from "./geometry";
 export { acceptSidecar, parseSidecarJson, sampleHurtboxCapsules, sampleSidecar, sampleWeaponCapsule } from "./sidecar";
 export type { SidecarData, SidecarSample, SidecarTransform } from "./sidecar";
+export { applyMetaPercent, applySteadyDeltaToBands } from "./damage";
 export { resolveHitBatch } from "./resolution";
 export type {
   AuthoredHit,

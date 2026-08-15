@@ -125,11 +125,49 @@ test("SC-H: two Ember stacks degrade the border's verdict, visibly", async ({ pa
 /** `tincture_params.json` numbness — two doses, two permanent stacks. */
 const EMBERS_TO_SWALLOW = 2;
 
+const inheritAnnaVial = async (run: Awaited<ReturnType<typeof Gauntlet.boot>>): Promise<void> => {
+  await run.waitFor(
+    "the prologue holds the frame",
+    (snapshot) => snapshot.scenes.activeId === "cabin_prologue",
+    15_000,
+  );
+  for (let step = 0; step < 5; step += 1) {
+    await run.tap(KEY.interact);
+    await run.advanceTicks(12, 15_000);
+  }
+  await run.waitFor(
+    "the prologue is written",
+    (snapshot) => snapshot.scenes.completed.includes("cabin_prologue"),
+    15_000,
+  );
+  await run.walkNorthTo(-8, 80);
+  await run.hold(KEY.back);
+  await run.waitFor("back in the cabin", (snapshot) => snapshot.zoneId === "CABIN", 30_000);
+  await run.release(KEY.back);
+  await run.waitFor(
+    "Anna's gravity holds the frame",
+    (snapshot) => snapshot.scenes.activeId === "anna_gravity",
+    30_000,
+  );
+  for (let step = 0; step < 8; step += 1) {
+    await run.tap(KEY.interact);
+    await run.advanceTicks(12, 15_000);
+  }
+  await run.waitFor("the vial is inherited", (snapshot) => snapshot.meta.inherited === true, 30_000);
+};
+
 test("SC-H: swallow two Embers through the world's own input path", async ({ page }) => {
   test.setTimeout(300_000);
   const run = await Gauntlet.boot(page, "sc-h-world", { debug: true });
   const opening = await run.capture("boot: no Embers swallowed, the register is the Church's");
   expect(opening.meta.numbnessStacks, "the slice opens with a clean register").toBe(0);
+  expect(opening.meta.doses, "the flask is Anna's until WitnessDeath").toBe(0);
+  expect(opening.meta.ember ?? 0, "her Embers stay in the chest").toBe(0);
+
+  await inheritAnnaVial(run);
+  const inherited = await run.capture("inherited: borrowed mercy, two Embers in the pouch");
+  expect(inherited.meta.inherited).toBe(true);
+  expect(inherited.meta.ember ?? 0, "the unused chest Embers transfer").toBe(2);
 
   // The shipped binding: hold G, press R. The modifier is read on the frame the
   // drink *starts*, so it stays held across the whole swallow.
@@ -155,7 +193,11 @@ test("SC-H: swallow two Embers through the world's own input path", async ({ pag
     EMBERS_TO_SWALLOW,
   );
   // The Ember is not a Tincture dose: it costs the register, not the vial.
-  expect(numbed.meta.doses, "an Ember must not spend a Tincture dose").toBe(numbed.meta.maxDoses);
+  expect(numbed.meta.doses, "an Ember must not spend a Tincture dose").toBe(inherited.meta.doses);
+  expect(numbed.meta.turnBuildupPercent, "GATES F12: Numbness Turn % must fire").toBe(150);
+  expect(numbed.meta.damagePercent, "GATES F12: Ember surge damage must fire").toBe(125);
+  expect(numbed.meta.breathRegenPercent, "GATES F12: Ember breath regen must fire").toBe(135);
+  expect(numbed.meta.steadyDelta, "GATES F12: Ember Steady must fire").toBe(15);
 
   // The apparatus is downstream of the same MetaState the reducer just wrote:
   // the border must be reading the world, not a fixture.

@@ -117,6 +117,10 @@ export const TINCTURE_PARAMS: TinctureParams = {
     cedar_wool_compress: { cedar: 1, wool: 2 },
     bitter_phrine: { phrine: 2, zyl: 1 },
   },
+  ambientWither: {
+    perSecond: 0.5,
+    ticksPerSecond: 60,
+  },
 };
 
 export const PROGRESSION_PARAMS: ProgressionParams = {

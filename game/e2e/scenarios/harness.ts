@@ -93,6 +93,12 @@ export interface WorldDebugSnapshot {
     readonly turnCap: number;
     readonly maxPulse: number;
     readonly maxBreath: number;
+    readonly inherited?: boolean;
+    readonly ember?: number;
+    readonly damagePercent?: number;
+    readonly turnBuildupPercent?: number;
+    readonly breathRegenPercent?: number;
+    readonly steadyDelta?: number;
   };
   readonly hearth: {
     readonly nearbyId: string | null;

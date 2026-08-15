@@ -75,6 +75,12 @@ const snapshot = (options: SnapshotOptions = {}): WorldDebugSnapshot => ({
     turnCap: 100,
     maxPulse: 100,
     maxBreath: 120,
+    inherited: false,
+    ember: 0,
+    damagePercent: 100,
+    turnBuildupPercent: 100,
+    breathRegenPercent: 100,
+    steadyDelta: 0,
     ...options.meta,
   },
   hearth: {

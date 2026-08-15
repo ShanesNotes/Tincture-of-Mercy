@@ -1,4 +1,4 @@
-import { createMercyStats, maxDoses } from "../meta";
+import { createMercyStats, maxDoses, metaModifiers } from "../meta";
 import { zoneAt } from "./assembly";
 import { hashWorldState } from "./hash";
 import { isWorldPackActive } from "./scheduler";
@@ -106,6 +106,7 @@ export const createWorldDebugSnapshot = (
   );
   let cachedStateHash: string | null = null;
   const stats = createMercyStats(state.meta, definition.metaParams);
+  const mods = metaModifiers(state.meta, definition.metaParams);
   const nearbyHearth = Object.values(definition.hearths)
     .sort((left, right) => left.id.localeCompare(right.id))
     .find((hearth) =>
@@ -150,6 +151,12 @@ export const createWorldDebugSnapshot = (
       turnCap: definition.combatData.params.defense.turnThreshold,
       maxPulse: stats.maxPulse,
       maxBreath: stats.maxBreath,
+      inherited: state.meta.inherited,
+      ember: state.meta.pouch.ember,
+      damagePercent: mods.damagePercent,
+      turnBuildupPercent: mods.turnBuildupPercent,
+      breathRegenPercent: mods.breathRegenPercent,
+      steadyDelta: mods.steadyDelta,
     },
     hearth: {
       nearbyId: nearbyHearth?.id ?? null,
