@@ -41,8 +41,8 @@
     "baiterFeint": {
       "startupTicks": 12,
       "activeTicks": 0,
-      "recoveryTicks": 8,
-      "source": "ENCOUNTERS Baiter: low commitment. startup 12t is the F3 floor (every wolf active ≥12t readable wind-up). active 0 = no hit. recovery 8 authoring"
+      "recoveryTicks": 14,
+      "source": "frame_data.json wolf_baiter_feint (12/0/14). ENCOUNTERS Baiter: low commitment. startup 12t is the F3 floor. active 0 = no hit. recovery derived from the shared frame-data row, not a second table."
     }
   },
   "perception": {

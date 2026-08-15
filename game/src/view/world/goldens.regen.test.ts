@@ -24,6 +24,7 @@ import { acceptSidecar, compileCombatData, hashCanonical } from "../../sim/comba
 import { parseMotionParams } from "../../sim/motion";
 import { parseSceneScripts } from "../../sim/scenes";
 import { MeshBvhCollisionWorld } from "../collision";
+import { createProductionCollisionQueries } from "./load";
 import {
   WORLD_BROWSER_GOLDEN_REPLAY,
   WORLD_GOLDEN_REPLAY,
@@ -122,18 +123,7 @@ describe.runIf(process.env.REGEN_WORLD_GOLDEN === "1")("world golden regeneratio
     const collision = new MeshBvhCollisionWorld(new MeshBVH(geometry));
     const queries: WorldQueries = {
       definition: realDefinition,
-      raycast: (query) => collision.raycast(query),
-      sweepCapsule: (query) => collision.sweepCapsule(query),
-      probeGround: ({ capsule, maxDistance }) => {
-        const hit = collision.raycast({
-          origin: capsule.start,
-          direction: { x: 0, y: -1, z: 0 },
-          maxDistance: maxDistance + capsule.radius,
-        });
-        if (hit === null) return null;
-        const distance = Math.max(0, hit.distance - capsule.radius);
-        return distance > maxDistance ? null : { ...hit, distance };
-      },
+      ...createProductionCollisionQueries(collision),
     };
     const replay = await playWorldReplayCooperatively(
       queries,

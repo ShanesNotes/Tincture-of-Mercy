@@ -57,20 +57,18 @@ interface WorldBrowserFacade {
 }
 
 const GOLDEN_TICKS = 41_413;
-// Re-captured from this Chromium lane after the round-one Warden retune. The
-// Warden is stepped on every world tick and his compiled params are part of the
-// world definition fingerprint, so any tuning change moves every world hash;
-// `REGEN_WORLD_GOLDEN=1 npx vitest run src/view/world/goldens.regen.test.ts`
-// prints the Node lane, and this row is the only place the browser lane exists.
-const GOLDEN_FINAL_HASH = "744e5f4d";
+// r2f-platform recapture (K1 sweep probe + O-F12 feint 8→14).
+// Old finalHash 858797d7 → 0e0810f9. Same authored tape; slope rest no longer
+// embeds, so mid-tape contacts miss. Node lane: REGEN_WORLD_GOLDEN=1.
+const GOLDEN_FINAL_HASH = "0e0810f9";
 const GOLDEN_CHECKPOINTS = [
-  { tick: 1, stateHash: "0e5c539c" },
-  { tick: 1_327, stateHash: "65e6e5f3" },
-  { tick: 1_370, stateHash: "b8db2800" },
-  { tick: 1_977, stateHash: "a5c18017" },
-  { tick: 6_753, stateHash: "c614e73c" },
-  { tick: 39_788, stateHash: "d3a56d69" },
-  { tick: 39_996, stateHash: "497238cd" },
+  { tick: 1, stateHash: "eeb5285f" },
+  { tick: 1_327, stateHash: "7cdc3852" },
+  { tick: 1_370, stateHash: "e287b5f4" },
+  { tick: 1_977, stateHash: "6d236cdb" },
+  { tick: 6_753, stateHash: "8b855e31" },
+  { tick: 39_788, stateHash: "0ecca7c2" },
+  { tick: 39_996, stateHash: "4eb609bf" },
   { tick: GOLDEN_TICKS, stateHash: GOLDEN_FINAL_HASH },
 ] as const;
 
@@ -150,7 +148,8 @@ test.describe("Ironwood world assembly", () => {
     // The full 41k-tick reducer is intentionally executed twice against the
     // baked collision world. Keep the watchdog above measured CPU time rather
     // than weakening the determinism proof to checkpoint state patches.
-    test.setTimeout(600_000);
+    // One Chromium pass is ~4.7 min here; two plus boot needs ~15 min.
+    test.setTimeout(900_000);
     const errors = await bootWorld(page, "webgl2");
 
     const [first, second] = await page.evaluate(async () => {
@@ -206,10 +205,10 @@ test.describe("Ironwood world assembly", () => {
    * The gate constant stays at the 16.7 ms (60 Hz) floor. GATES' 13.3 ms
    * (75 Hz) bar is future work and is deliberately not asserted here.
    */
-  test("three-wolf yard fight holds the WebGPU frame-time floor across three windows", async ({
+  test("three-wolf yard fight holds the WebGPU frame-time floor across three windows @perf", async ({
     page,
   }) => {
-    test.setTimeout(600_000);
+    test.setTimeout(900_000);
     await page.setViewportSize({ width: 1_920, height: 1_080 });
     const errors = await bootWorld(page, "webgpu");
 

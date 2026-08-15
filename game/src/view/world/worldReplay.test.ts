@@ -18,6 +18,7 @@ import {
   type WorldQueries,
 } from "../../sim/world";
 import { MeshBvhCollisionWorld } from "../collision";
+import { createProductionCollisionQueries } from "./load";
 
 const json = (url: URL): unknown => JSON.parse(readFileSync(url, "utf8"));
 const data = (name: string): unknown => json(new URL(`../../data/${name}`, import.meta.url));
@@ -90,18 +91,7 @@ describe("world golden replay", () => {
     const collision = new MeshBvhCollisionWorld(new MeshBVH(geometry));
     const queries: WorldQueries = {
       definition,
-      raycast: (query) => collision.raycast(query),
-      sweepCapsule: (query) => collision.sweepCapsule(query),
-      probeGround: ({ capsule, maxDistance }) => {
-        const hit = collision.raycast({
-          origin: capsule.start,
-          direction: { x: 0, y: -1, z: 0 },
-          maxDistance: maxDistance + capsule.radius,
-        });
-        if (hit === null) return null;
-        const distance = Math.max(0, hit.distance - capsule.radius);
-        return distance > maxDistance ? null : { ...hit, distance };
-      },
+      ...createProductionCollisionQueries(collision),
     };
 
     const replay = await playWorldReplayCooperatively(
@@ -125,14 +115,14 @@ describe("world golden replay", () => {
       restedAfterPageRecovery: true,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "0e5c539c" },
-      { tick: 1_327, stateHash: "11a21e54" },
-      { tick: 1_370, stateHash: "50627931" },
-      { tick: 1_977, stateHash: "a657cd7c" },
-      { tick: 6_753, stateHash: "f8f6fb16" },
-      { tick: 22_140, stateHash: "a3408809" },
-      { tick: 22_348, stateHash: "bacaa37a" },
-      { tick: 23_776, stateHash: "4ad45fae" },
+      { tick: 1, stateHash: "eeb5285f" },
+      { tick: 1_327, stateHash: "be56cc6b" },
+      { tick: 1_370, stateHash: "62382276" },
+      { tick: 1_977, stateHash: "00d59217" },
+      { tick: 6_753, stateHash: "dde1c201" },
+      { tick: 22_140, stateHash: "1432024a" },
+      { tick: 22_348, stateHash: "2a61e41c" },
+      { tick: 23_776, stateHash: "af250cb2" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

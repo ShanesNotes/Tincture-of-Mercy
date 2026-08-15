@@ -3,7 +3,7 @@ export { SimClipPlayer, type AnimationSeek } from "./animation";
 export { WorldCameraBinding } from "./camera";
 export { SimCapsuleOverlay } from "./debug";
 export {
-  applyHearthDim,
+applyHearthDim,
   consumeLightingEvents,
   createWorldLighting,
   HEARTH_LEVEL_FULL,
@@ -11,6 +11,7 @@ export {
   type WorldLightingState,
 } from "./lighting";
 export {
+  createProductionCollisionQueries,
   loadIronwoodWorldAssets,
   WorldAssetLoadError,
   type IronwoodAssetLoadOptions,
