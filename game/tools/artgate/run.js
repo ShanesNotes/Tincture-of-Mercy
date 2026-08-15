@@ -97,14 +97,20 @@ const captureBorderStates = async (page, post) => {
   await page.goto(`${BASE_URL}/?scene=hud&post=${post ? "on" : "off"}`);
   await page.waitForSelector('body[data-boot-status="ready"]', { timeout: 60_000 });
   await page.waitForSelector('body[data-hud-mounted="true"]', { timeout: 60_000 });
-  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  // Browser-context callbacks reach their globals through `globalThis` — this
+  // file is linted as Node, where `document` and `requestAnimationFrame` are
+  // not defined names.
+  await page.evaluate(() => globalThis.document.fonts.ready.then(() => undefined));
   const border = page.getByTestId("hud-border");
   const shots = [];
   for (const state of BORDER_STATES) {
     await page.evaluate((name) => globalThis.__hud.setFixture(name), state);
     // Let the descriptor stamp and the webfonts settle before the shot.
     await page.evaluate(
-      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+      () =>
+        new Promise((resolve) =>
+          globalThis.requestAnimationFrame(() => globalThis.requestAnimationFrame(resolve)),
+        ),
     );
     const png = await border.screenshot();
     const name = `border_${state}_${post ? "post" : "nopost"}`;
