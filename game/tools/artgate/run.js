@@ -1,11 +1,15 @@
 /**
- * Art gate harness (GATES.md A1–A4, A6, A7) — slice s13 machine rows.
+ * Art gate harness (GATES.md A1–A7) — slice s13 machine rows plus the F5
+ * repair rows (A5 border verdict, full A7 no-post baseline).
  *
  * Boots the register sample scene headless on both renderer backends,
- * captures shots 1–4 with post on and off, evaluates the machine rows in
- * the page bundle (shared pure modules — the same code Vitest covers),
- * writes a JSON report + screenshot evidence to tools/artgate/report/,
- * and exits non-zero if any row fails.
+ * captures shots 1–4 with post on and off, evaluates the s13-scoped rows in
+ * the page bundle (shared pure modules — the same code Vitest covers), then
+ * boots `?scene=hud` to screenshot the manuscript border across distinct
+ * world states for A5 (the image-diff method of e2e/hud.spec.ts). A5 and
+ * the full A1–A6 no-post baseline (A7) are composed from that evidence by
+ * tools/artgate/rows.js. Writes a JSON report + screenshot evidence to
+ * tools/artgate/report/ and exits non-zero if any row fails.
  *
  * Usage: node tools/artgate/run.js [--port N] [--report DIR]
  */
@@ -16,6 +20,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { chromium } from "playwright";
+
+import { assembleRows, buildA5Row, buildFullA7Row, markPostOff } from "./rows.js";
 
 const GAME_DIR = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 const args = process.argv.slice(2);
@@ -28,6 +34,10 @@ const REPORT_DIR = argValue("report", join(GAME_DIR, "tools", "artgate", "report
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 const SHOTS = [1, 2, 3, 4];
+// A5 world states: the same fixture set e2e/hud.spec.ts diffs
+// (HUD_FIXTURES_FOR_DIFF) — four distinct verdict states, exceeding the
+// ≥3 the gate asks for.
+const BORDER_STATES = ["cabin_vigil", "road_wild", "warden_ceremony", "turned"];
 // Both backends sit the gate (GATES.md protocol). The default boot prefers
 // WebGPU; `renderer=webgl2` forces the fallback. The actual backend is read
 // from the page so a WebGPU-less environment is reported honestly.
@@ -75,6 +85,42 @@ const captureShot = async (page, backendParam, shot, post, screenshotPath) => {
   const audit = await page.evaluate(() => globalThis.__registerArtgate.audit());
   const budget = await page.evaluate(() => globalThis.__registerArtgate.budget());
   return { backend, capture, audit, budget };
+};
+
+/**
+ * A5 evidence: boot `?scene=hud` and screenshot the hud-border element once
+ * per world state, exactly as e2e/hud.spec.ts drives it. The border is a
+ * DOM/CSS overlay — the renderer post pipeline never touches it — but the
+ * no-post pass still re-runs the diff so A7 re-checks A5 honestly.
+ */
+const captureBorderStates = async (page, post) => {
+  await page.goto(`${BASE_URL}/?scene=hud&post=${post ? "on" : "off"}`);
+  await page.waitForSelector('body[data-boot-status="ready"]', { timeout: 60_000 });
+  await page.waitForSelector('body[data-hud-mounted="true"]', { timeout: 60_000 });
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  const border = page.getByTestId("hud-border");
+  const shots = [];
+  for (const state of BORDER_STATES) {
+    await page.evaluate((name) => globalThis.__hud.setFixture(name), state);
+    // Let the descriptor stamp and the webfonts settle before the shot.
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+    );
+    const png = await border.screenshot();
+    const name = `border_${state}_${post ? "post" : "nopost"}`;
+    writeFileSync(join(REPORT_DIR, "shots", `${name}.png`), png);
+    console.log(`captured ${name}`);
+    shots.push({ state, png });
+  }
+  return shots;
+};
+
+const pickRow = (report, id) => {
+  const found = report.rows.find((r) => r.id === id);
+  if (found === undefined) {
+    throw new Error(`Gate row ${id} missing from the page evaluation.`);
+  }
+  return found;
 };
 
 const main = async () => {
@@ -137,9 +183,49 @@ const main = async () => {
         ({ captures: c, audits: a }) => globalThis.__registerArtgate.evaluateRows(c, a),
         { captures, audits },
       );
+
+      // A7 restoration (F5): the s13 module measures A1/A3/A4/A6 over post-on
+      // captures only, so re-run it with the post-off frames' flag flipped to
+      // get those rows evaluated on no-post evidence — the same shared code,
+      // the same thresholds. A2's audit is post-independent; A5 re-runs on
+      // the no-post border captures below.
+      const postOffCaptures = captures.filter((c) => !c.meta.post);
+      const flipped = postOffCaptures.map((c) => ({ ...c, meta: { ...c.meta, post: true } }));
+      const postOffReport = await page.evaluate(
+        ({ captures: c, audits: a }) => globalThis.__registerArtgate.evaluateRows(c, a),
+        { captures: [...flipped, ...postOffCaptures], audits },
+      );
+
+      // A5 (F5): the border verdict diff lives in the HUD scene, not the
+      // register plate. Captured last because it navigates the page away.
+      const borderOn = await captureBorderStates(page, true);
+      const borderOff = await captureBorderStates(page, false);
+      if (pageErrors.length > 0) {
+        console.error("page errors:", pageErrors);
+        throw new Error("HUD scene produced page errors.");
+      }
+
+      const a5Row = buildA5Row(borderOn);
+      const a5OffRow = {
+        ...buildA5Row(borderOff, "A7/A5"),
+        title: "A7/A5 no-post border verdict diff",
+      };
+      const a7Row = buildFullA7Row({
+        a1: markPostOff(pickRow(postOffReport, "A1")),
+        a2: pickRow(report, "A2"),
+        a3: markPostOff(pickRow(postOffReport, "A3")),
+        a4: markPostOff(pickRow(postOffReport, "A4")),
+        a5: a5OffRow,
+        a6: markPostOff(pickRow(postOffReport, "A6")),
+      });
+      const basePass = report.pass;
+      report.rows = assembleRows(report.rows, a5Row, a7Row);
+      report.pass = basePass && a5Row.pass && a7Row.pass;
+
       report.generatedAt = new Date().toISOString();
       report.budgets = budgets;
       report.shots = SHOTS;
+      report.borderStates = BORDER_STATES;
       report.backendsAttempted = BACKENDS.map((b) => b.label);
       report.captureStats = captures;
 
