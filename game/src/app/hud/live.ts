@@ -47,11 +47,28 @@ const hearthVerdictFor = (lit: boolean): HearthVerdict => (lit ? "lit" : "unlit"
 const zoneFor = (zoneId: string | null): ZoneCharacter =>
   zoneId === DOMESTIC_ZONE_ID ? "domestic" : "wild";
 
-export const hudInputFromWorld = (snapshot: WorldDebugSnapshot, playerId: string): HudInput => {
+/**
+ * The two border states no snapshot can carry: both are one-way latches over
+ * the event stream (`page-lost`, `hud-border-wake`), so the app owns them and
+ * hands them in. A snapshot-only projection cannot see either — that is what
+ * left both signals emitted and consumed by nothing.
+ */
+export interface HudLatches {
+  readonly pageLost: boolean;
+  readonly woken: boolean;
+}
+
+export const hudInputFromWorld = (
+  snapshot: WorldDebugSnapshot,
+  playerId: string,
+  latches: HudLatches = { pageLost: false, woken: true },
+): HudInput => {
   const player = findPlayer(snapshot, playerId);
   const { meta, scenes } = snapshot;
   const activeId = scenes.activeId;
   return {
+    pageLost: latches.pageLost,
+    woken: latches.woken,
     pulse: player?.pulse ?? 0,
     maxPulse: meta.maxPulse,
     breath: player?.breath ?? 0,

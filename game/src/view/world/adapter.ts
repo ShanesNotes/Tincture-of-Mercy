@@ -3,6 +3,7 @@ import type { CombatData, CombatPresenterEvent } from "../../sim/combat";
 import type { WorldDebugSnapshot, WorldEvent } from "../../sim/world/types";
 import type { VfxWorldContext } from "../vfx/worldEvents";
 import type { Vec2, Vec3Tuple } from "../vfx/types";
+import type { HearthDimSignal } from "./lighting";
 import type {
   ActorPresentation,
   CameraWorldEvent,
@@ -182,16 +183,21 @@ const bossAudio = (event: WorldEvent): readonly AudioSourceEvent[] => {
     : [];
 };
 
-/** Adapts the globally sequenced presenter stream into camera and audio ports. */
+/** Adapts the globally sequenced presenter stream into camera, audio, and lighting ports. */
 export const adaptWorldEvents = (events: readonly WorldEvent[]): WorldViewEventBatch => {
   const camera: CameraWorldEvent[] = [];
   const audio: AudioSourceEvent[] = [];
+  const lighting: HearthDimSignal[] = [];
   for (const event of events) {
     if (event.source === "scenes" && "type" in event.payload) {
       if (event.payload.type === "camera-hold") {
         camera.push({ type: "camera-hold", beat: event.payload.anchorId, anchorId: event.payload.anchorId });
       } else if (event.payload.type === "camera-release") {
         camera.push({ type: "camera-release" });
+      } else if (event.payload.type === "hearth-dim") {
+        // EN9: the event carries its own declared ramp; the view never
+        // authors the percentage.
+        lighting.push({ percent: event.payload.percent, rampSteps: event.payload.rampSteps });
       }
     }
     audio.push(...bossAudio(event));
@@ -209,5 +215,5 @@ export const adaptWorldEvents = (events: readonly WorldEvent[]): WorldViewEventB
       audio.push(...combatAudio(event));
     }
   }
-  return { camera, audio };
+  return { camera, audio, lighting };
 };

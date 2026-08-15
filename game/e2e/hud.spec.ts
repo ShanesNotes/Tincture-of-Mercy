@@ -172,3 +172,130 @@ test('menus emit intents and the death overlay stays inside the border', async (
   await expect(page.getByTestId('hud-death-line').first()).toHaveText('Page open.');
   await expect(page.getByTestId('hud-death-line').nth(1)).toHaveText('Entries lapsed.');
 });
+
+/**
+ * K6: the loss line was reachable only through `?pageLost=1`, so a live world
+ * could never show it however many pages it lost. It now rides on HudInput —
+ * the same DTO `hudInputFromWorld` fills from the app's `page-lost` latch —
+ * and the overlay re-renders when that flag turns over.
+ */
+test('the Open Page loss line follows world state, not the URL', async ({ page }) => {
+  await bootHud(page, '/?scene=hud&menu=death');
+  const lines = page.getByTestId('hud-death-line');
+  await expect(lines).toHaveCount(1);
+
+  const setPageLost = (pageLost: boolean) =>
+    page.evaluate((lost) => {
+      const handle = window.__hud;
+      if (handle === undefined) {
+        throw new Error('window.__hud missing');
+      }
+      handle.setState({
+        pulse: 100, maxPulse: 100, breath: 100, maxBreath: 100,
+        doses: 3, maxDoses: 3, namesCarried: 0, turn: 0, turnCap: 100,
+        hearth: 'unlit', bossPhase: 'none', unwrittenTag: false,
+        numbnessStacks: 0, vigilRestore: 0, registerLocked: false, zone: 'wild',
+        pageLost: lost,
+      });
+    }, pageLost);
+
+  await setPageLost(true);
+  await expect(lines).toHaveCount(2);
+  await expect(lines.first()).toHaveText('The page falls open.');
+  await expect(lines.nth(1)).toHaveText('Lost to the spreadsheet.');
+
+  // And back: a fresh death with nothing owed drops the line again.
+  await setPageLost(false);
+  await expect(lines).toHaveCount(1);
+});
+
+/**
+ * O-F10: `hud-border-wake` was emitted by the cabin's first dose and consumed
+ * by nothing. The apparatus sleeps until it fires.
+ */
+test('the border sleeps through the cabin and wakes with the first dose', async ({ page }) => {
+  await bootHud(page, '/?scene=hud');
+  const border = page.getByTestId('hud-border');
+  await expect(border).toBeVisible();
+
+  const setWoken = (woken: boolean) =>
+    page.evaluate((awake) => {
+      const handle = window.__hud;
+      if (handle === undefined) {
+        throw new Error('window.__hud missing');
+      }
+      handle.setState({
+        pulse: 100, maxPulse: 100, breath: 100, maxBreath: 100,
+        doses: 3, maxDoses: 3, namesCarried: 0, turn: 0, turnCap: 100,
+        hearth: 'lit', bossPhase: 'none', unwrittenTag: false,
+        numbnessStacks: 0, vigilRestore: 0, registerLocked: false, zone: 'domestic',
+        woken: awake,
+      });
+    }, woken);
+
+  await setWoken(false);
+  await expect(border).toBeHidden();
+  await expect(page.locator('body')).toHaveAttribute('data-hud-woken', '0');
+
+  await setWoken(true);
+  await expect(border).toBeVisible();
+  await expect(page.locator('body')).toHaveAttribute('data-hud-woken', '1');
+});
+
+/**
+ * K8: every listener and node a boot adds comes back down with it. Before
+ * dispose existed, a second boot left the first one's Escape listener alive on
+ * the window, so one keypress toggled two menus — one of them on a border the
+ * page had already replaced.
+ */
+test('a disposed HUD boot leaves no listener and no DOM behind', async ({ page }) => {
+  await bootHud(page, '/?scene=hud');
+  await expect(page.getByTestId('hud-border')).toHaveCount(1);
+
+  // A genuine second boot of the same module over the same mount, keeping a
+  // reference to the first so it can be torn down afterwards.
+  await page.evaluate(async () => {
+    const scope = window as unknown as { __hudFirst?: { dispose: () => void } };
+    scope.__hudFirst = window.__hud;
+    // Vite dev serves the module graph; the string is a runtime URL, not a
+    // resolvable module specifier for tsc.
+    const mod = (await import(
+      /* @vite-ignore */ '/src/app/hud/scene.ts' as string
+    )) as typeof import('../src/app/hud/scene');
+    const mount = document.querySelector<HTMLElement>('#app');
+    if (mount === null) {
+      throw new Error('#app missing');
+    }
+    mod.bootHudScene({ mount, params: new URLSearchParams() });
+  });
+  await expect(page.getByTestId('hud-border')).toHaveCount(2);
+
+  // Tear the first one down; only the second may answer Escape.
+  await page.evaluate(() => {
+    (window as unknown as { __hudFirst?: { dispose: () => void } }).__hudFirst?.dispose();
+  });
+  await expect(page.getByTestId('hud-border')).toHaveCount(1);
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('hud-menu-pause')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('hud-menu-pause')).toHaveCount(0);
+});
+
+/**
+ * Lead from the K8 sweep: the gallery was built once at boot, so the cards
+ * kept their first voice while every other surface went numb around them.
+ */
+test('the item cards re-cut themselves when Numbness changes', async ({ page }) => {
+  await bootHud(page, '/?scene=hud&view=cards');
+  const cards = page.getByTestId('hud-card');
+  await expect(cards).toHaveCount(10);
+  await expect(cards.nth(1).locator('.hud-card-name')).toHaveText('the Tincture');
+
+  await page.evaluate(() => window.__hud?.setFixture('numbness_2'));
+  await expect(cards).toHaveCount(10);
+  await expect(
+    cards.nth(1).locator('.hud-card-name'),
+    'two Ember stacks drag the card out of the folk register',
+  ).not.toHaveText('the Tincture');
+});

@@ -5,6 +5,7 @@ import { createAudioRuntime, parseAudioParams } from "../../app/audio";
 import type { RendererBackendName } from "../renderer";
 import { WorldCameraBinding } from "./camera";
 import { SimCapsuleOverlay } from "./debug";
+import { consumeLightingEvents, createWorldLighting } from "./lighting";
 import { loadIronwoodWorldAssets, type IronwoodAssetLoadOptions } from "./load";
 import { WorldActorPresenter } from "./presenter";
 import type {
@@ -58,6 +59,7 @@ export const bootIronwoodWorldView = async (
   const frameSamples: number[] = [];
   let lastFrameStart: number | null = null;
   let currentPresentation: WorldPresentation | null = null;
+  let lighting = createWorldLighting();
   let disposed = false;
 
   const assertLive = (): void => {
@@ -76,6 +78,7 @@ export const bootIronwoodWorldView = async (
     assertLive();
     camera.consume(events.camera);
     audio.ingest(events.audio);
+    lighting = consumeLightingEvents(lighting, events.lighting);
   };
 
   const render = (
@@ -113,6 +116,8 @@ export const bootIronwoodWorldView = async (
       assetDiagnostics: assets.diagnostics,
       p95FrameMs: percentile95(frameSamples),
       frameSampleCount: frameSamples.length,
+      hearthEmblemLevel: lighting.hearthEmblemLevel,
+      hearthDimSteps: lighting.hearthDimSteps,
     };
   };
 
@@ -122,6 +127,7 @@ export const bootIronwoodWorldView = async (
     actorRoot: actors.root,
     resize,
     consumeEvents,
+    lighting: () => lighting,
     render,
     setPaused: (paused) => audio.setPaused(paused),
     unlockAudio: () => audio.unlockFromGesture(),

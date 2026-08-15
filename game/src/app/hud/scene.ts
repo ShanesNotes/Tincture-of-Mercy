@@ -39,6 +39,13 @@ export interface HudSceneHandle {
   readonly descriptor: () => BorderDescriptor;
   readonly openMenu: (menu: string | null) => void;
   readonly menu: () => string | null;
+  /**
+   * Undo the boot: remove every listener and every node this boot added, and
+   * release the window handles if they still point here. Without it a second
+   * boot left the first one's Escape listener alive on the window, toggling a
+   * menu on a detached border forever (K8). Idempotent.
+   */
+  readonly dispose: () => void;
 }
 
 declare global {
@@ -74,15 +81,23 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
     lock: input.registerLocked,
   });
 
+  /**
+   * The standalone `?scene=hud&pageLost=1` route stands in for a second death
+   * until a world drives the border; once one does, its latched state wins.
+   */
+  const pageLost = (): boolean => input.pageLost ?? params.get("pageLost") === "1";
+
   let renderedMenuKind: MenuKind | null | undefined;
+  let renderedPageLost: boolean | undefined;
   const renderMenus = (force = false): void => {
     // The border re-renders every sim tick once the world drives it. Tearing
     // the menu DOM down and rebuilding it sixty times a second is pure waste,
     // and it also destroys any focus the player has inside an open menu.
-    if (!force && openMenuKind === renderedMenuKind) {
+    if (!force && openMenuKind === renderedMenuKind && pageLost() === renderedPageLost) {
       return;
     }
     renderedMenuKind = openMenuKind;
+    renderedPageLost = pageLost();
     page.querySelectorAll(".hud-menu").forEach((node) => node.remove());
     if (openMenuKind === null) {
       return;
@@ -105,9 +120,24 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
         : openMenuKind === "settings"
           ? buildSettingsPanel(defaultSettings(), context, onIntent)
           : openMenuKind === "death"
-            ? buildDeathOverlay(params.get("pageLost") === "1", context, onIntent)
+            ? buildDeathOverlay(pageLost(), context, onIntent)
             : buildHearthMenu(options.hearthId?.() ?? params.get("hearth") ?? "cabin", context, onIntent);
     page.append(menu);
+  };
+
+  const renderGallery = (): void => {
+    if (params.get("view") !== "cards") {
+      return;
+    }
+    page.querySelectorAll(".hud-card-gallery").forEach((node) => node.remove());
+    const gallery = document.createElement("div");
+    gallery.className = "hud-card-gallery";
+    gallery.dataset.testid = "hud-card-gallery";
+    const context = textContext();
+    for (const prefix of CARD_GALLERY) {
+      gallery.append(buildItemCard(renderCard(prefix, context)));
+    }
+    page.append(gallery);
   };
 
   let renderedDescriptor: string | undefined;
@@ -123,6 +153,13 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
             lock: input.registerLocked,
           });
     applyBorder(border, descriptor, verdict);
+    // EN9/CM40: the apparatus is asleep through the cabin prologue and wakes
+    // with the first dose. Presence, not a verdict — so it stamps the border
+    // element rather than joining the image-diffed descriptor.
+    const woken = input.woken ?? true;
+    border.dataset.woken = woken ? "1" : "0";
+    border.setAttribute("aria-hidden", woken ? "false" : "true");
+    document.body.dataset.hudWoken = woken ? "1" : "0";
     document.body.dataset.hudFixture = params.get("fixture") ?? DEFAULT_FIXTURE;
     const serialized = serializeDescriptor(descriptor);
     if (serialized !== renderedDescriptor) {
@@ -132,20 +169,20 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
     const textStepChanged = model.textStep !== renderedTextStep;
     renderedTextStep = model.textStep;
     renderMenus(textStepChanged);
+    // The cards speak in the same degrading voice as everything else, so a
+    // Numbness change has to re-cut them; the gallery used to be built once
+    // at boot and never again.
+    if (textStepChanged) {
+      renderGallery();
+    }
   };
 
-  const renderGallery = (): void => {
-    if (params.get("view") !== "cards") {
-      return;
+  let disposed = false;
+  const onKeyDown = (event: KeyboardEvent): void => {
+    if (event.key === "Escape") {
+      openMenuKind = openMenuKind === null ? "pause" : null;
+      renderMenus();
     }
-    const gallery = document.createElement("div");
-    gallery.className = "hud-card-gallery";
-    gallery.dataset.testid = "hud-card-gallery";
-    const context = textContext();
-    for (const prefix of CARD_GALLERY) {
-      gallery.append(buildItemCard(renderCard(prefix, context)));
-    }
-    page.append(gallery);
   };
 
   const handle: HudSceneHandle = {
@@ -166,17 +203,27 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
       renderMenus();
     },
     menu: () => openMenuKind,
+    dispose: () => {
+      if (disposed) {
+        return;
+      }
+      disposed = true;
+      window.removeEventListener("keydown", onKeyDown);
+      // Menu and card DOM live inside the border, so removing it takes their
+      // click listeners with it.
+      border.remove();
+      if (window.__hud === handle) {
+        delete window.__hud;
+        delete window.__hudIntents;
+        delete document.body.dataset.hudMounted;
+      }
+    },
   };
 
   window.__hud = handle;
   window.__hudIntents = [];
 
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      openMenuKind = openMenuKind === null ? "pause" : null;
-      renderMenus();
-    }
-  });
+  window.addEventListener("keydown", onKeyDown);
 
   const menuParam = params.get("menu");
   if (menuParam !== null) {

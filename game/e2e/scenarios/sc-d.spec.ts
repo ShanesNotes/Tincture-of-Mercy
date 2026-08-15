@@ -152,6 +152,24 @@ test("SC-D live lane: a scripted death through the shipped page", async ({ page 
   // stepping behind it.
   const overlay = page.locator('[data-testid="hud-menu-death"]');
   await expect(overlay, "the Open Page overlay must be standing after the death").toBeVisible();
+
+  // K6: the overlay's lines are the world's, not the URL's. `page-lost` fires
+  // only on a death that finds an earlier page still lying unrecovered, so a
+  // first death latches nothing and the loss line must be absent — and absent
+  // because the sim said so, which is what the app latch now reports.
+  const latched = await page.evaluate(
+    () =>
+      (
+        window as unknown as {
+          __TINCTURE_WORLD__?: { latches: () => { pageLost: boolean; woken: boolean } };
+        }
+      ).__TINCTURE_WORLD__?.latches() ?? null,
+  );
+  expect(latched, "the shipped page must expose its event latches").not.toBeNull();
+  expect(latched?.pageLost, "a first death loses no earlier page").toBe(false);
+  const deathLines = page.locator('[data-testid="hud-death-line"]');
+  await expect(deathLines, "so the overlay carries the one line and no loss line").toHaveCount(1);
+  await expect(deathLines.first()).toHaveText("The page falls open.");
   await run.capture("the page falls open over a world that keeps going");
   const openedAt = await run.tick();
   await page.waitForTimeout(750);

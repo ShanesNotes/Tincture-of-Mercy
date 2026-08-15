@@ -3,6 +3,14 @@ export { SimClipPlayer, type AnimationSeek } from "./animation";
 export { WorldCameraBinding } from "./camera";
 export { SimCapsuleOverlay } from "./debug";
 export {
+  applyHearthDim,
+  consumeLightingEvents,
+  createWorldLighting,
+  HEARTH_LEVEL_FULL,
+  type HearthDimSignal,
+  type WorldLightingState,
+} from "./lighting";
+export {
   loadIronwoodWorldAssets,
   WorldAssetLoadError,
   type IronwoodAssetLoadOptions,

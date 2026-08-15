@@ -66,6 +66,12 @@
   font-family: "EB Garamond", "Palatino Linotype", "Book Antiqua", serif;
 }
 
+/* The apparatus sleeps through the cabin prologue and wakes with the first
+   dose of Anna's medicine (the `hud.woken` scene flag). */
+.hud-border[data-woken="0"] {
+  display: none;
+}
+
 /* HB2: outer rule line. inset = the Turn narrowing geometry (D6/HB3):
    all four sides close in together as --hb-inset grows. Stepped only —
    no transition, the margin jumps by declared stops (HB5). */

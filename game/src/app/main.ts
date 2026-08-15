@@ -266,6 +266,14 @@ const bootIronwoodPlay = async (
    * Page overlay stands over a living world until the player closes it.
    */
   let deathPending = false;
+  /**
+   * Two one-way latches over the event stream. Neither can be read from a
+   * snapshot, which is why both signals used to reach nothing (K6, O-F10):
+   * `page-lost` fires on the death that loses an earlier Open Page for good,
+   * and `hud-border-wake` is the cabin's first dose waking the apparatus.
+   */
+  let pageLost = false;
+  let hudWoken = false;
   const viewport = (): { readonly width: number; readonly height: number } => ({
     width: Math.max(window.innerWidth, 1),
     height: Math.max(window.innerHeight, 1),
@@ -383,6 +391,11 @@ const bootIronwoodPlay = async (
     window.removeEventListener("keydown", unlockAudio);
     window.removeEventListener("hud-intent", onHudIntent);
     window.removeEventListener("keydown", onMenuKey);
+    // Everything the boot mounted comes back down with it: the apparatus and
+    // its listeners (K8) and the music context's hardware handle (K7).
+    hud.dispose();
+    impact.dispose();
+    void music.dispose().catch(() => undefined);
     const browser = window as unknown as { __TINCTURE_WORLD__?: unknown };
     if (browser.__TINCTURE_WORLD__ === installedFacade) {
       delete browser.__TINCTURE_WORLD__;
@@ -452,12 +465,15 @@ const bootIronwoodPlay = async (
       snapshot = createWorldDebugSnapshot(state, definition);
       presentation = presentWorldDebug(snapshot);
       recordDuration(snapshotSamples, snapshotStartedAt);
-      deathPending ||= stepped.events.some(
-        (event) =>
-          event.source === "meta" &&
-          "type" in event.payload &&
-          event.payload.type === "death",
-      );
+      for (const event of stepped.events) {
+        if (!("type" in event.payload)) continue;
+        if (event.source === "meta") {
+          if (event.payload.type === "death") deathPending = true;
+          if (event.payload.type === "page-lost") pageLost = true;
+        } else if (event.source === "scenes" && event.payload.type === "hud-border-wake") {
+          hudWoken = true;
+        }
+      }
       worldView.consumeEvents(adaptWorldEvents(stepped.events));
       vfx = applyVfxEvents(
         vfx,
@@ -468,9 +484,14 @@ const bootIronwoodPlay = async (
         state.tick,
         VFX_PARAMS,
       );
+      // EN9: one declared ramp step down when Anna's death is witnessed.
+      const hearthLevel = worldView.lighting().hearthEmblemLevel.toFixed(3);
+      if (hearthLevel !== document.body.dataset.worldHearthEmblem) {
+        document.body.dataset.worldHearthEmblem = hearthLevel;
+      }
       music.setState(musicStateFromWorld(snapshot));
       music.syncClock(state.tick);
-      hud.setState(hudInputFromWorld(snapshot, playerId));
+      hud.setState(hudInputFromWorld(snapshot, playerId, { pageLost, woken: hudWoken }));
       applyMenu(deathPending ? "death" : hudMenuForWorld(snapshot, menuPauseRequested));
       recordDuration(simStepSamples, startedAt);
     },
@@ -486,6 +507,12 @@ const bootIronwoodPlay = async (
     backend: boot.backend,
     snapshot: (): WorldDebugSnapshot => snapshot,
     stateHash: (): string => hashWorldState(state),
+    /** The two event-stream latches, so a scenario can assert world truth. */
+    latches: (): { readonly pageLost: boolean; readonly woken: boolean } => ({
+      pageLost,
+      woken: hudWoken,
+    }),
+    hearthEmblemLevel: (): number => worldView.lighting().hearthEmblemLevel,
     runReplay: (script: WorldReplayScript = WORLD_BROWSER_GOLDEN_REPLAY) => {
       const replay = playWorldReplay(queries, script);
       setLiveState(replayAtYard());

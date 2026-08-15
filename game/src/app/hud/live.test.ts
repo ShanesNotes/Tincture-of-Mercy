@@ -12,6 +12,7 @@ import type {
   WorldDebugSnapshot,
 } from "../../sim/world/types";
 import { hudInputFromWorld, hudMenuForWorld } from "./live";
+import type { HudInput } from "./types";
 
 const ORIGIN = { x: 0, y: 0, z: 0 };
 
@@ -246,5 +247,43 @@ describe("hudMenuForWorld", () => {
       "hearth",
     );
     expect(hudMenuForWorld(snapshot(), false)).toBe("none");
+  });
+});
+
+/**
+ * K6 / O-F10: two border states no snapshot carries. Both are one-way latches
+ * over the event stream, so the binder must take them from the app rather than
+ * derive them — which is exactly why both signals reached nothing before.
+ */
+describe("the event-stream latches", () => {
+  it("defaults to an unlost page and an awake border for snapshot-only callers", () => {
+    const input = hudInputFromWorld(snapshot(), "kalev");
+    expect(input.pageLost).toBe(false);
+    expect(input.woken).toBe(true);
+  });
+
+  it("carries the latched page-lost through to the border", () => {
+    const input = hudInputFromWorld(snapshot(), "kalev", { pageLost: true, woken: true });
+    expect(input.pageLost).toBe(true);
+  });
+
+  it("carries the cabin's pre-dose sleep through to the border", () => {
+    const asleep = hudInputFromWorld(snapshot(), "kalev", { pageLost: false, woken: false });
+    expect(asleep.woken).toBe(false);
+    const awake = hudInputFromWorld(snapshot(), "kalev", { pageLost: false, woken: true });
+    expect(awake.woken).toBe(true);
+  });
+
+  it("leaves every snapshot-derived field alone", () => {
+    const snap = snapshot({ hearth: { nearbyId: "hearth_cabin", lit: true } });
+    const withoutLatches = (input: HudInput): Record<string, unknown> => {
+      const copy: Record<string, unknown> = { ...input };
+      delete copy.pageLost;
+      delete copy.woken;
+      return copy;
+    };
+    expect(
+      withoutLatches(hudInputFromWorld(snap, "kalev", { pageLost: true, woken: false })),
+    ).toStrictEqual(withoutLatches(hudInputFromWorld(snap, "kalev")));
   });
 });
