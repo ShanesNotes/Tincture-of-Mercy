@@ -378,9 +378,11 @@ const interpolateWeaponPose = (
  * Round-1 finding K11. Each substep is tested as two triangles, so the chord
  * between the two tip poses dips inside the true arc by its sagitta and drops
  * grazes just under the weapon's outer reach — a 4.5 mm band at the authored
- * caps. Raising the substep count only shrinks that hole (measured: 3 substeps
- * missed 135 of the sampled oracle contacts, 4 missed 104, 8 still missed 48),
- * so the swept pose carries the sagitta as extra radius instead. The bound is
+ * caps. Raising the substep count only narrows that hole — it never closes it,
+ * because the sagitta only falls as the square of the substep turn (measured
+ * against a dense-pose oracle, 3, 4, 6 and 8 substeps all still dropped
+ * contacts, every one of them within 4.5 mm of the true outer reach) — so the
+ * swept pose carries the sagitta as extra radius instead. The bound is
  * `max tip length × (1 − cos(Δ/2))` over the substep's turn Δ: exact at the
  * chord midpoint, zero without rotation, and never a miss. Its cost is the same
  * bound as conservative over-reach, only at the substep boundaries.

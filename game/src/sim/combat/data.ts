@@ -798,7 +798,6 @@ const parseMove = (
   }
 
   return {
-    cancelTailTicks,
     id: parsedId,
     actorClass: enumAt(object, "actorClass", ACTOR_CLASSES, path, issues),
     kind: enumAt(object, "kind", MOVE_KINDS, path, issues),
@@ -850,6 +849,7 @@ const parseMove = (
       path,
       issues,
     ),
+    cancelTailTicks,
     tags,
     provenance: parseProvenance(
       object.provenance,
