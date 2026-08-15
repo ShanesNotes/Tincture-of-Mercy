@@ -13,7 +13,7 @@ import type { MetaEvent, MetaResult, MetaStatsResult } from "./events";
 import { textStep } from "./numbness";
 import { respawnEnemies } from "./openPage";
 import { ATTRIBUTE_IDS, derivedAttribute } from "./progression";
-import { clearEffects, refillVial, stepEffects } from "./tincture";
+import { clearEffects, inheritAnnaSupply, refillVial, stepEffects } from "./tincture";
 import { META_STATE_VERSION } from "./types";
 import type { AttributeId, MercyStats, MetaParams, MetaState } from "./types";
 
@@ -39,11 +39,16 @@ export const createMetaState = (params: MetaParams = DEFAULT_META_PARAMS): MetaS
   version: META_STATE_VERSION,
   tick: 0,
   vial: {
-    doses: params.tincture.vial.baseDoses,
+    doses: 0,
     upgradeTier: 0,
     variant: params.tincture.vial.defaultVariant,
   },
-  pouch: { ...params.tincture.pouch.starting },
+  annaSupply: {
+    doses: params.tincture.vial.baseDoses,
+    ember: params.tincture.ember.startingDoses,
+  },
+  inherited: false,
+  pouch: { ...params.tincture.pouch.starting, ember: 0 },
   numbnessStacks: 0,
   vigilRestore: 0,
   pending: null,
@@ -57,6 +62,11 @@ export const createMetaState = (params: MetaParams = DEFAULT_META_PARAMS): MetaS
   atHearth: false,
   lastHearthId: null,
 });
+
+/** Inherit Anna's unused chest — the post-WitnessDeath stocked vial. */
+export const withInheritedVial = (
+  state: MetaState = createMetaState(),
+): MetaState => inheritAnnaSupply(state);
 
 /** A full-health stats DTO derived from the current attributes. */
 export const createMercyStats = (

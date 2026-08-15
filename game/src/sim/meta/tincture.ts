@@ -56,11 +56,45 @@ export const maxDoses = (state: MetaState, params: MetaParams = DEFAULT_META_PAR
   return baseDoses + dosesPerUpgradeTier * state.vial.upgradeTier;
 };
 
-/** Hearth refill — the doses are drawn again (D6: renewed at each Hearth). */
+/** Hearth refill — the inherited vial is drawn again (D6: renewed at each Hearth). */
 export const refillVial = (
   state: MetaState,
   params: MetaParams = DEFAULT_META_PARAMS,
-): MetaState => ({ ...state, vial: { ...state.vial, doses: maxDoses(state, params) } });
+): MetaState =>
+  state.inherited
+    ? { ...state, vial: { ...state.vial, doses: maxDoses(state, params) } }
+    : state;
+
+/** DoseAnna spends from Anna's chest, not from the player's empty vial. */
+export const spendAnnaDose = (state: MetaState): MetaState =>
+  state.inherited || state.annaSupply.doses <= 0
+    ? state
+    : {
+        ...state,
+        annaSupply: { ...state.annaSupply, doses: state.annaSupply.doses - 1 },
+      };
+
+/**
+ * WitnessDeath: her remaining doses and Embers become the player's.
+ * `remaining` is the count the scene already computed; if omitted, the chest is used.
+ */
+export const inheritAnnaSupply = (
+  state: MetaState,
+  remaining?: { readonly doses: number; readonly ember: number },
+): MetaState => {
+  if (state.inherited) {
+    return state;
+  }
+  const doses = remaining?.doses ?? state.annaSupply.doses;
+  const ember = remaining?.ember ?? state.annaSupply.ember;
+  return {
+    ...state,
+    inherited: true,
+    vial: { ...state.vial, doses },
+    pouch: { ...state.pouch, ember },
+    annaSupply: { doses: 0, ember: 0 },
+  };
+};
 
 const hasIngredients = (
   state: MetaState,

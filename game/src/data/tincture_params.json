@@ -112,5 +112,10 @@
     "salt_wash": { "salt": 2, "myrrh": 1 },
     "cedar_wool_compress": { "cedar": 1, "wool": 2 },
     "bitter_phrine": { "phrine": 2, "zyl": 1 }
+  },
+  "ambientWither": {
+    "_source": "TUNING_V0 § Warden / the road: 'Ambient Wither 0.5/s off-path in the deep wood.' 60 Hz tick. Exact fraction: 0.5/60 = 1/120 per tick (0.00833…). 600 ticks × 1/120 = 5.",
+    "perSecond": 0.5,
+    "ticksPerSecond": 60
   }
 }

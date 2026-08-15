@@ -8,6 +8,7 @@ import {
   leaveHearth,
   respawnAtHearth,
   stepMeta,
+  withInheritedVial,
 } from "./index";
 import { bossDefeated, engageBoss, enterArena, quitOutOfArena } from "./arena";
 import { markEnemyDefeated, recordDeath, recoverOpenPage } from "./openPage";
@@ -126,10 +127,10 @@ const playRandomly = (seed: number, steps: number): MetaState => {
   return state;
 };
 
-describe("save/load v1", () => {
+describe("save/load v2", () => {
   it("stamps the shipped version", () => {
-    expect(SAVE_VERSION).toBe(1);
-    expect(createMetaState().version).toBe(1);
+    expect(SAVE_VERSION).toBe(2);
+    expect(createMetaState().version).toBe(2);
   });
 
   it("round-trips a fresh state", () => {
@@ -155,7 +156,7 @@ describe("save/load v1", () => {
   });
 
   it("carries the Open Page, Numbness and arena state across a save", () => {
-    const carried = awardNames(createMetaState(), "kill", "warden").state;
+    const carried = awardNames(withInheritedVial(), "kill", "warden").state;
     const burnt = commitUse(beginEmberUse(carried), createMercyStats(carried)).state;
     const dead = recordDeath(engageBoss(enterArena(burnt)), { x: 1.5, y: 0, z: -2.5 }).state;
 
@@ -178,13 +179,13 @@ describe("migrateOrReject", () => {
   });
 
   it("rejects an unknown version explicitly", () => {
-    const future = { ...createMetaState(), version: 2 };
+    const future = { ...createMetaState(), version: 3 };
     expect(() => migrateOrReject(future)).toThrow(SaveRejectedError);
     try {
       migrateOrReject(future);
     } catch (error) {
       expect((error as SaveRejectedError).reason).toBe("version");
-      expect((error as SaveRejectedError).message).toContain("unsupported version 2");
+      expect((error as SaveRejectedError).message).toContain("unsupported version 3");
     }
   });
 
@@ -195,7 +196,7 @@ describe("migrateOrReject", () => {
   });
 
   it("rejects a save missing mercy-loop fields", () => {
-    expect(() => migrateOrReject({ version: 1, tick: 0 })).toThrow(/missing field\(s\)/);
+    expect(() => migrateOrReject({ version: 2, tick: 0 })).toThrow(/missing field\(s\)/);
   });
 
   it("rejects a save with no version at all", () => {

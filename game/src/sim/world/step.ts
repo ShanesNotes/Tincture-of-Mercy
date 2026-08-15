@@ -21,6 +21,7 @@ import {
 } from "../ai";
 import { createAttendState, stepAttend } from "../attend";
 import {
+  applyMetaPercent,
   requestBackstab,
   requestRiposte,
   stepCombatSimulation,
@@ -53,6 +54,7 @@ import {
   engageBoss,
   hearthRest,
   markEnemyDefeated,
+  metaModifiers,
   recordDeath,
   recoverOpenPage,
   respawnAtHearth,
@@ -514,6 +516,24 @@ const criticalCommand = (
   return null;
 };
 
+const canStartDrink = (meta: MetaState, useEmber: boolean): boolean =>
+  meta.inherited && (useEmber ? meta.pouch.ember > 0 : meta.vial.doses > 0);
+
+const inAmbientWither = (
+  position: { readonly x: number; readonly z: number },
+  zoneId: string | null,
+  pockets: WorldQueries["definition"]["witherZones"],
+): boolean => {
+  if (zoneId === "ARENA") return false;
+  if (zoneId === "FOREST") return true;
+  for (const pocket of pockets) {
+    const dx = position.x - pocket.position.x;
+    const dz = position.z - pocket.position.z;
+    if (dx * dx + dz * dz <= pocket.radius * pocket.radius) return true;
+  }
+  return false;
+};
+
 const playerCommands = (
   input: WorldInputFrame,
   targetPosition: { readonly x: number; readonly z: number } | undefined,
@@ -521,6 +541,7 @@ const playerCommands = (
   queries: WorldQueries,
   combat: CombatSimulationState,
   attendTargetId: string | null,
+  meta: MetaState,
 ): readonly CombatStepCommand[] => {
   const commands: CombatStepCommand[] = [];
   if (targetPosition !== undefined) commands.push({ actorId: playerId, targetPosition });
@@ -538,10 +559,21 @@ const playerCommands = (
           : { moveId: critical.moveId, criticalTargetId: critical.criticalTargetId }),
         ...(targetPosition === undefined ? {} : { targetPosition }),
       });
-    } else if (edge.action === "roll" || edge.action === "flask") {
+    } else if (edge.action === "roll") {
       commands.push({
         actorId: playerId,
         edge: { action: edge.action, pressed: edge.pressed, sequence: edge.sequence, tick: edge.tick },
+        ...(targetPosition === undefined ? {} : { targetPosition }),
+      });
+    } else if (edge.action === "flask") {
+      const useEmber = input.useEmber === true;
+      if (!canStartDrink(meta, useEmber)) continue;
+      commands.push({
+        actorId: playerId,
+        edge: { action: edge.action, pressed: edge.pressed, sequence: edge.sequence, tick: edge.tick },
+        ...(useEmber
+          ? { moveId: queries.definition.combatData.params.flaskActions.emberMoveId }
+          : {}),
         ...(targetPosition === undefined ? {} : { targetPosition }),
       });
     }
@@ -954,14 +986,31 @@ export const stepWorld = (
   };
 
   let meta = state.meta;
+  const mods = metaModifiers(meta, queries.definition.metaParams);
   const tracked = combatTargetPosition(stagedForSweeps, attend.targetId);
+  const flaskDenied = input.edges.some((edge) => edge.action === "flask" && edge.pressed) &&
+    !canStartDrink(meta, input.useEmber === true);
+  if (flaskDenied) {
+    eventSeeds.push({
+      source: "world",
+      actorId: playerId,
+      payload: { type: "tincture-denied", textKey: "ui.tincture.empty" },
+    });
+  }
   const combatStep = stepCombatSimulation(queries.definition.combatData, combatBeforeStep, {
     commands: [
-      ...playerCommands(input, tracked, playerId, queries, combatBeforeStep, attend.targetId),
+      ...playerCommands(input, tracked, playerId, queries, combatBeforeStep, attend.targetId, meta),
       ...aiCommands,
       ...(wardenTick?.commands ?? []),
     ],
     swings: swingFrames(stagedForSweeps, queries),
+    metaCombat: {
+      playerId,
+      damagePercent: mods.damagePercent,
+      turnBuildupPercent: mods.turnBuildupPercent,
+      breathRegenPercent: mods.breathRegenPercent,
+      steadyDelta: mods.steadyDelta,
+    },
   });
   for (const event of combatStep.events) {
     eventSeeds.push({ source: "combat", actorId: event.actorId, payload: event });
@@ -971,10 +1020,19 @@ export const stepWorld = (
       (event) =>
         event.kind === "action_started" &&
         event.actorId === playerId &&
+        event.actionId === "ember_use",
+    )
+  ) {
+    meta = beginEmberUse(meta);
+  } else if (
+    combatStep.events.some(
+      (event) =>
+        event.kind === "action_started" &&
+        event.actorId === playerId &&
         event.actionId === "flask_drink",
     )
   ) {
-    meta = input.useEmber === true ? beginEmberUse(meta) : beginTinctureUse(meta);
+    meta = beginTinctureUse(meta);
   }
 
   // Capture combat knockback as next-tick motion input, then immediately restore motion positions.
@@ -1010,11 +1068,12 @@ export const stepWorld = (
       playerPosition.z - wardenPosition.z,
     );
     if (distance > pulse.radiusMeters) continue;
+    const witherAmount = applyMetaPercent(pulse.witherAmount, mods.turnBuildupPercent);
     combat = {
       ...combat,
       damageActors: {
         ...combat.damageActors,
-        [playerId]: { ...damaged, turnBuildup: damaged.turnBuildup + pulse.witherAmount },
+        [playerId]: { ...damaged, turnBuildup: damaged.turnBuildup + witherAmount },
       },
     };
     eventSeeds.push({
@@ -1023,7 +1082,7 @@ export const stepWorld = (
       payload: {
         type: "wither-pulse-applied",
         targetId: playerId,
-        witherAmount: pulse.witherAmount,
+        witherAmount,
         radiusMeters: pulse.radiusMeters,
       },
     });
@@ -1032,6 +1091,33 @@ export const stepWorld = (
   // stands in the band, and the player cannot walk out of a band that freezes
   // them. Only a fresh crossing counts.
   const playerPosition = actorsAfterCombat[playerId]?.motion.position;
+  const ambientZoneId =
+    playerPosition === undefined ? null : zoneAt(queries.definition.zones, playerPosition);
+  if (
+    playerPosition !== undefined &&
+    inAmbientWither(playerPosition, ambientZoneId, queries.definition.witherZones)
+  ) {
+    const damaged = combat.damageActors[playerId];
+    if (damaged !== undefined) {
+      const ambient = queries.definition.metaParams.tincture.ambientWither;
+      // Exact fraction: 0.5/60 = 1/120. Do not snap the per-tick quantum —
+      // 600 ticks must land on 5 exactly (O-F8).
+      const witherAmount =
+        (ambient.perSecond * mods.turnBuildupPercent) / (ambient.ticksPerSecond * 100);
+      combat = {
+        ...combat,
+        damageActors: {
+          ...combat.damageActors,
+          [playerId]: { ...damaged, turnBuildup: damaged.turnBuildup + witherAmount },
+        },
+      };
+      eventSeeds.push({
+        source: "world",
+        actorId: playerId,
+        payload: { type: "ambient-wither-applied", targetId: playerId, witherAmount },
+      });
+    }
+  }
   const inSnareBand = wardenDefinition !== null && playerPosition !== undefined &&
     resolveRingContact(
       wardenDefinition.ring,
@@ -1086,11 +1172,14 @@ export const stepWorld = (
   meta = metaTick.state;
   stats = metaTick.stats;
   const activePlayerAction = combat.combat.actors[playerId]?.action;
-  const flaskMove = queries.definition.combatData.frameData.moves.flask_drink;
+  const drinkMove =
+    activePlayerAction === undefined || activePlayerAction === null
+      ? undefined
+      : queries.definition.combatData.frameData.moves[activePlayerAction.id];
   if (
     meta.pending !== null &&
-    activePlayerAction?.id === "flask_drink" &&
-    activePlayerAction.tick === flaskMove?.activeWindows[0]?.[0]
+    (activePlayerAction?.id === "flask_drink" || activePlayerAction?.id === "ember_use") &&
+    activePlayerAction.tick === drinkMove?.activeWindows[0]?.[0]
   ) {
     const committed = commitUse(meta, stats, queries.definition.metaParams);
     meta = committed.state;
@@ -1281,7 +1370,13 @@ export const stepWorld = (
     { zoneId, engaged },
   );
   if (autoScene !== null) {
-    const entered = tryEnterScene(scenes, autoScene, queries.definition.sceneCatalog, { engaged });
+    const stagedMercy = autoScene === queries.definition.startupScene || autoScene === "anna_gravity";
+    const entered = tryEnterScene(
+      scenes,
+      autoScene,
+      queries.definition.sceneCatalog,
+      stagedMercy ? idleEngagement() : { engaged },
+    );
     scenes = entered.state;
     sceneEvents.push(...entered.events);
   }

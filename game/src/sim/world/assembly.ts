@@ -21,6 +21,7 @@ import {
   type WorldHearthDefinition,
   type WorldPackDefinition,
   type WorldWardenDefinition,
+  type WorldWitherZone,
   type WorldZoneDefinition,
 } from "./types";
 
@@ -54,6 +55,7 @@ interface Placement {
   readonly pack: string | null;
   readonly key: string | null;
   readonly synthetic: boolean;
+  readonly radius: number | null;
 }
 
 const fail = (path: string, message: string): never => {
@@ -135,6 +137,8 @@ const placement = (value: unknown, path: string, synthetic: boolean): Placement 
     pack: source.pack === undefined ? null : string(source, "pack", path),
     key: source.key === undefined ? null : string(source, "key", path),
     synthetic,
+    radius:
+      source.radius === undefined ? null : number(source, "radius", path, Number.MIN_VALUE),
   };
 };
 
@@ -466,6 +470,18 @@ export const createWorldDefinition = (
     warden: actorAsset(rawActors.warden, "$.actors.warden", sources.sidecars),
   } as const;
   const zones = parseZones(sources.zones);
+  const witherZones: readonly WorldWitherZone[] = Object.freeze(
+    [...placements.values()]
+      .filter((item) => item.kind === "wither" && item.radius !== null)
+      .sort((left, right) => left.id.localeCompare(right.id))
+      .map((item) =>
+        Object.freeze({
+          id: item.id,
+          position: item.position,
+          radius: item.radius ?? 0,
+        }),
+      ),
+  );
 
   // The Warden is a world actor like any other: s10 owns his position, s11 owns
   // his Pulse and Steady. `sim/boss` only decides what he does next.
@@ -514,6 +530,7 @@ export const createWorldDefinition = (
       : withoutUndefined(sources.wardenParams),
     wardenRing: warden === null ? null : warden.ring,
     zones,
+    witherZones,
     placements: {
       actors: Object.values(actors)
         .sort((left, right) => left.id.localeCompare(right.id)),
@@ -546,6 +563,7 @@ export const createWorldDefinition = (
     aiMoveBindings: Object.freeze(aiMoveBindings),
     actorAssets: Object.freeze(actorAssets),
     zones,
+    witherZones,
     combatData: sources.combatData,
     motionParams: sources.motionParams,
     aiParams: sources.aiParams,

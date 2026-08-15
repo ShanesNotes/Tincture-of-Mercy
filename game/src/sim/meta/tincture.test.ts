@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { TINCTURE_PARAMS } from "./data";
-import { createMercyStats, createMetaState, stepMeta } from "./index";
+import { createMercyStats, createMetaState, stepMeta, withInheritedVial } from "./index";
 import { metaModifiers } from "./numbness";
 import {
   beginEmberUse,
@@ -45,8 +45,10 @@ describe("the vial", () => {
     state = createMetaState();
   });
 
-  it("starts with the slice's 3 base doses", () => {
-    expect(state.vial.doses).toBe(3);
+  it("starts empty; Anna's chest holds the slice's 3 base doses", () => {
+    expect(state.vial.doses).toBe(0);
+    expect(state.inherited).toBe(false);
+    expect(state.annaSupply.doses).toBe(3);
     expect(maxDoses(state)).toBe(3);
   });
 
@@ -68,7 +70,7 @@ describe("the vial", () => {
   });
 
   it("refills to the upgraded maximum", () => {
-    const upgraded = upgradeVial(atHearth(state));
+    const upgraded = upgradeVial(atHearth(withInheritedVial(state)));
     const spent: MetaState = { ...upgraded, vial: { ...upgraded.vial, doses: 0 } };
     expect(refillVial(spent).vial.doses).toBe(4);
   });
@@ -76,19 +78,19 @@ describe("the vial", () => {
 
 describe("committed use — the dose is spent at the drink tick", () => {
   it("reserves without spending", () => {
-    const state = beginTinctureUse(createMetaState());
+    const state = beginTinctureUse(withInheritedVial());
     expect(state.pending).toEqual({ kind: "tincture", variant: "pulseleaf_draught" });
     expect(state.vial.doses).toBe(3);
   });
 
   it("returns the dose when the drink is interrupted before the drink tick", () => {
-    const state = cancelUse(beginTinctureUse(createMetaState()));
+    const state = cancelUse(beginTinctureUse(withInheritedVial()));
     expect(state.pending).toBeNull();
     expect(state.vial.doses).toBe(3);
   });
 
   it("spends the dose at the drink tick and emits dose-used", () => {
-    const state = createMetaState();
+    const state = withInheritedVial();
     const stats = { ...createMercyStats(state), pulse: 10 };
     const result = commitUse(beginTinctureUse(state), stats);
 
@@ -115,7 +117,7 @@ describe("committed use — the dose is spent at the drink tick", () => {
   });
 
   it("never spends two doses for one drink", () => {
-    const state = createMetaState();
+    const state = withInheritedVial();
     const stats = createMercyStats(state);
     const once = commitUse(beginTinctureUse(state), stats);
     const twice = commitUse(once.state, once.stats);
@@ -125,10 +127,10 @@ describe("committed use — the dose is spent at the drink tick", () => {
 });
 
 describe("the five variants", () => {
-  const withVariant = (variant: TinctureVariantId): MetaState => ({
-    ...createMetaState(),
-    vial: { ...createMetaState().vial, variant },
-  });
+  const withVariant = (variant: TinctureVariantId): MetaState => {
+    const stocked = withInheritedVial();
+    return { ...stocked, vial: { ...stocked.vial, variant } };
+  };
 
   it("Pulseleaf Draught closes the wound instantly", () => {
     const state = withVariant("pulseleaf_draught");
@@ -207,13 +209,13 @@ describe("the Tincture Wheel", () => {
 
 describe("Ember", () => {
   it("is drawn from the pouch and is not a craftable dose", () => {
-    const state = createMetaState();
+    const state = withInheritedVial();
     expect(state.pouch.ember).toBe(2);
     expect(beginEmberUse(state).pending).toEqual({ kind: "ember", variant: null });
   });
 
   it("fully restores, cleanses the Turn, surges, and costs a permanent stack", () => {
-    const state = createMetaState();
+    const state = withInheritedVial();
     const stats = { ...createMercyStats(state), pulse: 3, breath: 4, turn: 90 };
     const result = commitUse(beginEmberUse(state), stats);
 
@@ -233,7 +235,7 @@ describe("Ember", () => {
   });
 
   it("surge lasts exactly 1200 ticks", () => {
-    const state = createMetaState();
+    const state = withInheritedVial();
     const used = commitUse(beginEmberUse(state), createMercyStats(state));
     const justBefore = runTicks(used.state, used.stats, 1199);
     expect(metaModifiers(justBefore.state).damagePercent).toBe(125);
@@ -242,7 +244,7 @@ describe("Ember", () => {
   });
 
   it("cannot be used past the slice's two doses", () => {
-    let state = createMetaState();
+    let state = withInheritedVial();
     let stats = createMercyStats(state);
     for (let use = 0; use < 3; use += 1) {
       const result = commitUse(beginEmberUse(state), stats);

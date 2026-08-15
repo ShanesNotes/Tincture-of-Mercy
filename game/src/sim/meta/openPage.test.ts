@@ -120,6 +120,7 @@ describe("death → respawn", () => {
     const state = carrying(90);
     const spent: MetaState = {
       ...markEnemyDefeated(state, "wolf_doorway"),
+      inherited: true,
       vial: { ...state.vial, doses: 0 },
     };
     const dead = recordDeath(spent, FELL_AT).state;

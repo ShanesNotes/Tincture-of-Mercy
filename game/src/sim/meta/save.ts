@@ -25,11 +25,13 @@ export class SaveRejectedError extends Error {
 }
 
 const REQUIRED_KEYS = [
+  "annaSupply",
   "arena",
   "atHearth",
   "defeated",
   "effects",
   "gearWeight",
+  "inherited",
   "lastHearthId",
   "life",
   "names",
@@ -61,7 +63,7 @@ export const serializeMetaState = (state: MetaState): string => stableStringify(
 
 /**
  * Accept a save of the shipped version, reject anything else explicitly.
- * There is no migration path yet: v1 is the first format.
+ * There is no silent migration: v2 is the shipped format (Anna's chest + inherited).
  */
 export const migrateOrReject = (saved: unknown): MetaState => {
   if (saved === null || typeof saved !== "object" || Array.isArray(saved)) {

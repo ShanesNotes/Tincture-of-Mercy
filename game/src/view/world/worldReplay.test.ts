@@ -121,18 +121,18 @@ describe("world golden replay", () => {
       respawnedAtHearth: true,
       openPageRecovered: true,
       wolvesRespawned: true,
-      flaskCommitted: true,
-      restedAfterPageRecovery: true,
+      flaskCommitted: false,
+      restedAfterPageRecovery: false,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "0e5c539c" },
-      { tick: 1_327, stateHash: "11a21e54" },
-      { tick: 1_370, stateHash: "50627931" },
-      { tick: 1_977, stateHash: "a657cd7c" },
-      { tick: 6_753, stateHash: "f8f6fb16" },
-      { tick: 22_140, stateHash: "a3408809" },
-      { tick: 22_348, stateHash: "bacaa37a" },
-      { tick: 23_776, stateHash: "4ad45fae" },
+      { tick: 1, stateHash: "e836eb23" },
+      { tick: 1_327, stateHash: "057e9e80" },
+      { tick: 1_370, stateHash: "866b14c7" },
+      { tick: 1_977, stateHash: "c8657853" },
+      { tick: 6_753, stateHash: "2bf81ac6" },
+      { tick: 22_140, stateHash: "0057c24c" },
+      { tick: 22_348, stateHash: "d12db12b" },
+      { tick: 23_776, stateHash: "44f58b0e" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

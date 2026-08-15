@@ -11,7 +11,14 @@
  * frame can open while something is trying to kill you (D2).
  */
 
-import { awardNames, refillVial, type MetaEvent, type MetaParams, type MetaState } from "../meta";
+import {
+  awardNames,
+  inheritAnnaSupply,
+  spendAnnaDose,
+  type MetaEvent,
+  type MetaParams,
+  type MetaState,
+} from "../meta";
 import { presentScene, type SceneCatalog, type SceneEvent, type SceneState } from "../scenes";
 import type { WorldDefinition, WorldState } from "./types";
 
@@ -31,13 +38,14 @@ export const sceneToEnter = (
   definition: WorldDefinition,
   context: WorldSceneContext,
 ): string | null => {
-  if (state.scenes.active !== null || context.engaged) return null;
+  if (state.scenes.active !== null) return null;
   const done = (scriptId: string): boolean => state.scenes.completed.includes(scriptId);
 
   // The prologue is the room you wake in, not a cutscene call.
   if (!done(definition.startupScene) && context.zoneId === "CABIN") return definition.startupScene;
 
-  // Anna's gravity is the cabin you come back to — never the prologue's own heel.
+  // Anna's gravity is a D2 no-damage hold (ENCOUNTERS staged-scene carve-out).
+  // Yard alert must not lock the cabin you came back to.
   if (
     !done("anna_gravity") &&
     done(definition.startupScene) &&
@@ -47,6 +55,8 @@ export const sceneToEnter = (
   ) {
     return "anna_gravity";
   }
+
+  if (context.engaged) return null;
 
   // The coda is the ROAD_CODA threshold, and only past a Warden who stays down.
   if (
@@ -107,9 +117,13 @@ export const applySceneEffects = (
         metaEvents.push(...award.events);
         break;
       }
+      case "dose-prepared": {
+        next = spendAnnaDose(next);
+        break;
+      }
       case "vial-inherited": {
-        // Anna's vial passes to Kalev full — the whole point of the inheritance.
-        next = refillVial(next, params);
+        // Borrowed mercy: remaining chest only. Dosing her twice leaves less.
+        next = inheritAnnaSupply(next, { doses: event.doses, ember: next.annaSupply.ember });
         break;
       }
       case "turn-cleanse-request": {

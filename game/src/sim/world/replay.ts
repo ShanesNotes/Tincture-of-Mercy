@@ -653,11 +653,13 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
   checkpointTicks: Object.freeze([1, 1327, 1370, 1977, 6753, 22140, 22348, 23776]),
 });
 
-/** Exact Node real-collision capture; consumers assert these instead of equality alone. */
+/** Exact Node real-collision capture; consumers assert these instead of equality alone.
+ *  O-F1 shifted the tape: flasks before inheritance no-op, so flaskCommitted is
+ *  false and the rest-after-recovery beat no longer lands on this input. */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "5d072d1f",
+  definitionFingerprint: "c42bbbe4",
   inputHash: "06c274c0",
-  stateHash: "4ad45fae",
+  stateHash: "44f58b0e",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
@@ -677,7 +679,7 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
  * Playwright run of that row.
  */
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "5d072d1f",
+  definitionFingerprint: "c42bbbe4",
   inputHash: "473705f7",
   stateHash: "744e5f4d",
 });

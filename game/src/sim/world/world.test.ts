@@ -70,7 +70,7 @@ const queries: WorldQueries = {
 
 describe("world assembly", () => {
   it("validates the seam config and builds every sorted Ironwood pack", () => {
-    expect(definition.fingerprint).toBe("f5c71f2a");
+    expect(definition.fingerprint).toBe("70072c3b");
     expect(definition.player.id).toBe("kalev");
     expect(Object.keys(definition.packs)).toEqual(["den", "doorway", "road", "yard"]);
     expect(definition.packs.yard?.actors).toHaveLength(3);
@@ -289,7 +289,7 @@ describe("world assembly", () => {
 
     expect(stepped.state.combat.combat.actors.kalev?.action?.id).toBe("light1");
     expect(stepped.state.meta.pending).toBeNull();
-    expect(stepped.state.meta.vial.doses).toBe(3);
+    expect(stepped.state.meta.vial.doses).toBe(0);
   });
 
   it("advances dormant pack clocks without moving distant unaware wolves", () => {
@@ -408,9 +408,9 @@ describe("world assembly", () => {
 
   it("locks the real-collision golden and replays its headless seam prefix", () => {
     expect(WORLD_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "5d072d1f",
+      definitionFingerprint: "c42bbbe4",
       inputHash: "06c274c0",
-      stateHash: "4ad45fae",
+      stateHash: "44f58b0e",
     });
     expect(hashCanonical(WORLD_GOLDEN_REPLAY)).toBe(WORLD_GOLDEN_EXPECTED.inputHash);
     expect(WORLD_GOLDEN_REPLAY.durationTicks).toBe(23_776);
@@ -418,7 +418,7 @@ describe("world assembly", () => {
       1, 1327, 1370, 1977, 6753, 22140, 22348, 23776,
     ]);
     expect(WORLD_BROWSER_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "5d072d1f",
+      definitionFingerprint: "c42bbbe4",
       inputHash: "473705f7",
       stateHash: "744e5f4d",
     });
@@ -438,18 +438,18 @@ describe("world assembly", () => {
       frames: WORLD_GOLDEN_REPLAY.frames.filter(({ tick }) => tick < durationTicks),
       checkpointTicks: [1, 1327, durationTicks],
     });
-    expect(prefix.stateHash).toBe("a754b861");
+    expect(prefix.stateHash).toBe("b7797bdc");
     expect(prefix.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "dbe89b87" },
-      { tick: 1327, stateHash: "7c44579b" },
-      { tick: 1370, stateHash: "a754b861" },
+      { tick: 1, stateHash: "788c1ada" },
+      { tick: 1327, stateHash: "125102c5" },
+      { tick: 1370, stateHash: "b7797bdc" },
     ]);
     expect(prefix.checkpoints.every((entry) => entry.moduleClocksAligned)).toBe(true);
     expect(prefix.summary).toMatchObject({
       firstPlayerDamage: null,
       playerDamageTaken: 0,
       maxConcurrentAttackTokens: 1,
-      flaskCommitted: true,
+      flaskCommitted: false,
     });
   }, 30_000);
 });

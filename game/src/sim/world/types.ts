@@ -73,6 +73,13 @@ export interface WorldZoneDefinition {
   readonly area: number;
 }
 
+/** Circle Wither pocket from placements. Deep-wood off-path is the FOREST zone. */
+export interface WorldWitherZone {
+  readonly id: string;
+  readonly position: Vec3;
+  readonly radius: number;
+}
+
 export interface WorldActorAssetDefinition {
   /**
    * Extra capsule radius on this actor's weapon sweep, in metres. It exists for
@@ -130,6 +137,8 @@ export interface WorldDefinition {
   readonly actorAssets: Readonly<Record<WorldAssetKey, WorldActorAssetDefinition>>;
   /** Player zone lookup, baked from the level placement zones (HUD/music seam). */
   readonly zones: readonly WorldZoneDefinition[];
+  /** Off-path Wither pockets from placements (kind === "wither"). */
+  readonly witherZones: readonly WorldWitherZone[];
   readonly combatData: CombatData;
   readonly motionParams: MotionParams;
   readonly aiParams: WolfAiParams;
@@ -193,9 +202,8 @@ export interface WorldInputFrame {
   readonly moveZ: number;
   readonly attendStick: { readonly x: number; readonly y: number };
   /**
-   * Turns the next started drink into an Ember dose. The vial and the Ember
-   * share one authored clip (`flask_drink`), so they share one input edge and
-   * differ only in what the commit spends.
+   * Turns the next started drink into an Ember dose. Binds `ember_use` (30/84)
+   * on the flask input edge; the Tincture still plays `flask_drink`.
    */
   readonly useEmber?: boolean;
   readonly viewer?: AttendViewer;
@@ -231,7 +239,13 @@ export type WorldEventPayload =
       readonly witherAmount: number;
       readonly radiusMeters: number;
     }
-  | { readonly type: "snare-root-applied"; readonly targetId: string; readonly untilTick: number };
+  | { readonly type: "snare-root-applied"; readonly targetId: string; readonly untilTick: number }
+  | { readonly type: "tincture-denied"; readonly textKey: "ui.tincture.empty" }
+  | {
+      readonly type: "ambient-wither-applied";
+      readonly targetId: string;
+      readonly witherAmount: number;
+    };
 
 export interface WorldEvent {
   readonly sequence: number;
@@ -308,6 +322,12 @@ export interface WorldDebugSnapshot {
     readonly turnCap: number;
     readonly maxPulse: number;
     readonly maxBreath: number;
+    readonly inherited: boolean;
+    readonly ember: number;
+    readonly damagePercent: number;
+    readonly turnBuildupPercent: number;
+    readonly breathRegenPercent: number;
+    readonly steadyDelta: number;
   };
   /** Hearth the player currently stands inside, and whether it is burning. */
   readonly hearth: {

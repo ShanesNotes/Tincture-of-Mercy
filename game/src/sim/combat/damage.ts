@@ -34,6 +34,24 @@ export const applyDamageNegation = (rawDamage: number, negation: number): number
   return stableDecimal(rawDamage * (1 - negation));
 };
 
+/** Scale a quantity by a meta percent (100 = identity). Integer-stable. */
+export const applyMetaPercent = (base: number, percent: number): number => {
+  if (!Number.isFinite(base) || base < 0 || !Number.isFinite(percent) || percent < 0) {
+    throw new Error("Meta percent scale requires finite non-negative values.");
+  }
+  return stableDecimal((base * percent) / 100);
+};
+
+/** Additive Steady (poise) band shift from Tincture effects. */
+export const applySteadyDeltaToBands = (
+  bands: { readonly flinch: number; readonly stagger: number; readonly knockdown: number },
+  delta: number,
+): { readonly flinch: number; readonly stagger: number; readonly knockdown: number } => ({
+  flinch: bands.flinch + delta,
+  stagger: bands.stagger + delta,
+  knockdown: bands.knockdown + delta,
+});
+
 export const scalePoiseDamage = (
   poiseDamage: number,
   damageType: DamageType,
