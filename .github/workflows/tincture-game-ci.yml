@@ -13,10 +13,14 @@ on:
 permissions:
   contents: read
 
+# PRD SC7 VERIFY-ALL. Local composition is `npm --prefix game run verify:full`.
+# The stages split across jobs so a slow Playwright/artgate lane cannot hide a
+# typecheck failure; every stage still runs on every matching push.
+
 jobs:
-  verify-game:
+  verify-fast:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,11 +35,74 @@ jobs:
       - name: Install dependencies
         run: npm --prefix game ci
 
-      - name: Verify game
+      - name: Verify game (typecheck + lint + lint:probes + vitest + build)
         run: npm --prefix game run verify
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Install dependencies
+        run: npm --prefix game ci
 
       - name: Install Playwright Chromium
         run: npm --prefix game exec -- playwright install chromium --with-deps
 
-      - name: Run browser boot test
+      - name: Playwright e2e
         run: npm --prefix game run e2e
+
+  artgate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Install dependencies
+        run: npm --prefix game ci
+
+      - name: Install Playwright Chromium
+        run: npm --prefix game exec -- playwright install chromium --with-deps
+
+      - name: WebGPU / WebGL2 art-gate (headless flags in tools/artgate/run.js)
+        run: npm --prefix game run artgate
+
+  perf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: game/package-lock.json
+
+      - name: Install dependencies
+        run: npm --prefix game ci
+
+      - name: Install Playwright Chromium
+        run: npm --prefix game exec -- playwright install chromium --with-deps
+
+      - name: Perf budgets (yard + boss)
+        run: npm --prefix game run perf

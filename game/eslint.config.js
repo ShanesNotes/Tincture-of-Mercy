@@ -7,6 +7,49 @@ const simTimeBan = (selector, name) => ({
   message: `${name} is nondeterministic; derive time or randomness from sim state.`,
 });
 
+// MemberExpression (not CallExpression) so `const r = Math.random` aliases
+// and `globalThis.Math.random()` both fail. object.property.name catches the
+// globalThis/window/global prefix; object.name catches the bare binding.
+const simTimeBans = [
+  simTimeBan(
+    "MemberExpression[property.name='now'][object.name='Date']",
+    'Date.now',
+  ),
+  simTimeBan(
+    "MemberExpression[property.name='now'][object.property.name='Date']",
+    'Date.now via globalThis/window',
+  ),
+  simTimeBan(
+    "MemberExpression[property.name='now'][object.name='performance']",
+    'performance.now',
+  ),
+  simTimeBan(
+    "MemberExpression[property.name='now'][object.property.name='performance']",
+    'performance.now via globalThis/window',
+  ),
+  simTimeBan(
+    "MemberExpression[property.name='random'][object.name='Math']",
+    'Math.random',
+  ),
+  simTimeBan(
+    "MemberExpression[property.name='random'][object.property.name='Math']",
+    'Math.random via globalThis/window',
+  ),
+  simTimeBan(
+    "CallExpression[callee.property.name='getTime'][callee.object.type='NewExpression'][callee.object.callee.name='Date']",
+    'new Date().getTime()',
+  ),
+  simTimeBan(
+    "CallExpression[callee.property.name='valueOf'][callee.object.type='NewExpression'][callee.object.callee.name='Date']",
+    'new Date().valueOf()',
+  ),
+];
+
+const simRequireBan = {
+  selector: "CallExpression[callee.name='require']",
+  message: 'src/sim must use statically enforceable imports (no CommonJS require).',
+};
+
 const simBoundaryPattern = {
   group: [
     'three',
@@ -28,8 +71,15 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.strict,
   {
-    files: ['**/*.js'],
+    files: ['**/*.{js,mjs}'],
     languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      sourceType: 'commonjs',
       globals: globals.node,
     },
   },
@@ -46,7 +96,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/sim/**/*.ts'],
+    files: ['src/sim/**/*.{ts,js,mjs,cjs}'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -56,18 +106,8 @@ export default tseslint.config(
       ],
       'no-restricted-syntax': [
         'error',
-        simTimeBan(
-          "CallExpression[callee.object.name='Date'][callee.property.name='now']",
-          'Date.now()',
-        ),
-        simTimeBan(
-          "CallExpression[callee.object.name='performance'][callee.property.name='now']",
-          'performance.now()',
-        ),
-        simTimeBan(
-          "CallExpression[callee.object.name='Math'][callee.property.name='random']",
-          'Math.random()',
-        ),
+        ...simTimeBans,
+        simRequireBan,
         {
           selector: 'ImportExpression',
           message: 'src/sim must use statically enforceable imports.',
@@ -76,14 +116,17 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/sim/**/*.ts'],
+    files: ['src/sim/**/*.{ts,js,mjs,cjs}'],
     ignores: [
       'src/sim/**/*.test.ts',
       'src/sim/**/*.spec.ts',
+      'src/sim/**/*.test.js',
+      'src/sim/**/*.spec.js',
       // sim/world is the deliberate composition boundary between sibling
       // simulation modules. Its narrower rule below still rejects packages
       // and paths that escape src/sim.
       'src/sim/world/**/*.ts',
+      'src/sim/world/**/*.js',
     ],
     rules: {
       'no-restricted-imports': [
