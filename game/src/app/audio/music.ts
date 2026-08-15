@@ -89,6 +89,12 @@ export interface MusicSystem {
   unlockFromGesture(): Promise<void>;
   setPaused(paused: boolean): Promise<void>;
   bindVisibility(): () => void;
+  /**
+   * Release the hardware: stop every live source, then close the context.
+   * A browser AudioContext survives its page's teardown otherwise, so the
+   * world's dispose path must call this (K7). Idempotent.
+   */
+  dispose(): Promise<void>;
   snapshot(): MusicSnapshot;
   readonly unlocked: boolean;
   readonly paused: boolean;
@@ -105,6 +111,12 @@ export interface MusicSystemOptions {
   readonly audioParams: Pick<AudioParams, "buses" | "clock">;
   readonly context?: AudioContextPort;
 }
+
+/**
+ * A real AudioContext closes; the headless fake owns no hardware and does
+ * not. Structural, so the shared `AudioContextPort` stays untouched.
+ */
+type ClosableContext = AudioContextPort & { close?: () => Promise<void> };
 
 interface LiveLayer {
   readonly trackId: string;
@@ -401,6 +413,7 @@ export const createMusicSystem = (options: MusicSystemOptions): MusicSystem => {
   let pending: MusicState | null = null;
   let desiredTrack: string | null = null;
   let thresholdMotifSpent = false;
+  let disposed = false;
   let live: LiveLayer[] = [];
 
   const stopSource = (source: BufferSourcePort): void => {
@@ -458,7 +471,7 @@ export const createMusicSystem = (options: MusicSystemOptions): MusicSystem => {
 
   const startLayer = (trackId: string, tick: number, fadeTicks: number): void => {
     const track = params.tracks[trackId];
-    if (track === undefined || !unlocked || paused) {
+    if (track === undefined || !unlocked || paused || disposed) {
       return;
     }
     const source = context.createBufferSource();
@@ -651,6 +664,18 @@ export const createMusicSystem = (options: MusicSystemOptions): MusicSystem => {
       return () => {
         document.removeEventListener("visibilitychange", onVisibility);
       };
+    },
+    dispose: async () => {
+      if (disposed) {
+        return;
+      }
+      disposed = true;
+      for (const layer of live) {
+        stopSource(layer.source);
+      }
+      live = [];
+      desiredTrack = null;
+      await (context as ClosableContext).close?.();
     },
     snapshot: (): MusicSnapshot => ({
       unlocked,
