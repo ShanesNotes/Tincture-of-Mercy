@@ -73,14 +73,14 @@ export class FixedTickLoop {
     while (this.accumulatorMs + FLOAT_EPSILON_MS >= TICK_MS) {
       this.callbacks.step();
       this.simTicks += 1;
+      // A step may open a menu. A true pause has already discarded the
+      // accumulator, so break before subtracting a tick the pause owns:
+      // subtracting into the reset is what drove interpolation alpha negative.
+      if (this.paused) break;
       this.accumulatorMs -= TICK_MS;
       if (Math.abs(this.accumulatorMs) < FLOAT_EPSILON_MS) {
         this.accumulatorMs = 0;
       }
-      // A step may open a menu, which pauses and resets the accumulator. Leave
-      // the catch-up loop at once rather than subtracting a tick it never ran:
-      // that is what drove the interpolation alpha negative.
-      if (this.paused) break;
     }
 
     this.renderFrames += 1;
@@ -115,7 +115,13 @@ export class FixedTickLoop {
    * the ambient keydown/pointerdown that resumes a focus pause.
    */
   public setMenuPaused(paused: boolean): void {
-    this.accumulatorMs = 0;
+    // Only a true pause discards pending time. The Hearth and Open Page menus
+    // keep the world running, so their open/close transitions must not zero
+    // the accumulator: mid-catch-up that eats a pending tick, and between
+    // frames it eats the pending fraction.
+    if (paused) {
+      this.accumulatorMs = 0;
+    }
     this.menuPaused = paused;
     this.awaitingInput = false;
     this.setPaused(paused || this.hidden);

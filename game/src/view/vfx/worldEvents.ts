@@ -15,9 +15,17 @@
  *   `riposteUntilClock` window, which is an opening, not a landed riposte — so
  *   `VfxRiposteEvent` is never produced from a world stream.
  * - `hitstopTicks` is read from a `hitstop` combat event for the same target on
- *   the same tick when the stream carries one, else 0. s11 now emits that
- *   presenter event on every confirmed hit, so a live stream carries the real
- *   freeze; the 0 stays as the honest floor for a stream that does not, and
+ *   the same SIM tick — the payload's own `tick`, not the world envelope's. The
+ *   world step stamps envelopes with `nextTick` while combat payloads carry the
+ *   pre-step `worldTick`, so the envelope runs one tick ahead on every combat
+ *   row; pairing on the envelope tick misses every real freeze (K10). s11 emits
+ *   that hitstop event on every confirmed hit, and it is the ONLY freeze source
+ *   (DECISIONS: hitstop is sim-owned; the view adds no unowned timing). The
+ *   post-step pose re-derivation the live adapter once preferred is gone from
+ *   this seam: in a same-tick trade both actors are interrupted by the other's
+ *   hit, the re-derived freeze collapses to 0, and both blooms drop (K2). A
+ *   damage row with no paired hitstop row keeps the honest 0 floor; with a live
+ *   context it is dropped rather than crashing the frame, since
  *   `classifyHitstop` rejects a 0t freeze (the TUNING_V0 table is closed). The
  *   table is not duplicated here.
  * - `wither-pulse-applied` carries no duration, so `durationTicks` is omitted
@@ -32,15 +40,19 @@ import type { Vec2, Vec3Tuple, VfxEvent } from "./types";
 
 /**
  * Everything the sim event stream cannot carry, supplied by the caller that
- * owns actor transforms, the camera basis, and the frame-data table.
+ * owns actor transforms and the camera basis.
  *
- * `hitstopTicks` in particular is not optional dressing: `classifyHitstop`
- * rejects a 0t freeze because the TUNING_V0 table is closed, so a live stream
- * must be enriched before it reaches `applyVfxEvents`. A class that maps to no
- * freeze (an unauthored or non-damaging row) returns 0 and the event is
- * dropped rather than crashing the frame.
+ * The freeze is NOT among them: the sim's `hitstop` events are the only
+ * freeze source (K2 — the post-step pose re-derivation dropped both blooms
+ * of a same-tick trade). `hitstopTicksFor` survives only because the world
+ * adapter still builds it structurally; this seam never consults it.
  */
 export interface VfxWorldContext {
+  /**
+   * @deprecated Legacy post-step pose re-derivation. Ignored by
+   * `vfxEventsFromWorld`; the sim's `hitstop` events are the only freeze
+   * source. Retained for the world adapter's structural compatibility.
+   */
   readonly hitstopTicksFor: (payload: CombatPresenterEvent) => number;
   readonly contactFor: (actorId: string) => Vec3Tuple;
   readonly directionFor: (actorId: string) => Vec2;
@@ -85,9 +97,14 @@ const indexHitstop = (events: readonly WorldEvent[]): ReadonlyMap<string, number
 /**
  * Translate one world stream into the VFX events it licenses, in input order.
  *
- * Without a {@link VfxWorldContext} the impact rows carry the honest defaults
- * documented above and are safe only for tests. A live stream must pass one:
- * the freeze it supplies is what keeps `classifyHitstop` from throwing.
+ * The freeze for an impact row is paired from the stream's `hitstop` events on
+ * the payload's own sim tick (`payload.tick`) — never the world envelope tick
+ * (K10: the envelope runs one tick ahead on a real stream) and never the
+ * context's post-step re-derivation (K2: the sim's hitstop events are the only
+ * freeze source).
+ *
+ * Without a {@link VfxWorldContext} the impact rows carry the honest
+ * contact/direction defaults documented above and are safe only for tests.
  */
 export const vfxEventsFromWorld = (
   events: readonly WorldEvent[],
@@ -95,8 +112,8 @@ export const vfxEventsFromWorld = (
 ): readonly VfxEvent[] => {
   const freezes = indexHitstop(events);
   const mapped: VfxEvent[] = [];
-  const freezeFor = (payload: CombatPresenterEvent, targetId: string, tick: number): number =>
-    context?.hitstopTicksFor(payload) ?? freezes.get(hitstopKey(tick, targetId)) ?? 0;
+  const freezeFor = (payload: CombatPresenterEvent, targetId: string): number =>
+    freezes.get(hitstopKey(payload.tick, targetId)) ?? 0;
   const contactFor = (actorId: string): Vec3Tuple => context?.contactFor(actorId) ?? ORIGIN;
   const directionFor = (actorId: string): Vec2 => context?.directionFor(actorId) ?? NO_DIRECTION;
 
@@ -108,8 +125,9 @@ export const vfxEventsFromWorld = (
         case "damage":
         case "guard_break":
         case "death": {
-          const hitstopTicks = freezeFor(payload, payload.targetId, event.tick);
-          // A row with no authored freeze has no bloom class to spawn into.
+          const hitstopTicks = freezeFor(payload, payload.targetId);
+          // A live row with no sim-emitted freeze has no bloom class to spawn
+          // into; `classifyHitstop` rejects a 0t freeze (the table is closed).
           if (context !== undefined && hitstopTicks <= 0) break;
           mapped.push({
             kind: payload.kind === "damage" ? "hit" : payload.kind,

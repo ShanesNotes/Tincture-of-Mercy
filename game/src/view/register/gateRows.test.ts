@@ -1,8 +1,15 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  A5_MIN_STATES,
+  assembleRows,
+  buildA5Row,
+  buildFullA7Row,
+  markPostOff,
+} from "../../../tools/artgate/rows.js";
 import type { FrameStats } from "./analysis";
 import { REGISTER_CONFIG } from "./config";
-import { evaluateGate, type Capture, type LawAudit } from "./gateRows";
+import { evaluateGate, type Capture, type GateRow, type LawAudit } from "./gateRows";
 
 const baseStats = (overrides: Partial<FrameStats> = {}): FrameStats => ({
   width: 64,
@@ -135,5 +142,109 @@ describe("evaluateGate", () => {
     const onlyOne = fullCaptures(() => baseStats()).slice(0, 1);
     const report = evaluateGate(onlyOne, fullAudits(cleanAudit), REGISTER_CONFIG);
     expect(report.pass).toBe(false);
+  });
+});
+
+/**
+ * F5 coverage: the harness-side rows the s13-scoped evaluateGate does not
+ * emit — A5 (HUD border verdict image diff) and the full A1–A6 no-post
+ * baseline (A7). The pure composition lives in tools/artgate/rows.js so the
+ * node harness and this test run the same code.
+ */
+describe("artgate full row assembly (A5 + full A7)", () => {
+  const passRow = (id: string): GateRow => ({
+    id,
+    title: `${id} stub`,
+    pass: true,
+    detail: "ok",
+    measurements: [{ capture: `${id} capture`, value: 1, pass: true }],
+  });
+  const failRow = (id: string): GateRow => ({
+    ...passRow(id),
+    pass: false,
+    measurements: [{ capture: `${id} capture`, value: 0, pass: false }],
+  });
+  const distinctStates = (count: number) =>
+    Array.from({ length: count }, (_, index) => ({
+      state: `state-${index}`,
+      png: Buffer.from(`border-pixels-${index}`),
+    }));
+
+  it("assembles the full A1–A7 row list from the s13 base rows", () => {
+    const base = evaluateGate(fullCaptures(() => baseStats()), fullAudits(cleanAudit), REGISTER_CONFIG);
+    const rows = assembleRows(
+      base.rows,
+      buildA5Row(distinctStates(4)),
+      buildFullA7Row({
+        a1: passRow("A1"),
+        a2: passRow("A2"),
+        a3: passRow("A3"),
+        a4: passRow("A4"),
+        a5: passRow("A5"),
+        a6: passRow("A6"),
+      }),
+    );
+    expect(rows.map((r) => r.id)).toEqual(["A1", "A2", "A3", "A4", "A5", "A6", "A7"]);
+  });
+
+  it("A5 passes when ≥3 border states differ as rendered bytes", () => {
+    const row = buildA5Row(distinctStates(4));
+    expect(row.pass).toBe(true);
+    expect(row.measurements).toHaveLength(3); // adjacent pairs
+    expect(row.measurements.every((m) => m.pass)).toBe(true);
+  });
+
+  it("A5 fails closed with fewer than 3 states", () => {
+    const row = buildA5Row(distinctStates(A5_MIN_STATES - 1));
+    expect(row.pass).toBe(false);
+    expect(row.detail).toContain("state");
+  });
+
+  it("A5 fails when an adjacent state pair renders identically", () => {
+    const same = Buffer.from("identical-border");
+    const row = buildA5Row([
+      { state: "a", png: same },
+      { state: "b", png: Buffer.from(same) },
+      { state: "c", png: Buffer.from("different") },
+    ]);
+    expect(row.pass).toBe(false);
+    const failing = row.measurements.find((m) => !m.pass);
+    expect(failing?.capture).toBe("a vs b");
+  });
+
+  it("full A7 passes only when all of A1–A6 re-pass post-off", () => {
+    const passing = buildFullA7Row({
+      a1: passRow("A1"),
+      a2: passRow("A2"),
+      a3: passRow("A3"),
+      a4: passRow("A4"),
+      a5: passRow("A5"),
+      a6: passRow("A6"),
+    });
+    expect(passing.pass).toBe(true);
+    expect(passing.title).toContain("A1–A6");
+
+    const a6Fails = buildFullA7Row({
+      a1: passRow("A1"),
+      a2: passRow("A2"),
+      a3: passRow("A3"),
+      a4: passRow("A4"),
+      a5: passRow("A5"),
+      a6: failRow("A6"),
+    });
+    expect(a6Fails.pass).toBe(false);
+    expect(a6Fails.detail).toContain("5/6");
+    expect(a6Fails.measurements.some((m) => !m.pass)).toBe(true);
+  });
+
+  it("markPostOff relabels second-pass measurements as post-off evidence", () => {
+    const row: GateRow = {
+      id: "A1",
+      title: "stub",
+      pass: true,
+      detail: "ok",
+      measurements: [{ capture: "webgpu/plate/post-on", value: 1, pass: true }],
+    };
+    expect(markPostOff(row).measurements[0]?.capture).toBe("webgpu/plate/post-off");
   });
 });

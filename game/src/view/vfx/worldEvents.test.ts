@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 
 import { EMBLEM_VERBS, registerEmblem } from "../register/lights";
 import type { WorldEvent, WorldEventPayload } from "../../sim/world/types";
-import { vfxEventsFromWorld } from "./worldEvents";
+import { applyVfxEvents, createVfxState } from "./controller";
+import { VFX_PARAMS } from "./params";
+import { vfxEventsFromWorld, type VfxWorldContext } from "./worldEvents";
 
 let nextSequence = 0;
 
@@ -293,6 +295,106 @@ describe("vfxEventsFromWorld — stream discipline", () => {
 
   it("maps an empty stream to an empty stream", () => {
     expect(vfxEventsFromWorld([])).toStrictEqual([]);
+  });
+});
+
+describe("vfxEventsFromWorld — same-tick trade (gauntlet K2/K10 repro)", () => {
+  // Real-stream shape, per sim/world/step.ts + sim/combat/resolution.ts:
+  // - The world step stamps every envelope with `nextTick`; combat payloads
+  //   carry the pre-step `worldTick`, so the envelope runs one tick ahead of
+  //   the payload on every combat row.
+  // - resolveHitBatch freezes BOTH attacker and target of each accepted hit
+  //   and merges per actor with max semantics, so in a light1 (3t) vs lunge
+  //   (6t) trade both actors' `hitstop` rows carry 6t.
+  // - The live context re-derives the freeze from the post-step snapshot's
+  //   actionId; in a trade both actors were interrupted by the other's hit,
+  //   so that re-derivation resolves to 0 for both damage rows.
+  const SIM_TICK = 40;
+  const ENVELOPE_TICK = SIM_TICK + 1;
+
+  const tradeDamage = (actorId: string, targetId: string, amount: number): WorldEvent =>
+    worldEvent(
+      "combat",
+      ENVELOPE_TICK,
+      {
+        actorId,
+        amount,
+        damageType: "slash",
+        guarded: false,
+        kind: "damage",
+        sequence: 10,
+        targetId,
+        tick: SIM_TICK,
+      },
+      actorId,
+    );
+
+  const tradeHitstop = (attackerId: string, targetId: string, durationTicks: number): WorldEvent =>
+    worldEvent("combat", ENVELOPE_TICK, {
+      actorId: attackerId,
+      contact: { x: 0, y: 0, z: 0 },
+      durationTicks,
+      kind: "hitstop",
+      sequence: 11,
+      targetId,
+      tick: SIM_TICK,
+    });
+
+  /** kalev's light1 trades with the wolf's lunge on the same sim tick. */
+  const tradeStream = (): readonly WorldEvent[] => [
+    tradeDamage("kalev", "wolf-a", 28), // light1: light class (3t) per frame_data
+    tradeDamage("wolf-a", "kalev", 38), // lunge: heavy class (6t) per frame_data
+    tradeHitstop("kalev", "wolf-a", 6), // merged max(3 own, 6 taken)
+    tradeHitstop("wolf-a", "kalev", 6), // merged max(6 own, 3 taken)
+  ];
+
+  /** The live adapter's post-step pose re-derivation, interrupted by the trade. */
+  const interruptedContext: VfxWorldContext = {
+    hitstopTicksFor: () => 0,
+    contactFor: () => [0, 0, 0],
+    directionFor: () => [0, 0],
+  };
+
+  it("emits BOTH blooms when two actors trade hits on the same tick", () => {
+    const mapped = vfxEventsFromWorld(tradeStream(), interruptedContext);
+    expect(mapped).toHaveLength(2);
+    expect(mapped.map((event) => event.kind)).toStrictEqual(["hit", "hit"]);
+
+    const applied = applyVfxEvents(createVfxState(), mapped, ENVELOPE_TICK, VFX_PARAMS);
+    expect(applied.blooms).toHaveLength(2);
+    expect(applied.blooms.map((bloom) => bloom.hitstopClass)).toStrictEqual([
+      "heavy",
+      "heavy",
+    ]);
+  });
+
+  it("consumes the sim's hitstop events as the ONLY freeze source (never the context)", () => {
+    const forbiddingContext: VfxWorldContext = {
+      hitstopTicksFor: () => {
+        throw new Error("post-step pose re-derivation must not be consulted");
+      },
+      contactFor: () => [0, 0, 0],
+      directionFor: () => [0, 0],
+    };
+    const mapped = vfxEventsFromWorld(tradeStream(), forbiddingContext);
+    expect(mapped).toHaveLength(2);
+  });
+
+  it("pairs a hitstop row with its damage row across the envelope off-by-one (K10)", () => {
+    const mapped = vfxEventsFromWorld([
+      tradeDamage("kalev", "wolf-a", 28),
+      tradeHitstop("kalev", "wolf-a", 3),
+    ]);
+    expect(mapped).toStrictEqual([
+      {
+        kind: "hit",
+        tick: ENVELOPE_TICK,
+        targetId: "wolf-a",
+        hitstopTicks: 3,
+        direction: [0, 0],
+        contact: [0, 0, 0],
+      },
+    ]);
   });
 });
 

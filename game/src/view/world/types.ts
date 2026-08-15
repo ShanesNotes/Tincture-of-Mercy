@@ -5,6 +5,7 @@ import type { AudioSourceEvent } from "../../app/audio";
 import type { CollisionQueries } from "../../sim/motion";
 import type { SidecarData } from "../../sim/combat";
 import type { CollisionWorld } from "../collision";
+import type { HearthDimSignal, WorldLightingState } from "./lighting";
 
 export type Point3 = Readonly<{ x: number; y: number; z: number }>;
 
@@ -148,6 +149,8 @@ export type CameraWorldEvent =
 export interface WorldViewEventBatch {
   readonly camera: readonly CameraWorldEvent[];
   readonly audio: readonly AudioSourceEvent[];
+  /** O-F10: `hearth-dim` scene rows, carrying their own declared ramp. */
+  readonly lighting: readonly HearthDimSignal[];
 }
 
 export interface WorldViewDebugSnapshot {
@@ -163,6 +166,9 @@ export interface WorldViewDebugSnapshot {
   readonly assetDiagnostics: readonly AssetDiagnostic[];
   readonly p95FrameMs: number;
   readonly frameSampleCount: number;
+  /** O-F10: hearth emblem intensity multiplier after any declared dim steps. */
+  readonly hearthEmblemLevel: number;
+  readonly hearthDimSteps: number;
 }
 
 export interface IronwoodWorldView {
@@ -171,6 +177,8 @@ export interface IronwoodWorldView {
   readonly actorRoot: Object3D;
   resize(width: number, height: number, pixelRatio?: number): void;
   consumeEvents(events: WorldViewEventBatch): void;
+  /** O-F10: current hearth lighting, cheap enough to read every sim tick. */
+  lighting(): WorldLightingState;
   render(previous: WorldPresentation, current: WorldPresentation, alpha: number): void;
   setPaused(paused: boolean): Promise<void>;
   unlockAudio(): Promise<void>;

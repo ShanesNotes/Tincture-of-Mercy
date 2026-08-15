@@ -379,3 +379,58 @@ describe("music system", () => {
     unbind();
   });
 });
+
+/**
+ * K7 leak test. A browser AudioContext holds a hardware handle and keeps its
+ * sources running until it is closed; nothing but a `dispose` can release it,
+ * and the world teardown had nothing to call. `FakeAudioContext` has no
+ * `close` (it owns no hardware), so the leak is measured against a fake that
+ * records one.
+ */
+class ClosableFakeAudioContext extends FakeAudioContext {
+  public closeCount = 0;
+
+  public close = async (): Promise<void> => {
+    this.closeCount += 1;
+    this.state = "closed";
+  };
+}
+
+describe("music system disposal (K7)", () => {
+  const disposableSystem = async () => {
+    const context = new ClosableFakeAudioContext();
+    const system = createMusicSystem({ params: loadParams(), audioParams: audio, context });
+    await system.unlockFromGesture();
+    system.setState(state({ hearthRest: true }));
+    system.syncClock(0, 0);
+    return { context, system };
+  };
+
+  it("stops every live source and closes the context", async () => {
+    const { context, system } = await disposableSystem();
+    const liveCount = system.snapshot().layers.length;
+    expect(liveCount).toBeGreaterThan(0);
+    expect(context.stopped).toHaveLength(0);
+
+    await system.dispose();
+
+    expect(context.stopped.length).toBeGreaterThanOrEqual(liveCount);
+    expect(system.snapshot().layers).toHaveLength(0);
+    expect(context.closeCount).toBe(1);
+    expect(context.state).toBe("closed");
+  });
+
+  it("is idempotent and starts no source on a closed context", async () => {
+    const { context, system } = await disposableSystem();
+    await system.dispose();
+    const startedAtDispose = context.started.length;
+
+    await system.dispose();
+    system.setState(state({ zone: "arena", bossPhase: 1, inCombat: true }));
+    system.syncClock(60, 1);
+
+    expect(context.closeCount).toBe(1);
+    expect(context.started.length).toBe(startedAtDispose);
+    expect(system.snapshot().layers).toHaveLength(0);
+  });
+});

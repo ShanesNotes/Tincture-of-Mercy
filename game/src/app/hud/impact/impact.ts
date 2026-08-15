@@ -29,6 +29,8 @@ export interface ImpactFrame {
 export interface ImpactLayerHandle {
   readonly root: HTMLElement;
   readonly apply: (frame: ImpactFrame) => void;
+  /** Remove the layer this boot mounted. Idempotent (K8). */
+  readonly dispose: () => void;
 }
 
 export const buildImpactLayer = (mount: HTMLElement): ImpactLayerHandle => {
@@ -83,5 +85,5 @@ export const buildImpactLayer = (mount: HTMLElement): ImpactLayerHandle => {
   };
 
   apply({ blooms: [], inversion: false, witherBand: 0, deathPage: false });
-  return { root, apply };
+  return { root, apply, dispose: () => root.remove() };
 };

@@ -163,6 +163,29 @@
       ]
     },
     {
+      "id": "A5",
+      "title": "Border verdict: HUD border state visibly differs across ≥3 world states (image diff)",
+      "pass": true,
+      "detail": "4 states, 3/3 adjacent pairs differ",
+      "measurements": [
+        {
+          "capture": "cabin_vigil vs road_wild",
+          "value": 1,
+          "pass": true
+        },
+        {
+          "capture": "road_wild vs warden_ceremony",
+          "value": 1,
+          "pass": true
+        },
+        {
+          "capture": "warden_ceremony vs turned",
+          "value": 1,
+          "pass": true
+        }
+      ]
+    },
+    {
       "id": "A6",
       "title": "Ink outline present on character silhouettes (edge-density band)",
       "pass": true,
@@ -182,23 +205,13 @@
     },
     {
       "id": "A7",
-      "title": "No-post baseline: A1/A3/A4 re-pass with all post disabled (L12)",
+      "title": "No-post baseline: A1–A6 re-pass with all post disabled (L12)",
       "pass": true,
-      "detail": "24/24 no-post sub-rows pass",
+      "detail": "6/6 no-post sub-rows pass (A1–A6)",
       "measurements": [
         {
           "capture": "webgpu/plate/post-off",
           "value": 0.9680189043209877,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/plate/post-off",
-          "value": 0.0001408179012345679,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/plate/post-off",
-          "value": 6,
           "pass": true
         },
         {
@@ -207,28 +220,8 @@
           "pass": true
         },
         {
-          "capture": "webgpu/wolf-silhouette/post-off",
-          "value": 0,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/wolf-silhouette/post-off",
-          "value": 6,
-          "pass": true
-        },
-        {
           "capture": "webgpu/emblems/post-off",
           "value": 0.9723688271604938,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/emblems/post-off",
-          "value": 0.0009529320987654321,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/emblems/post-off",
-          "value": 6,
           "pass": true
         },
         {
@@ -237,28 +230,8 @@
           "pass": true
         },
         {
-          "capture": "webgpu/depth-bands/post-off",
-          "value": 0.00014660493827160494,
-          "pass": true
-        },
-        {
-          "capture": "webgpu/depth-bands/post-off",
-          "value": 6,
-          "pass": true
-        },
-        {
           "capture": "webgl2/plate/post-off",
           "value": 0.9680343364197531,
-          "pass": true
-        },
-        {
-          "capture": "webgl2/plate/post-off",
-          "value": 0.0001408179012345679,
-          "pass": true
-        },
-        {
-          "capture": "webgl2/plate/post-off",
-          "value": 6,
           "pass": true
         },
         {
@@ -267,28 +240,8 @@
           "pass": true
         },
         {
-          "capture": "webgl2/wolf-silhouette/post-off",
-          "value": 0,
-          "pass": true
-        },
-        {
-          "capture": "webgl2/wolf-silhouette/post-off",
-          "value": 6,
-          "pass": true
-        },
-        {
           "capture": "webgl2/emblems/post-off",
           "value": 0.9723842592592593,
-          "pass": true
-        },
-        {
-          "capture": "webgl2/emblems/post-off",
-          "value": 0.0009529320987654321,
-          "pass": true
-        },
-        {
-          "capture": "webgl2/emblems/post-off",
-          "value": 6,
           "pass": true
         },
         {
@@ -297,13 +250,118 @@
           "pass": true
         },
         {
+          "capture": "webgpu",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/plate/post-off",
+          "value": 0.0001408179012345679,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-off",
+          "value": 0.0009529320987654321,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-off",
+          "value": 0.00014660493827160494,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-off",
+          "value": 0.0001408179012345679,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 0,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-off",
+          "value": 0.0009529320987654321,
+          "pass": true
+        },
+        {
           "capture": "webgl2/depth-bands/post-off",
           "value": 0.00014660493827160494,
           "pass": true
         },
         {
+          "capture": "webgpu/plate/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/emblems/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/depth-bands/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/plate/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/emblems/post-off",
+          "value": 6,
+          "pass": true
+        },
+        {
           "capture": "webgl2/depth-bands/post-off",
           "value": 6,
+          "pass": true
+        },
+        {
+          "capture": "cabin_vigil vs road_wild",
+          "value": 1,
+          "pass": true
+        },
+        {
+          "capture": "road_wild vs warden_ceremony",
+          "value": 1,
+          "pass": true
+        },
+        {
+          "capture": "warden_ceremony vs turned",
+          "value": 1,
+          "pass": true
+        },
+        {
+          "capture": "webgpu/wolf-silhouette/post-off",
+          "value": 0.06112461419753087,
+          "pass": true
+        },
+        {
+          "capture": "webgl2/wolf-silhouette/post-off",
+          "value": 0.06112461419753087,
           "pass": true
         }
       ]
@@ -315,7 +373,7 @@
     "webgpu",
     "webgl2"
   ],
-  "generatedAt": "2026-08-14T18:59:28.652Z",
+  "generatedAt": "2026-08-15T00:51:31.661Z",
   "budgets": {
     "webgpu": {
       "frame": 3,
@@ -345,6 +403,12 @@
     2,
     3,
     4
+  ],
+  "borderStates": [
+    "cabin_vigil",
+    "road_wild",
+    "warden_ceremony",
+    "turned"
   ],
   "backendsAttempted": [
     "auto",

@@ -42,6 +42,19 @@ export interface HudInput {
   /** L-T4: Anna gravity encounter and Birdie coda always render folk step 0. */
   readonly registerLocked: boolean;
   readonly zone: ZoneCharacter;
+  /**
+   * A page from an earlier death was still lying unrecovered when this death
+   * landed, so it is lost for good (D6). The death overlay adds
+   * `ui.death.open_page_lost`. Optional and false by default: only the live
+   * world latches the sim's `page-lost` event; fixtures are single states.
+   */
+  readonly pageLost?: boolean;
+  /**
+   * The `hud.woken` scene flag — the border sleeps through the cabin prologue
+   * and wakes with the first dose of Anna's medicine. Optional and true by
+   * default: fixtures and scripted states are all mid-game, already awake.
+   */
+  readonly woken?: boolean;
 }
 
 /** Tallies decomposed for the colophon: five-bar groups plus a remainder (HB4). */
