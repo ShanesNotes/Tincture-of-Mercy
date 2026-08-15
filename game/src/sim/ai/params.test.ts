@@ -65,4 +65,25 @@ describe("wolf_ai_params", () => {
   it("sums lunge clip length to 60t", () => {
     expect(actionDurationTicks(params, "lunge")).toBe(60);
   });
+
+  it("derives the baiter feint clock from frame_data, not a second table", () => {
+    const frameData = JSON.parse(
+      readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../../data/frame_data.json"), "utf8"),
+    ) as {
+      readonly moves: {
+        readonly wolf_baiter_feint: {
+          readonly startupTicks: number;
+          readonly activeTicks: number;
+          readonly recoveryTicks: number;
+        };
+      };
+    };
+    const feint = frameData.moves.wolf_baiter_feint;
+    expect(params.telegraphs.baiterFeint.startupTicks).toBe(feint.startupTicks);
+    expect(params.telegraphs.baiterFeint.activeTicks).toBe(feint.activeTicks);
+    expect(params.telegraphs.baiterFeint.recoveryTicks).toBe(feint.recoveryTicks);
+    expect(actionDurationTicks(params, "feint")).toBe(
+      feint.startupTicks + feint.activeTicks + feint.recoveryTicks,
+    );
+  });
 });

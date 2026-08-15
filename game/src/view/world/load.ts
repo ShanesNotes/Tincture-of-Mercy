@@ -11,6 +11,7 @@ import { MeshBVH } from "three-mesh-bvh";
 
 import assemblyDocument from "../../data/world_assembly.json";
 import { acceptSidecar } from "../../sim/combat";
+import { withDerivedGroundProbe, type SweptWorld } from "../../sim/motion";
 import { MeshBvhCollisionWorld } from "../collision";
 import { auditRegisterMaterials } from "../register/materials";
 import { ATLAS } from "../register/patterns";
@@ -364,6 +365,14 @@ const loadCharacter = async (
   }
 };
 
+/**
+ * The baked-level collision adapter. Ground probe must share sweep semantics
+ * with `withDerivedGroundProbe` (sim/motion/queries.ts): rest leaves one skin
+ * of vertical clearance; a capsule sitting at exact skin is still supported.
+ */
+export const createProductionCollisionQueries = (world: SweptWorld): WorldCollisionQueries =>
+  withDerivedGroundProbe(world);
+
 const withSyntheticPlacements = (base: PlacementCatalog): PlacementCatalog => {
   const synthetic = assembly.syntheticPlacements.filter(
     (candidate) => !base.all.some((placement) => placement.id === candidate.id),
@@ -413,26 +422,7 @@ export const loadIronwoodWorldAssets = async (
   try {
     const collisionBvh = new MeshBVH(level.collisionGeometry);
     const collisionWorld = new MeshBvhCollisionWorld(collisionBvh);
-    const collisionQueries: WorldCollisionQueries = {
-      raycast: (query) => collisionWorld.raycast(query),
-      sweepCapsule: (query) => collisionWorld.sweepCapsule(query),
-      // Ground snap is a vertical support query, so the baked level adapter can
-      // answer it with the BVH's logarithmic raycast instead of the general
-      // capsule sweep's iterative continuous-collision solver. Horizontal,
-      // jump, root-motion and knockback movement still use swept capsules.
-      probeGround: ({ capsule, maxDistance }) => {
-        const hit = collisionWorld.raycast({
-          origin: capsule.start,
-          direction: { x: 0, y: -1, z: 0 },
-          maxDistance: maxDistance + capsule.radius,
-        });
-        if (hit === null) return null;
-        const distance = Math.max(0, hit.distance - capsule.radius);
-        return distance > maxDistance
-          ? null
-          : { ...hit, distance };
-      },
-    };
+    const collisionQueries = createProductionCollisionQueries(collisionWorld);
 
     const characterStage = await Promise.allSettled([
       loadCharacter(fetcher, "kalev", assembly.actors.kalev, diagnostics, materialPool),

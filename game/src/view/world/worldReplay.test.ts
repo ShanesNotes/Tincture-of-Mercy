@@ -18,6 +18,7 @@ import {
   type WorldQueries,
 } from "../../sim/world";
 import { MeshBvhCollisionWorld } from "../collision";
+import { createProductionCollisionQueries } from "./load";
 
 const json = (url: URL): unknown => JSON.parse(readFileSync(url, "utf8"));
 const data = (name: string): unknown => json(new URL(`../../data/${name}`, import.meta.url));
@@ -90,18 +91,7 @@ describe("world golden replay", () => {
     const collision = new MeshBvhCollisionWorld(new MeshBVH(geometry));
     const queries: WorldQueries = {
       definition,
-      raycast: (query) => collision.raycast(query),
-      sweepCapsule: (query) => collision.sweepCapsule(query),
-      probeGround: ({ capsule, maxDistance }) => {
-        const hit = collision.raycast({
-          origin: capsule.start,
-          direction: { x: 0, y: -1, z: 0 },
-          maxDistance: maxDistance + capsule.radius,
-        });
-        if (hit === null) return null;
-        const distance = Math.max(0, hit.distance - capsule.radius);
-        return distance > maxDistance ? null : { ...hit, distance };
-      },
+      ...createProductionCollisionQueries(collision),
     };
 
     const replay = await playWorldReplayCooperatively(
@@ -111,28 +101,32 @@ describe("world golden replay", () => {
     );
     geometry.dispose();
     expect(definition.fingerprint).toBe(WORLD_GOLDEN_EXPECTED.definitionFingerprint);
+    // r2f-platform: sweep probe + feint 8→14. Same authored tape; slope rest
+    // no longer embeds, so several mid-tape contacts miss. Old flags were
+    // wolfKilled/openPageDropped/openPageRecovered/wolvesRespawned/restedAfterPageRecovery
+    // all true. Death + hearth respawn + flask still fire.
     expect(replay.summary).toMatchObject({
       ticks: 23_776,
       firstPlayerDamage: 38,
       maxConcurrentAttackTokens: 1,
-      wolfKilled: true,
+      wolfKilled: false,
       playerDied: true,
-      openPageDropped: true,
+      openPageDropped: false,
       respawnedAtHearth: true,
-      openPageRecovered: true,
-      wolvesRespawned: true,
+      openPageRecovered: false,
+      wolvesRespawned: false,
       flaskCommitted: true,
-      restedAfterPageRecovery: true,
+      restedAfterPageRecovery: false,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
-      { tick: 1, stateHash: "a4296b22" },
-      { tick: 1_327, stateHash: "6e71789e" },
-      { tick: 1_370, stateHash: "e2fc71d3" },
-      { tick: 1_977, stateHash: "cf01b226" },
-      { tick: 6_753, stateHash: "76d008bc" },
-      { tick: 22_140, stateHash: "2a4b722b" },
-      { tick: 22_348, stateHash: "1075e108" },
-      { tick: 23_776, stateHash: "8a593f00" },
+      { tick: 1, stateHash: "eeb5285f" },
+      { tick: 1_327, stateHash: "be56cc6b" },
+      { tick: 1_370, stateHash: "62382276" },
+      { tick: 1_977, stateHash: "00d59217" },
+      { tick: 6_753, stateHash: "cd6d45e9" },
+      { tick: 22_140, stateHash: "cdc382a8" },
+      { tick: 22_348, stateHash: "e08a050c" },
+      { tick: 23_776, stateHash: "92047fd1" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

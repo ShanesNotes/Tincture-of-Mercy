@@ -653,11 +653,18 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
   checkpointTicks: Object.freeze([1, 1327, 1370, 1977, 6753, 22140, 22348, 23776]),
 });
 
-/** Exact Node real-collision capture; consumers assert these instead of equality alone. */
+/**
+ * Exact Node real-collision capture; consumers assert these instead of equality alone.
+ *
+ * r2f-platform (K1 sweep probe + O-F12 feint 8→14):
+ *   definitionFingerprint 765da5fe → 46ebb5b1
+ *   stateHash             8a593f00 → 92047fd1
+ *   inputHash unchanged (same authored tape)
+ */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "765da5fe",
+  definitionFingerprint: "46ebb5b1",
   inputHash: "06c274c0",
-  stateHash: "8a593f00",
+  stateHash: "92047fd1",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
@@ -670,16 +677,14 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 
 /**
  * `stateHash` is the Chromium capture `e2e/world.spec.ts` asserts as
- * `GOLDEN_FINAL_HASH`; the two are the same quantity (`runReplay` returns
- * `replay.stateHash` as `finalHash`) and had drifted apart before the round-one
- * Warden retune forced a re-capture of both. Node cannot produce this number —
- * Chromium's BVH arithmetic differs by design — so it moves only with a
- * Playwright run of that row.
+ * `GOLDEN_FINAL_HASH`. r2f-platform recapture: 858797d7 → 0e0810f9.
+ * Node cannot produce this number — Chromium's BVH arithmetic differs by
+ * design — so it moves only with a Playwright run of that row.
  */
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "765da5fe",
+  definitionFingerprint: "46ebb5b1",
   inputHash: "473705f7",
-  stateHash: "858797d7",
+  stateHash: "0e0810f9",
 });
 
 const checkpoint = (

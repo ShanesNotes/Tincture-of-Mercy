@@ -3,6 +3,7 @@ export { SimClipPlayer, type AnimationSeek } from "./animation";
 export { WorldCameraBinding } from "./camera";
 export { SimCapsuleOverlay } from "./debug";
 export {
+  createProductionCollisionQueries,
   loadIronwoodWorldAssets,
   WorldAssetLoadError,
   type IronwoodAssetLoadOptions,
