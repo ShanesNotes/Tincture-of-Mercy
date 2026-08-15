@@ -1,5 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// P-1 (gauntlet r1): a fixed port + reuseExistingServer silently pointed a
+// slice's e2e run at whichever parallel worktree booted vite first — results
+// against the wrong tree. Each checkout must own its server: port comes from
+// E2E_PORT, and an already-running server is never reused.
+const E2E_PORT = Number(process.env.E2E_PORT ?? 4173);
+
 export default defineConfig({
   testDir: './e2e',
   forbidOnly: Boolean(process.env.CI),
@@ -10,7 +16,7 @@ export default defineConfig({
   workers: 1,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: `http://127.0.0.1:${E2E_PORT}`,
     trace: 'retain-on-failure',
   },
   projects: [
@@ -37,9 +43,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
+    command: `npm run dev -- --host 127.0.0.1 --port ${E2E_PORT} --strictPort`,
+    url: `http://127.0.0.1:${E2E_PORT}`,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });
