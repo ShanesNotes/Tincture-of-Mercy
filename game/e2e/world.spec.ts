@@ -62,15 +62,15 @@ const GOLDEN_TICKS = 41_413;
 // world definition fingerprint, so any tuning change moves every world hash;
 // `REGEN_WORLD_GOLDEN=1 npx vitest run src/view/world/goldens.regen.test.ts`
 // prints the Node lane, and this row is the only place the browser lane exists.
-const GOLDEN_FINAL_HASH = "858797d7";
+const GOLDEN_FINAL_HASH = "744e5f4d";
 const GOLDEN_CHECKPOINTS = [
-  { tick: 1, stateHash: "a4296b22" },
-  { tick: 1_327, stateHash: "cb5f40cd" },
-  { tick: 1_370, stateHash: "2f3d7e6a" },
-  { tick: 1_977, stateHash: "269b7371" },
-  { tick: 6_753, stateHash: "99730332" },
-  { tick: 39_788, stateHash: "ec9bfe0b" },
-  { tick: 39_996, stateHash: "36270987" },
+  { tick: 1, stateHash: "0e5c539c" },
+  { tick: 1_327, stateHash: "65e6e5f3" },
+  { tick: 1_370, stateHash: "b8db2800" },
+  { tick: 1_977, stateHash: "a5c18017" },
+  { tick: 6_753, stateHash: "c614e73c" },
+  { tick: 39_788, stateHash: "d3a56d69" },
+  { tick: 39_996, stateHash: "497238cd" },
   { tick: GOLDEN_TICKS, stateHash: GOLDEN_FINAL_HASH },
 ] as const;
 

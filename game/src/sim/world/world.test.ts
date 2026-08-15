@@ -418,9 +418,9 @@ describe("world assembly", () => {
       1, 1327, 1370, 1977, 6753, 22140, 22348, 23776,
     ]);
     expect(WORLD_BROWSER_GOLDEN_EXPECTED).toEqual({
-      definitionFingerprint: "765da5fe",
+      definitionFingerprint: "5d072d1f",
       inputHash: "473705f7",
-      stateHash: "858797d7",
+      stateHash: "744e5f4d",
     });
     expect(hashCanonical(WORLD_BROWSER_GOLDEN_REPLAY)).toBe(
       WORLD_BROWSER_GOLDEN_EXPECTED.inputHash,

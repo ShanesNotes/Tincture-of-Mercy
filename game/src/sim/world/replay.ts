@@ -677,9 +677,9 @@ export const WORLD_BROWSER_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
  * Playwright run of that row.
  */
 export const WORLD_BROWSER_GOLDEN_EXPECTED = Object.freeze({
-  definitionFingerprint: "765da5fe",
+  definitionFingerprint: "5d072d1f",
   inputHash: "473705f7",
-  stateHash: "858797d7",
+  stateHash: "744e5f4d",
 });
 
 const checkpoint = (
