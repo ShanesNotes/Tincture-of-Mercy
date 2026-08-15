@@ -164,19 +164,19 @@ test.describe("Ironwood world assembly", () => {
     });
 
     expect(first.ticks).toBe(GOLDEN_TICKS);
-    expect(first.checkpoints.wolfKilled).toBe(false);
+    expect(first.checkpoints.wolfKilled).toBe(true);
     expect(first.checkpoints.expectedPlayerDamage).toBe(38);
     expect(first.checkpoints.playerDamageTaken).toBe(
       first.checkpoints.expectedPlayerDamage,
     );
     expect(first.checkpoints.maxConcurrentAttackTokens).toBeLessThanOrEqual(1);
     expect(first.checkpoints.playerDied).toBe(true);
-    expect(first.checkpoints.openPageDropped).toBe(false);
+    expect(first.checkpoints.openPageDropped).toBe(true);
     expect(first.checkpoints.respawnedAtHearth).toBe(true);
-    expect(first.checkpoints.openPageRecovered).toBe(false);
-    expect(first.checkpoints.wolvesRespawned).toBe(false);
+    expect(first.checkpoints.openPageRecovered).toBe(true);
+    expect(first.checkpoints.wolvesRespawned).toBe(true);
     expect(first.checkpoints.flaskCommitted).toBe(true);
-    expect(first.checkpoints.restedAtHearth).toBe(false);
+    expect(first.checkpoints.restedAtHearth).toBe(true);
     expect(
       first.replayCheckpoints.map(({ tick, stateHash }) => ({ tick, stateHash })),
     ).toEqual(GOLDEN_CHECKPOINTS);

@@ -101,32 +101,28 @@ describe("world golden replay", () => {
     );
     geometry.dispose();
     expect(definition.fingerprint).toBe(WORLD_GOLDEN_EXPECTED.definitionFingerprint);
-    // r2f-platform: sweep probe + feint 8→14. Same authored tape; slope rest
-    // no longer embeds, so several mid-tape contacts miss. Old flags were
-    // wolfKilled/openPageDropped/openPageRecovered/wolvesRespawned/restedAfterPageRecovery
-    // all true. Death + hearth respawn + flask still fire.
     expect(replay.summary).toMatchObject({
       ticks: 23_776,
       firstPlayerDamage: 38,
       maxConcurrentAttackTokens: 1,
-      wolfKilled: false,
+      wolfKilled: true,
       playerDied: true,
-      openPageDropped: false,
+      openPageDropped: true,
       respawnedAtHearth: true,
-      openPageRecovered: false,
-      wolvesRespawned: false,
+      openPageRecovered: true,
+      wolvesRespawned: true,
       flaskCommitted: true,
-      restedAfterPageRecovery: false,
+      restedAfterPageRecovery: true,
     });
     expect(replay.checkpoints.map(({ tick, stateHash }) => ({ tick, stateHash }))).toEqual([
       { tick: 1, stateHash: "eeb5285f" },
       { tick: 1_327, stateHash: "be56cc6b" },
       { tick: 1_370, stateHash: "62382276" },
       { tick: 1_977, stateHash: "00d59217" },
-      { tick: 6_753, stateHash: "cd6d45e9" },
-      { tick: 22_140, stateHash: "cdc382a8" },
-      { tick: 22_348, stateHash: "e08a050c" },
-      { tick: 23_776, stateHash: "92047fd1" },
+      { tick: 6_753, stateHash: "dde1c201" },
+      { tick: 22_140, stateHash: "1432024a" },
+      { tick: 22_348, stateHash: "2a61e41c" },
+      { tick: 23_776, stateHash: "af250cb2" },
     ]);
     expect(replay.stateHash).toBe(WORLD_GOLDEN_EXPECTED.stateHash);
     expect(replay.checkpoints.every(({ moduleClocksAligned, tokenInvariant }) =>

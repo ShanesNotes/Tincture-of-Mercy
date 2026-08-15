@@ -409,8 +409,8 @@ describe("world assembly", () => {
   it("locks the real-collision golden and replays its headless seam prefix", () => {
     expect(WORLD_GOLDEN_EXPECTED).toEqual({
       definitionFingerprint: "46ebb5b1",
-      inputHash: "06c274c0",
-      stateHash: "92047fd1",
+      inputHash: "02ebb1ac",
+      stateHash: "af250cb2",
     });
     expect(hashCanonical(WORLD_GOLDEN_REPLAY)).toBe(WORLD_GOLDEN_EXPECTED.inputHash);
     expect(WORLD_GOLDEN_REPLAY.durationTicks).toBe(23_776);

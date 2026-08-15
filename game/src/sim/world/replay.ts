@@ -4,6 +4,11 @@ import { hashWorldState } from "./hash";
 import { EMPTY_WORLD_INPUT, stepWorld } from "./step";
 import type { InputAction } from "../input";
 import {
+  NODE_LOOP_ATTACKS,
+  NODE_LOOP_INTERACTS,
+  NODE_LOOP_MOVES,
+} from "./goldenNodeLoop";
+import {
   WORLD_REPLAY_FORMAT_VERSION,
   type WorldInputFrame,
   type WorldQueries,
@@ -638,8 +643,65 @@ const BROWSER_GOLDEN_ACTIONS: readonly GoldenAction[] = Object.freeze([
   { tick: 41412, action: "interact" },
 ]);
 
+const applyLoopOverrides = (
+  frames: readonly WorldReplayFrame[],
+  attacks: readonly number[],
+  interacts: readonly number[],
+  moves: readonly (readonly [number, number, number])[],
+): readonly WorldReplayFrame[] => {
+  const moveByTick = new Map(moves.map(([tick, moveX, moveZ]) => [tick, [moveX, moveZ]] as const));
+  const attackTicks = new Set(attacks);
+  const interactTicks = new Set(interacts);
+  return frames.map((frame) => {
+    const move = moveByTick.get(frame.tick);
+    const extras: Array<{ action: InputAction; pressed: true; sequence: number; tick: number }> = [];
+    if (attackTicks.has(frame.tick)) {
+      extras.push({ action: "attack", pressed: true, sequence: frame.tick, tick: frame.tick });
+    }
+    if (interactTicks.has(frame.tick)) {
+      extras.push({ action: "interact", pressed: true, sequence: frame.tick, tick: frame.tick });
+    }
+    if (move === undefined && extras.length === 0) return frame;
+    return {
+      ...frame,
+      input: {
+        ...frame.input,
+        ...(move === undefined ? {} : { moveX: move[0], moveZ: move[1] }),
+        edges: extras.length === 0 ? frame.input.edges : [...frame.input.edges, ...extras],
+      },
+    };
+  });
+};
+
+/**
+ * Tape-edit log (r2f-platform chair retry — restore completing loop under sweep-rest):
+ *
+ * Node lane only. Shared prefix 0–6724 is unchanged except the 6559 light1
+ * (lead-in for the 6557–6571 yard.lunger window; old 6741 finisher now
+ * whiffs 3 ticks late at d=1.107).
+ *
+ * 6559: extra light1 — window 6557–6571, minD 0.309, facing 0.99. Lands t=6571.
+ * 6985–11650: analog chase of yard.lunger while d≤2.0, then baiter once the
+ *   lunger is on 16 Pulse. Extra light1s at 7026,7130,7277,7335,7501,7561,
+ *   7818,10884,11050,11117,11153,11232,11292,11590,11664,11741,11835.
+ *   Kill at 11847. Doorway.lunger stays up so camp can still finish Kalev.
+ * 11650–22205: path-follow back onto the original camp trajectory so the
+ *   eight doorway hits still land; page drops at 21048 and is recovered at
+ *   22205.
+ * 22300–23760: walk to cabin hearth (0, 3.15) and interact every 20 ticks
+ *   once inside 1.2 m. Restores wolvesRespawned + restedAfterPageRecovery.
+ *
+ * Browser lane still uses the pre-retune recording. Chromium BVH desyncs the
+ * Node analog (yard.lunger never stays in the 0.62 m window), so a Chromium-
+ * captured completing tape is still required.
+ */
 export const WORLD_GOLDEN_INPUTS: readonly WorldReplayFrame[] = Object.freeze(
-  buildGoldenInputs(NODE_GOLDEN_MOVEMENT, GOLDEN_ACTIONS),
+  applyLoopOverrides(
+    buildGoldenInputs(NODE_GOLDEN_MOVEMENT, GOLDEN_ACTIONS),
+    NODE_LOOP_ATTACKS,
+    NODE_LOOP_INTERACTS,
+    NODE_LOOP_MOVES,
+  ),
 );
 
 export const WORLD_BROWSER_GOLDEN_INPUTS: readonly WorldReplayFrame[] = Object.freeze(
@@ -656,15 +718,15 @@ export const WORLD_GOLDEN_REPLAY: WorldReplayScript = Object.freeze({
 /**
  * Exact Node real-collision capture; consumers assert these instead of equality alone.
  *
- * r2f-platform (K1 sweep probe + O-F12 feint 8→14):
- *   definitionFingerprint 765da5fe → 46ebb5b1
- *   stateHash             8a593f00 → 92047fd1
- *   inputHash unchanged (same authored tape)
+ * r2f-platform chair retry (completing loop under sweep-rest):
+ *   definitionFingerprint 46ebb5b1 (unchanged)
+ *   inputHash             06c274c0 → 02ebb1ac
+ *   stateHash             92047fd1 → af250cb2
  */
 export const WORLD_GOLDEN_EXPECTED = Object.freeze({
   definitionFingerprint: "46ebb5b1",
-  inputHash: "06c274c0",
-  stateHash: "92047fd1",
+  inputHash: "02ebb1ac",
+  stateHash: "af250cb2",
 });
 
 /** Fixed browser capture of the same authored loop against Chromium's BVH arithmetic. */
