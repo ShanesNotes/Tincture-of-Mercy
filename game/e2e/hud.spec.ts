@@ -214,9 +214,9 @@ test('the Open Page loss line follows world state, not the URL', async ({ page }
  * by nothing. The apparatus sleeps until it fires.
  */
 test('the border sleeps through the cabin and wakes with the first dose', async ({ page }) => {
-  await bootHud(page, '/?scene=hud');
-  const border = page.getByTestId('hud-border');
-  await expect(border).toBeVisible();
+  await bootHud(page, '/?scene=hud&menu=death');
+  const apparatus = page.getByTestId('hud-pulse');
+  await expect(apparatus).toBeVisible();
 
   const setWoken = (woken: boolean) =>
     page.evaluate((awake) => {
@@ -234,11 +234,18 @@ test('the border sleeps through the cabin and wakes with the first dose', async 
     }, woken);
 
   await setWoken(false);
-  await expect(border).toBeHidden();
+  await expect(apparatus).toBeHidden();
+  await expect(page.getByTestId('hud-doses')).toBeHidden();
   await expect(page.locator('body')).toHaveAttribute('data-hud-woken', '0');
+  // A sleeping apparatus must never swallow a menu: an overlay the player
+  // cannot see is a soft-lock.
+  await expect(
+    page.getByTestId('hud-menu-death'),
+    'menus stay legible while the apparatus sleeps',
+  ).toBeVisible();
 
   await setWoken(true);
-  await expect(border).toBeVisible();
+  await expect(apparatus).toBeVisible();
   await expect(page.locator('body')).toHaveAttribute('data-hud-woken', '1');
 });
 

@@ -67,9 +67,16 @@
 }
 
 /* The apparatus sleeps through the cabin prologue and wakes with the first
-   dose of Anna's medicine (the `hud.woken` scene flag). */
-.hud-border[data-woken="0"] {
-  display: none;
+   dose of Anna's medicine (the `hud.woken` scene flag): rule, corners,
+   margins and footer all go. The page area is deliberately exempt — menus
+   render there, and an overlay you cannot see is a soft-lock. */
+.hud-border[data-woken="0"] .hb-frame {
+  border-color: transparent;
+  outline-color: transparent;
+}
+
+.hud-border[data-woken="0"] .hb-frame > *:not(.hud-page) {
+  visibility: hidden;
 }
 
 /* HB2: outer rule line. inset = the Turn narrowing geometry (D6/HB3):

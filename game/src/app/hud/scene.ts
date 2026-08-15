@@ -153,12 +153,12 @@ export const bootHudScene = (options: HudSceneOptions): HudSceneHandle => {
             lock: input.registerLocked,
           });
     applyBorder(border, descriptor, verdict);
-    // EN9/CM40: the apparatus is asleep through the cabin prologue and wakes
-    // with the first dose. Presence, not a verdict — so it stamps the border
-    // element rather than joining the image-diffed descriptor.
+    // The apparatus is asleep through the cabin prologue and wakes with the
+    // first dose. Presence, not a verdict — so it stamps the border element
+    // rather than joining the image-diffed descriptor. Menus stay legible
+    // while it sleeps; hud.css exempts the page area.
     const woken = input.woken ?? true;
     border.dataset.woken = woken ? "1" : "0";
-    border.setAttribute("aria-hidden", woken ? "false" : "true");
     document.body.dataset.hudWoken = woken ? "1" : "0";
     document.body.dataset.hudFixture = params.get("fixture") ?? DEFAULT_FIXTURE;
     const serialized = serializeDescriptor(descriptor);
