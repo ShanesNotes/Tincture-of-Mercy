@@ -44,3 +44,23 @@ reports/
 
 # Machine-local capture config
 .capture/env
+
+# Generated art/pixellab preview logs + run artifacts (regenerable, not source)
+art/**/*.log
+art/**/preview/candidates/*/*.log
+art/**/preview/candidates/*/*.txt
+art/**/preview/candidates/*/*.exitcode
+art/**/preview/candidates/*/*.json
+art/**/preview/candidates/*/*.md
+art/**/preview/candidates/*/*.sha256
+art/**/_drafts/source_intake/*/*.log
+art/**/_drafts/source_intake/*/*.txt
+art/**/_drafts/source_intake/*/*.json
+art/**/_drafts/source_intake/*/*.md
+art/**/_drafts/source_intake/*/*.sha256
+
+# Local cruft (root has no package.json; do not ignore all of .claude/)
+node_modules/
+/package-lock.json
+.scratch/
+.claude/worktrees/

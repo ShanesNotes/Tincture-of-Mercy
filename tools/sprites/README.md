@@ -128,23 +128,24 @@ All commands resolve dimensions, palette, baseline, and grid shape from `tools/s
 
 | File | Purpose |
 |---|---|
-| `cli.py` | Main subcommand dispatcher. Every `./sprite <cmd>` lands here. |
 | `_common.py` | Shared helpers: spec loading, path resolution, Aseprite discovery, terminal colors. |
-| `make_runtime_sprite.py` | Deterministic source/master → runtime conversion. Detects + removes background, crops, resizes with selectable filter (`nearest`, `box`, `lanczos`, etc.), quantizes to palette, anchors feet. Standalone CLI also works. |
-| `retarget.py` | Safe high-res master/source → reviewable runtime candidates. Writes candidate PNGs, a contact sheet, validation report, and optionally promotes one passing candidate. |
-| `validate_sprite.py` | Acceptance check (format / dims / mode / colors / transparency / palette pin / baseline). Exit 0 = PASS. |
-| `palette.py` | Project palette + per-character subsets. Mirrors `design_system/colors_and_type.css`. Run directly to regenerate `palettes/*.gpl`. |
-| `source_intake.py` | Sanitized source-intake manifests under `art/characters/<char>/_drafts/source_intake/<run_id>/`; no secrets, bearer headers, full prompts, raw base64, or private URLs. |
-| `runtime_sheet.py` | Shared local frame-folder/frame-path → runtime PNG assembly used by PixelLab REST, manual frames, extension exports, and future MCP output. |
 | `animation_catalog.py` | Data-backed PixelLab animation-key support map. Idle/walk are supported; care/tincture/combat rows are explicit manual/template-TBD entries until mapped. |
-| `preview.py` | GIF per animation row + 4× zoom PNG. |
-| `compare.py` | Side-by-side source/runtime comparison board for polish decisions. |
-| `watch.py` | Polling watcher for `~/Downloads/`. Routes `<character>_<pass>*.png` files into the pipeline. |
-| `polish.py` | Spawns Aseprite with the right palette pre-loaded. |
 | `aseprite_watch.py` | Watches `art/characters/*/aseprite/*.aseprite` saves; auto-exports to `sheets/` and validates. |
-| `health.py` | Project-wide validation summary. |
 | `catalog.py` | Generates `art/characters/index.html` with thumbnails, GIFs, and full-validator acceptance status. |
+| `cli.py` | Main subcommand dispatcher. Every `./sprite <cmd>` lands here. |
+| `compare.py` | Side-by-side source/runtime comparison board for polish decisions. |
+| `health.py` | Project-wide validation summary. |
+| `make_runtime_sprite.py` | Deterministic source/master → runtime conversion. Detects + removes background, crops, resizes with selectable filter (`nearest`, `box`, `lanczos`, etc.), quantizes to palette, anchors feet. Standalone CLI also works. |
+| `palette.py` | Project palette + per-character subsets. Mirrors `design_system/colors_and_type.css`. Run directly to regenerate `palettes/*.gpl`. |
+| `pixellab.py` | PixelLab REST client: balance/status, generate, assemble for source-intake runs (dry-run supported). |
+| `polish.py` | Spawns Aseprite with the right palette pre-loaded. |
+| `preview.py` | GIF per animation row + 4× zoom PNG. |
+| `retarget.py` | Safe high-res master/source → reviewable runtime candidates. Writes candidate PNGs, a contact sheet, validation report, and optionally promotes one passing candidate. |
+| `runtime_sheet.py` | Shared local frame-folder/frame-path → runtime PNG assembly used by PixelLab REST, manual frames, extension exports, and future MCP output. |
 | `scaffold.py` | Creates folder structure + spec stub for a new character. |
+| `source_intake.py` | Sanitized source-intake manifests under `art/characters/<char>/_drafts/source_intake/<run_id>/`; no secrets, bearer headers, full prompts, raw base64, or private URLs. |
+| `validate_sprite.py` | Acceptance check (format / dims / mode / colors / transparency / palette pin / baseline). Exit 0 = PASS. |
+| `watch.py` | Polling watcher for `~/Downloads/`. Routes `<character>_<pass>*.png` files into the pipeline. |
 | `path` CLI command | Prints canonical `source`, `master`, `runtime`, `aseprite`, or `preview` paths from the spec; used by Aseprite scripts to avoid guessing canvas suffixes. |
 | `metadata` CLI command | Prints frame/grid/baseline/path JSON for headless Aseprite scripts. |
 | `aseprite-run` CLI command | Runs any project Lua script via `aseprite -b --script ... --script-param ...`, with optional `--output`/`--in-place`. |

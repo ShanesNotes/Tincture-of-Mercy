@@ -57,10 +57,13 @@ are intentionally non-runtime surfaces.
 │
 ├── scripts/
 │   ├── autoloads/             # (planned) GameEvents, KalevState, RegisterLookup
-│   ├── resources/             # (planned) typed C# Resource classes
+│   ├── build_ironwood_tileset.gd
+│   ├── capture_baseline.sh
+│   ├── capture_current.sh
+│   ├── compare.sh
 │   ├── components/            # reusable C# helpers (e.g. OpeningActGrayboxKeys)
 │   ├── godot/                 # validate, export, test runner Python tools
-│   ├── build_ironwood_tileset.gd
+│   ├── resources/             # (planned) typed C# Resource classes
 │   └── verify_ironwood_tileset.gd
 │
 ├── data/
@@ -86,7 +89,10 @@ are intentionally non-runtime surfaces.
 │   ├── props/, ui/, icon_panels/, vfx/
 │   └── reference/             # concept/reference only; .gdignore
 │
-├── tools/sprites/             # deterministic sprite pipeline (see 10-asset-pipeline.md)
+├── tools/
+│   ├── assets/                # (cabin scene gen etc)
+│   ├── sprite                 # CLI entrypoint (bash) for sprite pipeline
+│   └── sprites/               # deterministic sprite pipeline impl (see 10-asset-pipeline.md)
 ├── test/                      # Godot headless smoke (cabin_graybox_scene_smoke.gd)
 ├── tests/                     # Python sprite-tool + optional PlayGodot E2E tests
 │

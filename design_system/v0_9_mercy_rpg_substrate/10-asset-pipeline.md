@@ -58,18 +58,38 @@ art/characters/<name>/
 └── animations/                          # v0.8.1 provenance only
     └── ...
 
-tools/sprites/                           # the pipeline
+tools/sprite                           # CLI entrypoint (bash forwards to sprites/cli.py)
+tools/sprites/                           # the pipeline (alpha)
 ├── README.md
-├── palette.py
+├── _common.py
+├── animation_catalog.py
+├── aseprite_watch.py
+├── catalog.py
+├── cli.py
+├── compare.py
+├── health.py
 ├── make_runtime_sprite.py
+├── palette.py
+├── pixellab.py
+├── polish.py
+├── preview.py
+├── retarget.py
+├── runtime_sheet.py
+├── scaffold.py
+├── source_intake.py
 ├── validate_sprite.py
-└── palettes/                            # .gpl files for Aseprite/LibreSprite
-    ├── project.gpl
-    ├── kalev.gpl
-    ├── lena.gpl
-    ├── mother.gpl
-    ├── boy.gpl
-    └── wolf.gpl
+├── watch.py
+├── aseprite_scripts/
+├── palettes/                            # .gpl files for Aseprite/LibreSprite (alpha)
+│   ├── birdie.gpl
+│   ├── boy.gpl
+│   ├── kalev.gpl
+│   ├── lena.gpl
+│   ├── mother.gpl
+│   ├── project.gpl
+│   └── wolf.gpl
+├── pixellab_state/
+└── specs/
 ```
 
 The `09-naming-conventions.md` filesystem table is amended in this slice to include the `source/` and `aseprite/` subfolders.

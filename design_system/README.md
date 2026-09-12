@@ -62,26 +62,27 @@ The same crafting wheel, patient panel, and notebook **change typography, color,
 ## Index
 
 ```
-/ (root)
+/ (root) (alpha order for lookup)
 ├── README.md                  ← you are here
 ├── SKILL.md                   ← portable skill manifest for agents
-├── v0_9_mercy_rpg_substrate/  ← active packet; INDEX.md then PRD/ISSUE_SLICES
-├── v0_8_1/                    ← provenance + scoped P0 packet
-├── colors_and_type.css        ← all color & type tokens; regime overrides
+├── "Kalev Ward - character design.html"
 ├── assets/
-│   ├── reference/             ← Pageau iconographic references
-│   ├── imagery/               ← (placeholder) brand imagery
-│   └── icons/                 ← Lucide CDN substitution; see ICONOGRAPHY
-├── fonts/                     ← (using Google Fonts via @import; no local files)
+│   └── reference/             ← Pageau iconographic references
+├── colors_and_type.css        ← all color & type tokens; regime overrides
 ├── preview/                   ← Design System tab cards (registered assets)
-└── ui_kits/
-    └── game/                  ← in-game UI kit (pouch, wheel, patient, notebook)
+├── tools/                     ← anti_drift.py + check_topology.py + allowlists
+├── ui_kits/
+│   └── game/                  ← in-game UI kit (pouch, wheel, patient, notebook)
+├── v0_8_1/                    ← provenance + scoped P0 packet
+├── v0_9_combat_rpg_layer/     ← superseded research stub (provenance only)
+└── v0_9_mercy_rpg_substrate/  ← active packet; INDEX.md then PRD/ISSUE_SLICES
 ```
 
 ### Files at root
 - **`README.md`** — this file. Brand context, content fundamentals, visual foundations, iconography.
 - **`SKILL.md`** — Agent-Skills compatible manifest so this can be downloaded and used in Claude Code.
 - **`colors_and_type.css`** — full color palette, font stacks, type scale, semantic tokens, regime overrides, semantic element classes (`.tom-h1`, `.tom-hand`, `.tom-witte`, etc.).
+- **`"Kalev Ward - character design.html"`** — character design review surface.
 
 ### UI Kits
 - **`ui_kits/game/`** — In-game prototype UI: pouch panel, Tincture Wheel, patient panel, notebook, Kalev state overlay. See `ui_kits/game/README.md`.
