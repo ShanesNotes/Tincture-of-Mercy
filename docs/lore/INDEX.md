@@ -2,7 +2,7 @@
 
 Status: active lore consolidation (long-horizon)
 Owner lane: narrative archaeology + future iteration planning
-Authority: **lore and narrative arc** for human review; does not override `CONTEXT.md`, `docs/adr/`, or active v0.9 implementation contracts for engine work
+Authority: **lore and narrative arc** for human review; does not override `GLOSSARY.md`, `docs/adr/`, or active v0.9 implementation contracts for engine work
 
 ## Start here
 
@@ -33,13 +33,13 @@ Authority: **lore and narrative arc** for human review; does not override `CONTE
 | [`../story/SOURCE_ORE_MAP.md`](../story/SOURCE_ORE_MAP.md) | Storyboard/AI production ore map |
 | [`../story/STORYBOARD_BIBLE.md`](../story/STORYBOARD_BIBLE.md) | Narrative pivot + ethical guardrails for visualization |
 | [`../story/NARRATIVE_STORYBOARD_DECK_V0_1.md`](../story/NARRATIVE_STORYBOARD_DECK_V0_1.md) | Ten-scene production deck with image/VO prompts |
-| [`../../CONTEXT.md`](../../CONTEXT.md) | Active glossary and resolved language conflicts |
+| [`../../GLOSSARY.md`](../../GLOSSARY.md) | Active glossary and resolved language conflicts |
 | [`../../design_system/v0_9_mercy_rpg_substrate/03-opening-act-bible.md`](../../design_system/v0_9_mercy_rpg_substrate/03-opening-act-bible.md) | Active opening five-act build contract |
 | [`../../design_system/v0_8_1/scene_composition_bible_v0_8_1.md`](../../design_system/v0_8_1/scene_composition_bible_v0_8_1.md) | Composition grammar (camera, light, disclosure) |
 
 ## Authority order
 
-1. **`CONTEXT.md`** — resolved vocabulary (Bethany payoff, Hesychasm, bread beat, gravity encounter, etc.)
+1. **`GLOSSARY.md`** — resolved vocabulary (Bethany payoff, Hesychasm, bread beat, gravity encounter, etc.)
 2. **`docs/adr/`** — accepted narrative routing decisions
 3. **`design_system/v0_9_mercy_rpg_substrate/`** — active opening slice and substrate direction
 4. **`docs/lore/CONSOLIDATED_LORE_SURFACE.md`** — distilled arc and iteration history (this pass)

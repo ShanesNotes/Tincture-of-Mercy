@@ -2,7 +2,7 @@
 
 Status: working story-production artifact  
 Owner lane: narrative/storyboard + AI image/video production  
-Authority: support artifact; it maps sources but does not override `CONTEXT.md`, ADRs, or the active v0.9 packet  
+Authority: support artifact; it maps sources but does not override `GLOSSARY.md`, ADRs, or the active v0.9 packet  
 Created: 2026-05-13
 
 ## Purpose
@@ -13,7 +13,7 @@ For a distilled narrative arc, cast bible, iteration history, and lore/mechanic/
 
 ## Authority order for story work
 
-1. `CONTEXT.md` — active glossary and conflict resolutions.
+1. `GLOSSARY.md` — active glossary and conflict resolutions.
 2. `docs/adr/` — accepted decisions and why they exist.
 3. `design_system/v0_9_mercy_rpg_substrate/` — active story/system direction for the opening mercy RPG substrate.
 4. `design_system/v0_8_1/` — tone, visual grammar, scene composition, names, and art provenance where not contradicted.
@@ -36,7 +36,7 @@ Repo-local v0.7 provenance exists at `docs/lore/tincture_of_mercy_godot_design_h
 
 | Source | Authority | Best ore | Use in storyboard |
 |---|---:|---|---|
-| `CONTEXT.md` | Active | Recognition, presence, Bethany payoff, Hesychasm, bread beat, gravity encounter, wolf encounter, shared substrate. | Guardrail all story cards. Prevent recipe-victory drift and care-only drift. |
+| `GLOSSARY.md` | Active | Recognition, presence, Bethany payoff, Hesychasm, bread beat, gravity encounter, wolf encounter, shared substrate. | Guardrail all story cards. Prevent recipe-victory drift and care-only drift. |
 | `design_system/v0_9_mercy_rpg_substrate/03-opening-act-bible.md` | Active after substrate gate | Water, bread, tincture, Anna death/Witness, wolves/Iiro flight/combat. | Primary first-episode sequence. Convert acts into scene cards. |
 | `design_system/v0_9_mercy_rpg_substrate/04-latent-paths-receptivity.md` | Active | Apothecary, Hesychasm, Iconographic as forms of attention; receptivity and recognition hooks. | Scene interiority: what Kalev notices, misses, receives, or cannot bear. |
 | `design_system/v0_9_mercy_rpg_substrate/05-rpg-economy-progression.md` | Active | Grounded cost, loot/material consequence, progression as event-derived consequence. | Keep combat/aftermath material and embodied rather than symbolic-only. |

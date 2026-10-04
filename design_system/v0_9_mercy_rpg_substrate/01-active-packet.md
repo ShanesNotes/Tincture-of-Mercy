@@ -3,7 +3,7 @@
 Status: active slice spec
 Owner lane: documentation lead
 Authority level: active for doc routing, PRD shape, and issue-slice handoff
-Dependencies: `INDEX.md`, `PRD.md`, `ACCEPTANCE.md`, `ISSUE_SLICES.md`, `CONTEXT.md`, `docs/adr/`
+Dependencies: `INDEX.md`, `PRD.md`, `ACCEPTANCE.md`, `ISSUE_SLICES.md`, `GLOSSARY.md`, `docs/adr/`
 Maximum intended scope: active packet structure and agent context hygiene; not a replacement for every source/lore document
 Source references: approved RALPLAN `.omx/plans/deepen-7-mercy-rpg-slices-consensus-plan.md`; source intake under `docs/source/2026-05-09-tincture-codex-handoff/`
 Validation gate: root/design read paths agree and the active packet can be read without reconciling raw sources first
@@ -48,7 +48,7 @@ Each slice doc states status, owner lane, authority level, dependencies, maximum
 
 Root and design docs should converge on this route:
 
-1. `CONTEXT.md`
+1. `GLOSSARY.md`
 2. `docs/adr/`
 3. `design_system/v0_9_mercy_rpg_substrate/INDEX.md`
 4. `design_system/v0_9_mercy_rpg_substrate/PRD.md`

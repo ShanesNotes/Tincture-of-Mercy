@@ -26,7 +26,7 @@ This document teases apart **lore**, **mechanics**, and **assets** so a cold rea
 | Which PNGs embody which beats | § Assets vs lore boundary |
 | Every file that contains lore | § Complete source index |
 
-**Authority:** For implementation, `CONTEXT.md` + ADRs + v0.9 packet win where they conflict with older lore prose. This surface **records** those conflicts rather than hiding them.
+**Authority:** For implementation, `GLOSSARY.md` + ADRs + v0.9 packet win where they conflict with older lore prose. This surface **records** those conflicts rather than hiding them.
 
 ---
 
@@ -36,7 +36,7 @@ A healer who once knew what to do with his hands discovers that **medicine works
 
 The **Bethany payoff** is not a corrected recipe saving someone. It is **recognition** — a person-specific response that reveals remembered presence across time. A corrected recipe may exist as **Apothecary** learning; it must not be framed as the salvific cause.
 
-*Distilled from:* `docs/lore/tincture_of_mercy_v0_3.md` §I, §IX · `docs/story/STORYBOARD_BIBLE.md` §2 · `CONTEXT.md` · ADRs 0006–0008
+*Distilled from:* `docs/lore/tincture_of_mercy_v0_3.md` §I, §IX · `docs/story/STORYBOARD_BIBLE.md` §2 · `GLOSSARY.md` · ADRs 0006–0008
 
 ---
 
@@ -415,7 +415,7 @@ Every lore-bearing surface discovered in Phase 1 audit (2026-06-11). Tier = sugg
 
 | Path | Tier |
 |---|---|
-| `CONTEXT.md` | 1 |
+| `GLOSSARY.md` | 1 |
 | `docs/adr/0001`–`0016` | 1 |
 | `design_system/v0_9_mercy_rpg_substrate/03-opening-act-bible.md` | 1 |
 | `design_system/v0_9_mercy_rpg_substrate/04-latent-paths-receptivity.md` | 1 |

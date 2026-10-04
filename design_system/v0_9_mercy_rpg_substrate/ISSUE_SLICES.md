@@ -367,13 +367,13 @@ id: D3
 lane: writer
 write_scope:
   - design_system/v0_9_mercy_rpg_substrate/04-latent-paths-receptivity.md
-  - CONTEXT.md
+  - GLOSSARY.md
 blocked_by: []
 acceptance:
   - Recognition/presence is active payoff.
   - Corrected recipe remains subordinate Apothecary learning.
 verification:
-  - Manual review against CONTEXT.md.
+  - Manual review against GLOSSARY.md.
 ```
 
 ## EPIC E — RPG economy/progression
@@ -448,7 +448,7 @@ id: F2
 lane: executor
 write_scope:
   - AGENTS.md
-  - CONTEXT.md
+  - GLOSSARY.md
   - README.md
   - CLAUDE.md
   - design_system/README.md

@@ -4,7 +4,7 @@ A 2D top-down mercy RPG in Godot 4.6 (C# / Forward+). Hand-authored, not auto-ge
 
 ## Read-in order before doing engine work
 
-1. `AGENTS.md` and `CONTEXT.md` — active agent routing and resolved glossary.
+1. `AGENTS.md` and `GLOSSARY.md` — active agent routing and resolved glossary.
 2. `docs/adr/` — accepted decisions, especially canon-routing decisions.
 3. `design_system/v0_9_mercy_rpg_substrate/INDEX.md` — active packet hub.
 4. `design_system/v0_9_mercy_rpg_substrate/PRD.md` and `ISSUE_SLICES.md` — active requirements and issue dependencies.

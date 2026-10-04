@@ -3,9 +3,9 @@
 Status: active slice spec
 Owner lane: systems design + narrative design
 Authority level: active for Apothecary/Hesychasm/Iconographic path architecture and receptivity resolver hooks
-Dependencies: `02-substrate-primitives.md`, `03-opening-act-bible.md`, `CONTEXT.md`
+Dependencies: `02-substrate-primitives.md`, `03-opening-act-bible.md`, `GLOSSARY.md`
 Maximum intended scope: path/receptivity mechanics for the substrate and opening-slice proof; not a full campaign progression bible
-Source references: `docs/source/2026-05-09-tincture-codex-handoff/primary_sources/three_registers.md` and active tie-breakers in `CONTEXT.md`
+Source references: `docs/source/2026-05-09-tincture-codex-handoff/primary_sources/three_registers.md` and active tie-breakers in `GLOSSARY.md`
 Validation gate: path names, data contracts, examples, Bethany payoff, and resolver hooks are specified
 
 ## Core distinction

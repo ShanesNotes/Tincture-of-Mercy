@@ -5,7 +5,7 @@ Owner lane: systems design + economy/progression
 Authority level: active for v0.9 risk/reward, loot, itemization, and progression architecture
 Dependencies: `02-substrate-primitives.md`, `03-opening-act-bible.md`, `04-latent-paths-receptivity.md`, ADR 0011
 Maximum intended scope: architecture and tuning principles for opening-slice economy/progression; not final drop rates or full campaign balance
-Source references: source substrate handoff, WoW research substrate notes, ADR 0008, ADR 0009, active user direction captured in `CONTEXT.md`
+Source references: source substrate handoff, WoW research substrate notes, ADR 0008, ADR 0009, active user direction captured in `GLOSSARY.md`
 Validation gate: active specs allow normal RPG loops while keeping encounter objectives and event truth clear
 
 ## Core decision

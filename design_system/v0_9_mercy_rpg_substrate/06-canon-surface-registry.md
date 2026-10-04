@@ -3,7 +3,7 @@
 Status: active slice spec
 Owner lane: documentation architecture + agent routing
 Authority level: active registry for doc authority labels and read-path migration
-Dependencies: `INDEX.md`, `PRD.md`, `CONTEXT.md`, `docs/adr/`, root/design readme files
+Dependencies: `INDEX.md`, `PRD.md`, `GLOSSARY.md`, `docs/adr/`, root/design readme files
 Maximum intended scope: authority labels and migration notes for major docs; not a complete file inventory
 Source references: current repo docs, accepted ADRs, approved RALPLAN
 Validation gate: future agents can identify which document wins without reading raw source intake first
@@ -24,7 +24,7 @@ Validation gate: future agents can identify which document wins without reading 
 
 | Surface | Label | Winning use | Notes |
 |---|---|---|---|
-| `CONTEXT.md` | active | Glossary and resolved language conflicts. | First local language surface for agents. |
+| `GLOSSARY.md` | active | Glossary and resolved language conflicts. | First local language surface for agents. |
 | `docs/adr/` | active | Accepted decisions and rationale. | ADRs supersede conflicting older docs. |
 | `design_system/v0_9_mercy_rpg_substrate/INDEX.md` | active | Active packet hub and source hierarchy. | Read before older packets. |
 | `design_system/v0_9_mercy_rpg_substrate/PRD.md` | active | Product/engineering contract for v0.9 substrate-first work. | Defines milestones and functional requirements. |
@@ -44,7 +44,7 @@ Validation gate: future agents can identify which document wins without reading 
 
 | Surface | Label | Use | Notes |
 |---|---|---|---|
-| `AGENTS.md` | active-support | Agent read path and behavior. | Should route to `CONTEXT.md`, ADRs, then v0.9 active packet. |
+| `AGENTS.md` | active-support | Agent read path and behavior. | Should route to `GLOSSARY.md`, ADRs, then v0.9 active packet. |
 | `README.md` | active-support | Repo map and canon spine. | Not a substitute for PRD/issue slices. |
 | `CLAUDE.md` | active-support | Claude-compatible agent guide. | Mirrors active routing. |
 | `design_system/README.md` | active-support | Design-system map and content rules. | Routes design work to v0.9 active packet first. |
@@ -107,7 +107,7 @@ Plans are planning history. If a plan conflicts with active packet docs, update 
 
 ## Required read path after this slice
 
-1. `CONTEXT.md`
+1. `GLOSSARY.md`
 2. `docs/adr/`
 3. `design_system/v0_9_mercy_rpg_substrate/INDEX.md`
 4. `design_system/v0_9_mercy_rpg_substrate/PRD.md`

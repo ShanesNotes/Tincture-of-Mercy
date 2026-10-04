@@ -5,7 +5,7 @@ This folder vendors the raw source material behind the v0.9 mercy RPG substrate 
 ## Read path
 
 1. Active direction: `../../../design_system/v0_9_mercy_rpg_substrate/INDEX.md`.
-2. Project glossary: `../../../CONTEXT.md`.
+2. Project glossary: `../../../GLOSSARY.md`.
 3. Decision records: `../../../docs/adr/`.
 4. Raw materials here only when evidence or nuance is needed.
 

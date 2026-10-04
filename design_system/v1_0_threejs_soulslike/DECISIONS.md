@@ -1,6 +1,6 @@
 # v1.0 Council Decisions — three.js souls-like adaptation
 
-Ruled 2026-08-13 by four-model council (Codex xhigh · Grok · Kimi · Opus 5), chaired by Fable. Full seat verdicts: `.scratch/orchestrate/resurrect-3js/` (session artifacts). These rulings are binding for all v1.0 slices. Authority: this packet sits below `CONTEXT.md` and `docs/adr/` and above all other v1.0 docs.
+Ruled 2026-08-13 by four-model council (Codex xhigh · Grok · Kimi · Opus 5), chaired by Fable. Full seat verdicts: `.scratch/orchestrate/resurrect-3js/` (session artifacts). These rulings are binding for all v1.0 slices. Authority: this packet sits below `GLOSSARY.md` and `docs/adr/` and above all other v1.0 docs.
 
 ## D1 — Repo & toolchain (4-0)
 `game/` top-level directory inside this repo; own `package.json`, own CI lane (never shares a job with the Godot lane). Stack: Node ≥22 ESM, Vite 6, TypeScript 5.7 strict, Vitest, Playwright, ESLint. Runtime deps: `three@0.185.1` (exact pin; upgrades require WebGPU + forced-WebGL2 + screenshot + skinning + BVH compatibility probes) and `three-mesh-bvh` (the only other runtime dep for the slice). WebGPURenderer + TSL primary; WebGL2 fallback functional and register-gated (60fps bar applies to WebGPU only). Canonical verify: `npm --prefix game run verify`. `design_system/tools/anti_drift.py` never walks `game/` (its P0 scope stays `design_system`). No imports, names, or code ported from the Godot/C# substrate — it is provenance. `game/README.md` and root README carry a one-line banner saying so.

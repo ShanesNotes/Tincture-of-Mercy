@@ -3,7 +3,7 @@
 Status: active implementation-direction packet
 Owner lane: design + engineering documentation
 Authority level: active for v0.9 PRD, issue slicing, and substrate-first implementation planning
-Dependencies: `CONTEXT.md`, `docs/adr/`, source intake under `docs/source/2026-05-09-tincture-codex-handoff/`
+Dependencies: `GLOSSARY.md`, `docs/adr/`, source intake under `docs/source/2026-05-09-tincture-codex-handoff/`
 Validation gate: read this file, then `PRD.md`, `ACCEPTANCE.md`, and `ISSUE_SLICES.md`; run `python3 design_system/tools/anti_drift.py --mode all --root design_system`
 
 This packet is the active routing hub for the combat-capable mercy RPG direction. It keeps the useful v0.8.1 care discipline as scoped provenance while giving future agents a clean, substrate-first execution surface.
@@ -12,7 +12,7 @@ This packet is the active routing hub for the combat-capable mercy RPG direction
 
 Use this order when a document conflicts:
 
-1. `CONTEXT.md` — active glossary and resolved language conflicts.
+1. `GLOSSARY.md` — active glossary and resolved language conflicts.
 2. `docs/adr/` — accepted decisions and decision rationale.
 3. `design_system/v0_9_mercy_rpg_substrate/` — this active packet.
 4. `design_system/v0_8_1/` — provenance for tone, visual language, names, Godot/C# scaffold constraints, and scoped P0 limits where not superseded.

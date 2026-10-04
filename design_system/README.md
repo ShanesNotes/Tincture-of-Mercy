@@ -17,7 +17,7 @@ When conflicts arise, the active direction and accepted ADRs win over older lore
 
 | Surface | Path / Link | Status |
 |---|---|---|
-| Project glossary | `../CONTEXT.md` | Active language and resolved ambiguity. |
+| Project glossary | `../GLOSSARY.md` | Active language and resolved ambiguity. |
 | Decision records | `../docs/adr/` | Accepted routing/design decisions. |
 | v0.9 mercy RPG substrate | `v0_9_mercy_rpg_substrate/INDEX.md` | Active packet hub; read PRD, acceptance, issue slices, and registry from this packet. |
 | v0.8.1 packet index | `v0_8_1/INDEX.md` | Provenance and scoped P0 packet; not the active combat-capable slice. |

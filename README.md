@@ -7,7 +7,7 @@ This README is the single entry point — everything else is reachable from here
 
 Use this short path before engine or content work:
 
-1. **Context and agent guide** → `CONTEXT.md`, then `AGENTS.md`
+1. **Context and agent guide** → `GLOSSARY.md`, then `AGENTS.md`
    _Start here. These files prevent older P0 scope limits from becoming project-wide doctrine._
 2. **Decision records** → `docs/adr/`
    _Read accepted routing and design decisions before treating older packets as active canon._

@@ -3,7 +3,7 @@
 Status: active PRD
 Owner lane: product/design + engineering architecture
 Authority level: active product contract for the next implementation and issue slicing pass
-Dependencies: `INDEX.md`, `CONTEXT.md`, `docs/adr/`, `02-substrate-primitives.md`, `03-opening-act-bible.md`, `04-latent-paths-receptivity.md`, `05-rpg-economy-progression.md`
+Dependencies: `INDEX.md`, `GLOSSARY.md`, `docs/adr/`, `02-substrate-primitives.md`, `03-opening-act-bible.md`, `04-latent-paths-receptivity.md`, `05-rpg-economy-progression.md`
 Maximum intended scope: documentation and implementation requirements for substrate core plus opening vertical-slice proof; not a full game content bible
 Source references: substrate handoff source docs under `docs/source/2026-05-09-tincture-codex-handoff/`; v0.8.1 packet as scoped provenance
 Validation gate: `ACCEPTANCE.md`, `ISSUE_SLICES.md`, anti-drift, stale-claim scan

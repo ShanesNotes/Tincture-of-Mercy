@@ -33,7 +33,7 @@ Validation gate: commands at the end of this file
 | A-12 | Latent paths are active gameplay. | Paths spec defines Apothecary, Hesychasm, Iconographic, path progression, receptivity profile, and register match modifier. | Docs/Substrate |
 | A-13 | Bethany payoff follows recognition/presence. | Paths spec and context glossary state corrected recipe is subordinate Apothecary learning. | Drift |
 | A-14 | Anti-drift is scoped. | Vocabulary spec and allowlist/tooling permit active v0.9 RPG terms while preserving v0.8.1 care-surface restrictions. | Drift |
-| A-15 | Root routing agrees. | `AGENTS.md`, `CONTEXT.md`, `README.md`, `CLAUDE.md`, `design_system/README.md`, and `design_system/SKILL.md` route to v0.9 active packet and label v0.8.1 as provenance/scoped P0. | Docs |
+| A-15 | Root routing agrees. | `AGENTS.md`, `GLOSSARY.md`, `README.md`, `CLAUDE.md`, `design_system/README.md`, and `design_system/SKILL.md` route to v0.9 active packet and label v0.8.1 as provenance/scoped P0. | Docs |
 
 ## Substrate acceptance matrix
 
@@ -101,7 +101,7 @@ python3 - <<'CHECKSTALE'
 from pathlib import Path
 import re
 
-roots = [Path('AGENTS.md'), Path('CLAUDE.md'), Path('README.md'), Path('CONTEXT.md'), Path('design_system'), Path('docs')]
+roots = [Path('AGENTS.md'), Path('CLAUDE.md'), Path('README.md'), Path('GLOSSARY.md'), Path('design_system'), Path('docs')]
 exclude_parts = {'v0_8_1', 'source', '_archive'}
 patterns = [
     re.compile(r'\bcombat\b.*\b(postponed|post-P0|deferred to post-P0|not in first playable)\b', re.I),  # allowlist: stale-scan pattern

@@ -144,7 +144,7 @@ python3 - <<'CHECKSTALE'
 from pathlib import Path
 import re
 
-roots = [Path('AGENTS.md'), Path('CLAUDE.md'), Path('README.md'), Path('CONTEXT.md'), Path('design_system'), Path('docs')]
+roots = [Path('AGENTS.md'), Path('CLAUDE.md'), Path('README.md'), Path('GLOSSARY.md'), Path('design_system'), Path('docs')]
 exclude_parts = {'v0_8_1', 'source', '_archive'}
 patterns = [
     re.compile(r'\bcombat\b.*\b(postponed|post-P0|deferred to post-P0|not in first playable)\b', re.I),  # allowlist: stale-scan pattern

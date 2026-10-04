@@ -18,7 +18,7 @@ If you are designing for a different project, do not use this system — its voi
 
 ## Read these first
 
-- `../CONTEXT.md` — active glossary and resolved language conflicts.
+- `../GLOSSARY.md` — active glossary and resolved language conflicts.
 - `../docs/adr/` — accepted routing and design decisions.
 - `v0_9_mercy_rpg_substrate/INDEX.md` — active packet hub.
 - `v0_9_mercy_rpg_substrate/PRD.md` — active product/engineering requirements.

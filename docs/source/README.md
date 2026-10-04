@@ -8,4 +8,4 @@ Raw/source evidence for design and planning lives here. These files are provenan
 
 ## Rule
 
-Future agents should read `../../AGENTS.md`, `../../CONTEXT.md`, `../adr/`, and the active design packet before using raw source files here.
+Future agents should read `../../AGENTS.md`, `../../GLOSSARY.md`, `../adr/`, and the active design packet before using raw source files here.

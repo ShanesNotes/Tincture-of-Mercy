@@ -4,7 +4,7 @@ This repo is in an early canon-routing transition. Optimize for clean future age
 
 ## Read-in order
 
-1. `CONTEXT.md` — project glossary and resolved language conflicts.
+1. `GLOSSARY.md` — project glossary and resolved language conflicts.
 2. `docs/adr/` — decision records that explain active canon-routing choices.
 3. `design_system/v0_9_mercy_rpg_substrate/INDEX.md` — active packet hub.
 4. `design_system/v0_9_mercy_rpg_substrate/PRD.md` and `ISSUE_SLICES.md` — active requirements and issue dependencies.

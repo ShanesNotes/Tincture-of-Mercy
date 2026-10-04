@@ -119,7 +119,7 @@ Use the same global style prefixes from the opening deck.
 - **Narrative beat:** Boy from cabin arrives sick at Bethany. After trust and presence, fever breaks; recognition — not recipe victory.
 - **Emotional wound:** Presence remembered across hours; corrected recipe subordinate.
 - **Visible action:** Administer care; refusals until trust; line: *"you were the one in the cabin."*
-- **Source ore:** `04-latent-paths-receptivity.md` §Bethany payoff; `opening_slice_design_v2.md` §171–179 (distill, reject recipe-as-salvation); `CONTEXT.md`.
+- **Source ore:** `04-latent-paths-receptivity.md` §Bethany payoff; `opening_slice_design_v2.md` §171–179 (distill, reject recipe-as-salvation); `GLOSSARY.md`.
 - **Characters:** Kalev, Iiro, Lena optional witness.
 - **Location:** Bethany patient room.
 - **Light noun:** Working light softening.
@@ -287,7 +287,7 @@ Use the same global style prefixes from the opening deck.
 - **Narrative beat:** Church register holds names already; Birdie returns warped notebook; wife's name writable at line 7 page 77; family presence ambiguous.
 - **Emotional wound:** Recognition not achievement; both always/unable to write — both true.
 - **Visible action:** Wet boots in narthex; priest writes *Caleb*; Birdie at graveyard gate; graphite shines; son says *We've been here the whole time.*
-- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` §IX final scene; opening deck card 10; `CONTEXT.md` Bethany payoff.
+- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` §IX final scene; opening deck card 10; `GLOSSARY.md` Bethany payoff.
 - **Characters:** Kalev, Birdie/Ruth, priest, wife/children presence (ambiguous), son's cedar smell in daughter's hair.
 - **Location:** Paradise church → graveyard threshold.
 - **Light noun:** Paradise candle-white; restrained earned gold on page edge only.

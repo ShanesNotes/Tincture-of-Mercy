@@ -5,7 +5,7 @@ Owner lane: narrative design + gameplay design
 Authority level: active for the five-act opening slice after substrate core acceptance
 Dependencies: `02-substrate-primitives.md`, `04-latent-paths-receptivity.md`, `05-rpg-economy-progression.md`, Epic B/B0 gate in `ISSUE_SLICES.md`
 Maximum intended scope: buildable act bible for the opening substrate proof; not the full campaign bible
-Source references: source handoff opening-slice notes under `docs/source/2026-05-09-tincture-codex-handoff/`, with active tie-breakers from `CONTEXT.md` and ADRs
+Source references: source handoff opening-slice notes under `docs/source/2026-05-09-tincture-codex-handoff/`, with active tie-breakers from `GLOSSARY.md` and ADRs
 Validation gate: every act lists verbs, taught primitives, authored events, actor state, outcomes, UI/presenter outputs, notebook events, and debug acceptance
 
 ## Implementation gate

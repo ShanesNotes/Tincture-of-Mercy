@@ -105,7 +105,7 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
 - **Narrative beat:** Kalev fetches and offers water. Small care is real care, but it is not control.
 - **Emotional wound:** He wants the smallest act to prove the world is still negotiable.
 - **Visible action:** A tin cup touches Anna's lips; she accepts a little and turns away. Iiro receives water differently.
-- **Source ore:** `03-opening-act-bible.md` Act 1 Water; `CONTEXT.md`; audio workflow care foley.
+- **Source ore:** `03-opening-act-bible.md` Act 1 Water; `GLOSSARY.md`; audio workflow care foley.
 - **Characters:** Kalev, Anna, Iiro.
 - **Location:** Cabin bedside; implied well/threshold.
 - **Light noun:** The hearth.
@@ -131,7 +131,7 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
 - **Narrative beat:** Bread becomes ordinary mercy under scarcity. Kalev must decide when and how to offer it.
 - **Emotional wound:** The simplest nourishment becomes a test of attention: is he feeding a person or solving a need tag?
 - **Visible action:** Kalev breaks bread, moistens it, waits for Iiro's fear to settle before offering.
-- **Source ore:** `03-opening-act-bible.md` Act 2 Bread; `04-latent-paths-receptivity.md`; `CONTEXT.md` bread beat.
+- **Source ore:** `03-opening-act-bible.md` Act 2 Bread; `04-latent-paths-receptivity.md`; `GLOSSARY.md` bread beat.
 - **Characters:** Kalev, Iiro, Anna in background.
 - **Location:** Cabin hearth/table.
 - **Light noun:** The hearth.
@@ -287,7 +287,7 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
 - **Narrative beat:** Wittehaven opens the ledger. The system's accusation is partly true. Kalev recognizes himself in the record and is cast outside the camp.
 - **Emotional wound:** The old identity cannot save him. The chart knows his failures but not the names.
 - **Visible action:** A clean institutional table, ledger pages, case marks, missed names, undocumented doses. Kalev stands before Halloway and the room.
-- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` Iron Ledger trial; `aesthetic_bible_v0_8_1.md` Wittehaven; `CONTEXT.md` names over metrics relationship.
+- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` Iron Ledger trial; `aesthetic_bible_v0_8_1.md` Wittehaven; `GLOSSARY.md` names over metrics relationship.
 - **Characters:** Kalev, Halloway, Wittehaven staff/residents, possibly Lena watching.
 - **Location:** Continuance Hospital / civic-medical hearing room.
 - **Light noun:** Wittehaven blue-white; no hearth warmth.
@@ -313,7 +313,7 @@ Slow restrained animatic shot, fixed manuscript-page composition, minimal camera
 - **Narrative beat:** At the end, the notebook returns. The names were already known. Kalev writes the name he could not write.
 - **Emotional wound:** The whole pilgrimage resolves as recognition, not achievement.
 - **Visible action:** Birdie holds out the warped notebook near a graveyard gate. Kalev writes his wife's name. Family presence is felt without over-explaining whether they are alive, dead, or received.
-- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` final scene; `CONTEXT.md` recognition/presence; `aesthetic_bible_v0_8_1.md` Paradise regime.
+- **Source ore:** `docs/lore/tincture_of_mercy_v0_3.md` final scene; `GLOSSARY.md` recognition/presence; `aesthetic_bible_v0_8_1.md` Paradise regime.
 - **Characters:** Kalev, Birdie/Ruth, priest implied or previous shot, wife/children presence ambiguous.
 - **Location:** Paradise church/graveyard threshold.
 - **Light noun:** Paradise candle-white with restrained earned gold.
